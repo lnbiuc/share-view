@@ -5,8 +5,14 @@ const routes = [
     path: "/",
     name: "Index",
     component: () => import("../views/Index.vue"),
-    meta: { title: "A" },
+    meta: { title: "Index" },
   },
+  {
+    path: "/login",
+    name: "Login",
+    component: () => import("../views/Login.vue"),
+    meta: { title: "Login" },
+  }
 ];
 
 const router = createRouter({

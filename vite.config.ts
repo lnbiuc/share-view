@@ -7,7 +7,7 @@ export default defineConfig({
     proxy: {
       // 解除跨域写法
       '/api': {
-        target: 'https://beyondhorizon.top/api',
+        target: 'https://share.vio.vin/api',
         changeOrigin: true,
         rewrite: (path) => path.replace(/^\/api/, '')
       }
