@@ -4,9 +4,14 @@
 </script>
 
 <template>
-  <router-view/>
+    <router-view />
 </template>
 
-<style scoped>
-
+<style>
+#app {
+    --tw-bg-opacity: 1;
+    background-color: rgb(241 245 249 / var(--tw-bg-opacity));
+    margin: 0;
+    padding: 0;
+}
 </style>
