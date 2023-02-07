@@ -5,7 +5,7 @@
 </template>
 
 <script setup lang="ts">
-import ArticleList from "../components/index/ArticleList.vue";
+import ArticleList from "../../components/index/ArticleList.vue";
 import { ref } from "vue";
 import { getArticleList } from "../../api/article/articleApi";
 const articleList = ref([]);

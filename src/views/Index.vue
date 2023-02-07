@@ -1,7 +1,7 @@
 <template>
     <div class="flex flex-col">
         <Header />
-        <RouterView />
+        	<RouterView />
         <Footer />
     </div>
 </template>
