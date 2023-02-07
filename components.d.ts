@@ -10,10 +10,17 @@ declare module '@vue/runtime-core' {
     ArticleList: typeof import('./src/components/index/ArticleList.vue')['default']
     CollectionLink: typeof import('./src/components/index/articleList/CollectionLink.vue')['default']
     CommentsLink: typeof import('./src/components/index/articleList/CommentsLink.vue')['default']
-    Header: typeof import('./src/components/index/Header.vue')['default']
+    ElButton: typeof import('element-plus/es')['ElButton']
+    ElDropdown: typeof import('element-plus/es')['ElDropdown']
+    ElDropdownItem: typeof import('element-plus/es')['ElDropdownItem']
+    ElDropdownMenu: typeof import('element-plus/es')['ElDropdownMenu']
+    ElIcon: typeof import('element-plus/es')['ElIcon']
+    Footer: typeof import('./src/components/index/nav/Footer.vue')['default']
+    Header: typeof import('./src/components/index/nav/Header.vue')['default']
     LikeBtn: typeof import('./src/components/index/articleList/LikeBtn.vue')['default']
     RouterLink: typeof import('vue-router')['RouterLink']
     RouterView: typeof import('vue-router')['RouterView']
     ShareLink: typeof import('./src/components/index/articleList/ShareLink.vue')['default']
+    SortBy: typeof import('./src/components/index/nav/SortBy.vue')['default']
   }
 }

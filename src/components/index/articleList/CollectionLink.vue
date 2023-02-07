@@ -5,7 +5,7 @@
             class="w-4 h-4 mr-1"
             alt=""
         />
-        <soan>Collection</soan>
+        <span>Collection</span>
     </div>
 </template>
 

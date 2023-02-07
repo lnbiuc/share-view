@@ -1,6 +1,6 @@
 <template>
     <div
-        class="flex flex-row hover:shadow-md shadow-sm transition-all py-2 m-2 rounded-full bg-white w-auto"
+        class="flex flex-row hover:shadow-md shadow-sm transition-all py-2 mt-2 rounded-full bg-white w-auto"
     >
         <div class="flex flex-1 justify-center">
             <div
