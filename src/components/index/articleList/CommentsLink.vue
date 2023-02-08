@@ -1,6 +1,6 @@
 <template>
     <div class="px-2 flex flex-row items-center">
-        <img src="../../../assets/icon/comments.svg" class="w-4 h-4" alt="" />
+        <el-icon><Comment /></el-icon>
         <span class="mx-2">{{ comments }}</span>
         <span>Comments</span>
     </div>
