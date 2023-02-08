@@ -1,21 +1,24 @@
 <template>
-    <div class="flex flex-row hover:shadow-md shadow-sm transition-all py-2 mt-2 rounded-full bg-white w-auto">
-        <div class="flex flex-1 justify-center">
-            <div class="py-2 mx-20 hover:text-purple-400" @click="$router.push({ path: '/' })">
-                <span class="m-1 cursor-pointer">Share</span>
+    <div class="flex lg:flex-row flex-col hover:shadow-md shadow-sm transition-all py-2 mt-2 lg:rounded-full bg-white w-auto">
+        <div class="flex flex-1 lg:justify-center justify-start">
+            <div class="py-2 mx-20 hover:text-purple-400 lg:flex-row flex-col">
+                <span class="m-1 cursor-pointer" @click="$router.push({ path: '/' })">Share</span>
+            </div>
+            <div class='flex flex-1 expand-btn justify-end text-3xl m-auto mr-3' @click='handlerShowNav'>
+                <el-icon><Fold /></el-icon>
             </div>
         </div>
-        <div class="flex flex-2 justify-center">
+        <div class="flex flex-2 lg:justify-center lg:flex-row navs lg:mt-0 flex-col">
             <div
                 v-for="nav in navs"
                 :key="nav.name"
                 @click="$router.push({ path: nav.path })"
-                class="px-2 py-2 hover:bg-purple-300 hover:rounded-full transition-all cursor-pointer"
+                class="lg:p-2 p-3 lg:mx-0 mx-40 text-center hover:bg-purple-300 hover:rounded-full transition-all cursor-pointer"
             >
                 <span class="m-1">{{ nav.name }}</span>
             </div>
         </div>
-        <div class="flex flex-1 justify-center">
+        <div class="flex flex-1 justify-center login-btn">
             <div
                 class="px-2 py-2 bg-purple-200 hover:bg-purple-300 rounded-full transition-all cursor-pointer"
                 @click="dialogFormVisible = true"
@@ -23,6 +26,7 @@
                 <span class="m-2">Login / Register</span>
             </div>
         </div>
+
     </div>
     <el-dialog class="p-6" v-model="dialogFormVisible" width="30%" title="Login / Register" :draggable="true">
         <div class="mb-4">
@@ -150,8 +154,20 @@
 
 <script setup lang="ts">
 import { ref } from 'vue';
-import { login, loginParams, sendCode } from '../../../api/login/loginApi';
+import { login, loginParams, register, sendCode } from '../../../api/login/loginApi';
 import { ElMessage, FormInstance } from 'element-plus';
+const showNav = ref<boolean>(false)
+const handlerShowNav = () => {
+    showNav.value = !showNav.value
+    const el = document.getElementsByClassName('navs')[0]
+    if (showNav.value) {
+        // @ts-ignore
+        el.style.display = 'flex'
+    } else {
+        // @ts-ignore
+        el.style.display = 'none'
+    }
+}
 // navs
 const navs = [
     {
@@ -288,11 +304,22 @@ const handlerSubmit = (formEl: FormInstance | undefined) => {
                 }
                 data.value.password = registerForm.value.pwd;
                 data.value.code = registerForm.value.code;
+                register(data.value).then((res) => {
+                    if (res.data.code == 200) {
+                        ElMessage.success(res.data.message);
+                        dialogFormVisible.value = false;
+                        loginSuccess(res.data.data.user, res.data.data.token);
+                    } else {
+                        ElMessage.error(res.data.message);
+                    }
+                });
+                return;
             }
             login(data.value).then((res) => {
                 if (res.data.code == 200) {
-                    ElMessage.success(res.data);
+                    ElMessage.success(res.data.message);
                     dialogFormVisible.value = false;
+                    loginSuccess(res.data.data.user, res.data.data.token);
                 } else {
                     ElMessage.error(res.data.message);
                 }
@@ -337,7 +364,7 @@ const HandlerSendCode = () => {
     ) {
         sendCode(params).then((res) => {
             if (res.data.code == 200) {
-                ElMessage.error(res.data.message);
+                ElMessage.success(res.data.message);
                 sendCodeStatus.value = !sendCodeStatus.value;
                 const timer = setInterval(() => {
                     if (count.value > 0) {
@@ -354,6 +381,12 @@ const HandlerSendCode = () => {
         });
     }
 };
+
+// login success
+const loginSuccess = (data: object, token: string) => {
+    cleanData();
+};
+
 </script>
 
 <style>
@@ -367,10 +400,38 @@ const HandlerSendCode = () => {
     .el-dialog {
         width: 50%;
     }
+    .navs {
+        display: none;
+    }
+    .login-btn {
+        display: none;
+    }
+    .expand-btn {
+        display: flex;
+    }
 }
 @media screen and (max-width: 768px) {
     .el-dialog {
         width: 80%;
+    }
+}
+</style>
+<style scoped>
+.expand-btn {
+    display: none;
+}
+.navs {
+    display: flex;
+}
+@media screen and (max-width: 976px) {
+    .navs {
+        display: none;
+    }
+    .login-btn {
+        display: none;
+    }
+    .expand-btn {
+        display: flex;
     }
 }
 </style>
