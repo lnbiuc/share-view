@@ -1,13 +1,6 @@
 <template>
-    <div
-        class="text-center m-auto sm:max-w-screen-sm md:max-w-screen-md ls:max-w-screen-md xl:max-w-screen-ls"
-    >
-        <SortBy
-            :sortByList="sortByList"
-            :filterByList="filterByList"
-            @sortBy="sortChange"
-            @filterBy="fitterChange"
-        />
+    <div class="text-center m-auto sm:max-w-screen-sm md:max-w-screen-md ls:max-w-screen-md xl:max-w-screen-ls">
+        <SortBy :sortByList="sortByList" :filterByList="filterByList" @sortBy="sortChange" @filterBy="fitterChange" />
         <ArticleList :articleList="articleList" />
     </div>
 </template>

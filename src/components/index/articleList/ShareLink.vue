@@ -1,6 +1,6 @@
 <template>
     <div class="px-2 flex flex-row items-center">
-        <img src="../../../assets/icon/share.svg" class="w-4 h-4 mr-1" alt="" />
+        <el-icon><Share /></el-icon>&nbsp;
         <span>share</span>
     </div>
 </template>

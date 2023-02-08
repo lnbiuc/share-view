@@ -11,9 +11,7 @@
                         >{{ a.author.username }} ·
                         <span v-text="formatTime(a.releaseTime)"></span>
                     </span>
-                    <span v-for="t in a.tags" :key="t.tagId">
-                        · {{ t.tagName }}</span
-                    >
+                    <span v-for="t in a.tags" :key="t.tagId"> · {{ t.tagName }}</span>
                 </p>
             </div>
             <div class="flex flex-row m">

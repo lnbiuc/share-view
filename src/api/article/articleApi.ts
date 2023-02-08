@@ -28,11 +28,7 @@ export function getArticleList(data: articleParams) {
     return axios.post('./api/article/page', data);
 }
 
-export function getArticleListBySubscribe(
-    userId: string,
-    number: number,
-    size: number
-) {
+export function getArticleListBySubscribe(userId: string, number: number, size: number) {
     return axios({
         url: './api/article/subscribe/' + userId,
         method: 'GET',

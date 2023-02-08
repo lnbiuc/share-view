@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-interface loginParams {
+export interface loginParams {
     rememberMe: boolean;
     phone: string;
     email: string;
