@@ -22,7 +22,7 @@ jobs:
     - name: Build
       run: npm run build
     - name: change file name
-      run: ./dist/index.html ./dist/share.html
+      run: mv ./dist/index.html ./dist/share.html
     - name: Deploy to Server
       uses: cross-the-world/ssh-scp-ssh-pipelines@latest
       env:
