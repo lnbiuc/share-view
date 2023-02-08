@@ -20,10 +20,10 @@
                     <el-dropdown-menu>
                         <el-dropdown-item
                             @click="clickSelectFilter(f)"
-							:disabled="f.name === currentSelect"
+                            :disabled="f.name === currentSelect"
                             v-for="f in filterByList"
-                            >{{ f.name }}</el-dropdown-item
-                        >
+                            >{{ f.name }}
+                        </el-dropdown-item>
                     </el-dropdown-menu>
                 </template>
             </el-dropdown>
@@ -32,19 +32,20 @@
 </template>
 
 <script setup lang="ts">
-import { ref } from "vue";
+import { ref } from 'vue';
+
 const props = defineProps<{
     sortByList: Array<{ name: string; value: string }>;
     filterByList: Array<{ name: string; value: string }>;
 }>();
-const emit = defineEmits(["sortBy", "filterBy"]);
+const emit = defineEmits(['sortBy', 'filterBy']);
 const currentSelect = ref(props.filterByList[0].name);
 const clickSelectFilter = (filter: { name: string; value: string }) => {
     currentSelect.value = filter.name;
-    emit("filterBy", filter.value);
+    emit('filterBy', filter.value);
 };
 const clickSelectSort = (sort: { name: string; value: string }) => {
-    emit("sortBy", sort.value);
+    emit('sortBy', sort.value);
 };
 </script>
 

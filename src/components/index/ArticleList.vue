@@ -41,11 +41,11 @@
 </template>
 
 <script setup lang="ts">
-import { ref } from "vue";
-import { format } from "timeago.js";
-import ShareLink from "./articleList/ShareLink.vue";
-import CollectionLink from "./articleList/CollectionLink.vue";
-import CommentsLink from "./articleList/CommentsLink.vue";
+import { ref } from 'vue';
+import { format } from 'timeago.js';
+import ShareLink from './articleList/ShareLink.vue';
+import CollectionLink from './articleList/CollectionLink.vue';
+import CommentsLink from './articleList/CommentsLink.vue';
 const props = defineProps({
     articleList: {
         type: Object,
@@ -54,16 +54,16 @@ const props = defineProps({
 });
 
 const formatTime = (time: string) => {
-    return format(time, "zh_CN");
+    return format(time, 'zh_CN');
 };
 const tagBgColor = (type: string) => {
     switch (type) {
-        case "Post":
-            return "#eebe77";
-        case "Question":
-            return "#95d475";
-        case "Article":
-            return "#79bbff";
+        case 'Post':
+            return '#eebe77';
+        case 'Question':
+            return '#95d475';
+        case 'Article':
+            return '#79bbff';
     }
 };
 </script>

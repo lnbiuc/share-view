@@ -33,24 +33,24 @@
 <script setup lang="ts">
 const navs = [
     {
-        name: "Article",
-        path: "/a",
+        name: 'Article',
+        path: '/a',
     },
     {
-        name: "Question",
-        path: "/q",
+        name: 'Question',
+        path: '/q',
     },
     {
-        name: "Post",
-        path: "/p",
+        name: 'Post',
+        path: '/p',
     },
     {
-        name: "Video",
-        path: "/v",
+        name: 'Video',
+        path: '/v',
     },
     {
-        name: "Category",
-        path: "/c",
+        name: 'Category',
+        path: '/c',
     },
 ];
 </script>

@@ -1,4 +1,4 @@
-import axios from "axios";
+import axios from 'axios';
 
 //前置拦截
 axios.interceptors.request.use((config) => {
