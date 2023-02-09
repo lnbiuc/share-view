@@ -1,5 +1,5 @@
 <template>
-    <div class="mt-2 text-center">
+    <div class="text-center">
         <div
             v-for="a in articleList"
             :key="a.articleId"
@@ -65,5 +65,3 @@ const tagBgColor = (type: string) => {
     }
 };
 </script>
-
-<style scoped></style>

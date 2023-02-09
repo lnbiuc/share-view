@@ -1,7 +1,19 @@
 <template>
-    <div class="text-center m-auto sm:max-w-screen-sm md:max-w-screen-md ls:max-w-screen-md xl:max-w-screen-ls">
-        <SortBy :sortByList="sortByList" :filterByList="filterByList" @sortBy="sortChange" @filterBy="fitterChange" />
-        <ArticleList :articleList="articleList" />
+    <div class="text-center flex m-auto flex-row">
+        <div class="flex flex-col" style="flex: 2">
+            <SortBy
+                :sortByList="sortByList"
+                :filterByList="filterByList"
+                @sortBy="sortChange"
+                @filterBy="fitterChange"
+            />
+            <ArticleList :articleList="articleList" />
+        </div>
+        <div class="flex flex-col" style="flex: 1">
+	        <UserInfo />
+            <OptionMenu />
+	        <ViewHistory />
+        </div>
     </div>
 </template>
 
@@ -12,6 +24,9 @@ import SortBy from '../components/index/nav/SortBy.vue';
 import { getArticleList, getArticleListBySubscribe } from '../api/article/articleApi';
 import { useUserStore } from '../pinia';
 import { ElMessage } from 'element-plus';
+import OptionMenu from '../components/aside/OptionMenu.vue';
+import UserInfo from '../components/aside/UserInfo.vue';
+import ViewHistory from '../components/aside/ViewHistory.vue';
 const articleList = ref([]);
 const data = ref({
     pageNumber: 1,

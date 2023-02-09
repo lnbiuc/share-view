@@ -25,6 +25,7 @@ declare module '@vue/runtime-core' {
     ElRadioGroup: typeof import('element-plus/es')['ElRadioGroup']
     ElSelect: typeof import('element-plus/es')['ElSelect']
     ElSwitch: typeof import('element-plus/es')['ElSwitch']
+    ElTag: typeof import('element-plus/es')['ElTag']
     ElTooltip: typeof import('element-plus/es')['ElTooltip']
     Footer: typeof import('./components/index/nav/Footer.vue')['default']
     Header: typeof import('./components/index/nav/Header.vue')['default']
@@ -32,9 +33,12 @@ declare module '@vue/runtime-core' {
     IEpExpand: typeof import('~icons/ep/expand')['default']
     IEpIcon: typeof import('~icons/ep/icon')['default']
     LikeBtn: typeof import('./components/index/articleList/LikeBtn.vue')['default']
+    OptionMenu: typeof import('./components/aside/OptionMenu.vue')['default']
     RouterLink: typeof import('vue-router')['RouterLink']
     RouterView: typeof import('vue-router')['RouterView']
     ShareLink: typeof import('./components/index/articleList/ShareLink.vue')['default']
     SortBy: typeof import('./components/index/nav/SortBy.vue')['default']
+    UserInfo: typeof import('./components/aside/UserInfo.vue')['default']
+    ViewHistory: typeof import('./components/aside/ViewHistory.vue')['default']
   }
 }

@@ -209,7 +209,6 @@ import { ref } from 'vue';
 import { login, loginParams, register, sendCode, userEntity } from '../../../api/login/loginApi';
 import { ElMessage, FormInstance } from 'element-plus';
 import { useUserStore } from '../../../pinia';
-
 const showNav = ref<boolean>(false);
 const handlerShowNav = () => {
     showNav.value = !showNav.value;
