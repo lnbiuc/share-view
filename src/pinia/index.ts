@@ -1,7 +1,20 @@
 import { defineStore } from 'pinia';
 
-export const useStore = defineStore('count', {
+export const useUserStore = defineStore('count', {
     state: () => ({
-        count: 0,
+        user: {},
+        token: '',
     }),
+    getters: {
+        getUser(state) {
+            return state.user;
+        },
+        getToken(state) {
+            return state.token;
+        },
+        getUserId(state) {
+            // @ts-ignore
+            return state.user.userId;
+        },
+    },
 });

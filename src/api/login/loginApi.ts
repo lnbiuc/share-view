@@ -20,6 +20,24 @@ interface registerParams {
     password: string;
 }
 
+export interface userEntity {
+    userId: string;
+    username: string;
+    phone: string;
+    mail: string;
+    signature: string;
+    level: number;
+    isBlock: boolean;
+    permissionLevel: number;
+    register: string;
+    isMailNotify: boolean;
+    isPhoneNotify: boolean;
+    theme: string;
+    lastLogin: string;
+    loginIp: string;
+    ipAddr: string;
+}
+
 export function login(data: loginParams) {
     return axios.post('/api/user/login', data);
 }
