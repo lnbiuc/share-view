@@ -1,14 +1,40 @@
 <template>
-    <div class="flex lg:flex-row flex-col hover:shadow-md shadow-sm transition-all py-2 mt-2 lg:rounded-full bg-white w-auto">
+    <div
+        class="flex lg:flex-row flex-col hover:shadow-md shadow-sm transition-all py-2 mt-2 lg:rounded-full bg-white w-auto"
+    >
         <div class="flex flex-1 lg:justify-center justify-start">
-            <div class="py-2 mx-20 hover:text-purple-400 lg:flex-row flex-col">
+            <div class="py-2 mx-20 hover:text-purple-600 lg:flex-row flex-col">
                 <span class="m-1 cursor-pointer" @click="$router.push({ path: '/' })">Share</span>
             </div>
-            <div class='flex flex-1 expand-btn justify-end text-3xl m-auto mr-3' @click='handlerShowNav'>
-                <el-icon><Fold /></el-icon>
+            <div class="flex flex-1 expand-btn justify-end items-center text-3xl m-auto mr-3">
+                <el-dropdown trigger="click" class="mr-6" v-if="hasLogin">
+                    <span class="el-dropdown-link flex flex-row items-center">
+                        <el-avatar shape="circle" :src="loginUser.avatar" />
+                        <el-icon class="text-lg"><ArrowDown /></el-icon>
+                    </span>
+                    <template #dropdown>
+                        <el-dropdown-menu>
+                            <el-dropdown-item>
+                                <el-icon><User /></el-icon>
+                                My Profile
+                            </el-dropdown-item>
+                            <el-dropdown-item>
+                                <el-icon><Setting /></el-icon>
+                                Settings
+                            </el-dropdown-item>
+                            <el-dropdown-item @click="logout">
+                                <el-icon><Remove /></el-icon>
+                                Logout
+                            </el-dropdown-item>
+                        </el-dropdown-menu>
+                    </template>
+                </el-dropdown>
+                <el-icon id="icon" @click="handlerShowNav" class="cursor-pointer hover:text-purple-600"
+                    ><Fold
+                /></el-icon>
             </div>
         </div>
-        <div class="flex flex-2 lg:justify-center lg:flex-row navs lg:mt-0 flex-col">
+        <div class="flex flex-2 navs lg:justify-center lg:flex-row transition-all lg:mt-0 flex-col">
             <div
                 v-for="nav in navs"
                 :key="nav.name"
@@ -22,11 +48,37 @@
             <div
                 class="px-2 py-2 bg-purple-200 hover:bg-purple-300 rounded-full transition-all cursor-pointer"
                 @click="dialogFormVisible = true"
+                v-if="!hasLogin"
             >
                 <span class="m-2">Login / Register</span>
             </div>
+            <div class="user" v-if="hasLogin">
+                <el-dropdown trigger="click">
+                    <span class="el-dropdown-link flex flex-row items-center">
+                        <el-avatar shape="circle" :src="loginUser.avatar" />
+                        <span class="ml-2 text-md">{{ loginUser.username }}</span
+                        >&nbsp;
+                        <el-icon class="text-lg"><ArrowDown /></el-icon>
+                    </span>
+                    <template #dropdown>
+                        <el-dropdown-menu>
+                            <el-dropdown-item>
+                                <el-icon><User /></el-icon>
+                                My Profile
+                            </el-dropdown-item>
+                            <el-dropdown-item>
+                                <el-icon><Setting /></el-icon>
+                                Settings
+                            </el-dropdown-item>
+                            <el-dropdown-item @click="logout">
+                                <el-icon><Remove /></el-icon>
+                                Logout
+                            </el-dropdown-item>
+                        </el-dropdown-menu>
+                    </template>
+                </el-dropdown>
+            </div>
         </div>
-
     </div>
     <el-dialog class="p-6" v-model="dialogFormVisible" width="30%" title="Login / Register" :draggable="true">
         <div class="mb-4">
@@ -154,20 +206,31 @@
 
 <script setup lang="ts">
 import { ref } from 'vue';
-import { login, loginParams, register, sendCode } from '../../../api/login/loginApi';
+import { login, loginParams, register, sendCode, userEntity } from '../../../api/login/loginApi';
 import { ElMessage, FormInstance } from 'element-plus';
-const showNav = ref<boolean>(false)
+import { useUserStore } from '../../../pinia';
+const showNav = ref<boolean>(false);
 const handlerShowNav = () => {
-    showNav.value = !showNav.value
-    const el = document.getElementsByClassName('navs')[0]
+    showNav.value = !showNav.value;
+    const el = document.getElementsByClassName('navs')[0];
+    const icon = document.getElementById('icon');
+    const loginBtn = document.getElementsByClassName('login-btn')[0];
     if (showNav.value) {
         // @ts-ignore
-        el.style.display = 'flex'
+        el.style.display = 'flex';
+        // @ts-ignore
+        icon.classList.add('menu');
+        // @ts-ignore
+        loginBtn.style.display = 'flex';
     } else {
         // @ts-ignore
-        el.style.display = 'none'
+        el.style.display = 'none';
+        // @ts-ignore
+        icon.classList.remove('menu');
+        // @ts-ignore
+        loginBtn.style.display = 'none';
     }
-}
+};
 // navs
 const navs = [
     {
@@ -197,7 +260,7 @@ const dialogFormVisible = ref(false);
 const handlerType = ref(0);
 // api data type
 const data = ref<loginParams>({
-    rememberMe: false,
+    rememberMe: true,
     phone: '',
     email: '',
     code: '',
@@ -383,10 +446,50 @@ const HandlerSendCode = () => {
 };
 
 // login success
-const loginSuccess = (data: object, token: string) => {
+const hasLogin = ref<boolean>(false);
+const loginUser = ref({});
+const loginSuccess = (userData: userEntity, token: string) => {
     cleanData();
+    loginUser.value = userData;
+    hasLogin.value = true;
+    const store = useUserStore();
+    store.user = userData;
+    store.token = token;
+    if (data.value.rememberMe) {
+        window.localStorage.setItem('user', JSON.stringify(userData));
+        window.localStorage.setItem('token', token);
+    } else {
+        window.sessionStorage.setItem('user', JSON.stringify(userData));
+        window.sessionStorage.setItem('token', token);
+    }
 };
 
+const logout = () => {
+    window.sessionStorage.clear();
+    window.localStorage.clear();
+    ElMessage.success('logout success');
+    hasLogin.value = false;
+};
+
+onMounted(() => {
+    const localUser = window.localStorage.getItem('user');
+    const sessionUser = window.sessionStorage.getItem('user');
+    const localToken = window.localStorage.getItem('token');
+    const sessionToken = window.sessionStorage.getItem('token');
+    const store = useUserStore();
+    if (localUser && localUser !== '' && localToken && localToken !== '') {
+        loginUser.value = JSON.parse(localUser);
+        hasLogin.value = true;
+        store.user = JSON.parse(localUser);
+        store.token = localToken;
+        return;
+    } else if (sessionUser && sessionUser !== '' && sessionToken && sessionToken !== '') {
+        loginUser.value = JSON.parse(sessionUser);
+        hasLogin.value = true;
+        store.user = JSON.parse(sessionUser);
+        store.token = sessionToken;
+    }
+});
 </script>
 
 <style>
@@ -420,14 +523,19 @@ const loginSuccess = (data: object, token: string) => {
 .expand-btn {
     display: none;
 }
-.navs {
-    display: flex;
+
+.menu {
+    transform: rotate(-90deg);
+    transition: all 0.5s ease;
+}
+
+#icon {
+    transition: all 0.5s ease;
 }
 @media screen and (max-width: 976px) {
+    .login-btn,
+    .user,
     .navs {
-        display: none;
-    }
-    .login-btn {
         display: none;
     }
     .expand-btn {

@@ -1,7 +1,7 @@
 <template>
     <div class="flex flex-col">
         <Header />
-        <div class="mainContainer">
+        <div class="mainContainer sm:max-w-screen-sm md:max-w-screen-md ls:max-w-screen-ls lg:max-w-4xl">
             <RouterView />
         </div>
         <Footer />
@@ -15,8 +15,7 @@ import Footer from '../components/index/nav/Footer.vue';
 
 <style scoped>
 .mainContainer {
-    width: 100%;
-    max-width: 1200px;
+    width: 1440px;
     margin: 0 auto;
     min-height: calc(100vh - 128px);
 }

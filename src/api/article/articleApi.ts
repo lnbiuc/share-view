@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-interface articleParams {
+export interface articleParams {
     pageNumber: number;
     pageSize: number;
     filterBy: filterBy;
@@ -18,10 +18,7 @@ interface filterBy {
 
 interface sortBy {
     hot: boolean;
-    lastUpdate: boolean;
-    like: boolean;
     releaseTime: boolean;
-    views: boolean;
 }
 
 export function getArticleList(data: articleParams) {
@@ -55,4 +52,5 @@ export function getOneArticle(articleId: string) {
         url: './api/article/' + articleId,
         method: 'GET',
     });
+    // @ts-ignore
 }

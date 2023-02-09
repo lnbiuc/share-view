@@ -1,7 +1,19 @@
 <template>
-    <div class="text-center m-auto sm:max-w-screen-sm md:max-w-screen-md ls:max-w-screen-md xl:max-w-screen-ls">
-        <SortBy :sortByList="sortByList" :filterByList="filterByList" @sortBy="sortChange" @filterBy="fitterChange" />
-        <ArticleList :articleList="articleList" />
+    <div class="text-center flex m-auto flex-row">
+        <div class="flex flex-col" style="flex: 2">
+            <SortBy
+                :sortByList="sortByList"
+                :filterByList="filterByList"
+                @sortBy="sortChange"
+                @filterBy="fitterChange"
+            />
+            <ArticleList :articleList="articleList" />
+        </div>
+        <div class="flex flex-col" style="flex: 1">
+	        <UserInfo />
+            <OptionMenu />
+	        <ViewHistory />
+        </div>
     </div>
 </template>
 
@@ -9,7 +21,12 @@
 import { ref } from 'vue';
 import ArticleList from '../components/index/ArticleList.vue';
 import SortBy from '../components/index/nav/SortBy.vue';
-import { getArticleList } from '../api/article/articleApi';
+import { getArticleList, getArticleListBySubscribe } from '../api/article/articleApi';
+import { useUserStore } from '../pinia';
+import { ElMessage } from 'element-plus';
+import OptionMenu from '../components/aside/OptionMenu.vue';
+import UserInfo from '../components/aside/UserInfo.vue';
+import ViewHistory from '../components/aside/ViewHistory.vue';
 const articleList = ref([]);
 const data = ref({
     pageNumber: 1,
@@ -24,10 +41,7 @@ const data = ref({
     },
     sortBy: {
         hot: false,
-        lastUpdate: false,
-        like: false,
         releaseTime: true,
-        views: false,
     },
 });
 getArticleList(data.value).then((res) => {
@@ -64,8 +78,26 @@ const filterByList: Array<{ name: string; value: string }> = [
     },
 ];
 
+const cleanData = () => {
+    data.value = {
+        pageNumber: 1,
+        pageSize: 5,
+        filterBy: {
+            authorId: '',
+            categoryId: 0,
+            tagId: 0,
+            type: 0,
+            startDay: '',
+            endDay: '',
+        },
+        sortBy: {
+            hot: false,
+            releaseTime: true,
+        },
+    };
+};
+
 const sortChange = (value: string) => {
-    console.log(value);
     if (value === 'hot') {
         data.value.sortBy.hot = true;
         data.value.sortBy.releaseTime = false;
@@ -73,23 +105,56 @@ const sortChange = (value: string) => {
         data.value.sortBy.hot = false;
         data.value.sortBy.releaseTime = true;
     } else if (value === 'subscribed') {
-        data.value.sortBy.hot = false;
-        data.value.sortBy.releaseTime = false;
-        data.value.sortBy.like = true;
+        const store = useUserStore();
+        if (store.getUser) {
+            getArticleListBySubscribe(store.getUserId, 1, 10).then((res) => {
+                articleList.value = res.data.data.data;
+            });
+        } else {
+            ElMessage.warning('not login');
+        }
+        return;
     }
     getArticleList(data.value).then((res) => {
         articleList.value = res.data.data.data;
     });
 };
 
+const formatDate = (date: object) => {
+    let mouth;
+    let day;
+    // @ts-ignore
+    if (date.getMonth() + 1 < 10) {
+        // @ts-ignore
+        mouth = '0' + (date.getMonth() + 1);
+    } else {
+        // @ts-ignore
+        mouth = date.getMonth() + 1;
+    }
+    // @ts-ignore
+    if (date.getDate() < 10) {
+        // @ts-ignore
+        day = '0' + date.getDate();
+    } else {
+        // @ts-ignore
+        day = date.getDate();
+    }
+    // @ts-ignore
+    return date.getFullYear() + '-' + mouth + '-' + day;
+};
+
 const fitterChange = (value: string) => {
+    cleanData();
+    const now = new Date();
+    const weak = new Date(now.getTime() - 7 * 24 * 3600 * 1000);
+    const mouth = new Date(now.getTime() - 30 * 24 * 3600 * 1000);
     if (value === 'weak') {
-        data.value.filterBy.startDay = '2021-08-01';
-        data.value.filterBy.endDay = '2021-08-31';
+        data.value.filterBy.startDay = formatDate(weak);
+        data.value.filterBy.endDay = formatDate(now);
     } else if (value === 'mouth') {
-        data.value.filterBy.startDay = '2021-08-01';
-        data.value.filterBy.endDay = '2021-08-31';
-    } else if (value === 'releastTime') {
+        data.value.filterBy.startDay = formatDate(mouth);
+        data.value.filterBy.endDay = formatDate(now);
+    } else if (value === 'releaseTime') {
         data.value.filterBy.startDay = '';
         data.value.filterBy.endDay = '';
     }
