@@ -225,7 +225,7 @@ import { FormInstance } from 'element-plus';
 import { useUserStore } from '../../../pinia';
 import { ElMessage } from "element-plus";
 // @ts-ignore
-import { InfoFilled, Remove, Setting, User, ArrowDown, Lock, CircleCheck } from "@element-plus/icons-vue";
+import { InfoFilled, Remove, Setting, User, ArrowDown, Lock, CircleCheck, Fold } from "@element-plus/icons-vue";
 
 const showNav = ref<boolean>(false);
 const handlerShowNav = () => {
@@ -488,6 +488,7 @@ const loginSuccess = (userData: userEntity, token: string) => {
     loginUser.value = userData;
     hasLogin.value = true;
     const store = useUserStore();
+    store.isLogin = true;
     store.user = userData;
     store.token = token;
     if (data.value.rememberMe) {
@@ -504,6 +505,9 @@ const logout = () => {
     window.localStorage.clear();
     ElMessage.success('logout success');
     hasLogin.value = false;
+    const store = useUserStore()
+    store.cleanUserStore()
+
 };
 
 onMounted(() => {
@@ -517,12 +521,14 @@ onMounted(() => {
         hasLogin.value = true;
         store.user = JSON.parse(localUser);
         store.token = localToken;
+        store.isLogin = true
         return;
     } else if (sessionUser && sessionUser !== '' && sessionToken && sessionToken !== '') {
         loginUser.value = JSON.parse(sessionUser);
         hasLogin.value = true;
         store.user = JSON.parse(sessionUser);
         store.token = sessionToken;
+        store.isLogin = true
     }
 });
 </script>

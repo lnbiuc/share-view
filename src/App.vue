@@ -14,4 +14,8 @@
     margin: 0;
     padding: 0;
 }
+#nprogress .bar {
+    background: #6a67ce !important;
+    height: 3px !important;
+}
 </style>

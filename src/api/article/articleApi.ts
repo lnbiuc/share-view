@@ -21,6 +21,46 @@ interface sortBy {
     releaseTime: boolean;
 }
 
+export interface ArticleEntity {
+    articleId: string;
+    author: UserEntity;
+    title: string;
+    introduction: string;
+    type: string;
+    tags: TagEntity[];
+    category: string;
+    releaseTime: string;
+    lastUpdate: string;
+    setTop: boolean;
+    views: number;
+    like: number;
+    comments: number;
+}
+
+export interface TagEntity {
+    tagId: number;
+    tagName: string;
+}
+
+export interface UserEntity {
+    userId: string;
+    username: string;
+    phone: string;
+    mail: string;
+    signature: string;
+    avatar: string;
+    level: number;
+    isBlock: boolean;
+    permissionLevel: number;
+    registerTime: string;
+    isMailNotice: boolean;
+    isPhoneNotice: boolean;
+    theme: string;
+    lastLogin: string;
+    loginIp: string;
+    ipAddr: string;
+}
+
 export function getArticleList(data: articleParams) {
     return axios.post('./api/article/page', data);
 }
