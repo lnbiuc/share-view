@@ -1,7 +1,9 @@
 <template>
-    <div class="flex flex-col bg-white mt-2 rounded-md hover:shadow-md shadow-sm p-3">
+    <div class="flex flex-col bg-white mt-2 rounded-md hover:shadow-md transition-all shadow-sm p-3">
         <div class="flex justify-start items-center">
-            <el-icon color="#409eff"><UserFilled /></el-icon>&nbsp;
+            <el-icon color="#409eff">
+                <UserFilled /> </el-icon
+            >&nbsp;
             <span class="mx-1">Creation Center</span>
         </div>
         <div class="flex flex-row my-6">
@@ -35,7 +37,8 @@
 
 <script setup lang="ts">
 import { useUserStore } from '../../pinia';
-
+// @ts-ignore
+import { UserFilled, ArrowRight } from '@element-plus/icons-vue';
 const store = useUserStore();
 const btn = [
     {
@@ -80,6 +83,7 @@ const styObject = (index: number) => {
     background-color: var(--background-color);
     transition: all 0.2s ease;
 }
+
 .img:hover {
     background-color: var(--background-color-hover);
     transition: all 0.2s ease;

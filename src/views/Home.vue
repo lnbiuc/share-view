@@ -10,9 +10,9 @@
             <ArticleList :articleList="articleList" />
         </div>
         <div class="flex flex-col" style="flex: 1">
-	        <UserInfo />
+            <UserInfo />
             <OptionMenu />
-	        <ViewHistory />
+            <ViewHistory />
         </div>
     </div>
 </template>

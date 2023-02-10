@@ -26,12 +26,13 @@ export interface userEntity {
     phone: string;
     mail: string;
     signature: string;
+    avatar: string;
     level: number;
     isBlock: boolean;
     permissionLevel: number;
-    register: string;
-    isMailNotify: boolean;
-    isPhoneNotify: boolean;
+    registerTime: string;
+    isMailNotice: boolean;
+    isPhoneNotice: boolean;
     theme: string;
     lastLogin: string;
     loginIp: string;

@@ -33,6 +33,8 @@
 
 <script setup lang="ts">
 import { ref } from 'vue';
+// @ts-ignore
+import { ArrowDown } from '@element-plus/icons-vue';
 
 const props = defineProps<{
     sortByList: Array<{ name: string; value: string }>;
