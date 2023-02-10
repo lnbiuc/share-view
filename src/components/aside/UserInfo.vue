@@ -8,7 +8,7 @@
                     class="w-auto rounded-md shadow-sm hover:shadow-md transition-all"
                 />
             </div>
-            <div class="flex flex-1 flex-col mt-20 text-left ml-2">
+            <div class="flex flex-1 flex-col mt-20 text-left ml-4">
                 <span class="text-lg">&nbsp;{{ store.user.username }}</span>
                 <span class="text-sm m-0.5 ml-1"
                     >Lv:&nbsp;<el-tag style="border: none" class="ml-1">Lv{{ store.user.level }}</el-tag></span
