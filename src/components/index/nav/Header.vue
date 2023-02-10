@@ -110,10 +110,10 @@
             v-if="handlerType == 0"
         >
             <el-form-item label="Account" prop="account">
-                <el-input prefix-icon="user" v-model="pwdForm.account" type="text" placeholder="phone or email" />
+                <el-input :prefix-icon="User" v-model="pwdForm.account" type="text" placeholder="phone or email" />
             </el-form-item>
             <el-form-item label="Password" prop="pwd">
-                <el-input prefix-icon="lock" v-model="pwdForm.pwd" type="password" placeholder="enter your password" />
+                <el-input :prefix-icon="Lock" v-model="pwdForm.pwd" type="password" placeholder="enter your password" />
             </el-form-item>
         </el-form>
         <el-form
@@ -126,7 +126,7 @@
             v-if="handlerType == 1"
         >
             <el-form-item label="Account" prop="account">
-                <el-input prefix-icon="user" v-model="codeForm.account" type="text" placeholder="your phone or email">
+                <el-input :prefix-icon="User" v-model="codeForm.account" type="text" placeholder="your phone or email">
                     <template #suffix>
                         <el-button
                             @click="HandlerSendCode"
@@ -141,7 +141,7 @@
             </el-form-item>
             <el-form-item label="Code" prop="code">
                 <el-input
-                    prefix-icon="CircleCheck"
+                    :prefix-icon="CircleCheck"
                     v-model="codeForm.code"
                     type="text"
                     placeholder="enter six bit number"
@@ -159,7 +159,7 @@
         >
             <el-form-item label="Account" prop="account">
                 <el-input
-                    prefix-icon="user"
+                    :prefix-icon="User"
                     v-model="registerForm.account"
                     type="text"
                     placeholder="your phone or email"
@@ -178,7 +178,7 @@
             </el-form-item>
             <el-form-item label="Code" prop="code">
                 <el-input
-                    prefix-icon="CircleCheck"
+                    :prefix-icon="CircleCheck"
                     v-model="registerForm.code"
                     type="text"
                     placeholder="enter six bit number"
@@ -186,7 +186,7 @@
             </el-form-item>
             <el-form-item label="Password" prop="pwd">
                 <el-input
-                    prefix-icon="lock"
+                    :prefix-icon="Lock"
                     v-model="registerForm.pwd"
                     type="password"
                     placeholder="supports letters, numbers,_ ,- ,6-18 length "
@@ -223,6 +223,9 @@ import { ref } from 'vue';
 import { login, loginParams, register, sendCode, userEntity } from '../../../api/login/loginApi';
 import { FormInstance } from 'element-plus';
 import { useUserStore } from '../../../pinia';
+import { ElMessage } from "element-plus";
+// @ts-ignore
+import { InfoFilled, Remove, Setting, User, ArrowDown, Lock, CircleCheck } from "@element-plus/icons-vue";
 
 const showNav = ref<boolean>(false);
 const handlerShowNav = () => {
