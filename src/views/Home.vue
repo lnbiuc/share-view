@@ -7,21 +7,21 @@
                 @sortBy="sortChange"
                 @filterBy="fitterChange"
             />
-            <ArticleList :articleList="articleList" />
+            <ArticleCardIndex :articleList="articleList" />
         </div>
         <div class="flex flex-col" style="flex: 1">
-            <UserInfo />
+            <UserInfo v-if="store.isLogin" />
             <OptionMenu />
-            <ViewHistory />
+            <ViewHistory v-if="store.isLogin && historyList > 0" :article-list="historyList"/>
         </div>
     </div>
 </template>
 
 <script setup lang="ts">
 import { ref } from 'vue';
-import ArticleList from '../components/index/ArticleList.vue';
+import ArticleCardIndex from '../components/index/ArticleCardIndex.vue';
 import SortBy from '../components/index/nav/SortBy.vue';
-import { getArticleList, getArticleListBySubscribe } from '../api/article/articleApi';
+import { ArticleEntity, getArticleList, getArticleListBySubscribe, getViewHistory } from "../api/article/articleApi";
 import { useUserStore } from '../pinia';
 import { ElMessage } from 'element-plus';
 import OptionMenu from '../components/aside/OptionMenu.vue';
@@ -162,6 +162,17 @@ const fitterChange = (value: string) => {
         articleList.value = res.data.data.data;
     });
 };
+const store = useUserStore()
+const historyList = ref<ArticleEntity[]>()
+const hasHistory = ref<boolean>(false)
+if (store.isLogin) {
+    getViewHistory(store.getUserId, 1, 10).then(res => {
+        historyList.value = res.data.data.data
+        if (res.data.data.data.length > 0) {
+            hasHistory.value = true
+        }
+    })
+}
+
 </script>
 
-<style scoped></style>

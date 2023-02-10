@@ -23,7 +23,7 @@
             </div>
         </div>
         <div
-            class="mt-2 p-2 border-blue-400 border rounded-md cursor-pointer transition-all flex items-center hover:bg-blue-100"
+            class="mt-3 mx-0.5 p-2 border-blue-400 border rounded-md cursor-pointer transition-all flex items-center hover:bg-blue-100"
         >
             <span class="text-center m-auto align-middle text-blue-400">
                 Enter Creation Center
