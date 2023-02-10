@@ -19,6 +19,13 @@ export default defineConfig({
             '@': pathSrc,
         },
     },
+    css: {
+        preprocessorOptions: {
+            scss: {
+                additionalData: '@use "~/styles/element/index.scss" as *;',
+            },
+        },
+    },
     plugins: [
         vue(),
         visualizer(),
