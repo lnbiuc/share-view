@@ -15,23 +15,29 @@
                     <template #dropdown>
                         <el-dropdown-menu>
                             <el-dropdown-item>
-                                <el-icon><User /></el-icon>
+                                <el-icon>
+                                    <User />
+                                </el-icon>
                                 My Profile
                             </el-dropdown-item>
                             <el-dropdown-item>
-                                <el-icon><Setting /></el-icon>
+                                <el-icon>
+                                    <Setting />
+                                </el-icon>
                                 Settings
                             </el-dropdown-item>
                             <el-dropdown-item @click="logout">
-                                <el-icon><Remove /></el-icon>
+                                <el-icon>
+                                    <Remove />
+                                </el-icon>
                                 Logout
                             </el-dropdown-item>
                         </el-dropdown-menu>
                     </template>
                 </el-dropdown>
-                <el-icon id="icon" @click="handlerShowNav" class="cursor-pointer hover:text-purple-600"
-                    ><Fold
-                /></el-icon>
+                <el-icon id="icon" @click="handlerShowNav" class="cursor-pointer hover:text-purple-600">
+                    <Fold />
+                </el-icon>
             </div>
         </div>
         <div class="flex flex-2 navs lg:justify-center lg:flex-row transition-all lg:mt-0 flex-col">
@@ -63,15 +69,21 @@
                     <template #dropdown>
                         <el-dropdown-menu>
                             <el-dropdown-item>
-                                <el-icon><User /></el-icon>
+                                <el-icon>
+                                    <User />
+                                </el-icon>
                                 My Profile
                             </el-dropdown-item>
                             <el-dropdown-item>
-                                <el-icon><Setting /></el-icon>
+                                <el-icon>
+                                    <Setting />
+                                </el-icon>
                                 Settings
                             </el-dropdown-item>
                             <el-dropdown-item @click="logout">
-                                <el-icon><Remove /></el-icon>
+                                <el-icon>
+                                    <Remove />
+                                </el-icon>
                                 Logout
                             </el-dropdown-item>
                         </el-dropdown-menu>
@@ -190,7 +202,9 @@
                     content="if enable, your account is wired to this device login for seven days"
                     placement="top-end"
                 >
-                    <el-icon class="mx-2"><InfoFilled /></el-icon>
+                    <el-icon class="mx-2">
+                        <InfoFilled />
+                    </el-icon>
                 </el-tooltip>
             </el-form-item>
         </el-form>
@@ -207,8 +221,9 @@
 <script setup lang="ts">
 import { ref } from 'vue';
 import { login, loginParams, register, sendCode, userEntity } from '../../../api/login/loginApi';
-import { ElMessage, FormInstance } from 'element-plus';
+import { FormInstance } from 'element-plus';
 import { useUserStore } from '../../../pinia';
+
 const showNav = ref<boolean>(false);
 const handlerShowNav = () => {
     showNav.value = !showNav.value;
@@ -447,7 +462,24 @@ const HandlerSendCode = () => {
 
 // login success
 const hasLogin = ref<boolean>(false);
-const loginUser = ref({});
+const loginUser = ref<userEntity>({
+    userId: '',
+    username: '',
+    phone: '',
+    mail: '',
+    signature: '',
+    avatar: '',
+    level: 0,
+    isBlock: false,
+    permissionLevel: 0,
+    registerTime: '',
+    isMailNotice: false,
+    isPhoneNotice: false,
+    theme: '',
+    lastLogin: '',
+    loginIp: '',
+    ipAddr: '',
+});
 const loginSuccess = (userData: userEntity, token: string) => {
     cleanData();
     loginUser.value = userData;
@@ -503,16 +535,20 @@ onMounted(() => {
     .el-dialog {
         width: 50%;
     }
+
     .navs {
         display: none;
     }
+
     .login-btn {
         display: none;
     }
+
     .expand-btn {
         display: flex;
     }
 }
+
 @media screen and (max-width: 768px) {
     .el-dialog {
         width: 80%;
@@ -532,12 +568,14 @@ onMounted(() => {
 #icon {
     transition: all 0.5s ease;
 }
+
 @media screen and (max-width: 976px) {
     .login-btn,
     .user,
     .navs {
         display: none;
     }
+
     .expand-btn {
         display: flex;
     }

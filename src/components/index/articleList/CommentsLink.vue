@@ -7,6 +7,9 @@
 </template>
 
 <script setup lang="ts">
+// @ts-ignore
+import { Comment } from '@element-plus/icons-vue';
+
 const props = defineProps({
     comments: {
         type: Number,
@@ -14,5 +17,3 @@ const props = defineProps({
     },
 });
 </script>
-
-<style scoped></style>

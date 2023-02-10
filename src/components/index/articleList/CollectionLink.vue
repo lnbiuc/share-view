@@ -5,6 +5,7 @@
     </div>
 </template>
 
-<script setup lang="ts"></script>
-
-<style scoped></style>
+<script setup lang="ts">
+// @ts-ignore
+import { StarFilled } from '@element-plus/icons-vue';
+</script>
