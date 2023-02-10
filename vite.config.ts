@@ -19,7 +19,6 @@ export default defineConfig({
             '@': pathSrc,
         },
     },
-    base: './',
     plugins: [
         vue(),
         visualizer(),
@@ -33,7 +32,13 @@ export default defineConfig({
             dts: path.resolve(pathSrc, 'components.d.ts'),
         }),
         splitVendorChunkPlugin(),
-        viteCompression(),
+        viteCompression({
+            verbose: true,
+            disable: false,
+            threshold: 1024,
+            algorithm: 'gzip',
+            ext: '.gz',
+        }),
         Icons(),
     ],
     server: {
@@ -63,6 +68,12 @@ export default defineConfig({
                 entryFileNames: 'share/js/[name].[hash].js',
                 chunkFileNames: 'share/js/[name].[hash].js',
                 assetFileNames: 'share/assets/[ext]/[name].[hash].[ext]',
+            },
+        },
+        terserOptions: {
+            compress: {
+                drop_console: true,
+                drop_debugger: true,
             },
         },
     },

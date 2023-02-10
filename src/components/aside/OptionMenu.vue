@@ -1,15 +1,13 @@
 <template>
     <div class="flex flex-col bg-white mt-2 rounded-md hover:shadow-md transition-all shadow-sm p-3">
         <div class="flex justify-start items-center">
-            <el-icon color="#409eff">
-                <UserFilled /> </el-icon
-            >&nbsp;
+            <el-icon color="#409eff"> <UserFilled /> </el-icon>&nbsp;
             <span class="mx-1">Creation Center</span>
         </div>
         <div class="flex flex-row my-6">
             <div v-for="b in btn" class="flex flex-col w-20 items-center">
-                <div :style="styObject(b.index)" class="p-2 m-1 rounded-full img">
-                    <img class="w-6 h-6" :src="b.img" alt="" />
+                <div :style="styObject(b.index)" class="p-2 m-1 w-11 h-11 rounded-full img flex items-center justify-center">
+                    <i class="el-icon text-lg" style="zoom: 1.3" v-html="b.icon" />
                 </div>
                 <span class="text-xs">{{ b.name }}</span>
             </div>
@@ -43,28 +41,28 @@ const store = useUserStore();
 const btn = [
     {
         index: 0,
-        img: '../../../src/assets/icon/file_done.svg',
+        icon: '<svg viewBox="0 0 1024 1024" xmlns="http://www.w3.org/2000/svg" data-v-029747aa=""><path d="m199.04 672.64 193.984 112 224-387.968-193.92-112-224 388.032zm-23.872 60.16 32.896 148.288 144.896-45.696L175.168 732.8zM455.04 229.248l193.92 112 56.704-98.112-193.984-112-56.64 98.112zM104.32 708.8l384-665.024 304.768 175.936L409.152 884.8h.064l-248.448 78.336L104.32 708.8zm384 254.272v-64h448v64h-448z" fill="dodgerblue"></path></svg>',
         name: 'Answer Question',
         bg: '#c6e2ff',
         hover: '#a0cfff',
     },
     {
         index: 1,
-        img: '../../../src/assets/icon/video.svg',
+        icon: '<svg viewBox="0 0 1024 1024" xmlns="http://www.w3.org/2000/svg" data-v-029747aa=""><path fill="orange" d="M704 768V256H128v512h576zm64-416 192-96v512l-192-96v128a32 32 0 0 1-32 32H96a32 32 0 0 1-32-32V224a32 32 0 0 1 32-32h640a32 32 0 0 1 32 32v128zm0 71.552v176.896l128 64V359.552l-128 64zM192 320h192v64H192v-64z"></path></svg>',
         name: 'Upload Video',
         bg: '#f8e3c5',
         hover: '#f3d19e',
     },
     {
         index: 2,
-        img: '../../../src/assets/icon/edit-square.svg',
+        icon: '<svg viewBox="0 0 1024 1024" xmlns="http://www.w3.org/2000/svg" data-v-029747aa=""><path fill="red" d="M832 384H576V128H192v768h640V384zm-26.496-64L640 154.496V320h165.504zM160 64h480l256 256v608a32 32 0 0 1-32 32H160a32 32 0 0 1-32-32V96a32 32 0 0 1 32-32zm160 448h384v64H320v-64zm0-192h160v64H320v-64zm0 384h384v64H320v-64z"></path></svg>',
         name: 'Publish Article',
         bg: '#fcd3d3',
         hover: '#fab6b6',
     },
     {
         index: 3,
-        img: '../../../src/assets/icon/rest.svg',
+        icon: '<svg viewBox="0 0 1024 1024" xmlns="http://www.w3.org/2000/svg" data-v-029747aa=""><path fill="green" d="M160 826.88 273.536 736H800a64 64 0 0 0 64-64V256a64 64 0 0 0-64-64H224a64 64 0 0 0-64 64v570.88zM296 800 147.968 918.4A32 32 0 0 1 96 893.44V256a128 128 0 0 1 128-128h576a128 128 0 0 1 128 128v416a128 128 0 0 1-128 128H296z"></path><path fill="currentColor" d="M352 512h320q32 0 32 32t-32 32H352q-32 0-32-32t32-32zm0-192h320q32 0 32 32t-32 32H352q-32 0-32-32t32-32z"></path></svg>',
         name: 'Send Post',
         bg: '#d1edc4',
         hover: '#b3e19d',
