@@ -1,7 +1,7 @@
 <template>
     <div class="px-2 flex flex-row items-center">
-        <el-icon><StarFilled /></el-icon>&nbsp;
-        <span>Collection</span>
+        <el-icon color="gray"><StarFilled /></el-icon>&nbsp;
+        <span class="hover:text-blue-500 transition-all cursor-pointer">Collection</span>
     </div>
 </template>
 

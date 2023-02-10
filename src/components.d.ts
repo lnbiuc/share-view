@@ -7,6 +7,8 @@ export {}
 
 declare module '@vue/runtime-core' {
   export interface GlobalComponents {
+    ArticleCardIndex: typeof import('./components/index/ArticleCardIndex.vue')['default']
+    ArticleCardListForIndex: typeof import('./components/index/ArticleCardListForIndex.vue')['default']
     ArticleList: typeof import('./components/index/ArticleList.vue')['default']
     CollectionLink: typeof import('./components/index/articleList/CollectionLink.vue')['default']
     CommentsLink: typeof import('./components/index/articleList/CommentsLink.vue')['default']
@@ -20,6 +22,7 @@ declare module '@vue/runtime-core' {
     ElFormItem: typeof import('element-plus/es')['ElFormItem']
     ElIcon: typeof import('element-plus/es')['ElIcon']
     ElInput: typeof import('element-plus/es')['ElInput']
+    ElProgress: typeof import('element-plus/es')['ElProgress']
     ElRadioButton: typeof import('element-plus/es')['ElRadioButton']
     ElRadioGroup: typeof import('element-plus/es')['ElRadioGroup']
     ElSwitch: typeof import('element-plus/es')['ElSwitch']

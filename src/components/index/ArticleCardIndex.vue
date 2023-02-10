@@ -7,23 +7,23 @@
         >
             <div class="flex flex-row text-gray-400">
                 <p class="truncate">
-                    <span
+                    <span class="hover:text-blue-500 cursor-pointer transition-all"
                         >{{ a.author.username }} ·
-                        <span v-text="formatTime(a.releaseTime)"></span>
                     </span>
-                    <span v-for="t in a.tags" :key="t.tagId"> · {{ t.tagName }}</span>
+                    <span v-text="formatTime(a.releaseTime)"></span>
+                    <span class="hover:text-blue-500 cursor-pointer transition-all" v-for="t in a.tags" :key="t.tagId"> · {{ t.tagName }}</span>
                 </p>
             </div>
             <div class="flex flex-row m">
                 <div class="my-2 flex flex-row align-middle">
                     <div
-                        class="mr-2 rounded-full m-auto"
+                        class="mr-2 rounded-full m-auto transition-all type cursor-pointer"
                         :style="{ backgroundColor: tagBgColor(a.type) }"
-                        style="width: 80px"
+                        style="width: 80px;"
                     >
                         {{ a.type }}
                     </div>
-                    <div class="text-lg">{{ a.title }}</div>
+                    <div class="text-lg hover:text-blue-500 cursor-pointer transition-all">{{ a.title }}</div>
                 </div>
             </div>
             <div class="flex mb-4 text-gray-500 truncate">
@@ -39,16 +39,13 @@
 </template>
 
 <script setup lang="ts">
-import { ref } from 'vue';
 import { format } from 'timeago.js';
 import ShareLink from './articleList/ShareLink.vue';
 import CollectionLink from './articleList/CollectionLink.vue';
 import CommentsLink from './articleList/CommentsLink.vue';
+
 const props = defineProps({
-    articleList: {
-        type: Object,
-        default: {},
-    },
+    articleList: []
 });
 
 const formatTime = (time: string) => {
@@ -65,3 +62,11 @@ const tagBgColor = (type: string) => {
     }
 };
 </script>
+<style scoped>
+.type {
+    opacity: 0.9;
+}
+.type:hover {
+    opacity: 1;
+}
+</style>
