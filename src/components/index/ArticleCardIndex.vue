@@ -23,7 +23,7 @@
                     >
                         {{ a.type }}
                     </div>
-                    <div class="text-lg hover:text-blue-500 cursor-pointer transition-all">{{ a.title }}</div>
+                    <div class="text-lg hover:text-blue-500 cursor-pointer transition-all"  @click="$router.push({path: '/a/' + a.articleId})">{{ a.title }}</div>
                 </div>
             </div>
             <div class="flex mb-4 text-gray-500 truncate">

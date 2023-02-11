@@ -8,8 +8,6 @@ export {}
 declare module '@vue/runtime-core' {
   export interface GlobalComponents {
     ArticleCardIndex: typeof import('./components/index/ArticleCardIndex.vue')['default']
-    ArticleCardListForIndex: typeof import('./components/index/ArticleCardListForIndex.vue')['default']
-    ArticleList: typeof import('./components/index/ArticleList.vue')['default']
     CollectionLink: typeof import('./components/index/articleList/CollectionLink.vue')['default']
     CommentsLink: typeof import('./components/index/articleList/CommentsLink.vue')['default']
     ElAvatar: typeof import('element-plus/es')['ElAvatar']
