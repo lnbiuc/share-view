@@ -21,7 +21,7 @@
 import { ref } from 'vue';
 import ArticleCardIndex from '../components/index/ArticleCardIndex.vue';
 import SortBy from '../components/index/nav/SortBy.vue';
-import { ArticleEntity, getArticleList, getArticleListBySubscribe, getViewHistory } from "../api/article/articleApi";
+import { ArticleListEntity, getArticleList, getArticleListBySubscribe, getViewHistory } from "../api/article/articleApi";
 import { useUserStore } from '../pinia';
 import { ElMessage } from 'element-plus';
 import OptionMenu from '../components/aside/OptionMenu.vue';
@@ -163,7 +163,7 @@ const fitterChange = (value: string) => {
     });
 };
 const store = useUserStore()
-const historyList = ref<ArticleEntity[] | null>()
+const historyList = ref<ArticleListEntity[] | null>()
 const hasHistory = ref<boolean>(false)
 if (store.isLogin) {
     getViewHistory(store.getUserId, 1, 10).then(res => {

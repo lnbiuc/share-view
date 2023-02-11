@@ -12,6 +12,7 @@
     "dependencies": {
         "@element-plus/icons-vue": "^2.0.10",
         "@vueuse/core": "^9.12.0",
+        "@vueuse/router": "^9.12.0",
         "axios": "^1.2.6",
         "element-plus": "^2.2.29",
         "nprogress": "^0.2.0",

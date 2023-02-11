@@ -1,9 +1,9 @@
 <script setup lang="ts">
-import {ArticleEntity} from "../../api/article/articleApi";
+import {ArticleListEntity} from "../../api/article/articleApi";
 
 const prop = defineProps({
     articleList: {
-		type: Array<ArticleEntity>
+		type: Array<ArticleListEntity>
 	}
 })
 </script>
