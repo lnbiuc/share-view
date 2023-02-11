@@ -12,7 +12,7 @@
         <div class="flex flex-col" style="flex: 1">
             <UserInfo v-if="store.isLogin" />
             <OptionMenu />
-            <ViewHistory v-if="store.isLogin && historyList > 0" :article-list="historyList"/>
+            <ViewHistory v-if="store.isLogin && historyList" :article-list="historyList"/>
         </div>
     </div>
 </template>
@@ -163,7 +163,7 @@ const fitterChange = (value: string) => {
     });
 };
 const store = useUserStore()
-const historyList = ref<ArticleEntity[]>()
+const historyList = ref<ArticleEntity[] | null>()
 const hasHistory = ref<boolean>(false)
 if (store.isLogin) {
     getViewHistory(store.getUserId, 1, 10).then(res => {

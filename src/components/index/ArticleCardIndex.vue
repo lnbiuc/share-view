@@ -43,9 +43,12 @@ import { format } from 'timeago.js';
 import ShareLink from './articleList/ShareLink.vue';
 import CollectionLink from './articleList/CollectionLink.vue';
 import CommentsLink from './articleList/CommentsLink.vue';
+import { ArticleEntity } from "../../api/article/articleApi";
 
 const props = defineProps({
-    articleList: []
+	articleList: {
+		type: Array<ArticleEntity>
+	}
 });
 
 const formatTime = (time: string) => {

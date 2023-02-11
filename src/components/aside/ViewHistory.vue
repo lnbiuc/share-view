@@ -1,6 +1,10 @@
 <script setup lang="ts">
+import {ArticleEntity} from "../../api/article/articleApi";
+
 const prop = defineProps({
-    articleList: []
+    articleList: {
+		type: Array<ArticleEntity>
+	}
 })
 </script>
 <template>
