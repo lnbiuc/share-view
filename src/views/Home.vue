@@ -12,7 +12,7 @@
         <div class="flex flex-col" style="flex: 1">
             <UserInfo v-if="store.isLogin" />
             <OptionMenu />
-            <ViewHistory v-if="store.isLogin && historyList" :article-list="historyList"/>
+            <ViewHistory v-if="store.isLogin && historyList" :article-list="historyList" />
         </div>
     </div>
 </template>
@@ -21,7 +21,12 @@
 import { ref } from 'vue';
 import ArticleCardIndex from '../components/index/ArticleCardIndex.vue';
 import SortBy from '../components/index/nav/SortBy.vue';
-import { ArticleListEntity, getArticleList, getArticleListBySubscribe, getViewHistory } from "../api/article/articleApi";
+import {
+    ArticleListEntity,
+    getArticleList,
+    getArticleListBySubscribe,
+    getViewHistory,
+} from '../api/article/articleApi';
 import { useUserStore } from '../pinia';
 import { ElMessage } from 'element-plus';
 import OptionMenu from '../components/aside/OptionMenu.vue';
@@ -162,17 +167,15 @@ const fitterChange = (value: string) => {
         articleList.value = res.data.data.data;
     });
 };
-const store = useUserStore()
-const historyList = ref<ArticleListEntity[] | null>()
-const hasHistory = ref<boolean>(false)
+const store = useUserStore();
+const historyList = ref<ArticleListEntity[] | null>();
+const hasHistory = ref<boolean>(false);
 if (store.isLogin) {
-    getViewHistory(store.getUserId, 1, 10).then(res => {
-        historyList.value = res.data.data.data
+    getViewHistory(store.getUserId, 1, 10).then((res) => {
+        historyList.value = res.data.data.data;
         if (res.data.data.data.length > 0) {
-            hasHistory.value = true
+            hasHistory.value = true;
         }
-    })
+    });
 }
-
 </script>
-

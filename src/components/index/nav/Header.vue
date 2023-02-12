@@ -92,16 +92,16 @@
             </div>
         </div>
     </div>
-	<LoginForm/>
+    <LoginForm />
 </template>
 
 <script setup lang="ts">
 import { ref } from 'vue';
 import { userEntity } from '../../../api/login/loginApi';
-import {useDialogControlStore, useUserStore} from '../../../pinia';
-import { ElMessage } from "element-plus";
+import { useDialogControlStore, useUserStore } from '../../../pinia';
+import { ElMessage } from 'element-plus';
 // @ts-ignore
-import { InfoFilled, Remove, Setting, User, ArrowDown, Lock, CircleCheck, Fold } from "@element-plus/icons-vue";
+import { InfoFilled, Remove, Setting, User, ArrowDown, Lock, CircleCheck, Fold } from '@element-plus/icons-vue';
 
 const dialogStore = useDialogControlStore();
 
@@ -151,36 +151,35 @@ const navs = [
     },
 ];
 
-const store = useUserStore()
+const store = useUserStore();
 
 const logout = () => {
-	window.localStorage.removeItem('token');
-	window.localStorage.removeItem('user')
-	window.sessionStorage.removeItem('token');
-	window.sessionStorage.removeItem('user');
+    window.localStorage.removeItem('token');
+    window.localStorage.removeItem('user');
+    window.sessionStorage.removeItem('token');
+    window.sessionStorage.removeItem('user');
     ElMessage.success('logout success');
-	store.isLogin = false;
-    store.cleanUserStore()
-
+    store.isLogin = false;
+    store.cleanUserStore();
 };
 
 const loginUser = ref<userEntity>({
-	userId: '',
-	username: '',
-	phone: '',
-	mail: '',
-	signature: '',
-	avatar: '',
-	level: 0,
-	isBlock: false,
-	permissionLevel: 0,
-	registerTime: '',
-	isMailNotice: false,
-	isPhoneNotice: false,
-	theme: '',
-	lastLogin: '',
-	loginIp: '',
-	ipAddr: '',
+    userId: '',
+    username: '',
+    phone: '',
+    mail: '',
+    signature: '',
+    avatar: '',
+    level: 0,
+    isBlock: false,
+    permissionLevel: 0,
+    registerTime: '',
+    isMailNotice: false,
+    isPhoneNotice: false,
+    theme: '',
+    lastLogin: '',
+    loginIp: '',
+    ipAddr: '',
 });
 
 // check login status
@@ -191,17 +190,17 @@ onMounted(() => {
     const sessionToken = window.sessionStorage.getItem('token');
     if (localUser && localUser !== '' && localToken && localToken !== '') {
         loginUser.value = JSON.parse(localUser);
-		store.isLogin = true;
+        store.isLogin = true;
         store.user = JSON.parse(localUser);
         store.token = localToken;
-        store.isLogin = true
+        store.isLogin = true;
         return;
     } else if (sessionUser && sessionUser !== '' && sessionToken && sessionToken !== '') {
         loginUser.value = JSON.parse(sessionUser);
-		store.isLogin = true;
+        store.isLogin = true;
         store.user = JSON.parse(sessionUser);
         store.token = sessionToken;
-        store.isLogin = true
+        store.isLogin = true;
     }
 });
 </script>

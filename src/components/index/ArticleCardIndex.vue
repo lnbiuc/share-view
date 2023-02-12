@@ -7,11 +7,11 @@
         >
             <div class="flex flex-row text-gray-400">
                 <p class="truncate">
-                    <span class="hover:text-blue-500 cursor-pointer transition-all"
-                        >{{ a.author.username }} ·
-                    </span>
+                    <span class="hover:text-blue-500 cursor-pointer transition-all">{{ a.author.username }} · </span>
                     <span v-text="formatTime(a.releaseTime)"></span>
-                    <span class="hover:text-blue-500 cursor-pointer transition-all" v-for="t in a.tags" :key="t.tagId"> · {{ t.tagName }}</span>
+                    <span class="hover:text-blue-500 cursor-pointer transition-all" v-for="t in a.tags" :key="t.tagId">
+                        · {{ t.tagName }}</span
+                    >
                 </p>
             </div>
             <div class="flex flex-row m">
@@ -19,11 +19,16 @@
                     <div
                         class="mr-2 rounded-full m-auto transition-all type cursor-pointer"
                         :style="{ backgroundColor: tagBgColor(a.type) }"
-                        style="width: 80px;"
+                        style="width: 80px"
                     >
                         {{ a.type }}
                     </div>
-                    <div class="text-lg hover:text-blue-500 cursor-pointer transition-all"  @click="$router.push({path: '/a/' + a.articleId})">{{ a.title }}</div>
+                    <div
+                        class="text-lg hover:text-blue-500 cursor-pointer transition-all"
+                        @click="$router.push({ path: '/a/' + a.articleId })"
+                    >
+                        {{ a.title }}
+                    </div>
                 </div>
             </div>
             <div class="flex mb-4 text-gray-500 truncate">
@@ -43,12 +48,12 @@ import { format } from 'timeago.js';
 import ShareLink from './articleList/ShareLink.vue';
 import CollectionLink from './articleList/CollectionLink.vue';
 import CommentsLink from './articleList/CommentsLink.vue';
-import { ArticleListEntity } from "../../api/article/articleApi";
+import { ArticleListEntity } from '../../api/article/articleApi';
 
 const props = defineProps({
-	articleList: {
-		type: Array<ArticleListEntity>
-	}
+    articleList: {
+        type: Array<ArticleListEntity>,
+    },
 });
 
 const formatTime = (time: string) => {
