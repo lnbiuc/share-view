@@ -22,11 +22,11 @@
         </div>
         <div class="flex flex-col mt-2 mx-1">
             <div class="flex flex-row justify-between items-center">
-                <span class="text-sm">Lv：{{levelStart}}</span>
-                <span class="text-sm">Lv：{{levelEnd}}</span>
+                <span class="text-sm">Lv：{{ levelStart }}</span>
+                <span class="text-sm">Lv：{{ levelEnd }}</span>
             </div>
             <div class="mt-1">
-                <el-progress :percentage="level" :show-text="false"/>
+                <el-progress :percentage="level" :show-text="false" />
             </div>
             <div class="mt-4 mb-2 flex flex-row justify-around">
                 <div v-for="c in countInfo" class="flex flex-col">
@@ -40,30 +40,30 @@
 
 <script setup lang="ts">
 import { useUserStore } from '../../pinia';
-import { onMounted, ref } from "vue";
+import { onMounted, ref } from 'vue';
 
 const store = useUserStore();
-const level = ref<number>(0)
-const levelStart = ref<number>(0)
-const levelEnd = ref<number>(0)
+const level = ref<number>(0);
+const levelStart = ref<number>(0);
+const levelEnd = ref<number>(0);
 onMounted(() => {
     level.value = store.user.level * 10;
-    levelStart.value = parseInt(store.user.level / 10 + '') + 1
-    levelEnd.value = parseInt(store.user.level / 10 + '') + 2
-})
-const countInfo = ref<{value:number, name: string}[]>()
+    levelStart.value = parseInt(store.user.level / 10 + '') + 1;
+    levelEnd.value = parseInt(store.user.level / 10 + '') + 2;
+});
+const countInfo = ref<{ value: number; name: string }[]>();
 countInfo.value = [
     {
         value: 20,
-        name: 'Publish'
+        name: 'Publish',
     },
     {
         value: 19,
-        name: 'Like'
+        name: 'Like',
     },
     {
         value: 8,
-        name: 'Collection'
-    }
-]
+        name: 'Collection',
+    },
+];
 </script>

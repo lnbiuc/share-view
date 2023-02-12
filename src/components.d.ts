@@ -29,6 +29,7 @@ declare module '@vue/runtime-core' {
     Footer: typeof import('./components/index/nav/Footer.vue')['default']
     Header: typeof import('./components/index/nav/Header.vue')['default']
     LikeBtn: typeof import('./components/index/articleList/LikeBtn.vue')['default']
+    LoginForm: typeof import('./components/dialog/LoginForm.vue')['default']
     OptionMenu: typeof import('./components/aside/OptionMenu.vue')['default']
     RouterLink: typeof import('vue-router')['RouterLink']
     RouterView: typeof import('vue-router')['RouterView']
