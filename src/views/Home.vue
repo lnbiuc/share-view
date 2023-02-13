@@ -12,7 +12,7 @@
         <div class="flex flex-col" style="flex: 1">
             <UserInfo v-if="store.isLogin" />
             <OptionMenu />
-            <ViewHistory v-if="showHistory" :article-list="historyList" />
+            <ViewHistory v-if="showHistory.viewHistoryDisplay && store.isLogin" :article-list="historyList" />
         </div>
     </div>
 </template>
@@ -27,7 +27,7 @@ import {
     getArticleListBySubscribe,
     getViewHistory,
 } from '../api/article/articleApi';
-import { useUserStore } from '../pinia';
+import { useComponentsDisplayControlStore, useUserStore } from "../pinia";
 import { ElMessage } from 'element-plus';
 import OptionMenu from '../components/aside/OptionMenu.vue';
 import UserInfo from '../components/aside/UserInfo.vue';
@@ -171,22 +171,30 @@ const fitterChange = (value: string) => {
 };
 const store = useUserStore();
 const historyList = ref<ArticleListEntity[]>();
-const showHistory = ref<boolean>(false);
+const showHistory = useComponentsDisplayControlStore()
 const refStore = storeToRefs(store);
+
+const getHistoryList = (number:number, size: number) => {
+    getViewHistory(store.getUserId, number, size).then((res) => {
+        historyList.value = res.data.data.data;
+        if (res.data.data.currentSize > 0) {
+            showHistory.viewHistoryDisplay = true;
+        }
+    });
+}
+
+if (refStore.isLogin.value) {
+    getHistoryList(1, 5)
+}
 
 // watch isLogin.value change to control viewHistory components display
 watch(refStore.isLogin, async () => {
     // if logged, get view history and display
     if (refStore.isLogin.value) {
-        getViewHistory(store.getUserId, 1, 5).then((res) => {
-            historyList.value = res.data.data.data;
-            if (res.data.data.currentSize > 0) {
-                showHistory.value = true;
-            }
-        });
+        getHistoryList(1, 5)
     }
     if (!refStore.isLogin.value) {
-        showHistory.value = false;
+        showHistory.viewHistoryDisplay = false;
     }
 });
 </script>
