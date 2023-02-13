@@ -120,10 +120,22 @@ export interface CommentListEntity {
     data: any[];
 }
 
-export interface OneArticleEntity {
-    article: ArticleContentEntity;
-    comments: CommentListEntity;
-    author: UserEntity;
+export interface ViewHistoryEntity {
+    id: number;
+    articleId: string;
+    title: string;
+    introduction: string;
+    author: UserLiteEntity;
+    time: string;
+}
+
+export interface UserLiteEntity {
+    userId: string;
+    username: string;
+    signature: string;
+    avatar: string;
+    level: number;
+    ipAddr: string;
 }
 
 export function getArticleList(data: articleParams) {

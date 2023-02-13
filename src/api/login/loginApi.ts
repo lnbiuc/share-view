@@ -39,6 +39,12 @@ export interface userEntity {
     ipAddr: string;
 }
 
+export interface CountEntity {
+    publish: number;
+    collection: number;
+    like: number;
+}
+
 export function login(data: loginParams) {
     return axios.post('/api/user/login', data);
 }
