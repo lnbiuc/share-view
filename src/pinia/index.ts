@@ -50,3 +50,9 @@ export const useDialogControlStore = defineStore('dialog', {
         loginForm: <boolean>false,
     }),
 });
+
+export const useComponentsDisplayControlStore = defineStore('component-display', {
+    state: () => ({
+        viewHistoryDisplay: <boolean>false,
+    }),
+});

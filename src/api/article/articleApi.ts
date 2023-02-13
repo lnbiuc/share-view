@@ -96,6 +96,22 @@ export interface ArticleEntity {
     comments: number;
 }
 
+export interface ArticleContentEntity {
+    articleId: string;
+    author: Author;
+    title: string;
+    introduction: string;
+    type: string;
+    tags: TagEntity[];
+    category: string;
+    releaseTime: string;
+    lastUpdate: string;
+    setTop: boolean;
+    views: number;
+    like: number;
+    comments: number;
+}
+
 export interface CommentListEntity {
     pageNumber: number;
     pageSize: number;
@@ -105,7 +121,7 @@ export interface CommentListEntity {
 }
 
 export interface OneArticleEntity {
-    article: ArticleEntity;
+    article: ArticleContentEntity;
     comments: CommentListEntity;
     author: UserEntity;
 }
