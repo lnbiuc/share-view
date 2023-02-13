@@ -3,22 +3,22 @@
         <div class="flex flex-row">
             <div class="flex flex-1">
                 <img
-                    :src="store.user.avatar"
+                    :src="user.avatar"
                     alt=""
                     class="w-auto rounded-md shadow-sm hover:shadow-md transition-all"
                 />
             </div>
             <div class="flex flex-1 flex-col mt-20 text-left ml-4">
-                <span class="text-lg">&nbsp;{{ store.user.username }}</span>
+                <span class="text-lg">&nbsp;{{ user.username }}</span>
                 <span class="text-sm m-0.5 ml-1"
                     >Lv:&nbsp;<el-tag style="border: none" class="ml-1">Lv{{ levelStart }}</el-tag></span
                 >
-                <span class="text-sm m-0.5 text-gray-400">@{{ store.user.userId }}</span>
-                <span class="text-sm text-gray-400">&nbsp;IP: {{ store.user.ipAddr }}</span>
+                <span class="text-sm m-0.5 text-gray-400">@{{ user.userId }}</span>
+                <span class="text-sm text-gray-400">&nbsp;IP: {{ user.ipAddr }}</span>
             </div>
         </div>
         <div class="flex flex-row mt-3 ml-1 text-left">
-            Signature:&nbsp;<span>{{ store.user.signature }}</span>
+            Signature:&nbsp;<span>{{ user.signature }}</span>
         </div>
         <div class="flex flex-col mt-2 mx-1">
             <div class="flex flex-row justify-between items-center">
@@ -41,28 +41,35 @@
 <script setup lang="ts">
 import { useUserStore } from '../../pinia';
 import { onMounted, ref } from 'vue';
+import { userEntity, CountEntity } from "../../api/login/loginApi";
+
+const props = defineProps<{
+    user: userEntity,
+    count: CountEntity
+}>()
 
 const store = useUserStore();
 const level = ref<number>(0);
 const levelStart = ref<number>(0);
 const levelEnd = ref<number>(0);
 onMounted(() => {
-    level.value = store.user.level * 10;
-    levelStart.value = parseInt(store.user.level / 10 + '') + 1;
-    levelEnd.value = parseInt(store.user.level / 10 + '') + 2;
+    level.value = props.user.level * 10;
+    levelStart.value = parseInt(props.user.level / 10 + '') + 1;
+    levelEnd.value = parseInt(props.user.level / 10 + '') + 2;
 });
+console.log(props.count.like)
 const countInfo = ref<{ value: number; name: string }[]>([
     {
         name: 'Publish',
-        value: store.count.publish
+        value: props.count.publish
     },
     {
         name: 'Like',
-        value: store.count.like
+        value: props.count.like
     },
     {
         name: 'Collection',
-        value: store.count.collection
+        value: props.count.collection
     },
 ]);
 </script>

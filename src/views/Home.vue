@@ -10,7 +10,7 @@
             <ArticleCardIndex :articleList="articleList" />
         </div>
         <div class="flex flex-col" style="flex: 1">
-            <UserInfo v-if="store.isLogin" />
+            <UserInfo v-if="store.isLogin" :user="store.user" :count="store.count" />
             <OptionMenu />
             <ViewHistory v-if="showHistory.viewHistoryDisplay && store.isLogin" :history-list="historyList" />
         </div>

@@ -55,6 +55,7 @@ const props = defineProps({
         type: Array<ArticleListEntity>,
     },
 });
+
 const tagBgColor = (type: string) => {
     switch (type) {
         case 'Post':
