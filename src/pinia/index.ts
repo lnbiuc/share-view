@@ -1,11 +1,12 @@
 import { defineStore } from 'pinia';
-import { userEntity } from '../api/login/loginApi';
+import { CountEntity, userEntity } from '../api/login/loginApi';
 
 export const useUserStore = defineStore('count', {
     state: () => ({
         user: <userEntity>{},
         token: <string>'',
         isLogin: <boolean>false,
+        count: <CountEntity>{},
     }),
     getters: {
         getUser(state) {
@@ -41,6 +42,11 @@ export const useUserStore = defineStore('count', {
             };
             this.$state.isLogin = false;
             this.$state.token = '';
+            this.$state.count = {
+                publish: 0,
+                collection: 0,
+                like: 0,
+            };
         },
     },
 });

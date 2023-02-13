@@ -12,7 +12,7 @@
         <div class="flex flex-col" style="flex: 1">
             <UserInfo v-if="store.isLogin" />
             <OptionMenu />
-            <ViewHistory v-if="showHistory.viewHistoryDisplay && store.isLogin" :article-list="historyList" />
+            <ViewHistory v-if="showHistory.viewHistoryDisplay && store.isLogin" :history-list="historyList" />
         </div>
     </div>
 </template>
@@ -25,8 +25,8 @@ import {
     ArticleListEntity,
     getArticleList,
     getArticleListBySubscribe,
-    getViewHistory,
-} from '../api/article/articleApi';
+    getViewHistory, ViewHistoryEntity
+} from "../api/article/articleApi";
 import { useComponentsDisplayControlStore, useUserStore } from "../pinia";
 import { ElMessage } from 'element-plus';
 import OptionMenu from '../components/aside/OptionMenu.vue';
@@ -170,7 +170,7 @@ const fitterChange = (value: string) => {
     });
 };
 const store = useUserStore();
-const historyList = ref<ArticleListEntity[]>();
+const historyList = ref<ViewHistoryEntity[]>();
 const showHistory = useComponentsDisplayControlStore()
 const refStore = storeToRefs(store);
 

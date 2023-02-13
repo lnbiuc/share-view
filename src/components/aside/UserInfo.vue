@@ -51,19 +51,18 @@ onMounted(() => {
     levelStart.value = parseInt(store.user.level / 10 + '') + 1;
     levelEnd.value = parseInt(store.user.level / 10 + '') + 2;
 });
-const countInfo = ref<{ value: number; name: string }[]>();
-countInfo.value = [
+const countInfo = ref<{ value: number; name: string }[]>([
     {
-        value: 20,
         name: 'Publish',
+        value: store.count.publish
     },
     {
-        value: 19,
         name: 'Like',
+        value: store.count.like
     },
     {
-        value: 8,
         name: 'Collection',
+        value: store.count.collection
     },
-];
+]);
 </script>
