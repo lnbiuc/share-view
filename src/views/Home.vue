@@ -33,6 +33,7 @@ import OptionMenu from '../components/aside/OptionMenu.vue';
 import UserInfo from '../components/aside/UserInfo.vue';
 import ViewHistory from '../components/aside/ViewHistory.vue';
 import { storeToRefs } from 'pinia';
+
 const articleList = ref<ArticleListEntity[]>();
 const data = ref({
     pageNumber: 1,
@@ -172,16 +173,20 @@ const store = useUserStore();
 const historyList = ref<ArticleListEntity[]>();
 const showHistory = ref<boolean>(false);
 const refStore = storeToRefs(store);
-onMounted(() => {
-    watch(refStore.isLogin, async () => {
-        if (store.isLogin) {
-            getViewHistory(store.getUserId, 1, 10).then((res) => {
-                historyList.value = res.data.data.data;
-                if (res.data.data.currentSize > 0) {
-                    showHistory.value = true;
-                }
-            });
-        }
-    });
+
+// watch isLogin.value change to control viewHistory components display
+watch(refStore.isLogin, async () => {
+    // if logged, get view history and display
+    if (refStore.isLogin.value) {
+        getViewHistory(store.getUserId, 1, 5).then((res) => {
+            historyList.value = res.data.data.data;
+            if (res.data.data.currentSize > 0) {
+                showHistory.value = true;
+            }
+        });
+    }
+    if (!refStore.isLogin.value) {
+        showHistory.value = false;
+    }
 });
 </script>
