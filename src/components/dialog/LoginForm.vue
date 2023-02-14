@@ -3,11 +3,10 @@
 import { InfoFilled, User, Lock, CircleCheck } from '@element-plus/icons-vue';
 // dialog control
 import { ref } from 'vue';
-import { login, loginParams, register, sendCode, userEntity } from '../../api/login/loginApi';
+import { CountEntity, login, loginParams, register, sendCode, UserEntity } from "../../api/login/loginApi";
 import { ElMessage, FormInstance } from 'element-plus';
 import { useDialogControlStore, useUserStore } from '../../pinia';
 import { useLocalStorage, useSessionStorage, useStorage } from '@vueuse/core';
-import { UserEntity } from '../../api/article/articleApi';
 
 // const dialogFormVisible = ref(false);
 const dialogStore = useDialogControlStore();
@@ -126,7 +125,7 @@ const handlerSubmit = (formEl: FormInstance | undefined) => {
                     if (res.data.code == 200) {
                         ElMessage.success(res.data.message);
                         dialogStore.loginForm = false;
-                        loginSuccess(res.data.data.user, res.data.data.token);
+                        loginSuccess(res.data.data.user, res.data.data.token, res.data.data.count);
                     } else {
                         ElMessage.error(res.data.message);
                     }
@@ -137,7 +136,7 @@ const handlerSubmit = (formEl: FormInstance | undefined) => {
                 if (res.data.code == 200) {
                     ElMessage.success(res.data.message);
                     dialogStore.loginForm = false;
-                    loginSuccess(res.data.data.user, res.data.data.token);
+                    loginSuccess(res.data.data.user, res.data.data.token, res.data.data.count);
                 } else {
                     ElMessage.error(res.data.message);
                 }
@@ -202,7 +201,7 @@ const HandlerSendCode = () => {
 
 // login success
 const hasLogin = ref<boolean>(false);
-const loginUser = ref<userEntity>({
+const loginUser = ref<UserEntity>({
     userId: '',
     username: '',
     phone: '',
@@ -220,7 +219,7 @@ const loginUser = ref<userEntity>({
     loginIp: '',
     ipAddr: '',
 });
-const loginSuccess = (userData: userEntity, token: string) => {
+const loginSuccess = (userData: UserEntity, token: string, count:CountEntity) => {
     cleanData();
     loginUser.value = userData;
     hasLogin.value = true;
@@ -228,12 +227,15 @@ const loginSuccess = (userData: userEntity, token: string) => {
     store.isLogin = true;
     store.user = userData;
     store.token = token;
+    store.count = count
     if (data.value.rememberMe) {
         useLocalStorage<string>('token', token);
         useLocalStorage<UserEntity>('user', userData);
+        useLocalStorage<CountEntity>('count', count)
     } else {
         useSessionStorage<string>('token', token);
-        useSessionStorage<UserEntity>('user', userData);
+        useSessionStorage<UserEntity>("user", userData);
+        useSessionStorage<CountEntity>('count', count)
     }
 };
 </script>

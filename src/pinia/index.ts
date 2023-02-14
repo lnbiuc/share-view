@@ -1,11 +1,12 @@
 import { defineStore } from 'pinia';
-import { userEntity } from '../api/login/loginApi';
+import { CountEntity, UserEntity } from '../api/login/loginApi';
 
 export const useUserStore = defineStore('count', {
     state: () => ({
-        user: <userEntity>{},
+        user: <UserEntity>{},
         token: <string>'',
         isLogin: <boolean>false,
+        count: <CountEntity>{},
     }),
     getters: {
         getUser(state) {
@@ -41,6 +42,11 @@ export const useUserStore = defineStore('count', {
             };
             this.$state.isLogin = false;
             this.$state.token = '';
+            this.$state.count = {
+                publish: 0,
+                collection: 0,
+                like: 0,
+            };
         },
     },
 });
@@ -48,5 +54,11 @@ export const useUserStore = defineStore('count', {
 export const useDialogControlStore = defineStore('dialog', {
     state: () => ({
         loginForm: <boolean>false,
+    }),
+});
+
+export const useComponentsDisplayControlStore = defineStore('component-display', {
+    state: () => ({
+        viewHistoryDisplay: <boolean>false,
     }),
 });

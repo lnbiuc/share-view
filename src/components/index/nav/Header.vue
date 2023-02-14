@@ -96,12 +96,13 @@
 </template>
 
 <script setup lang="ts">
-import { ref } from 'vue';
-import { userEntity } from '../../../api/login/loginApi';
+import { ref, watch } from 'vue';
+import { UserEntity } from '../../../api/login/loginApi';
 import { useDialogControlStore, useUserStore } from '../../../pinia';
 import { ElMessage } from 'element-plus';
 // @ts-ignore
 import { InfoFilled, Remove, Setting, User, ArrowDown, Lock, CircleCheck, Fold } from '@element-plus/icons-vue';
+import { storeToRefs } from 'pinia';
 
 const dialogStore = useDialogControlStore();
 
@@ -163,7 +164,7 @@ const logout = () => {
     store.cleanUserStore();
 };
 
-const loginUser = ref<userEntity>({
+const loginUser = ref<UserEntity>({
     userId: '',
     username: '',
     phone: '',
@@ -184,6 +185,7 @@ const loginUser = ref<userEntity>({
 
 // check login status
 onMounted(() => {
+    // load user info when first enter
     const localUser = window.localStorage.getItem('user');
     const sessionUser = window.sessionStorage.getItem('user');
     const localToken = window.localStorage.getItem('token');
@@ -201,6 +203,13 @@ onMounted(() => {
         store.user = JSON.parse(sessionUser);
         store.token = sessionToken;
         store.isLogin = true;
+    }
+});
+// continue watch login status change, change user info when login
+const refStore = storeToRefs(store);
+watch(refStore.isLogin, async () => {
+    if (refStore.isLogin.value) {
+        loginUser.value = refStore.user.value;
     }
 });
 </script>

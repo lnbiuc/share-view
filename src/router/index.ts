@@ -25,12 +25,6 @@ const routes = [
                 meta: { title: 'Article' },
             },
             {
-                path: '/a/:articleId',
-                name: 'ArticleDetail',
-                component: () => import('../views/detail/ArticleDetail.vue'),
-                meta: { title: 'Article Detail' },
-            },
-            {
                 path: '/q',
                 name: 'Question',
                 component: () => import('../views/nav/Question.vue'),
@@ -55,6 +49,12 @@ const routes = [
                 meta: { title: 'Category' },
             },
         ],
+    },
+    {
+        path: '/a/:articleId',
+        name: 'ArticleDetail',
+        component: () => import('../views/detail/ArticleDetail.vue'),
+        meta: { title: 'Article Detail' },
     },
 ];
 

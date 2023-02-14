@@ -10,29 +10,26 @@
             <ArticleCardIndex :articleList="articleList" />
         </div>
         <div class="flex flex-col" style="flex: 1">
-            <UserInfo v-if="store.isLogin" />
+            <UserInfo v-if="store.isLogin" :user="store.user" :count="store.count" />
             <OptionMenu />
-            <ViewHistory v-if="showHistory" :article-list="historyList" />
+            <ViewHistory v-if="showHistory.viewHistoryDisplay && store.isLogin" :history-list="historyList" />
         </div>
     </div>
 </template>
 
 <script setup lang="ts">
 import { ref, watch } from 'vue';
-import ArticleCardIndex from '../components/index/ArticleCardIndex.vue';
-import SortBy from '../components/index/nav/SortBy.vue';
+
 import {
     ArticleListEntity,
     getArticleList,
     getArticleListBySubscribe,
-    getViewHistory,
-} from '../api/article/articleApi';
-import { useUserStore } from '../pinia';
+    getViewHistory, ViewHistoryEntity
+} from "../api/article/articleApi";
+import { useComponentsDisplayControlStore, useUserStore } from "../pinia";
 import { ElMessage } from 'element-plus';
-import OptionMenu from '../components/aside/OptionMenu.vue';
-import UserInfo from '../components/aside/UserInfo.vue';
-import ViewHistory from '../components/aside/ViewHistory.vue';
 import { storeToRefs } from 'pinia';
+
 const articleList = ref<ArticleListEntity[]>();
 const data = ref({
     pageNumber: 1,
@@ -169,19 +166,31 @@ const fitterChange = (value: string) => {
     });
 };
 const store = useUserStore();
-const historyList = ref<ArticleListEntity[]>();
-const showHistory = ref<boolean>(false);
+const historyList = ref<ViewHistoryEntity[]>();
+const showHistory = useComponentsDisplayControlStore()
 const refStore = storeToRefs(store);
-onMounted(() => {
-    watch(refStore.isLogin, async () => {
-        if (store.isLogin) {
-            getViewHistory(store.getUserId, 1, 10).then((res) => {
-                historyList.value = res.data.data.data;
-                if (res.data.data.currentSize > 0) {
-                    showHistory.value = true;
-                }
-            });
+
+const getHistoryList = (number:number, size: number) => {
+    getViewHistory(store.getUserId, number, size).then((res) => {
+        historyList.value = res.data.data.data;
+        if (res.data.data.currentSize > 0) {
+            showHistory.viewHistoryDisplay = true;
         }
     });
+}
+
+if (refStore.isLogin.value) {
+    getHistoryList(1, 5)
+}
+
+// watch isLogin.value change to control viewHistory components display
+watch(refStore.isLogin, async () => {
+    // if logged, get view history and display
+    if (refStore.isLogin.value) {
+        getHistoryList(1, 5)
+    }
+    if (!refStore.isLogin.value) {
+        showHistory.viewHistoryDisplay = false;
+    }
 });
 </script>

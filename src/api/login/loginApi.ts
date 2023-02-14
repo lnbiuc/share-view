@@ -20,7 +20,7 @@ interface registerParams {
     password: string;
 }
 
-export interface userEntity {
+export interface UserEntity {
     userId: string;
     username: string;
     phone: string;
@@ -37,6 +37,12 @@ export interface userEntity {
     lastLogin: string;
     loginIp: string;
     ipAddr: string;
+}
+
+export interface CountEntity {
+    publish: number;
+    collection: number;
+    like: number;
 }
 
 export function login(data: loginParams) {

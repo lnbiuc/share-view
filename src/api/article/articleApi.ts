@@ -1,5 +1,5 @@
 import axios from 'axios';
-
+import { UserEntity } from '../login/loginApi';
 export interface articleParams {
     pageNumber: number;
     pageSize: number;
@@ -23,7 +23,7 @@ interface sortBy {
 
 export interface ArticleListEntity {
     articleId: string;
-    author: UserEntity;
+    author: UserLiteEntity;
     title: string;
     introduction: string;
     type: string;
@@ -42,49 +42,23 @@ export interface TagEntity {
     tagName: string;
 }
 
-export interface UserEntity {
+export interface UserLiteEntity {
     userId: string;
     username: string;
-    phone: string;
-    mail: string;
     signature: string;
     avatar: string;
     level: number;
-    isBlock: boolean;
-    permissionLevel: number;
     registerTime: string;
-    isMailNotice: boolean;
-    isPhoneNotice: boolean;
-    theme: string;
     lastLogin: string;
-    loginIp: string;
     ipAddr: string;
-}
-
-export interface Author {
-    userId: string;
-    username: string;
-    phone: string;
-    mail: string;
-    signature: string;
-    avatar?: any;
-    level: number;
-    isBlock?: any;
-    permissionLevel: number;
-    registerTime: string;
-    isMailNotice?: any;
-    isPhoneNotice?: any;
-    theme?: any;
-    lastLogin: string;
-    loginIp: string;
-    ipAddr?: any;
 }
 
 export interface ArticleEntity {
     articleId: string;
-    author: Author;
+    author: UserEntity;
     title: string;
     introduction: string;
+    content: string;
     type: string;
     tags: TagEntity[];
     category: string;
@@ -96,6 +70,12 @@ export interface ArticleEntity {
     comments: number;
 }
 
+export interface ArticleContentEntity {
+    article: ArticleEntity;
+    comments: CommentListEntity;
+    author: UserLiteEntity;
+}
+
 export interface CommentListEntity {
     pageNumber: number;
     pageSize: number;
@@ -104,10 +84,22 @@ export interface CommentListEntity {
     data: any[];
 }
 
-export interface OneArticleEntity {
-    article: ArticleEntity;
-    comments: CommentListEntity;
-    author: UserEntity;
+export interface ViewHistoryEntity {
+    id: number;
+    articleId: string;
+    title: string;
+    introduction: string;
+    author: UserLiteEntity;
+    time: string;
+}
+
+export interface UserLiteEntity {
+    userId: string;
+    username: string;
+    signature: string;
+    avatar: string;
+    level: number;
+    ipAddr: string;
 }
 
 export function getArticleList(data: articleParams) {
@@ -141,5 +133,4 @@ export function getOneArticle(articleId: string) {
         url: '../api/article/' + articleId,
         method: 'GET',
     });
-    // @ts-ignore
 }
