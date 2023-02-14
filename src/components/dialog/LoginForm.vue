@@ -3,11 +3,10 @@
 import { InfoFilled, User, Lock, CircleCheck } from '@element-plus/icons-vue';
 // dialog control
 import { ref } from 'vue';
-import { CountEntity, login, loginParams, register, sendCode, userEntity } from "../../api/login/loginApi";
+import { CountEntity, login, loginParams, register, sendCode, UserEntity } from "../../api/login/loginApi";
 import { ElMessage, FormInstance } from 'element-plus';
 import { useDialogControlStore, useUserStore } from '../../pinia';
 import { useLocalStorage, useSessionStorage, useStorage } from '@vueuse/core';
-import { UserEntity } from '../../api/article/articleApi';
 
 // const dialogFormVisible = ref(false);
 const dialogStore = useDialogControlStore();
@@ -202,7 +201,7 @@ const HandlerSendCode = () => {
 
 // login success
 const hasLogin = ref<boolean>(false);
-const loginUser = ref<userEntity>({
+const loginUser = ref<UserEntity>({
     userId: '',
     username: '',
     phone: '',
@@ -220,7 +219,7 @@ const loginUser = ref<userEntity>({
     loginIp: '',
     ipAddr: '',
 });
-const loginSuccess = (userData: userEntity, token: string, count:CountEntity) => {
+const loginSuccess = (userData: UserEntity, token: string, count:CountEntity) => {
     cleanData();
     loginUser.value = userData;
     hasLogin.value = true;

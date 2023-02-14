@@ -20,7 +20,7 @@ interface registerParams {
     password: string;
 }
 
-export interface userEntity {
+export interface UserEntity {
     userId: string;
     username: string;
     phone: string;
