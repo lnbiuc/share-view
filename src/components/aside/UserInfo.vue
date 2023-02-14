@@ -22,17 +22,25 @@
         </div>
         <div class="flex flex-col mt-2 mx-1">
             <div class="flex flex-row justify-between items-center">
-                <span class="text-sm">Lv：{{ levelStart }}</span>
-                <span class="text-sm">Lv：{{ levelEnd }}</span>
+                <span class="text-sm">Lv:{{ levelStart }}</span>
+                <span class="text-sm">Lv:{{ levelEnd }}</span>
             </div>
             <div class="mt-1">
                 <el-progress :percentage="level" :show-text="false" />
             </div>
             <div class="mt-4 mb-2 flex flex-row justify-around">
-                <div v-for="c in countInfo" class="flex flex-col">
-                    <span class="text-lg text-blue-400 font-bold">{{ c.value }}</span>
-                    <span class="mt-1">{{ c.name }}</span>
+                <div class="flex flex-col">
+                    <span class="text-lg text-blue-400 font-bold">{{ count.publish }}</span>
+                    <span class="mt-1">Publish</span>
                 </div>
+				<div class="flex flex-col">
+					<span class="text-lg text-blue-400 font-bold">{{ count.like }}</span>
+					<span class="mt-1">Like</span>
+				</div>
+				<div class="flex flex-col">
+					<span class="text-lg text-blue-400 font-bold">{{ count.collection }}</span>
+					<span class="mt-1">Collection</span>
+				</div>
             </div>
         </div>
     </div>
@@ -41,12 +49,14 @@
 <script setup lang="ts">
 import { useUserStore } from '../../pinia';
 import { onMounted, ref } from 'vue';
-import { userEntity, CountEntity } from "../../api/login/loginApi";
+import { UserEntity, CountEntity } from "../../api/login/loginApi";
 
-const props = defineProps<{
-    user: userEntity,
-    count: CountEntity
-}>()
+interface userCount {
+	user:  UserEntity;
+	count: CountEntity;
+}
+
+const props = defineProps<userCount>()
 
 const store = useUserStore();
 const level = ref<number>(0);
@@ -57,19 +67,4 @@ onMounted(() => {
     levelStart.value = parseInt(props.user.level / 10 + '') + 1;
     levelEnd.value = parseInt(props.user.level / 10 + '') + 2;
 });
-console.log(props.count.like)
-const countInfo = ref<{ value: number; name: string }[]>([
-    {
-        name: 'Publish',
-        value: props.count.publish
-    },
-    {
-        name: 'Like',
-        value: props.count.like
-    },
-    {
-        name: 'Collection',
-        value: props.count.collection
-    },
-]);
 </script>

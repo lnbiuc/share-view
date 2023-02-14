@@ -97,7 +97,7 @@
 
 <script setup lang="ts">
 import { ref, watch } from 'vue';
-import { userEntity } from '../../../api/login/loginApi';
+import { UserEntity } from '../../../api/login/loginApi';
 import { useDialogControlStore, useUserStore } from '../../../pinia';
 import { ElMessage } from 'element-plus';
 // @ts-ignore
@@ -164,7 +164,7 @@ const logout = () => {
     store.cleanUserStore();
 };
 
-const loginUser = ref<userEntity>({
+const loginUser = ref<UserEntity>({
     userId: '',
     username: '',
     phone: '',

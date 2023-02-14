@@ -19,8 +19,7 @@
 
 <script setup lang="ts">
 import { ref, watch } from 'vue';
-import ArticleCardIndex from '../components/index/ArticleCardIndex.vue';
-import SortBy from '../components/index/nav/SortBy.vue';
+
 import {
     ArticleListEntity,
     getArticleList,
@@ -29,9 +28,6 @@ import {
 } from "../api/article/articleApi";
 import { useComponentsDisplayControlStore, useUserStore } from "../pinia";
 import { ElMessage } from 'element-plus';
-import OptionMenu from '../components/aside/OptionMenu.vue';
-import UserInfo from '../components/aside/UserInfo.vue';
-import ViewHistory from '../components/aside/ViewHistory.vue';
 import { storeToRefs } from 'pinia';
 
 const articleList = ref<ArticleListEntity[]>();
