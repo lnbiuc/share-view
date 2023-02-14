@@ -44,11 +44,11 @@
 </template>
 
 <script setup lang="ts">
-import { format } from 'timeago.js';
 import ShareLink from './articleList/ShareLink.vue';
 import CollectionLink from './articleList/CollectionLink.vue';
 import CommentsLink from './articleList/CommentsLink.vue';
 import { ArticleListEntity } from '../../api/article/articleApi';
+import { formatTime } from "../../utils";
 
 const props = defineProps({
     articleList: {
@@ -56,9 +56,6 @@ const props = defineProps({
     },
 });
 
-const formatTime = (time: string) => {
-    return format(time, 'zh_CN');
-};
 const tagBgColor = (type: string) => {
     switch (type) {
         case 'Post':

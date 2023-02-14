@@ -96,6 +96,22 @@ export interface ArticleEntity {
     comments: number;
 }
 
+export interface ArticleContentEntity {
+    articleId: string;
+    author: Author;
+    title: string;
+    introduction: string;
+    type: string;
+    tags: TagEntity[];
+    category: string;
+    releaseTime: string;
+    lastUpdate: string;
+    setTop: boolean;
+    views: number;
+    like: number;
+    comments: number;
+}
+
 export interface CommentListEntity {
     pageNumber: number;
     pageSize: number;
@@ -104,10 +120,22 @@ export interface CommentListEntity {
     data: any[];
 }
 
-export interface OneArticleEntity {
-    article: ArticleEntity;
-    comments: CommentListEntity;
-    author: UserEntity;
+export interface ViewHistoryEntity {
+    id: number;
+    articleId: string;
+    title: string;
+    introduction: string;
+    author: UserLiteEntity;
+    time: string;
+}
+
+export interface UserLiteEntity {
+    userId: string;
+    username: string;
+    signature: string;
+    avatar: string;
+    level: number;
+    ipAddr: string;
 }
 
 export function getArticleList(data: articleParams) {

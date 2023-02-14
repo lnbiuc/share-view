@@ -5,10 +5,10 @@ import { ElMessage } from 'element-plus';
 import { useRouter } from 'vue-router';
 
 const articleId = useRouteParams<string>('articleId');
-
+const author = ref<UserEntity>();
 const article = ref<ArticleEntity>();
 const comments = ref<CommentListEntity>();
-const author = ref<UserEntity>();
+
 getOneArticle(articleId.value).then((res) => {
     if (res.data.code == 200) {
         article.value = res.data.data.article;
@@ -22,10 +22,50 @@ getOneArticle(articleId.value).then((res) => {
 </script>
 
 <template>
-    <h5>{{ article }}</h5>
-    <br />
-    <h5 v-for="c in comments">{{ c }}</h5>
-    <br />
-    <h5>{{ author }}</h5>
-    <br />
+    <div class="flex flex-row rounded-sm hover:shadow-md transition-all">
+        <div>
+            left slider
+        </div>
+        <div class="flex flex-col rounded-sm hover:shadow-md bg-purple-200 sm:max-w-screen-sm md:max-w-screen-md ls:max-w-screen-ls lg:max-w-4xl">
+            <div class="flex flex-col">
+                <div>
+                    <span>{{ article.title }}</span>
+                    <span>{{ article.introduction }}</span>
+                </div>
+                <div>
+                    <div>
+                        <el-avatar size="large" :src="article.author.avatar"/>
+                    </div>
+                    <div>
+                        <div>
+                            <span>{{ article.author.username }}</span>
+                            <span>@{{ article.author.userId }}</span>
+                            <span>{{ article.author.level }}</span>
+                            <div>
+                                <el-button>Subscribe</el-button>
+                            </div>
+                        </div>
+                        <div>
+                            <span>{{ article.releaseTime }}</span>
+                            <span>{{ article.author.ipAddr }}</span>
+                        </div>
+                    </div>
+                </div>
+                <div>
+                    {{ article.content }}
+                </div>
+            </div>
+            <div class="flex flex-col">
+                comment
+            </div>
+        </div>
+        <div class="flex flex-col">
+            <div>
+                <UserInfo />
+            </div>
+            <div>
+                toc
+            </div>
+        </div>
+    </div>
 </template>
