@@ -12,7 +12,7 @@
         </div>
         <div class="flex items-center mr-2">
             <el-dropdown trigger="click">
-                <span class="el-dropdown-link align-top">
+                <span class="el-dropdown-link align-top cursor-pointer">
                     {{ currentSelect }}
                     <el-icon><ArrowDown /></el-icon>
                 </span>

@@ -1,7 +1,7 @@
 <template>
     <div class="flex flex-col">
         <Header />
-        <div class="mainContainer sm:max-w-screen-sm md:max-w-screen-md ls:max-w-screen-ls lg:max-w-4xl">
+        <div class="mainContainer">
             <RouterView />
         </div>
         <Footer />
