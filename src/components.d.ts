@@ -7,7 +7,6 @@ export {}
 
 declare module '@vue/runtime-core' {
   export interface GlobalComponents {
-    ArticleCardIndex: typeof import('./components/index/ArticleCardIndex.vue')['default']
     CollectionLink: typeof import('./components/index/articleList/CollectionLink.vue')['default']
     CommentsLink: typeof import('./components/index/articleList/CommentsLink.vue')['default']
     ElAffix: typeof import('element-plus/es')['ElAffix']

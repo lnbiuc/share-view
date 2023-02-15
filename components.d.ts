@@ -7,7 +7,7 @@ export {};
 
 declare module '@vue/runtime-core' {
     export interface GlobalComponents {
-        ArticleList: typeof import('./src/components/index/ArticleCardIndex.vue')['default'];
+        ArticleList: typeof import('./src/views/nav/ArticleCardIndex.vue')['default'];
         CollectionLink: typeof import('./src/components/index/articleList/CollectionLink.vue')['default'];
         CommentsLink: typeof import('./src/components/index/articleList/CommentsLink.vue')['default'];
         ElButton: typeof import('element-plus/es')['ElButton'];
