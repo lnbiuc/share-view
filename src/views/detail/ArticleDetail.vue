@@ -5,11 +5,13 @@ import {
 } from '../../api/article/articleApi';
 // @ts-ignore
 import { StarFilled, CaretTop, CaretBottom } from '@element-plus/icons-vue';
-
+// @ts-ignore
+import Markdown from 'vue3-markdown-it';
 import { useRouteParams } from '@vueuse/router';
 import { ElMessage } from 'element-plus';
 import { useRouter } from 'vue-router';
-
+import { useThemeStore } from "../../pinia";
+import { storeToRefs } from "pinia";
 const articleId = useRouteParams<string>('articleId');
 const data = ref<ArticleContentEntity>({
 	"article":{
@@ -65,20 +67,35 @@ const data = ref<ArticleContentEntity>({
 })
 
 onMounted(() => {
+
 	getOneArticle(articleId.value).then((res) => {
 		if (res.data.code == 200) {
 			data.value = res.data.data;
-			ElMessage.success(res.data.message);
 		} else {
 			ElMessage.error(res.data.message);
 			useRouter().back();
 		}
 	});
 })
+const themeStore = storeToRefs(useThemeStore());
+watch(themeStore.isDark, async () => {
+    const el = document.getElementById('markdown')
+    if (themeStore.isDark.value) {
+        // @ts-ignore
+        el.removeAttribute("class");
+        // @ts-ignore
+        el.classList.add('markdown-body-dark')
+    } else {
+        // @ts-ignore
+        el.removeAttribute("class");
+        // @ts-ignore
+        el.classList.add('markdown-body-light')
+    }
+});
 </script>
 
 <template>
-    <div class="article flex flex-row text-center justify-center m-auto rounded-sm my-2 p-2 sm:max-w-full md:max-w-full ls:max-w-screen-ls lg:max-w-screen-lg">
+    <div class="article flex flex-row text-center justify-center m-auto rounded-sm mb-2 py-2 sm:max-w-full md:max-w-full ls:max-w-screen-ls lg:max-w-screen-lg">
         <div class="ls:flex lg:flex md:flex sm:hidden justify-center w-1/12 relative items-center">
 			<div class="fixed top-1/4">
 				<div class="flex flex-col">
@@ -119,18 +136,16 @@ onMounted(() => {
 				</div>
 				<el-divider>CONTENT</el-divider>
                 <div>
-                    {{ data.article.content }}
+                    <Markdown id="markdown" class="markdown-body-light" :source="data.article.content"/>
                 </div>
 				<el-divider >END</el-divider>
             </div>
-<!--			comment-->
             <div class="flex flex-col">
                 comment
             </div>
         </div>
         <div class="flex ls:flex lg:flex md:hidden sm:hidden flex-col ml-2 rounded-md bg-purple-100 shadow-md w-3/12">
             <div>
-<!--                <UserInfo />-->
             </div>
             <div>
                 toc

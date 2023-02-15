@@ -5,10 +5,10 @@
             <span class="mx-1">Creation Center</span>
         </div>
         <div class="flex flex-row my-6">
-            <div v-for="b in btn" class="flex flex-col w-20 items-center">
+            <div v-for="b in btn" :key="b.index" class="flex flex-col w-20 items-center">
                 <div
                     :style="styObject(b.index)"
-                    class="p-2 m-1 w-11 h-11 rounded-full img flex items-center justify-center"
+                    class="p-2 m-1 w-9 h-9 rounded-full img flex items-center justify-center"
                 >
                     <i class="el-icon text-lg" style="zoom: 1.3" v-html="b.icon" />
                 </div>
