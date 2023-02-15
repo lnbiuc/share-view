@@ -33,7 +33,7 @@ import { storeToRefs } from 'pinia';
 const articleList = ref<ArticleListEntity[]>();
 const data = ref({
     pageNumber: 1,
-    pageSize: 5,
+    pageSize: 10,
     filterBy: {
         authorId: '',
         categoryId: 0,
