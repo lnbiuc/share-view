@@ -9,39 +9,36 @@ import { StarFilled, CaretTop, CaretBottom } from '@element-plus/icons-vue';
 import Markdown from 'vue3-markdown-it';
 import { useRouteParams } from '@vueuse/router';
 import { ElMessage } from 'element-plus';
-import { useRouter } from 'vue-router';
+import { onBeforeRouteLeave, useRoute, useRouter } from "vue-router";
 import { useThemeStore } from "../../pinia";
 import { storeToRefs } from "pinia";
+import { renderToc } from "../../utils";
+
 const articleId = useRouteParams<string>('articleId');
 const data = ref<ArticleContentEntity>({
 	"article":{
-		"articleId":"hSUd8f",
+		"articleId":"loading~~",
 		// @ts-ignore
 		"author":{
-			"userId":"978SdfDS",
-			"username":"lnbiuc",
-			"signature":"wsssd",
+			"userId":"loading~~",
+			"username":"loading~~",
+			"signature":"loading~~",
 			"avatar":"https://cube.elemecdn.com/0/88/03b0d39583f48206768a7534e55bcpng.png",
-			"level":2,
-			"registerTime":"2023-01-28 13:32:26",
-			"lastLogin":"2023-02-13 16:08:47",
-			"ipAddr":"内网IP"
+			"level":0,
+			"registerTime":"loading~~",
+			"lastLogin":"loading~~",
+			"ipAddr":"loading~~"
 		},
-		"title":"Article_title3-test",
-		"introduction":"Article_introduction3-test",
+		"title":"loading~~",
+		"introduction":"loading~~",
 		"type":"Article",
-		"tags":[
-			{
-				"tagId":2007,
-				"tagName":"Tags-7"
-			},
-		],
-		"category":"C_4-test",
-		"content":"Article_content3-test",
-		"releaseTime":"2024-01-28 17:36:09",
-		"lastUpdate":"2023-01-28 20:36:10",
+		"tags":[],
+		"category":"loading~~",
+		"content":"loading~~",
+		"releaseTime":"loading~~",
+		"lastUpdate":"loading~~",
 		"setTop":false,
-		"views":66,
+		"views":0,
 		"like":0,
 		"comments":0
 	},
@@ -50,33 +47,42 @@ const data = ref<ArticleContentEntity>({
 		"pageSize":0,
 		"currentSize":0,
 		"total":0,
-		"data":[
-
-		]
+		"data":[]
 	},
 	"author":{
-		"userId":"978SdfDS",
-		"username":"lnbiuc",
-		"signature":"wsssd",
+		"userId":"loading~~",
+		"username":"loading~~",
+		"signature":"loading~~",
 		"avatar":"https://cube.elemecdn.com/0/88/03b0d39583f48206768a7534e55bcpng.png",
-		"level":2,
-		"registerTime":"2023-01-28 13:32:26",
-		"lastLogin":"2023-02-14 19:55:01",
-		"ipAddr":"内网IP"
+		"level":0,
+		"registerTime":"loading~~",
+		"lastLogin":"loading~~",
+		"ipAddr":"loading~~"
 	}
 })
 
 onMounted(() => {
-
 	getOneArticle(articleId.value).then((res) => {
 		if (res.data.code == 200) {
 			data.value = res.data.data;
+            nextTick(() => {
+                renderToc();
+                window.scroll({ top: 0, behavior: 'smooth' })
+            })
 		} else {
 			ElMessage.error(res.data.message);
 			useRouter().back();
 		}
 	});
 })
+onBeforeRouteLeave(() => {
+    // @ts-ignore
+    tocbot.destroy();
+});
+onBeforeUnmount(() => {
+    // @ts-ignore
+    tocbot.destroy();
+});
 const themeStore = storeToRefs(useThemeStore());
 watch(themeStore.isDark, async () => {
     const el = document.getElementById('markdown')
@@ -105,7 +111,7 @@ watch(themeStore.isDark, async () => {
 				</div>
 			</div>
         </div>
-        <div class="flex flex-col ls:w-8/12 lg:w-9/12 md:w-10/12 sm:w-full p-4 text-left rounded-md bg-white rounded-md">
+        <div class="flex flex-col ls:w-8/12 lg:w-9/12 md:w-10/12 sm:w-full p-4 text-left rounded-md bg-white shadow-sm">
             <div class="flex flex-col">
                 <div class="flex flex-col">
                     <span class="text-4xl pt-4 pb-2">{{ data.article.title }}</span>
@@ -140,21 +146,35 @@ watch(themeStore.isDark, async () => {
                 </div>
 				<el-divider >END</el-divider>
             </div>
-            <div class="flex flex-col">
-                comment
-            </div>
         </div>
-        <div class="flex ls:flex lg:flex md:hidden sm:hidden flex-col ml-2 rounded-md bg-purple-100 shadow-md w-3/12">
-            <div>
-            </div>
-            <div>
-                toc
-            </div>
+        <div class="flex ls:flex lg:flex md:hidden sm:hidden flex-col ml-2 w-3/12">
+            <el-affix :offset="10">
+                <div class="js-toc text-left text-md no-underline transition-all bg-white rounded-md shadow-sm px-4 py-2 overflow-auto break-all	">
+                </div>
+            </el-affix>
         </div>
     </div>
 </template>
 <style scoped>
 .article {
 	min-height: 170vh;
+}
+
+</style>
+<style>
+.toc-link {
+    text-decoration: none !important;
+}
+
+.toc-list {
+    padding-left: 20px !important;
+}
+
+.toc-link::before {
+    background-color: unset;
+}
+
+.is-active-link::before {
+    background-color: unset;
 }
 </style>
