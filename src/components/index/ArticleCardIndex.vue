@@ -5,14 +5,14 @@
             :key="a.articleId"
             class="flex flex-col p-5 bg-white hover:shadow-md shadow-sm m-2 rounded-md transition-all"
         >
-            <div class="flex flex-row text-gray-400">
-                <p class="truncate">
+            <div class="flex flex-row p-0 text-gray-400">
+                <div class="truncate">
                     <span class="hover:text-blue-500 cursor-pointer transition-all">{{ a.author.username }} · </span>
                     <span v-text="formatTime(a.releaseTime)"></span>
                     <span class="hover:text-blue-500 cursor-pointer transition-all" v-for="t in a.tags" :key="t.tagId">
                         · {{ t.tagName }}</span
                     >
-                </p>
+                </div>
             </div>
             <div class="flex flex-row m">
                 <div class="my-2 flex flex-row align-middle">
@@ -24,7 +24,7 @@
                         {{ a.type }}
                     </div>
                     <div
-                        class="text-lg hover:text-blue-500 cursor-pointer transition-all"
+                        class="text-lg hover:text-blue-500 py-2 cursor-pointer transition-all"
                         @click="$router.push({ path: '/a/' + a.articleId })"
                     >
                         {{ a.title }}

@@ -19,4 +19,8 @@
     background: #6a67ce !important;
     height: 3px !important;
 }
+
+a {
+    text-decoration: none;
+}
 </style>
