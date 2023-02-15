@@ -1,95 +1,69 @@
 <template>
-    <div
-        class="flex lg:flex-row flex-col hover:shadow-md shadow-sm transition-all py-2 mt-2 lg:rounded-full bg-white w-auto"
-    >
-        <div class="flex flex-1 lg:justify-center justify-start">
-            <div class="py-2 mx-20 hover:text-purple-600 lg:flex-row flex-col">
-                <span class="m-1 cursor-pointer" @click="$router.push({ path: '/' })">Share</span>
-            </div>
-            <div class="flex flex-1 expand-btn justify-end items-center text-3xl m-auto mr-3">
-                <el-dropdown trigger="click" class="mr-6" v-if="store.isLogin">
-                    <span class="el-dropdown-link flex flex-row items-center">
-                        <el-avatar shape="circle" :src="loginUser.avatar" />
-                        <el-icon class="text-lg"><ArrowDown /></el-icon>
-                    </span>
-                    <template #dropdown>
-                        <el-dropdown-menu>
-                            <el-dropdown-item>
-                                <el-icon>
-                                    <User />
-                                </el-icon>
-                                My Profile
-                            </el-dropdown-item>
-                            <el-dropdown-item>
-                                <el-icon>
-                                    <Setting />
-                                </el-icon>
-                                Settings
-                            </el-dropdown-item>
-                            <el-dropdown-item @click="logout">
-                                <el-icon>
-                                    <Remove />
-                                </el-icon>
-                                Logout
-                            </el-dropdown-item>
-                        </el-dropdown-menu>
-                    </template>
-                </el-dropdown>
-                <el-icon id="icon" @click="handlerShowNav" class="cursor-pointer hover:text-purple-600">
-                    <Fold />
-                </el-icon>
-            </div>
+    <div class="flex flex-row h-12 bg-white dark:bg-neutral-800">
+        <div
+            @click="$router.push({ path: '/' })"
+            class="w-3/12 dark:text-gray-200 dark:hover:text-purple-300 text-lg font-bold flex justify-end transition-all items-center cursor-pointer hover:text-purple-400"
+        >
+            Share
         </div>
-        <div class="flex flex-2 navs lg:justify-center lg:flex-row transition-all lg:mt-0 flex-col">
+        <div class="flex justify-end w-5/12">
             <div
                 v-for="nav in navs"
                 :key="nav.name"
                 @click="$router.push({ path: nav.path })"
-                class="lg:p-2 p-3 lg:mx-0 mx-40 text-center hover:bg-purple-300 hover:rounded-full transition-all cursor-pointer"
+                class="flex dark:text-gray-200 dark:hover:text-neutral-800 items-center px-1 mx-1 text-center hover:bg-purple-300 transition-all cursor-pointer"
             >
                 <span class="m-1">{{ nav.name }}</span>
             </div>
         </div>
-        <div class="flex flex-1 justify-center login-btn">
-            <div
-                class="px-2 py-2 bg-purple-200 hover:bg-purple-300 rounded-full transition-all cursor-pointer"
-                @click="dialogStore.loginForm = true"
-                v-if="!store.isLogin"
-            >
-                <span class="m-2">Login / Register</span>
-            </div>
-            <div class="user" v-if="store.isLogin">
-                <el-dropdown trigger="click">
-                    <span class="el-dropdown-link flex flex-row items-center">
-                        <el-avatar shape="circle" :src="loginUser.avatar" />
-                        <span class="ml-2 text-md">{{ loginUser.username }}</span
-                        >&nbsp;
-                        <el-icon class="text-lg"><ArrowDown /></el-icon>
-                    </span>
-                    <template #dropdown>
-                        <el-dropdown-menu>
-                            <el-dropdown-item>
-                                <el-icon>
-                                    <User />
-                                </el-icon>
-                                My Profile
-                            </el-dropdown-item>
-                            <el-dropdown-item>
-                                <el-icon>
-                                    <Setting />
-                                </el-icon>
-                                Settings
-                            </el-dropdown-item>
-                            <el-dropdown-item @click="logout">
-                                <el-icon>
-                                    <Remove />
-                                </el-icon>
-                                Logout
-                            </el-dropdown-item>
-                        </el-dropdown-menu>
-                    </template>
-                </el-dropdown>
-            </div>
+        <div class="flex justify-center items-center w-1/12">
+            <el-switch
+                v-model="isSwitchOpen"
+                inline-prompt
+                :active-icon="Moon"
+                :inactive-icon="Sunny"
+                :change="switchChange()"
+                style="--el-switch-on-color: #474747; --el-switch-off-color: #aeaeae"
+            />
+        </div>
+        <div class="user flex w-3/12 justify-start items-center" v-if="store.isLogin">
+            <el-dropdown trigger="click">
+                <span class="el-dropdown-link flex flex-row items-center cursor-pointer">
+                    <el-avatar shape="circle" :src="loginUser.avatar" />
+                    <span class="ml-2 text-lg dark:text-gray-200">{{ loginUser.username }}</span
+                    >&nbsp;
+                    <el-icon class="text-lg"><ArrowDown /></el-icon>
+                </span>
+                <template #dropdown>
+                    <el-dropdown-menu>
+                        <el-dropdown-item>
+                            <el-icon>
+                                <User />
+                            </el-icon>
+                            My Profile
+                        </el-dropdown-item>
+                        <el-dropdown-item>
+                            <el-icon>
+                                <Setting />
+                            </el-icon>
+                            Settings
+                        </el-dropdown-item>
+                        <el-dropdown-item @click="logout">
+                            <el-icon>
+                                <Remove />
+                            </el-icon>
+                            Logout
+                        </el-dropdown-item>
+                    </el-dropdown-menu>
+                </template>
+            </el-dropdown>
+        </div>
+        <div
+            class="px-2 my-2 bg-purple-200 hover:bg-purple-300 flex items-center rounded-full transition-all cursor-pointer"
+            @click="dialogStore.loginForm = true"
+            v-if="!store.isLogin"
+        >
+            <span class="m-2">Login / Register</span>
         </div>
     </div>
     <LoginForm />
@@ -98,37 +72,26 @@
 <script setup lang="ts">
 import { ref, watch } from 'vue';
 import { UserEntity } from '../../../api/login/loginApi';
-import { useDialogControlStore, useUserStore } from '../../../pinia';
+import { useDialogControlStore, useThemeStore, useUserStore } from '../../../pinia';
 import { ElMessage } from 'element-plus';
 // @ts-ignore
-import { InfoFilled, Remove, Setting, User, ArrowDown, Lock, CircleCheck, Fold } from '@element-plus/icons-vue';
+import {
+    InfoFilled,
+    Remove,
+    Setting,
+    User,
+    ArrowDown,
+    Lock,
+    CircleCheck,
+    Fold,
+    Sunny,
+    Moon,
+} from '@element-plus/icons-vue';
 import { storeToRefs } from 'pinia';
+import { useToggle, useStorage, useDark } from '@vueuse/core';
 
 const dialogStore = useDialogControlStore();
 
-const showNav = ref<boolean>(false);
-const handlerShowNav = () => {
-    showNav.value = !showNav.value;
-    const el = document.getElementsByClassName('navs')[0];
-    const icon = document.getElementById('icon');
-    const loginBtn = document.getElementsByClassName('login-btn')[0];
-    if (showNav.value) {
-        // @ts-ignore
-        el.style.display = 'flex';
-        // @ts-ignore
-        icon.classList.add('menu');
-        // @ts-ignore
-        loginBtn.style.display = 'flex';
-    } else {
-        // @ts-ignore
-        el.style.display = 'none';
-        // @ts-ignore
-        icon.classList.remove('menu');
-        // @ts-ignore
-        loginBtn.style.display = 'none';
-    }
-};
-// navs
 const navs = [
     {
         name: 'Article',
@@ -182,7 +145,6 @@ const loginUser = ref<UserEntity>({
     loginIp: '',
     ipAddr: '',
 });
-
 // check login status
 onMounted(() => {
     // load user info when first enter
@@ -192,14 +154,12 @@ onMounted(() => {
     const sessionToken = window.sessionStorage.getItem('token');
     if (localUser && localUser !== '' && localToken && localToken !== '') {
         loginUser.value = JSON.parse(localUser);
-        store.isLogin = true;
         store.user = JSON.parse(localUser);
         store.token = localToken;
         store.isLogin = true;
         return;
     } else if (sessionUser && sessionUser !== '' && sessionToken && sessionToken !== '') {
         loginUser.value = JSON.parse(sessionUser);
-        store.isLogin = true;
         store.user = JSON.parse(sessionUser);
         store.token = sessionToken;
         store.isLogin = true;
@@ -212,6 +172,36 @@ watch(refStore.isLogin, async () => {
         loginUser.value = refStore.user.value;
     }
 });
+const isSwitchOpen = ref<boolean>(false);
+if (localStorage.getItem('vueuse-color-scheme')) {
+    const saveTheme = localStorage.getItem('vueuse-color-scheme');
+    isSwitchOpen.value = saveTheme == 'dark';
+}
+watch(isSwitchOpen, () => {
+    const store = useThemeStore();
+    store.isDark = isSwitchOpen.value;
+});
+const theme = useStorage('vueuse-color-scheme', 'light');
+
+const isDark = useDark({
+    storageKey: 'vueuse-color-scheme',
+});
+
+onMounted(() => {
+    if (isSwitchOpen.value) {
+        theme.value = 'dark';
+    } else {
+        theme.value = 'light';
+    }
+});
+useToggle(isDark);
+const switchChange = () => {
+    if (isSwitchOpen.value) {
+        theme.value = 'dark';
+    } else {
+        theme.value = 'light';
+    }
+};
 </script>
 
 <style>

@@ -8,14 +8,21 @@
 </template>
 
 <style>
-#app {
+#app,
+html,
+body {
     --tw-bg-opacity: 1;
     background-color: rgb(241 245 249 / var(--tw-bg-opacity));
     margin: 0;
     padding: 0;
 }
+
 #nprogress .bar {
     background: #6a67ce !important;
     height: 3px !important;
+}
+
+a {
+    text-decoration: none;
 }
 </style>

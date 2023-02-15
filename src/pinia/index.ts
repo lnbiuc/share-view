@@ -62,3 +62,26 @@ export const useComponentsDisplayControlStore = defineStore('component-display',
         viewHistoryDisplay: <boolean>false,
     }),
 });
+
+export const useThemeStore = defineStore('theme', {
+    state: () => ({
+        isDark: <boolean>false,
+    }),
+    getters: {
+        get(state) {
+            return state.isDark;
+        },
+    },
+    actions: {
+        set(val: boolean) {
+            this.$state.isDark = val;
+        },
+    },
+});
+
+export const useFilterAndSortStore = defineStore('filterAndStore', {
+    state: () => ({
+        filter: <string>'hot',
+        sort: <string>'releaseTime',
+    }),
+});

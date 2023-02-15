@@ -3,7 +3,7 @@
 import { InfoFilled, User, Lock, CircleCheck } from '@element-plus/icons-vue';
 // dialog control
 import { ref } from 'vue';
-import { CountEntity, login, loginParams, register, sendCode, UserEntity } from "../../api/login/loginApi";
+import { CountEntity, login, loginParams, register, sendCode, UserEntity } from '../../api/login/loginApi';
 import { ElMessage, FormInstance } from 'element-plus';
 import { useDialogControlStore, useUserStore } from '../../pinia';
 import { useLocalStorage, useSessionStorage, useStorage } from '@vueuse/core';
@@ -219,7 +219,7 @@ const loginUser = ref<UserEntity>({
     loginIp: '',
     ipAddr: '',
 });
-const loginSuccess = (userData: UserEntity, token: string, count:CountEntity) => {
+const loginSuccess = (userData: UserEntity, token: string, count: CountEntity) => {
     cleanData();
     loginUser.value = userData;
     hasLogin.value = true;
@@ -227,15 +227,15 @@ const loginSuccess = (userData: UserEntity, token: string, count:CountEntity) =>
     store.isLogin = true;
     store.user = userData;
     store.token = token;
-    store.count = count
+    store.count = count;
     if (data.value.rememberMe) {
         useLocalStorage<string>('token', token);
         useLocalStorage<UserEntity>('user', userData);
-        useLocalStorage<CountEntity>('count', count)
+        useLocalStorage<CountEntity>('count', count);
     } else {
         useSessionStorage<string>('token', token);
-        useSessionStorage<UserEntity>("user", userData);
-        useSessionStorage<CountEntity>('count', count)
+        useSessionStorage<UserEntity>('user', userData);
+        useSessionStorage<CountEntity>('count', count);
     }
 };
 </script>
