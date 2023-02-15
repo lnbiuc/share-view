@@ -1,7 +1,7 @@
-<template>
-    <div class=""></div>
-</template>
-
 <script setup lang="ts"></script>
 
-<style scoped></style>
+<template>
+    <div class="">
+        <h1>video</h1>
+    </div>
+</template>

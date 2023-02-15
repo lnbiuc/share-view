@@ -1,7 +1,9 @@
 <template>
     <div class="flex flex-row h-12 bg-white dark:bg-neutral-800">
-        <div  @click="$router.push({ path: '/' })"
-              class="w-3/12 dark:text-gray-200 dark:hover:text-purple-300 text-lg font-bold flex justify-end transition-all items-center cursor-pointer hover:text-purple-400">
+        <div
+            @click="$router.push({ path: '/' })"
+            class="w-3/12 dark:text-gray-200 dark:hover:text-purple-300 text-lg font-bold flex justify-end transition-all items-center cursor-pointer hover:text-purple-400"
+        >
             Share
         </div>
         <div class="flex justify-end w-5/12">
@@ -26,12 +28,12 @@
         </div>
         <div class="user flex w-3/12 justify-start items-center" v-if="store.isLogin">
             <el-dropdown trigger="click">
-                    <span class="el-dropdown-link flex flex-row items-center cursor-pointer">
-                        <el-avatar shape="circle" :src="loginUser.avatar" />
-                        <span class="ml-2 text-lg dark:text-gray-200">{{ loginUser.username }}</span
-                        >&nbsp;
-                        <el-icon class="text-lg"><ArrowDown /></el-icon>
-                    </span>
+                <span class="el-dropdown-link flex flex-row items-center cursor-pointer">
+                    <el-avatar shape="circle" :src="loginUser.avatar" />
+                    <span class="ml-2 text-lg dark:text-gray-200">{{ loginUser.username }}</span
+                    >&nbsp;
+                    <el-icon class="text-lg"><ArrowDown /></el-icon>
+                </span>
                 <template #dropdown>
                     <el-dropdown-menu>
                         <el-dropdown-item>
@@ -70,12 +72,23 @@
 <script setup lang="ts">
 import { ref, watch } from 'vue';
 import { UserEntity } from '../../../api/login/loginApi';
-import { useDialogControlStore, useThemeStore, useUserStore } from "../../../pinia";
+import { useDialogControlStore, useThemeStore, useUserStore } from '../../../pinia';
 import { ElMessage } from 'element-plus';
 // @ts-ignore
-import { InfoFilled, Remove, Setting, User, ArrowDown, Lock, CircleCheck, Fold, Sunny, Moon } from '@element-plus/icons-vue';
+import {
+    InfoFilled,
+    Remove,
+    Setting,
+    User,
+    ArrowDown,
+    Lock,
+    CircleCheck,
+    Fold,
+    Sunny,
+    Moon,
+} from '@element-plus/icons-vue';
 import { storeToRefs } from 'pinia';
-import { useToggle, useStorage, useDark } from "@vueuse/core";
+import { useToggle, useStorage, useDark } from '@vueuse/core';
 
 const dialogStore = useDialogControlStore();
 
@@ -159,36 +172,36 @@ watch(refStore.isLogin, async () => {
         loginUser.value = refStore.user.value;
     }
 });
-const isSwitchOpen = ref<boolean>(false)
+const isSwitchOpen = ref<boolean>(false);
 if (localStorage.getItem('vueuse-color-scheme')) {
-    const saveTheme = localStorage.getItem('vueuse-color-scheme')
+    const saveTheme = localStorage.getItem('vueuse-color-scheme');
     isSwitchOpen.value = saveTheme == 'dark';
 }
 watch(isSwitchOpen, () => {
-    const store = useThemeStore()
-    store.isDark = isSwitchOpen.value
-})
-const theme = useStorage('vueuse-color-scheme', 'light')
+    const store = useThemeStore();
+    store.isDark = isSwitchOpen.value;
+});
+const theme = useStorage('vueuse-color-scheme', 'light');
 
 const isDark = useDark({
     storageKey: 'vueuse-color-scheme',
-})
+});
 
 onMounted(() => {
     if (isSwitchOpen.value) {
-        theme.value = 'dark'
+        theme.value = 'dark';
     } else {
-        theme.value = 'light'
+        theme.value = 'light';
     }
-})
-useToggle(isDark)
+});
+useToggle(isDark);
 const switchChange = () => {
     if (isSwitchOpen.value) {
-        theme.value = 'dark'
+        theme.value = 'dark';
     } else {
-        theme.value = 'light'
+        theme.value = 'light';
     }
-}
+};
 </script>
 
 <style>

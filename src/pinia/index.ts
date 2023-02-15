@@ -78,3 +78,10 @@ export const useThemeStore = defineStore('theme', {
         },
     },
 });
+
+export const useFilterAndSortStore = defineStore('filterAndStore', {
+    state: () => ({
+        filter: <string>'hot',
+        sort: <string>'releaseTime',
+    }),
+});

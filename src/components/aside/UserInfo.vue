@@ -2,11 +2,7 @@
     <div class="flex flex-col bg-white mt-2 rounded-md hover:shadow-md transition-all shadow-sm p-3">
         <div class="flex flex-row">
             <div class="flex flex-1">
-                <img
-                    :src="user.avatar"
-                    alt=""
-                    class="w-auto rounded-md shadow-sm hover:shadow-md transition-all"
-                />
+                <img :src="user.avatar" alt="" class="w-auto rounded-md shadow-sm hover:shadow-md transition-all" />
             </div>
             <div class="flex flex-1 flex-col mt-20 text-left ml-4">
                 <span class="text-lg">&nbsp;{{ user.username }}</span>
@@ -33,14 +29,14 @@
                     <span class="text-lg text-blue-400 font-bold">{{ count.publish }}</span>
                     <span class="mt-1">Publish</span>
                 </div>
-				<div class="flex flex-col">
-					<span class="text-lg text-blue-400 font-bold">{{ count.like }}</span>
-					<span class="mt-1">Like</span>
-				</div>
-				<div class="flex flex-col">
-					<span class="text-lg text-blue-400 font-bold">{{ count.collection }}</span>
-					<span class="mt-1">Collection</span>
-				</div>
+                <div class="flex flex-col">
+                    <span class="text-lg text-blue-400 font-bold">{{ count.like }}</span>
+                    <span class="mt-1">Like</span>
+                </div>
+                <div class="flex flex-col">
+                    <span class="text-lg text-blue-400 font-bold">{{ count.collection }}</span>
+                    <span class="mt-1">Collection</span>
+                </div>
             </div>
         </div>
     </div>
@@ -49,14 +45,14 @@
 <script setup lang="ts">
 import { useUserStore } from '../../pinia';
 import { onMounted, ref } from 'vue';
-import { UserEntity, CountEntity } from "../../api/login/loginApi";
+import { UserEntity, CountEntity } from '../../api/login/loginApi';
 
 interface userCount {
-	user:  UserEntity;
-	count: CountEntity;
+    user: UserEntity;
+    count: CountEntity;
 }
 
-const props = defineProps<userCount>()
+const props = defineProps<userCount>();
 
 const store = useUserStore();
 const level = ref<number>(0);

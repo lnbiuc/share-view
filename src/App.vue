@@ -8,7 +8,9 @@
 </template>
 
 <style>
-#app, html, body {
+#app,
+html,
+body {
     --tw-bg-opacity: 1;
     background-color: rgb(241 245 249 / var(--tw-bg-opacity));
     margin: 0;
