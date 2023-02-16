@@ -1,3 +1,20 @@
 /*@tailwind base;*/
 @tailwind components;
 @tailwind utilities;
+@layer utilities {
+    .bg-dark-black {
+        background-color: black;
+    }
+    .bg-dark {
+        background-color: #0d1117;
+    }
+    .bg-light {
+        background-color: #ffffff;
+    }
+    .text-light {
+        color: #21262d;
+    }
+    .text-dark {
+        color: #c9d1d9;
+    }
+}

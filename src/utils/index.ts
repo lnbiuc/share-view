@@ -19,11 +19,11 @@ export function renderToc() {
         // Smooth scrolling enabled.
         scrollSmooth: true,
         // Smooth scroll duration.
-        scrollSmoothDuration: 420,
+        scrollSmoothDuration: 750,
         // 到顶部导航条的距离
-        scrollSmoothOffset: -70,
+        scrollSmoothOffset: -10,
         // Headings offset between the headings and the top of the document (this is meant for minor adjustments).
         // Can also be used to account for scroll height discrepancies from the use of css scroll-padding-top
-        headingsOffset: 70,
+        headingsOffset: 10,
     });
 }

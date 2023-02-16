@@ -1,16 +1,13 @@
 <template>
-    <div class="flex flex-col bg-white mt-2 rounded-md hover:shadow-md transition-all shadow-sm p-3">
+    <div class="flex flex-col bg-white mt-2 dark:bg-dark rounded-md hover:shadow-md transition-all shadow-sm p-3">
         <div class="flex flex-row">
-            <div class="flex flex-1">
-                <img :src="user.avatar" alt="" class="w-auto rounded-md shadow-sm hover:shadow-md transition-all" />
+            <div class="flex m-2">
+                <el-avatar shape="square" :src="user.avatar" :size="150"/>
             </div>
-            <div class="flex flex-1 flex-col mt-20 text-left ml-4">
-                <span class="text-lg">&nbsp;{{ user.username }}</span>
-                <span class="text-sm m-0.5 ml-1"
-                    >Lv:&nbsp;<el-tag style="border: none" class="ml-1">Lv{{ levelStart }}</el-tag></span
-                >
+            <div class="flex flex-col mt-5 text-left ml-4 justify-end">
+                <span class="text-lg font-bold">&nbsp;{{ user.username }}</span>
                 <span class="text-sm m-0.5 text-gray-400">@{{ user.userId }}</span>
-                <span class="text-sm text-gray-400">&nbsp;IP: {{ user.ipAddr }}</span>
+                <span class="text-sm text-gray-400">&nbsp;IP:{{ user.ipAddr }}</span>
             </div>
         </div>
         <div class="flex flex-row mt-3 ml-1 text-left">

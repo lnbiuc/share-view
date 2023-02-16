@@ -7,6 +7,9 @@ export {}
 
 declare module '@vue/runtime-core' {
   export interface GlobalComponents {
+    ArticleCard: typeof import('./components/card/ArticleCard.vue')['default']
+    ArticleCardIndex: typeof import('./components/card/ArticleCardIndex.vue')['default']
+    CategoryCard: typeof import('./components/card/CategoryCard.vue')['default']
     CollectionLink: typeof import('./components/index/articleList/CollectionLink.vue')['default']
     CommentsLink: typeof import('./components/index/articleList/CommentsLink.vue')['default']
     ElAffix: typeof import('element-plus/es')['ElAffix']
@@ -28,15 +31,18 @@ declare module '@vue/runtime-core' {
     ElSwitch: typeof import('element-plus/es')['ElSwitch']
     ElTag: typeof import('element-plus/es')['ElTag']
     ElTooltip: typeof import('element-plus/es')['ElTooltip']
-    Footer: typeof import('./components/index/nav/Footer.vue')['default']
-    Header: typeof import('./components/index/nav/Header.vue')['default']
+    Footer: typeof import('./components/nav/Footer.vue')['default']
+    Header: typeof import('./components/nav/Header.vue')['default']
     LoginForm: typeof import('./components/dialog/LoginForm.vue')['default']
     OptionMenu: typeof import('./components/aside/OptionMenu.vue')['default']
+    PostCard: typeof import('./components/card/PostCard.vue')['default']
+    QuestionCard: typeof import('./components/card/QuestionCard.vue')['default']
     RouterLink: typeof import('vue-router')['RouterLink']
     RouterView: typeof import('vue-router')['RouterView']
     ShareLink: typeof import('./components/index/articleList/ShareLink.vue')['default']
-    SortBy: typeof import('./components/index/nav/SortBy.vue')['default']
+    SortBy: typeof import('./components/nav/SortBy.vue')['default']
     UserInfo: typeof import('./components/aside/UserInfo.vue')['default']
+    VideoCard: typeof import('./components/card/VideoCard.vue')['default']
     ViewHistory: typeof import('./components/aside/ViewHistory.vue')['default']
   }
 }

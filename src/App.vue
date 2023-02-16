@@ -4,15 +4,12 @@
 </script>
 
 <template>
-    <router-view />
+    <router-view class="bg-gray-100 dark:bg-dark-black"/>
 </template>
 
 <style>
-#app,
 html,
 body {
-    --tw-bg-opacity: 1;
-    background-color: rgb(241 245 249 / var(--tw-bg-opacity));
     margin: 0;
     padding: 0;
 }

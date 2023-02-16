@@ -1,5 +1,5 @@
 <template>
-    <div class="flex flex-row h-12 bg-white dark:bg-neutral-800">
+    <div class="flex flex-row h-12 bg-white dark:bg-dark bg-light">
         <div
             @click="$router.push({ path: '/' })"
             class="w-3/12 dark:text-gray-200 dark:hover:text-purple-300 text-lg font-bold flex justify-end transition-all items-center cursor-pointer hover:text-purple-400"
@@ -23,7 +23,7 @@
                 :active-icon="Moon"
                 :inactive-icon="Sunny"
                 :change="switchChange()"
-                style="--el-switch-on-color: #474747; --el-switch-off-color: #aeaeae"
+                style="--el-switch-on-color: #2a2a2a; --el-switch-off-color: #c7c7c7"
             />
         </div>
         <div class="user flex w-3/12 justify-start items-center" v-if="store.isLogin">
@@ -71,8 +71,8 @@
 
 <script setup lang="ts">
 import { ref, watch } from 'vue';
-import { UserEntity } from '../../../api/login/loginApi';
-import { useDialogControlStore, useThemeStore, useUserStore } from '../../../pinia';
+import { UserEntity } from '../../api/login/loginApi';
+import { useDialogControlStore, useThemeStore, useUserStore } from '../../pinia';
 import { ElMessage } from 'element-plus';
 // @ts-ignore
 import {
@@ -150,17 +150,21 @@ onMounted(() => {
     // load user info when first enter
     const localUser = window.localStorage.getItem('user');
     const sessionUser = window.sessionStorage.getItem('user');
+    const localCount =  window.localStorage.getItem('count');
+    const sessionCount = window.sessionStorage.getItem('count')
     const localToken = window.localStorage.getItem('token');
     const sessionToken = window.sessionStorage.getItem('token');
-    if (localUser && localUser !== '' && localToken && localToken !== '') {
+    if (localUser && localUser !== '' && localToken && localToken !== '' && localCount && localCount !== '') {
         loginUser.value = JSON.parse(localUser);
         store.user = JSON.parse(localUser);
+        store.count = JSON.parse(localCount)
         store.token = localToken;
         store.isLogin = true;
         return;
-    } else if (sessionUser && sessionUser !== '' && sessionToken && sessionToken !== '') {
+    } else if (sessionUser && sessionUser !== '' && sessionToken && sessionToken !== '' && sessionCount && sessionCount !== '') {
         loginUser.value = JSON.parse(sessionUser);
         store.user = JSON.parse(sessionUser);
+        store.count = JSON.parse(sessionCount)
         store.token = sessionToken;
         store.isLogin = true;
     }
@@ -177,9 +181,10 @@ if (localStorage.getItem('vueuse-color-scheme')) {
     const saveTheme = localStorage.getItem('vueuse-color-scheme');
     isSwitchOpen.value = saveTheme == 'dark';
 }
+const themeStore = useThemeStore();
+themeStore.isDark = isSwitchOpen.value;
 watch(isSwitchOpen, () => {
-    const store = useThemeStore();
-    store.isDark = isSwitchOpen.value;
+    themeStore.isDark = isSwitchOpen.value;
 });
 const theme = useStorage('vueuse-color-scheme', 'light');
 
