@@ -7,7 +7,7 @@ export {};
 
 declare module '@vue/runtime-core' {
     export interface GlobalComponents {
-        ArticleList: typeof import('./src/views/nav/ArticleCardIndex.vue')['default'];
+        ArticleList: typeof import('./src/components/card/ArticleCardIndex.vue')['default'];
         CollectionLink: typeof import('./src/components/index/articleList/CollectionLink.vue')['default'];
         CommentsLink: typeof import('./src/components/index/articleList/CommentsLink.vue')['default'];
         ElButton: typeof import('element-plus/es')['ElButton'];
@@ -15,12 +15,12 @@ declare module '@vue/runtime-core' {
         ElDropdownItem: typeof import('element-plus/es')['ElDropdownItem'];
         ElDropdownMenu: typeof import('element-plus/es')['ElDropdownMenu'];
         ElIcon: typeof import('element-plus/es')['ElIcon'];
-        Footer: typeof import('./src/components/index/nav/Footer.vue')['default'];
-        Header: typeof import('./src/components/index/nav/Header.vue')['default'];
+        Footer: typeof import('./src/components/nav/Footer.vue')['default'];
+        Header: typeof import('./src/components/nav/Header.vue')['default'];
         LikeBtn: typeof import('./src/components/index/articleList/LikeBtn.vue')['default'];
         RouterLink: typeof import('vue-router')['RouterLink'];
         RouterView: typeof import('vue-router')['RouterView'];
         ShareLink: typeof import('./src/components/index/articleList/ShareLink.vue')['default'];
-        SortBy: typeof import('./src/components/index/nav/SortBy.vue')['default'];
+        SortBy: typeof import('./src/components/nav/SortBy.vue')['default'];
     }
 }

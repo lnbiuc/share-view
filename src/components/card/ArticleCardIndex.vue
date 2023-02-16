@@ -3,7 +3,7 @@
         <div
             v-for="a in articleList"
             :key="a.articleId"
-            class="flex flex-col p-5 bg-white hover:shadow-md shadow-sm mt-2 mx-2 rounded-md transition-all"
+            class="flex flex-col p-5 dark:bg-dark bg-white hover:shadow-md shadow-sm mt-2 mx-2 rounded-md transition-all"
         >
             <div class="flex flex-row p-0 text-gray-400">
                 <div class="truncate">
@@ -24,7 +24,7 @@
                         {{ a.type }}
                     </div>
                     <div
-                        class="text-lg hover:text-blue-500 py-2 cursor-pointer transition-all"
+                        class="text-lg hover:text-blue-500  py-2 cursor-pointer transition-all"
                         @click="$router.push({ path: '/a/' + a.articleId })"
                     >
                         {{ a.title }}
@@ -44,13 +44,13 @@
 </template>
 
 <script setup lang="ts">
-import ShareLink from '../../components/index/articleList/ShareLink.vue';
-import CollectionLink from '../../components/index/articleList/CollectionLink.vue';
-import CommentsLink from '../../components/index/articleList/CommentsLink.vue';
+import ShareLink from '../index/articleList/ShareLink.vue';
+import CollectionLink from '../index/articleList/CollectionLink.vue';
+import CommentsLink from '../index/articleList/CommentsLink.vue';
 import { ArticleListEntity, getArticleList, getArticleListBySubscribe } from "../../api/article/articleApi";
 import { formatTime } from '../../utils';
 import { ref } from 'vue';
-import { useFilterAndSortStore, useUserStore } from "../../pinia";
+import { useDialogControlStore, useFilterAndSortStore, useUserStore } from "../../pinia";
 import { storeToRefs } from "pinia";
 import { ElMessage } from "element-plus";
 
@@ -122,12 +122,17 @@ const sortChange = (value: string) => {
         data.value.sortBy.releaseTime = true;
     } else if (value === 'subscribed') {
         const store = useUserStore();
-        if (store.getUser) {
+        if (store.isLogin) {
             getArticleListBySubscribe(store.getUserId, 1, 10).then((res) => {
                 articleList.value = res.data.data.data;
             });
         } else {
-            ElMessage.warning('not login');
+            const dialogControl = useDialogControlStore()
+            dialogControl.loginForm = true
+            const refUserStore = storeToRefs(store)
+            watch(refUserStore.isLogin, async () => {
+                sortChange(value)
+            })
         }
         return;
     }

@@ -6,11 +6,11 @@ import { StarFilled, CaretTop, CaretBottom } from '@element-plus/icons-vue';
 import Markdown from 'vue3-markdown-it';
 import { useRouteParams } from '@vueuse/router';
 import { ElMessage } from 'element-plus';
-import { onBeforeRouteLeave, useRoute, useRouter } from 'vue-router';
+import { onBeforeRouteLeave, useRouter } from 'vue-router';
 import { useThemeStore } from '../../pinia';
 import { storeToRefs } from 'pinia';
 import { renderToc } from '../../utils';
-
+import { formatTime } from '../../utils';
 const articleId = useRouteParams<string>('articleId');
 const data = ref<ArticleContentEntity>({
     'article': {
@@ -71,6 +71,19 @@ onMounted(() => {
             useRouter().back();
         }
     });
+    const el = document.getElementById('markdown');
+    const theme = localStorage.getItem('vueuse-color-scheme')
+    if (theme && theme == 'dark') {
+        // @ts-ignore
+        el.removeAttribute('class');
+        // @ts-ignore
+        el.classList.add('markdown-body-dark');
+    } else {
+        // @ts-ignore
+        el.removeAttribute('class');
+        // @ts-ignore
+        el.classList.add('markdown-body-light');
+    }
 });
 onBeforeRouteLeave(() => {
     // @ts-ignore
@@ -81,7 +94,7 @@ onBeforeUnmount(() => {
     tocbot.destroy();
 });
 const themeStore = storeToRefs(useThemeStore());
-watch(themeStore.isDark, async () => {
+watch(themeStore.isDark, () => {
     const el = document.getElementById('markdown');
     if (themeStore.isDark.value) {
         // @ts-ignore
@@ -95,29 +108,32 @@ watch(themeStore.isDark, async () => {
         el.classList.add('markdown-body-light');
     }
 });
+const subStrTime = (time:string) => {
+    return time.substring(0,10)
+}
 </script>
 
 <template>
     <div
-        class="article flex flex-row text-center justify-center m-auto rounded-sm mb-2 py-2 sm:max-w-full md:max-w-full ls:max-w-screen-ls lg:max-w-screen-lg"
+        class="article flex flex-row text-center justify-center md:m-auto md:my-2 ls:m-auto ls:my-2 lg:m-auto lg:my-2 sm:m-2 rounded-sm  sm:max-w-full md:max-w-full ls:max-w-screen-ls lg:max-w-screen-lg"
     >
         <div class="ls:flex lg:flex md:flex sm:hidden justify-center w-1/12 relative items-center">
             <div class="fixed top-1/4">
                 <div class="flex flex-col">
                     <el-icon
-                        class="p-0.5 my-2 cursor-pointer bg-gray-200 rounded-full hover:bg-gray-300 transition-all"
+                        class="p-0.5 my-2 cursor-pointer bg-gray-200 rounded-full hover:bg-gray-300 transition-all dark:bg-dark dark:hover:bg-gray-800"
                         size="40px"
                         color="gray"
                         ><CaretTop
                     /></el-icon>
                     <el-icon
-                        class="p-0.5 my-2 cursor-pointer bg-gray-200 rounded-full hover:bg-gray-300 transition-all"
+                        class="p-0.5 my-2 cursor-pointer bg-gray-200 rounded-full hover:bg-gray-300 transition-all dark:bg-dark dark:hover:bg-gray-800"
                         size="40px"
                         color="gray"
                         ><CaretBottom
                     /></el-icon>
                     <el-icon
-                        class="p-0.5 my-2 cursor-pointer bg-gray-200 rounded-full hover:bg-gray-300 transition-all"
+                        class="p-0.5 my-2 cursor-pointer bg-gray-200 rounded-full hover:bg-gray-300 transition-all dark:bg-dark dark:hover:bg-gray-800"
                         size="40px"
                         color="gray"
                         ><StarFilled /></el-icon
@@ -125,11 +141,11 @@ watch(themeStore.isDark, async () => {
                 </div>
             </div>
         </div>
-        <div class="flex flex-col ls:w-8/12 lg:w-9/12 md:w-10/12 sm:w-full p-4 text-left rounded-md bg-white shadow-sm">
-            <div class="flex flex-col">
+        <div class="flex flex-col dark:bg-dark ls:w-8/12 lg:w-9/12 md:w-10/12 sm:w-full text-left rounded-md bg-white shadow-sm">
+            <div class="flex flex-col p-4">
                 <div class="flex flex-col">
-                    <span class="text-4xl pt-4 pb-2">{{ data.article.title }}</span>
-                    <span class="text-gray-500 mt-2">{{ data.article.introduction }}</span>
+                    <span class="text-4xl dark:text-dark pt-4 pb-2">{{ data.article.title }}</span>
+                    <span class="text-gray-500 dark:text-dark mt-2">{{ data.article.introduction }}</span>
                 </div>
                 <div class="flex flex-row justify-between px-2">
                     <div class="flex flex-row mt-4">
@@ -139,18 +155,13 @@ watch(themeStore.isDark, async () => {
                         <div class="flex flex-col ml-4 justify-around">
                             <div class="flex flex-row items-center">
                                 <div class="flex">
-                                    <span class="text-lg text-gray-800">{{ data.author.username }}</span>
-                                    <span class="text-sm text-gray-400 flex items-center mt-1"
-                                        >&nbsp;@{{ data.author.userId }}</span
-                                    >
-                                    <span class="mx-2"
-                                        >&nbsp;<el-tag>Lv {{ data.author.level }}</el-tag></span
-                                    >
+                                    <span class="text-lg text-gray-800 dark:text-dark">{{ data.author.username }}</span>
+                                    <span class="text-sm text-gray-400 flex items-center mt-1 dark:text-dark"
+                                        >&nbsp;@{{ data.author.userId }}</span>
                                 </div>
                             </div>
                             <div>
                                 <span class="text-sm text-gray-400">{{ data.article.releaseTime }}</span>
-                                <span class="text-sm text-gray-400">&nbsp;&nbsp;IP: {{ data.author.ipAddr }}</span>
                             </div>
                         </div>
                     </div>
@@ -166,9 +177,24 @@ watch(themeStore.isDark, async () => {
             </div>
         </div>
         <div class="flex ls:flex lg:flex md:hidden sm:hidden flex-col ml-2 w-3/12">
+            <div class="bg-white rounded-md shadow-sm mb-2 p-4 dark:bg-dark">
+                <el-avatar :size="130" :src="data.author.avatar"/>
+                <div class="flex flex-col text-left">
+                    <span class="text-xl font-bold mt-1 dark:text-dark">{{ data.author.username }}</span>
+                    <span class="text-sm text-gray-400">@{{ data.author.userId }}</span>
+                    <span class="text-md text-gray-400 my-1">Signature:{{ data.author.signature }}</span>
+                    <span class="text-sm text-gray-400">Register:
+                        <span v-text="formatTime(data.author.registerTime)"></span>
+                    </span>
+                    <span class="text-sm text-gray-400">Last Online:
+                        <span v-text="subStrTime(data.author.lastLogin)"></span>
+                    </span>
+                    <span class="text-sm text-gray-400">IP:{{ data.author.ipAddr }}</span>
+                </div>
+            </div>
             <el-affix :offset="10">
                 <div
-                    class="js-toc text-left text-md no-underline transition-all bg-white rounded-md shadow-sm px-4 py-2 overflow-auto break-all"
+                    class="js-toc text-left text-md transition-all dark:bg-dark dark:text-dark bg-white rounded-md shadow-sm px-4 py-2 overflow-auto break-all"
                 ></div>
             </el-affix>
         </div>
@@ -176,7 +202,7 @@ watch(themeStore.isDark, async () => {
 </template>
 <style scoped>
 .article {
-    min-height: 170vh;
+    min-height: 100vh;
 }
 </style>
 <style>
