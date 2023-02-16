@@ -141,7 +141,7 @@ const subStrTime = (time:string) => {
                 </div>
             </div>
         </div>
-        <div class="flex flex-col dark:bg-dark ls:w-8/12 lg:w-9/12 md:w-10/12 sm:w-full text-left rounded-md bg-white shadow-sm">
+        <div class="flex flex-col dark:bg-dark ls:w-8/12 lg:w-8/12 md:w-8/12 sm:w-full text-left rounded-md bg-white shadow-sm">
             <div class="flex flex-col p-4">
                 <div class="flex flex-col">
                     <span class="text-4xl dark:text-dark pt-4 pb-2">{{ data.article.title }}</span>
@@ -176,13 +176,13 @@ const subStrTime = (time:string) => {
                 <el-divider>END</el-divider>
             </div>
         </div>
-        <div class="flex ls:flex lg:flex md:hidden sm:hidden flex-col ml-2 w-3/12">
+        <div class="flex ls:flex lg:flex md:hidden sm:hidden flex-col ml-2 w-4/12">
             <div class="bg-white rounded-md shadow-sm mb-2 p-4 dark:bg-dark">
                 <el-avatar :size="130" :src="data.author.avatar"/>
                 <div class="flex flex-col text-left">
                     <span class="text-xl font-bold mt-1 dark:text-dark">{{ data.author.username }}</span>
                     <span class="text-sm text-gray-400">@{{ data.author.userId }}</span>
-                    <span class="text-md text-gray-400 my-1">Signature:{{ data.author.signature }}</span>
+                    <span class="text-sm text-gray-400 my-1">Signature:{{ data.author.signature }}</span>
                     <span class="text-sm text-gray-400">Register:
                         <span v-text="formatTime(data.author.registerTime)"></span>
                     </span>

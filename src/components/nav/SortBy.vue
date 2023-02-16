@@ -32,8 +32,9 @@ const sortByList: Array<{ name: string; value: string }> = [
         value: 'subscribed',
     },
 ];
+// init
 const store = useFilterAndSortStore()
-const currentSelectFilter = ref(filterByList[0].name);
+const currentSelectFilter = ref(filterByList[0].value);
 const clickSelectFilter = (filter: { name: string; value: string }) => {
     currentSelectFilter.value = filter.value;
 };
@@ -47,6 +48,14 @@ watch(currentSelectFilter, async () => {
 watch(currentSelectSort, async () => {
     store.sort = currentSelectSort.value;
 });
+const displayFilter = (val:string) => {
+    if (val == 'releaseTime') {
+        return 'All Time'
+    } else if (val == 'weak'){
+        return 'Weak'
+    }
+    return 'Mouth'
+}
 </script>
 
 <template>
@@ -64,14 +73,14 @@ watch(currentSelectSort, async () => {
         <div class="flex items-center mr-2">
             <el-dropdown trigger="click">
                 <span class="el-dropdown-link align-top cursor-pointer">
-                    {{ currentSelectFilter }}
+                    {{ displayFilter(currentSelectFilter) }}
                     <el-icon><ArrowDown /></el-icon>
                 </span>
                 <template #dropdown>
                     <el-dropdown-menu>
                         <el-dropdown-item
                             @click="clickSelectFilter(f)"
-                            :disabled="f.name === currentSelectFilter"
+                            :disabled="f.value === currentSelectFilter"
                             v-for="f in filterByList"
                             >{{ f.name }}
                         </el-dropdown-item>

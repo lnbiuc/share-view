@@ -1,10 +1,13 @@
 import { format } from 'timeago.js';
+import { articleParams, getArticleListBySubscribe } from '../api/article/articleApi';
+import { useDialogControlStore, useUserStore } from '../pinia';
+import { storeToRefs } from 'pinia';
 
 export const formatTime = (data: string) => {
     return format(data, 'zh_CN');
 };
 
-export function renderToc() {
+export const renderToc = () => {
     // 生成目录插件初始化
     // @ts-ignore
     tocbot.init({
@@ -26,4 +29,20 @@ export function renderToc() {
         // Can also be used to account for scroll height discrepancies from the use of css scroll-padding-top
         headingsOffset: 10,
     });
-}
+};
+
+export const formatDate = (date: any | object) => {
+    let mouth;
+    let day;
+    if (date.getMonth() + 1 < 10) {
+        mouth = '0' + (date.getMonth() + 1);
+    } else {
+        mouth = date.getMonth() + 1;
+    }
+    if (date.getDate() < 10) {
+        day = '0' + date.getDate();
+    } else {
+        day = date.getDate();
+    }
+    return date.getFullYear() + '-' + mouth + '-' + day;
+};

@@ -1,8 +1,15 @@
 <template>
     <div class="text-center">
+        <div v-if="isLoad" class="flex flex-col justify-center items-center my-20">
+            <el-icon :size="60" class="animate-spin"><Loading/></el-icon>
+            <span class="text-3xl mt-4 text-gray-500">
+                Loading
+            </span>
+        </div>
         <div
             v-for="a in articleList"
             :key="a.articleId"
+            v-if="!isLoad"
             class="flex flex-col p-5 dark:bg-dark bg-white hover:shadow-md shadow-sm mt-2 mx-2 rounded-md transition-all"
         >
             <div class="flex flex-row p-0 text-gray-400">
@@ -48,16 +55,18 @@ import ShareLink from '../index/articleList/ShareLink.vue';
 import CollectionLink from '../index/articleList/CollectionLink.vue';
 import CommentsLink from '../index/articleList/CommentsLink.vue';
 import { ArticleListEntity, getArticleList, getArticleListBySubscribe } from "../../api/article/articleApi";
-import { formatTime } from '../../utils';
+import { formatTime } from "../../utils";
 import { ref } from 'vue';
-import { useDialogControlStore, useFilterAndSortStore, useUserStore } from "../../pinia";
+import { useArticleParamsStore, useDialogControlStore, useFilterAndSortStore, useUserStore } from "../../pinia";
 import { storeToRefs } from "pinia";
 import { ElMessage } from "element-plus";
-
+// @ts-ignore
+import { Loading } from '@element-plus/icons-vue'
 const articleList = ref<ArticleListEntity[]>();
+// init request
 const data = ref({
     pageNumber: 1,
-    pageSize: 10,
+    pageSize: 7,
     filterBy: {
         authorId: '',
         categoryId: 0,
@@ -67,8 +76,8 @@ const data = ref({
         endDay: '',
     },
     sortBy: {
-        hot: false,
-        releaseTime: true,
+        hot: true,
+        releaseTime: false,
     },
 });
 getArticleList(data.value).then((res) => {
@@ -83,44 +92,25 @@ const tagBgColor = (type: string) => {
             return '#95d475';
         case 'Article':
             return '#79bbff';
+        case 'Video':
+            return '#fab6b6';
     }
 };
+const isLoad = ref<boolean>(false)
 const store = useFilterAndSortStore()
 const refStore = storeToRefs(store)
 watch(refStore.filter, async () => {
-    filterChange(refStore.filter.value)
-})
+    const paramsStore = useArticleParamsStore()
+    paramsStore.filterChange(refStore.filter.value)
+    isLoad.value = true
+    getArticleList(paramsStore.params).then((res) => {
+        articleList.value = res.data.data.data;
+        isLoad.value = false
+    });
+});
+
 watch(refStore.sort, async () => {
-    sortChange(refStore.sort.value)
-})
-
-const cleanData = () => {
-    data.value = {
-        pageNumber: 1,
-        pageSize: 5,
-        filterBy: {
-            authorId: '',
-            categoryId: 0,
-            tagId: 0,
-            type: 0,
-            startDay: '',
-            endDay: '',
-        },
-        sortBy: {
-            hot: false,
-            releaseTime: true,
-        },
-    };
-};
-
-const sortChange = (value: string) => {
-    if (value === 'hot') {
-        data.value.sortBy.hot = true;
-        data.value.sortBy.releaseTime = false;
-    } else if (value === 'new') {
-        data.value.sortBy.hot = false;
-        data.value.sortBy.releaseTime = true;
-    } else if (value === 'subscribed') {
+    if (refStore.sort.value == 'subscribed') {
         const store = useUserStore();
         if (store.isLogin) {
             getArticleListBySubscribe(store.getUserId, 1, 10).then((res) => {
@@ -131,58 +121,21 @@ const sortChange = (value: string) => {
             dialogControl.loginForm = true
             const refUserStore = storeToRefs(store)
             watch(refUserStore.isLogin, async () => {
-                sortChange(value)
+                getArticleListBySubscribe(store.getUserId, 1, 10).then((res) => {
+                    articleList.value = res.data.data.data;
+                });
             })
         }
-        return;
+        return
     }
-    getArticleList(data.value).then((res) => {
+    const paramsStore = useArticleParamsStore()
+    paramsStore.sortChange(refStore.sort.value)
+    isLoad.value = true
+    getArticleList(paramsStore.params).then((res) => {
         articleList.value = res.data.data.data;
+        isLoad.value = false
     });
-};
-
-const formatDate = (date: object) => {
-    let mouth;
-    let day;
-    // @ts-ignore
-    if (date.getMonth() + 1 < 10) {
-        // @ts-ignore
-        mouth = '0' + (date.getMonth() + 1);
-    } else {
-        // @ts-ignore
-        mouth = date.getMonth() + 1;
-    }
-    // @ts-ignore
-    if (date.getDate() < 10) {
-        // @ts-ignore
-        day = '0' + date.getDate();
-    } else {
-        // @ts-ignore
-        day = date.getDate();
-    }
-    // @ts-ignore
-    return date.getFullYear() + '-' + mouth + '-' + day;
-};
-
-const filterChange = (value: string) => {
-    cleanData();
-    const now = new Date();
-    const weak = new Date(now.getTime() - 7 * 24 * 3600 * 1000);
-    const mouth = new Date(now.getTime() - 30 * 24 * 3600 * 1000);
-    if (value === 'weak') {
-        data.value.filterBy.startDay = formatDate(weak);
-        data.value.filterBy.endDay = formatDate(now);
-    } else if (value === 'mouth') {
-        data.value.filterBy.startDay = formatDate(mouth);
-        data.value.filterBy.endDay = formatDate(now);
-    } else if (value === 'releaseTime') {
-        data.value.filterBy.startDay = '';
-        data.value.filterBy.endDay = '';
-    }
-    getArticleList(data.value).then((res) => {
-        articleList.value = res.data.data.data;
-    });
-};
+})
 </script>
 <style scoped>
 .type {
