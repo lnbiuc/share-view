@@ -1,11 +1,7 @@
 <template>
     <div class="text-center">
-        <div v-if="isLoad" class="flex flex-col justify-center items-center my-20">
-            <el-icon :size="60" class="animate-spin"><Loading/></el-icon>
-            <span class="text-3xl mt-4 text-gray-500">
-                Loading
-            </span>
-        </div>
+        <Loading :is-loading="isLoad"/>
+        <NoResult :is-display="isEmpty"/>
         <div
             v-for="a in articleList"
             :key="a.articleId"
@@ -60,9 +56,16 @@ import { ref } from 'vue';
 import { useArticleParamsStore, useDialogControlStore, useFilterAndSortStore, useUserStore } from "../../pinia";
 import { storeToRefs } from "pinia";
 import { ElMessage } from "element-plus";
-// @ts-ignore
-import { Loading } from '@element-plus/icons-vue'
+
 const articleList = ref<ArticleListEntity[]>();
+const isEmpty = ref<boolean>(false)
+watch(articleList, () => {
+    if (articleList.value?.length == 0) {
+        isEmpty.value = true
+    } else {
+        isEmpty.value = false
+    }
+});
 // init request
 const data = ref({
     pageNumber: 1,
@@ -121,7 +124,9 @@ watch(refStore.sort, async () => {
             dialogControl.loginForm = true
             const refUserStore = storeToRefs(store)
             watch(refUserStore.isLogin, async () => {
+                isLoad.value = true
                 getArticleListBySubscribe(store.getUserId, 1, 10).then((res) => {
+                    isLoad.value = false
                     articleList.value = res.data.data.data;
                 });
             })

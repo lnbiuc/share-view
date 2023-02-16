@@ -4,13 +4,13 @@
             <div class="flex m-2">
                 <el-avatar shape="square" :src="user.avatar" :size="150"/>
             </div>
-            <div class="flex flex-col mt-3 text-left justify-end">
+            <div class="flex flex-col mb-2 text-left justify-end">
                 <span class="text-lg font-bold">&nbsp;{{ user.username }}</span>
                 <span class="text-sm m-0.5 text-gray-400">@{{ user.userId }}</span>
                 <span class="text-sm text-gray-400">&nbsp;IP:{{ user.ipAddr }}</span>
             </div>
         </div>
-        <div class="flex flex-row mt-3 ml-1 text-left">
+        <div class="flex flex-row mt-2 mb-1 ml-1 text-left">
             <span class="text-gray-500">{{ user.signature }}</span>
         </div>
         <div class="flex flex-col mt-2 mx-1">

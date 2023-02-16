@@ -167,5 +167,9 @@ export const useArticleParamsStore = defineStore('articleParams', {
                 this.params.sortBy.releaseTime = true;
             }
         },
+        filterTypeChange(type: number) {
+            this.resetAll();
+            this.params.filterBy.type = type;
+        },
     },
 });
