@@ -2,7 +2,7 @@
 import { ref } from 'vue';
 // @ts-ignore
 import { ArrowDown } from '@element-plus/icons-vue';
-import { useFilterAndSortStore } from "../../pinia";
+import { useFilterAndSortStore } from '../../pinia';
 
 const filterByList: Array<{ name: string; value: string }> = [
     {
@@ -33,7 +33,7 @@ const sortByList: Array<{ name: string; value: string }> = [
     },
 ];
 // init
-const store = useFilterAndSortStore()
+const store = useFilterAndSortStore();
 const currentSelectFilter = ref(filterByList[0].value);
 const clickSelectFilter = (filter: { name: string; value: string }) => {
     currentSelectFilter.value = filter.value;
@@ -48,14 +48,14 @@ watch(currentSelectFilter, async () => {
 watch(currentSelectSort, async () => {
     store.sort = currentSelectSort.value;
 });
-const displayFilter = (val:string) => {
+const displayFilter = (val: string) => {
     if (val == 'releaseTime') {
-        return 'All Time'
-    } else if (val == 'weak'){
-        return 'Weak'
+        return 'All Time';
+    } else if (val == 'weak') {
+        return 'Weak';
     }
-    return 'Mouth'
-}
+    return 'Mouth';
+};
 </script>
 
 <template>
