@@ -1,5 +1,6 @@
 import { defineStore } from 'pinia';
 import { CountEntity, UserEntity } from '../api/login/loginApi';
+import { formatDate } from '../utils';
 
 export const useUserStore = defineStore('count', {
     state: () => ({
@@ -22,7 +23,7 @@ export const useUserStore = defineStore('count', {
     },
     actions: {
         cleanUserStore() {
-            this.$state.user = {
+            this.user = {
                 userId: '',
                 username: '',
                 phone: '',
@@ -40,9 +41,9 @@ export const useUserStore = defineStore('count', {
                 loginIp: '',
                 ipAddr: '',
             };
-            this.$state.isLogin = false;
-            this.$state.token = '';
-            this.$state.count = {
+            this.isLogin = false;
+            this.token = '';
+            this.count = {
                 publish: 0,
                 collection: 0,
                 like: 0,
@@ -74,7 +75,7 @@ export const useThemeStore = defineStore('theme', {
     },
     actions: {
         set(val: boolean) {
-            this.$state.isDark = val;
+            this.isDark = val;
         },
     },
 });
@@ -84,4 +85,87 @@ export const useFilterAndSortStore = defineStore('filterAndStore', {
         filter: <string>'hot',
         sort: <string>'releaseTime',
     }),
+});
+
+export const useArticleParamsStore = defineStore('articleParams', {
+    state: () => ({
+        params: {
+            pageNumber: 1,
+            pageSize: 7,
+            filterBy: {
+                authorId: '',
+                categoryId: 0,
+                tagId: 0,
+                type: 0,
+                startDay: '',
+                endDay: '',
+            },
+            sortBy: {
+                hot: false,
+                releaseTime: true,
+            },
+        },
+    }),
+    actions: {
+        resetAll() {
+            this.params = {
+                pageNumber: 1,
+                pageSize: 7,
+                filterBy: {
+                    authorId: '',
+                    categoryId: 0,
+                    tagId: 0,
+                    type: 0,
+                    startDay: '',
+                    endDay: '',
+                },
+                sortBy: {
+                    hot: true,
+                    releaseTime: false,
+                },
+            };
+        },
+        resetFilter() {
+            this.params.filterBy = {
+                authorId: '',
+                categoryId: 0,
+                tagId: 0,
+                type: 0,
+                startDay: '',
+                endDay: '',
+            };
+        },
+        filterChange(value: string) {
+            this.resetFilter();
+            const now = new Date();
+            const weak = new Date(now.getTime() - 7 * 24 * 3600 * 1000);
+            const mouth = new Date(now.getTime() - 30 * 24 * 3600 * 1000);
+            if (value === 'weak') {
+                this.params.filterBy.startDay = formatDate(weak);
+                this.params.filterBy.endDay = formatDate(now);
+            } else if (value === 'mouth') {
+                this.params.filterBy.startDay = formatDate(mouth);
+                this.params.filterBy.endDay = formatDate(now);
+            } else if (value === 'releaseTime') {
+                this.params.filterBy.startDay = '';
+                this.params.filterBy.endDay = '';
+            }
+        },
+        resetSort() {
+            this.params.sortBy = {
+                hot: false,
+                releaseTime: true,
+            };
+        },
+        sortChange(value: string) {
+            this.resetSort();
+            if (value === 'hot') {
+                this.params.sortBy.hot = true;
+                this.params.sortBy.releaseTime = false;
+            } else if (value === 'new') {
+                this.params.sortBy.hot = false;
+                this.params.sortBy.releaseTime = true;
+            }
+        },
+    },
 });

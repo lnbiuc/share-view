@@ -7,11 +7,14 @@ export {}
 
 declare module '@vue/runtime-core' {
   export interface GlobalComponents {
+    AnswerQuestionForm: typeof import('./components/dialog/AnswerQuestionForm.vue')['default']
     ArticleCard: typeof import('./components/card/ArticleCard.vue')['default']
     ArticleCardIndex: typeof import('./components/card/ArticleCardIndex.vue')['default']
     CategoryCard: typeof import('./components/card/CategoryCard.vue')['default']
     CollectionLink: typeof import('./components/index/articleList/CollectionLink.vue')['default']
+    CommentForm: typeof import('./components/dialog/CommentForm.vue')['default']
     CommentsLink: typeof import('./components/index/articleList/CommentsLink.vue')['default']
+    EditArticleForm: typeof import('./components/dialog/EditArticleForm.vue')['default']
     ElAffix: typeof import('element-plus/es')['ElAffix']
     ElAvatar: typeof import('element-plus/es')['ElAvatar']
     ElBacktop: typeof import('element-plus/es')['ElBacktop']
@@ -36,6 +39,7 @@ declare module '@vue/runtime-core' {
     LoginForm: typeof import('./components/dialog/LoginForm.vue')['default']
     OptionMenu: typeof import('./components/aside/OptionMenu.vue')['default']
     PostCard: typeof import('./components/card/PostCard.vue')['default']
+    PublishArticleForm: typeof import('./components/dialog/PublishArticleForm.vue')['default']
     QuestionCard: typeof import('./components/card/QuestionCard.vue')['default']
     RouterLink: typeof import('vue-router')['RouterLink']
     RouterView: typeof import('vue-router')['RouterView']
