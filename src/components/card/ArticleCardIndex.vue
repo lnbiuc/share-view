@@ -1,7 +1,7 @@
 <template>
     <div class="text-center">
-        <Loading :is-loading="isLoad"/>
-        <NoResult :is-display="isEmpty"/>
+        <Loading :is-loading="isLoad" />
+        <NoResult :is-display="isEmpty" />
         <div
             v-for="a in articleList"
             :key="a.articleId"
@@ -27,7 +27,7 @@
                         {{ a.type }}
                     </div>
                     <div
-                        class="text-lg hover:text-blue-500  py-2 cursor-pointer transition-all"
+                        class="text-lg hover:text-blue-500 py-2 cursor-pointer transition-all"
                         @click="$router.push({ path: '/a/' + a.articleId })"
                     >
                         {{ a.title }}
@@ -50,20 +50,20 @@
 import ShareLink from '../index/articleList/ShareLink.vue';
 import CollectionLink from '../index/articleList/CollectionLink.vue';
 import CommentsLink from '../index/articleList/CommentsLink.vue';
-import { ArticleListEntity, getArticleList, getArticleListBySubscribe } from "../../api/article/articleApi";
-import { formatTime } from "../../utils";
+import { ArticleListEntity, getArticleList, getArticleListBySubscribe } from '../../api/article/articleApi';
+import { formatTime } from '../../utils';
 import { ref } from 'vue';
-import { useArticleParamsStore, useDialogControlStore, useFilterAndSortStore, useUserStore } from "../../pinia";
-import { storeToRefs } from "pinia";
-import { ElMessage } from "element-plus";
+import { useArticleParamsStore, useDialogControlStore, useFilterAndSortStore, useUserStore } from '../../pinia';
+import { storeToRefs } from 'pinia';
+import { ElMessage } from 'element-plus';
 
 const articleList = ref<ArticleListEntity[]>();
-const isEmpty = ref<boolean>(false)
+const isEmpty = ref<boolean>(false);
 watch(articleList, () => {
     if (articleList.value?.length == 0) {
-        isEmpty.value = true
+        isEmpty.value = true;
     } else {
-        isEmpty.value = false
+        isEmpty.value = false;
     }
 });
 // init request
@@ -99,16 +99,16 @@ const tagBgColor = (type: string) => {
             return '#fab6b6';
     }
 };
-const isLoad = ref<boolean>(false)
-const store = useFilterAndSortStore()
-const refStore = storeToRefs(store)
+const isLoad = ref<boolean>(false);
+const store = useFilterAndSortStore();
+const refStore = storeToRefs(store);
 watch(refStore.filter, async () => {
-    const paramsStore = useArticleParamsStore()
-    paramsStore.filterChange(refStore.filter.value)
-    isLoad.value = true
+    const paramsStore = useArticleParamsStore();
+    paramsStore.filterChange(refStore.filter.value);
+    isLoad.value = true;
     getArticleList(paramsStore.params).then((res) => {
         articleList.value = res.data.data.data;
-        isLoad.value = false
+        isLoad.value = false;
     });
 });
 
@@ -120,27 +120,27 @@ watch(refStore.sort, async () => {
                 articleList.value = res.data.data.data;
             });
         } else {
-            const dialogControl = useDialogControlStore()
-            dialogControl.loginForm = true
-            const refUserStore = storeToRefs(store)
+            const dialogControl = useDialogControlStore();
+            dialogControl.loginForm = true;
+            const refUserStore = storeToRefs(store);
             watch(refUserStore.isLogin, async () => {
-                isLoad.value = true
+                isLoad.value = true;
                 getArticleListBySubscribe(store.getUserId, 1, 10).then((res) => {
-                    isLoad.value = false
+                    isLoad.value = false;
                     articleList.value = res.data.data.data;
                 });
-            })
+            });
         }
-        return
+        return;
     }
-    const paramsStore = useArticleParamsStore()
-    paramsStore.sortChange(refStore.sort.value)
-    isLoad.value = true
+    const paramsStore = useArticleParamsStore();
+    paramsStore.sortChange(refStore.sort.value);
+    isLoad.value = true;
     getArticleList(paramsStore.params).then((res) => {
         articleList.value = res.data.data.data;
-        isLoad.value = false
+        isLoad.value = false;
     });
-})
+});
 </script>
 <style scoped>
 .type {

@@ -36,13 +36,13 @@
                 </span>
                 <template #dropdown>
                     <el-dropdown-menu>
-                        <el-dropdown-item>
+                        <el-dropdown-item @click="$router.push('/u/p/' + loginUser.userId)">
                             <el-icon>
                                 <User />
                             </el-icon>
                             My Profile
                         </el-dropdown-item>
-                        <el-dropdown-item>
+                        <el-dropdown-item @click="$router.push('/u/s/' + loginUser.userId)">
                             <el-icon>
                                 <Setting />
                             </el-icon>
@@ -150,21 +150,28 @@ onMounted(() => {
     // load user info when first enter
     const localUser = window.localStorage.getItem('user');
     const sessionUser = window.sessionStorage.getItem('user');
-    const localCount =  window.localStorage.getItem('count');
-    const sessionCount = window.sessionStorage.getItem('count')
+    const localCount = window.localStorage.getItem('count');
+    const sessionCount = window.sessionStorage.getItem('count');
     const localToken = window.localStorage.getItem('token');
     const sessionToken = window.sessionStorage.getItem('token');
     if (localUser && localUser !== '' && localToken && localToken !== '' && localCount && localCount !== '') {
         loginUser.value = JSON.parse(localUser);
         store.user = JSON.parse(localUser);
-        store.count = JSON.parse(localCount)
+        store.count = JSON.parse(localCount);
         store.token = localToken;
         store.isLogin = true;
         return;
-    } else if (sessionUser && sessionUser !== '' && sessionToken && sessionToken !== '' && sessionCount && sessionCount !== '') {
+    } else if (
+        sessionUser &&
+        sessionUser !== '' &&
+        sessionToken &&
+        sessionToken !== '' &&
+        sessionCount &&
+        sessionCount !== ''
+    ) {
         loginUser.value = JSON.parse(sessionUser);
         store.user = JSON.parse(sessionUser);
-        store.count = JSON.parse(sessionCount)
+        store.count = JSON.parse(sessionCount);
         store.token = sessionToken;
         store.isLogin = true;
     }

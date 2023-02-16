@@ -2,9 +2,9 @@
 const props = defineProps({
     isDisplay: {
         type: Boolean,
-        default: false
-    }
-})
+        default: false,
+    },
+});
 </script>
 
 <template>
@@ -12,4 +12,3 @@ const props = defineProps({
         <el-empty description="No Result!" />
     </div>
 </template>
-
