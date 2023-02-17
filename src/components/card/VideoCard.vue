@@ -15,6 +15,7 @@ getArticleList(paramsStore.params).then((res) => {
 </script>
 
 <template>
+    <Loading :is-loading="isLoading" />
     <div class="m-2">
         <div
             v-for="a in articleList"

@@ -16,7 +16,7 @@ getArticleList(paramsStore.params).then((res) => {
 
 <template>
     <Loading :is-loading="isLoading" />
-    <div class="m-2">
+    <div class="m-2" v-if="!isLoading">
         <div
             v-for="a in articleList"
             :key="a.articleId"

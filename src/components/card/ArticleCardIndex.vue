@@ -83,8 +83,10 @@ const data = ref({
         releaseTime: false,
     },
 });
+const isLoad = ref<boolean>(true);
 getArticleList(data.value).then((res) => {
     articleList.value = res.data.data.data;
+    isLoad.value = false
 });
 
 const tagBgColor = (type: string) => {
@@ -99,13 +101,13 @@ const tagBgColor = (type: string) => {
             return '#fab6b6';
     }
 };
-const isLoad = ref<boolean>(false);
+
 const store = useFilterAndSortStore();
 const refStore = storeToRefs(store);
 watch(refStore.filter, async () => {
     const paramsStore = useArticleParamsStore();
     paramsStore.filterChange(refStore.filter.value);
-    isLoad.value = true;
+    isLoad.value = false;
     getArticleList(paramsStore.params).then((res) => {
         articleList.value = res.data.data.data;
         isLoad.value = false;

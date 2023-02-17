@@ -11,29 +11,30 @@ import { useThemeStore } from '../../pinia';
 import { storeToRefs } from 'pinia';
 import { renderToc } from '../../utils';
 import { formatTime } from '../../utils';
+import { ElLoading } from 'element-plus'
 const articleId = useRouteParams<string>('articleId');
 const data = ref<ArticleContentEntity>({
     'article': {
-        'articleId': 'loading~~',
+        'articleId': '',
         // @ts-ignore
         'author': {
-            'userId': 'loading~~',
-            'username': 'loading~~',
-            'signature': 'loading~~',
+            'userId': '',
+            'username': '',
+            'signature': '',
             'avatar': 'https://cube.elemecdn.com/0/88/03b0d39583f48206768a7534e55bcpng.png',
             'level': 0,
-            'registerTime': 'loading~~',
-            'lastLogin': 'loading~~',
-            'ipAddr': 'loading~~',
+            'registerTime': '',
+            'lastLogin': '',
+            'ipAddr': '',
         },
-        'title': 'loading~~',
-        'introduction': 'loading~~',
+        'title': '',
+        'introduction': '',
         'type': 'Article',
         'tags': [],
-        'category': 'loading~~',
-        'content': 'loading~~',
-        'releaseTime': 'loading~~',
-        'lastUpdate': 'loading~~',
+        'category': '',
+        'content': '',
+        'releaseTime': '',
+        'lastUpdate': '',
         'setTop': false,
         'views': 0,
         'like': 0,
@@ -47,22 +48,23 @@ const data = ref<ArticleContentEntity>({
         'data': [],
     },
     'author': {
-        'userId': 'loading~~',
-        'username': 'loading~~',
-        'signature': 'loading~~',
+        'userId': '',
+        'username': '',
+        'signature': '',
         'avatar': 'https://cube.elemecdn.com/0/88/03b0d39583f48206768a7534e55bcpng.png',
         'level': 0,
-        'registerTime': 'loading~~',
-        'lastLogin': 'loading~~',
-        'ipAddr': 'loading~~',
+        'registerTime': '',
+        'lastLogin': '',
+        'ipAddr': '',
     },
 });
-
+const isLoading = ref<boolean>(true)
 onMounted(() => {
     getOneArticle(articleId.value).then((res) => {
         if (res.data.code == 200) {
             data.value = res.data.data;
             nextTick(() => {
+                isLoading.value = false
                 renderToc();
                 window.scroll({ top: 0, behavior: 'smooth' });
             });
@@ -173,14 +175,17 @@ const subStrTime = (time: string) => {
                     </div>
                 </div>
                 <el-divider>CONTENT</el-divider>
-                <div>
+                <Loading :is-loading="isLoading"/>
+                <div v-show="!isLoading">
                     <Markdown id="markdown" class="markdown-body-light" :source="data.article.content" />
                 </div>
                 <el-divider>END</el-divider>
             </div>
         </div>
-        <div class="flex ls:flex lg:flex md:hidden sm:hidden flex-col ml-2 w-4/12">
-            <div class="bg-white rounded-md shadow-sm mb-2 p-4 dark:bg-dark">
+        <div
+            class="flex ls:flex lg:flex md:hidden sm:hidden flex-col ml-2 w-4/12">
+            <Loading :is-loading="isLoading"/>
+            <div v-if="!isLoading" class="bg-white rounded-md shadow-sm mb-2 p-4 dark:bg-dark">
                 <el-avatar :size="130" :src="data.author.avatar" />
                 <div class="flex flex-col text-left">
                     <span class="text-xl font-bold mt-1 dark:text-dark">{{ data.author.username }}</span>
@@ -197,7 +202,8 @@ const subStrTime = (time: string) => {
                     <span class="text-sm text-gray-400">IP:{{ data.author.ipAddr }}</span>
                 </div>
             </div>
-            <el-affix :offset="10">
+            <el-affix
+                :offset="10">
                 <div
                     class="js-toc text-left text-md transition-all dark:bg-dark dark:text-dark bg-white rounded-md shadow-sm px-4 py-2 overflow-auto break-all"
                 ></div>

@@ -16,7 +16,7 @@ export function getCategoryList(number: number, size: number) {
         url: './api/category/get',
         params: {
             pageNumber: number,
-            pageSize: number,
+            pageSize: size,
         },
     });
 }

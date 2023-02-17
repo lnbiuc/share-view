@@ -28,7 +28,7 @@
         <div
             class="mt-3 mx-0.5 p-2 border-blue-400 border rounded-md cursor-pointer transition-all flex items-center hover:bg-blue-100"
         >
-            <span class="text-center m-auto align-middle text-blue-400">
+            <span class="text-center m-auto align-middle text-blue-400" @click="enterCreateCenter">
                 Enter Creation Center
                 <el-icon><ArrowRight /></el-icon>
             </span>
@@ -37,9 +37,11 @@
 </template>
 
 <script setup lang="ts">
-import { useUserStore } from '../../pinia';
+import { useDialogControlStore, useUserStore } from "../../pinia";
 // @ts-ignore
 import { UserFilled, ArrowRight } from '@element-plus/icons-vue';
+import router from "../../router";
+import { storeToRefs } from "pinia";
 const store = useUserStore();
 const btn = [
     {
@@ -78,6 +80,21 @@ const styObject = (index: number) => {
         '--background-color-hover': btn[index].hover,
     };
 };
+const enterCreateCenter = () => {
+    const store = useUserStore()
+    if (store.isLogin) {
+        router.push({ path: '/u/c/' + store.getUserId })
+    } else {
+        const dialogStore = useDialogControlStore()
+        dialogStore.loginForm = true;
+        const refStore = storeToRefs(store)
+        watch(refStore.isLogin, async () => {
+            if (refStore.isLogin) {
+                await router.push({ path: '/u/c/' + store.getUserId })
+            }
+        })
+    }
+}
 </script>
 <style scoped>
 .img {

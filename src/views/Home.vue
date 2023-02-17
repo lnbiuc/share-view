@@ -23,7 +23,6 @@ const store = useUserStore();
 const historyList = ref<ViewHistoryEntity[]>();
 const showHistory = useComponentsDisplayControlStore();
 const refStore = storeToRefs(store);
-
 const getHistoryList = (number: number, size: number) => {
     getViewHistory(store.getUserId, number, size).then((res) => {
         historyList.value = res.data.data.data;
