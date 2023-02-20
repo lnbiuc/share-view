@@ -9,8 +9,8 @@ import { View } from '@element-plus/icons-vue'
 import { getAnswersByArticleId } from "../../api/Answer/answerApi";
 import { getCommentsById } from "../../api/comments/commentsApi";
 const articleId = useRouteParams<string>("questionId");
-const ques = ref<Object>()
-const answer = ref<Object>()
+const ques = ref()
+const answer = ref()
 const isLoading = ref<boolean>(true)
 
 onMounted(() => {
