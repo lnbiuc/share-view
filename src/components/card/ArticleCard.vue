@@ -35,7 +35,7 @@ getArticleList(paramsStore.params).then((res) => {
             <div class="flex flex-col">
                 <div
                     class="text-lg font-semibold text-left hover:text-blue-500 py-2 cursor-pointer transition-all"
-                    @click="$router.push({ path: '/u/p/' + a.author.userId })"
+                    @click="$router.push({ path: '/a/' + a.articleId })"
                 >
                     {{ a.title }}
                 </div>

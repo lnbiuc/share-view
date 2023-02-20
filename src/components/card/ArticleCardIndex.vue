@@ -27,14 +27,14 @@
                         {{ a.type }}
                     </div>
                     <div
-                        class="text-lg hover:text-blue-500 py-2 cursor-pointer transition-all"
+                        class="text-lg hover:text-blue-500 py-1 cursor-pointer transition-all"
                         @click="$router.push({ path: '/a/' + a.articleId })"
                     >
                         {{ a.title }}
                     </div>
                 </div>
             </div>
-            <div class="flex mb-4 text-gray-500 truncate">
+            <div class="flex mb-4 text-sm text-gray-500 text-left">
                 {{ a.introduction }}
             </div>
             <div class="flex flex-row justify-start">
@@ -86,7 +86,7 @@ const data = ref({
 const isLoad = ref<boolean>(true);
 getArticleList(data.value).then((res) => {
     articleList.value = res.data.data.data;
-    isLoad.value = false
+    isLoad.value = false;
 });
 
 const tagBgColor = (type: string) => {

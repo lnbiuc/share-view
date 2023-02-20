@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { getOneArticle, ArticleContentEntity } from '../../api/article/articleApi';
+import { getOneArticle, ArticleContentEntity, likeArticle, addCollection } from '../../api/article/articleApi';
 // @ts-ignore
 import { StarFilled, CaretTop, CaretBottom } from '@element-plus/icons-vue';
 // @ts-ignore
@@ -7,11 +7,10 @@ import Markdown from 'vue3-markdown-it';
 import { useRouteParams } from '@vueuse/router';
 import { ElMessage } from 'element-plus';
 import { onBeforeRouteLeave, useRouter } from 'vue-router';
-import { useThemeStore } from '../../pinia';
+import { useThemeStore, useUserStore } from '../../pinia';
 import { storeToRefs } from 'pinia';
 import { renderToc } from '../../utils';
 import { formatTime } from '../../utils';
-import { ElLoading } from 'element-plus'
 const articleId = useRouteParams<string>('articleId');
 const data = ref<ArticleContentEntity>({
     'article': {
@@ -58,13 +57,17 @@ const data = ref<ArticleContentEntity>({
         'ipAddr': '',
     },
 });
-const isLoading = ref<boolean>(true)
+const isLoading = ref<boolean>(true);
+const isRenderComment = ref<boolean>(false);
 onMounted(() => {
     getOneArticle(articleId.value).then((res) => {
         if (res.data.code == 200) {
             data.value = res.data.data;
+            if (data.value.comments.data.length > 0) {
+                isRenderComment.value = true;
+            }
             nextTick(() => {
-                isLoading.value = false
+                isLoading.value = false;
                 renderToc();
                 window.scroll({ top: 0, behavior: 'smooth' });
             });
@@ -113,6 +116,28 @@ watch(themeStore.isDark, () => {
 const subStrTime = (time: string) => {
     return time.substring(0, 10);
 };
+
+const like = (isLike: number) => {
+    const store = useUserStore();
+    likeArticle(articleId.value, 0, store.getUserId, isLike).then((res) => {
+        if (res.data.code == 200) {
+            ElMessage.success('SUCCESS');
+        } else {
+            ElMessage.warning(res.data.message);
+        }
+    });
+};
+
+const collect = () => {
+    const store = useUserStore();
+    addCollection(articleId.value, store.getUserId, 0).then((res) => {
+        if (res.data.code == 200) {
+            ElMessage.success('SUCCESS');
+        } else {
+            ElMessage.warning(res.data.message);
+        }
+    });
+};
 </script>
 
 <template>
@@ -126,27 +151,28 @@ const subStrTime = (time: string) => {
                         class="p-0.5 my-2 cursor-pointer bg-gray-200 rounded-full hover:bg-gray-300 transition-all dark:bg-dark dark:hover:bg-gray-800"
                         size="40px"
                         color="gray"
+                        @click="like(1)"
                         ><CaretTop
                     /></el-icon>
                     <el-icon
                         class="p-0.5 my-2 cursor-pointer bg-gray-200 rounded-full hover:bg-gray-300 transition-all dark:bg-dark dark:hover:bg-gray-800"
                         size="40px"
                         color="gray"
+                        @click="like(0)"
                         ><CaretBottom
                     /></el-icon>
                     <el-icon
                         class="p-0.5 my-2 cursor-pointer bg-gray-200 rounded-full hover:bg-gray-300 transition-all dark:bg-dark dark:hover:bg-gray-800"
                         size="40px"
                         color="gray"
+                        @click="collect"
                         ><StarFilled /></el-icon
                     >&nbsp;
                 </div>
             </div>
         </div>
-        <div
-            class="flex flex-col dark:bg-dark ls:w-8/12 lg:w-8/12 md:w-8/12 sm:w-full text-left rounded-md bg-white shadow-sm"
-        >
-            <div class="flex flex-col p-4">
+        <div class="flex flex-col ls:w-8/12 lg:w-8/12 md:w-8/12 sm:w-full text-left">
+            <div class="flex flex-col p-4 dark:bg-dark rounded-md bg-white shadow-sm">
                 <div class="flex flex-col">
                     <span class="text-4xl dark:text-dark pt-4 pb-2">{{ data.article.title }}</span>
                     <span class="text-gray-500 dark:text-dark mt-2">{{ data.article.introduction }}</span>
@@ -175,16 +201,18 @@ const subStrTime = (time: string) => {
                     </div>
                 </div>
                 <el-divider>CONTENT</el-divider>
-                <Loading :is-loading="isLoading"/>
+                <Loading :is-loading="isLoading" />
                 <div v-show="!isLoading">
                     <Markdown id="markdown" class="markdown-body-light" :source="data.article.content" />
                 </div>
                 <el-divider>END</el-divider>
             </div>
+            <div v-if="isRenderComment" class="flex flex-col my-2 p-4 dark:bg-dark rounded-md bg-white shadow-sm">
+                <Comment :comments="data.comments.data" />
+            </div>
         </div>
-        <div
-            class="flex ls:flex lg:flex md:hidden sm:hidden flex-col ml-2 w-4/12">
-            <Loading :is-loading="isLoading"/>
+        <div class="flex ls:flex lg:flex md:hidden sm:hidden flex-col ml-2 w-4/12">
+            <Loading :is-loading="isLoading" />
             <div v-if="!isLoading" class="bg-white rounded-md shadow-sm mb-2 p-4 dark:bg-dark">
                 <el-avatar :size="130" :src="data.author.avatar" />
                 <div class="flex flex-col text-left">
@@ -202,8 +230,7 @@ const subStrTime = (time: string) => {
                     <span class="text-sm text-gray-400">IP:{{ data.author.ipAddr }}</span>
                 </div>
             </div>
-            <el-affix
-                :offset="10">
+            <el-affix :offset="10">
                 <div
                     class="js-toc text-left text-md transition-all dark:bg-dark dark:text-dark bg-white rounded-md shadow-sm px-4 py-2 overflow-auto break-all"
                 ></div>
