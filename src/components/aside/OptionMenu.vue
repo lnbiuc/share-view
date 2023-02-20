@@ -37,11 +37,11 @@
 </template>
 
 <script setup lang="ts">
-import { useDialogControlStore, useUserStore } from "../../pinia";
+import { useDialogControlStore, useUserStore } from '../../pinia';
 // @ts-ignore
 import { UserFilled, ArrowRight } from '@element-plus/icons-vue';
-import router from "../../router";
-import { storeToRefs } from "pinia";
+import router from '../../router';
+import { storeToRefs } from 'pinia';
 const store = useUserStore();
 const btn = [
     {
@@ -81,20 +81,20 @@ const styObject = (index: number) => {
     };
 };
 const enterCreateCenter = () => {
-    const store = useUserStore()
+    const store = useUserStore();
     if (store.isLogin) {
-        router.push({ path: '/u/c/' + store.getUserId })
+        router.push({ path: '/u/c/' + store.getUserId });
     } else {
-        const dialogStore = useDialogControlStore()
+        const dialogStore = useDialogControlStore();
         dialogStore.loginForm = true;
-        const refStore = storeToRefs(store)
+        const refStore = storeToRefs(store);
         watch(refStore.isLogin, async () => {
             if (refStore.isLogin) {
-                await router.push({ path: '/u/c/' + store.getUserId })
+                await router.push({ path: '/u/c/' + store.getUserId });
             }
-        })
+        });
     }
-}
+};
 </script>
 <style scoped>
 .img {

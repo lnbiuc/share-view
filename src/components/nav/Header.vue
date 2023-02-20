@@ -63,7 +63,7 @@
             @click="dialogStore.loginForm = true"
             v-if="!store.isLogin"
         >
-            <span class="m-2">Login / Register</span>
+            <span class="m-2 dark:text-black">Login / Register</span>
         </div>
     </div>
     <LoginForm />

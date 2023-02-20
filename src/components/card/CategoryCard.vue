@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { CategoryEntity, getCategoryList } from '../../api/category/categoryApi';
-import { formatTime } from "../../utils";
-import { ref } from "vue";
+import { formatTime } from '../../utils';
+import { ref } from 'vue';
 
 const data = ref<CategoryEntity[]>([
     {
@@ -43,7 +43,9 @@ getCategoryList(1, 10).then((res) => {
             <div class="flex flex-col ml-4 justify-center">
                 <span
                     class="text-left font-semibold text-xl mb-2 hover:text-blue-500 cursor-pointer transition-all"
-                    @click="$router.push({ path: '/c/' + a.id })">{{ a.name }}</span>
+                    @click="$router.push({ path: '/c/' + a.id })"
+                    >{{ a.name }}</span
+                >
                 <span class="text-gray-500 text-left mb-2">{{ a.introduction }}</span>
                 <span class="text-left text-gray-500 text-sm mb-2">
                     Create In
@@ -55,7 +57,8 @@ getCategoryList(1, 10).then((res) => {
                     By
                     <span
                         class="hover:text-blue-500 cursor-pointer transition-all"
-                        @click="$router.push({ path: '/a/' + a.author.userId })">
+                        @click="$router.push({ path: '/a/' + a.author.userId })"
+                    >
                         {{ a.author.username }}
                     </span>
                 </span>
