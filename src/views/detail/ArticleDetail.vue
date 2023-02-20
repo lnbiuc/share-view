@@ -76,19 +76,6 @@ onMounted(() => {
             useRouter().back();
         }
     });
-    const el = document.getElementById('markdown');
-    const theme = localStorage.getItem('vueuse-color-scheme');
-    if (theme && theme == 'dark') {
-        // @ts-ignore
-        el.removeAttribute('class');
-        // @ts-ignore
-        el.classList.add('markdown-body-dark');
-    } else {
-        // @ts-ignore
-        el.removeAttribute('class');
-        // @ts-ignore
-        el.classList.add('markdown-body-light');
-    }
 });
 onBeforeRouteLeave(() => {
     // @ts-ignore
@@ -97,21 +84,6 @@ onBeforeRouteLeave(() => {
 onBeforeUnmount(() => {
     // @ts-ignore
     tocbot.destroy();
-});
-const themeStore = storeToRefs(useThemeStore());
-watch(themeStore.isDark, () => {
-    const el = document.getElementById('markdown');
-    if (themeStore.isDark.value) {
-        // @ts-ignore
-        el.removeAttribute('class');
-        // @ts-ignore
-        el.classList.add('markdown-body-dark');
-    } else {
-        // @ts-ignore
-        el.removeAttribute('class');
-        // @ts-ignore
-        el.classList.add('markdown-body-light');
-    }
 });
 const subStrTime = (time: string) => {
     return time.substring(0, 10);
@@ -173,6 +145,16 @@ const collect = () => {
         </div>
         <div class="flex flex-col ls:w-8/12 lg:w-8/12 md:w-8/12 sm:w-full text-left">
             <div class="flex flex-col p-4 dark:bg-dark rounded-md bg-white shadow-sm">
+                <div class="flex flex-row items-center">
+                    <span class="rounded-full py-1 px-2 w-16 text-sm text-center" style="background-color: #79bbff">Article</span>
+                    <span class="ml-2">
+                    <el-tag
+                        class="mx-1"
+                        v-for="t in data.article.tags">
+                        {{ t.tagName }}
+                    </el-tag>
+                </span>
+                </div>
                 <div class="flex flex-col">
                     <span class="text-4xl dark:text-dark pt-4 pb-2">{{ data.article.title }}</span>
                     <span class="text-gray-500 dark:text-dark mt-2">{{ data.article.introduction }}</span>
@@ -211,7 +193,7 @@ const collect = () => {
                 <Comment :comments="data.comments.data" />
             </div>
         </div>
-        <div class="flex ls:flex lg:flex md:hidden sm:hidden flex-col ml-2 w-4/12">
+        <div class="flex ls:flex lg:flex md:hidden sm:hidden flex-col ml-2 w-3/12">
             <Loading :is-loading="isLoading" />
             <div v-if="!isLoading" class="bg-white rounded-md shadow-sm mb-2 p-4 dark:bg-dark">
                 <el-avatar :size="130" :src="data.author.avatar" />
@@ -254,6 +236,10 @@ const collect = () => {
 
 .toc-link::before {
     background-color: unset;
+}
+
+.toc-list-item {
+    font-size: small;
 }
 
 .is-active-link::before {

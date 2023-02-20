@@ -79,7 +79,7 @@ const routes = [
                 meta: { title: 'Post Detail' },
             },
             {
-                path: '/v/:categoryId',
+                path: '/v/:videoId',
                 name: 'VideoDetail',
                 component: () => import('../views/detail/VideoDetail.vue'),
                 meta: { title: 'Video Detail' },
