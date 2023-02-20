@@ -28,14 +28,14 @@ getArticleList(paramsStore.params).then((res) => {
             </div>
             <div class="w-10/12">
                 <div
-                    class="text-lg font-semibold text-left hover:text-blue-500 py-2 cursor-pointer transition-all"
+                    class="text-md font-semibold text-left hover:text-blue-500 py-2 cursor-pointer transition-all"
                     @click="$router.push({ path: '/q/' + a.articleId })"
                 >
                     {{ a.title }}
                 </div>
-                <div class="flex mb-4 text-gray-500 text-left leading-6">
-                    {{ a.introduction }}
-                </div>
+<!--                <div class="flex mb-4 text-gray-500 text-left leading-6">-->
+<!--                    {{ a.introduction }}-->
+<!--                </div>-->
                 <div class="flex flex-row items-center">
                     <ShareLink />
                     <el-icon color="gray" class="ml-5 mr-1"><View /></el-icon>
