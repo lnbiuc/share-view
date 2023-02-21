@@ -56,6 +56,14 @@ const displayFilter = (val: string) => {
     }
     return 'Mouth';
 };
+
+const taggerColor = (s:{ name: string; value: string }) => {
+    if (s.value == currentSelectSort.value) {
+        return '#79bbff'
+    } else {
+        return 'unset'
+    }
+}
 </script>
 
 <template>
@@ -67,6 +75,7 @@ const displayFilter = (val: string) => {
                 class="m-2 cursor-pointer hover:border-blue-500 hover:border-b-2 transition-all"
                 v-for="s in sortByList"
                 @click="clickSelectSort(s)"
+                :style="{color : taggerColor(s)}"
                 >{{ s.name }}</span
             >
         </div>

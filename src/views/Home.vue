@@ -5,9 +5,11 @@
             <router-view />
         </div>
         <div class="flex flex-col w-4/12">
-            <UserInfo v-if="store.isLogin" :user="store.user" :count="store.count" />
-            <OptionMenu />
-            <ViewHistory v-if="showHistory.viewHistoryDisplay && store.isLogin" :history-list="historyList" />
+            <el-affix :offset="0">
+                <UserInfo v-if="store.isLogin" :user="store.user" :count="store.count" />
+                <OptionMenu />
+<!--                <ViewHistory v-if="showHistory.viewHistoryDisplay && store.isLogin" :history-list="historyList" />-->
+            </el-affix>
         </div>
     </div>
 </template>

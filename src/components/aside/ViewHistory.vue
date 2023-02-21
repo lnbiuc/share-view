@@ -14,7 +14,7 @@ const prop = defineProps({
     <div class="flex flex-col bg-white mt-2 dark:bg-dark rounded-md hover:shadow-md transition-all shadow-sm p-3">
         <div
             v-for="a in historyList"
-            class="border-b-2 border-b-white my-1 border-b-2 px-2 py-1 rounded-md transition-all"
+            class="my-1 px-2 py-1 rounded-md transition-all"
         >
             <div class="flex flex-row justify-start">
                 <span

@@ -1,4 +1,4 @@
-import axios from 'axios';
+import axios from '../axios/index';
 
 export function getPostImages(articleId: string, userId: string) {
     return axios({

@@ -1,4 +1,4 @@
-import axios from 'axios';
+import axios from '../axios/index';
 
 export interface loginParams {
     rememberMe: boolean;

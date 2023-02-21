@@ -1,4 +1,5 @@
 import { createRouter, createWebHistory } from 'vue-router';
+import { useFilterAndSortStore } from '../pinia';
 
 const routes = [
     {
@@ -123,6 +124,11 @@ const routes = [
 const router = createRouter({
     history: createWebHistory(),
     routes,
+});
+
+router.beforeEach(() => {
+    const store = useFilterAndSortStore();
+    store.setDefault();
 });
 
 export default router;
