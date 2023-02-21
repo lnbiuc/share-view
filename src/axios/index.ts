@@ -24,8 +24,10 @@ axios.interceptors.response.use((response) => {
         NProgress.done();
         return response;
     } else {
-        ElMessage.error(response.data.message);
+        ElMessage.error(JSON.stringify(response.data));
     }
     NProgress.done();
     return response;
 });
+
+export default axios;

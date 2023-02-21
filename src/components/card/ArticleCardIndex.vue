@@ -1,3 +1,78 @@
+<script setup lang="ts">
+import ShareLink from '../index/articleList/ShareLink.vue';
+import CollectionLink from '../index/articleList/CollectionLink.vue';
+import CommentsLink from '../index/articleList/CommentsLink.vue';
+import { ArticleListEntity, getArticleList, getArticleListBySubscribe } from '../../api/articleApi';
+import { formatTime } from '../../utils';
+import { ref } from 'vue';
+import { useArticleParamsStore, useDialogControlStore, useFilterAndSortStore, useUserStore } from '../../pinia';
+import { storeToRefs } from 'pinia';
+
+const articleList = ref<ArticleListEntity[]>();
+const isEmpty = ref<boolean>(false);
+watch(articleList, () => {
+    isEmpty.value = articleList.value?.length == 0;
+});
+// init request
+const data = ref({
+    pageNumber: 1,
+    pageSize: 5,
+    filterBy: {
+        authorId: '',
+        categoryId: 0,
+        tagId: 0,
+        type: 0,
+        startDay: '',
+        endDay: '',
+    },
+    sortBy: {
+        hot: true,
+        releaseTime: false,
+    },
+});
+
+const total = ref(0)
+const isLoad = ref<boolean>(true);
+getArticleList(data.value).then((res) => {
+    articleList.value = res.data.data.data;
+    total.value = res.data.data.total
+    isLoad.value = false;
+});
+
+const tagBgColor = (type: string) => {
+    switch (type) {
+        case 'Post':
+            return '#eebe77';
+        case 'Question':
+            return '#95d475';
+        case 'Article':
+            return '#79bbff';
+        case 'Video':
+            return '#fab6b6';
+    }
+};
+
+const paramsStore = useArticleParamsStore()
+const refParamsStore = storeToRefs(paramsStore)
+watch(refParamsStore.params.value, () => {
+    getArticleList(paramsStore.params).then((res) => {
+        articleList.value = res.data.data.data;
+        total.value = res.data.data.total
+        isLoad.value = false;
+    });
+})
+
+const currentChange = (pageNumber:number) => {
+    const store = useArticleParamsStore()
+    store.params.pageNumber = pageNumber;
+    getArticleList(store.params).then((res) => {
+        articleList.value = res.data.data.data;
+        isLoad.value = false;
+        total.value = res.data.data.total
+    });
+}
+
+</script>
 <template>
     <div class="text-center">
         <Loading :is-loading="isLoad" />
@@ -19,18 +94,14 @@
             </div>
             <div class="flex flex-row m">
                 <div class="my-2 flex flex-row align-middle">
-                    <div
-                        class="mr-2 rounded-full m-auto transition-all type cursor-pointer"
-                        :style="{ backgroundColor: tagBgColor(a.type) }"
-                        style="width: 80px"
-                    >
-                        {{ a.type }}
-                    </div>
-                    <div
-                        class="text-lg hover:text-blue-500 py-1 cursor-pointer transition-all"
-                        @click="$router.push({ path: '/a/' + a.articleId })"
-                    >
-                        {{ a.title }}
+                    <div class="text-left">
+                        <span
+                            :style="{ backgroundColor: tagBgColor(a.type) }"
+                            class="px-2 mr-2 rounded-full m-auto transition-all type cursor-pointer">
+                            {{ a.type }}
+                        </span>
+                        <span class="text-lg hover:text-blue-500 py-1 cursor-pointer transition-all text-left"
+                              @click="$router.push({ path: '/a/' + a.articleId })">{{ a.title }}</span>
                     </div>
                 </div>
             </div>
@@ -43,107 +114,9 @@
                 <CollectionLink />
             </div>
         </div>
+        <Pagination :page-size="data.pageSize" :total="total" @numberChange="currentChange"/>
     </div>
 </template>
-
-<script setup lang="ts">
-import ShareLink from '../index/articleList/ShareLink.vue';
-import CollectionLink from '../index/articleList/CollectionLink.vue';
-import CommentsLink from '../index/articleList/CommentsLink.vue';
-import { ArticleListEntity, getArticleList, getArticleListBySubscribe } from '../../api/article/articleApi';
-import { formatTime } from '../../utils';
-import { ref } from 'vue';
-import { useArticleParamsStore, useDialogControlStore, useFilterAndSortStore, useUserStore } from '../../pinia';
-import { storeToRefs } from 'pinia';
-import { ElMessage } from 'element-plus';
-
-const articleList = ref<ArticleListEntity[]>();
-const isEmpty = ref<boolean>(false);
-watch(articleList, () => {
-    if (articleList.value?.length == 0) {
-        isEmpty.value = true;
-    } else {
-        isEmpty.value = false;
-    }
-});
-// init request
-const data = ref({
-    pageNumber: 1,
-    pageSize: 7,
-    filterBy: {
-        authorId: '',
-        categoryId: 0,
-        tagId: 0,
-        type: 0,
-        startDay: '',
-        endDay: '',
-    },
-    sortBy: {
-        hot: true,
-        releaseTime: false,
-    },
-});
-const isLoad = ref<boolean>(true);
-getArticleList(data.value).then((res) => {
-    articleList.value = res.data.data.data;
-    isLoad.value = false;
-});
-
-const tagBgColor = (type: string) => {
-    switch (type) {
-        case 'Post':
-            return '#eebe77';
-        case 'Question':
-            return '#95d475';
-        case 'Article':
-            return '#79bbff';
-        case 'Video':
-            return '#fab6b6';
-    }
-};
-
-const store = useFilterAndSortStore();
-const refStore = storeToRefs(store);
-watch(refStore.filter, async () => {
-    const paramsStore = useArticleParamsStore();
-    paramsStore.filterChange(refStore.filter.value);
-    isLoad.value = false;
-    getArticleList(paramsStore.params).then((res) => {
-        articleList.value = res.data.data.data;
-        isLoad.value = false;
-    });
-});
-
-watch(refStore.sort, async () => {
-    if (refStore.sort.value == 'subscribed') {
-        const store = useUserStore();
-        if (store.isLogin) {
-            getArticleListBySubscribe(store.getUserId, 1, 10).then((res) => {
-                articleList.value = res.data.data.data;
-            });
-        } else {
-            const dialogControl = useDialogControlStore();
-            dialogControl.loginForm = true;
-            const refUserStore = storeToRefs(store);
-            watch(refUserStore.isLogin, async () => {
-                isLoad.value = true;
-                getArticleListBySubscribe(store.getUserId, 1, 10).then((res) => {
-                    isLoad.value = false;
-                    articleList.value = res.data.data.data;
-                });
-            });
-        }
-        return;
-    }
-    const paramsStore = useArticleParamsStore();
-    paramsStore.sortChange(refStore.sort.value);
-    isLoad.value = true;
-    getArticleList(paramsStore.params).then((res) => {
-        articleList.value = res.data.data.data;
-        isLoad.value = false;
-    });
-});
-</script>
 <style scoped>
 .type {
     opacity: 0.9;

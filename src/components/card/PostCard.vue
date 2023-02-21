@@ -1,8 +1,9 @@
 <script setup lang="ts">
 import { ref } from 'vue';
-import { ArticleListEntity, getArticleList } from '../../api/article/articleApi';
+import { ArticleListEntity, getArticleList } from '../../api/articleApi';
 import { useArticleParamsStore } from '../../pinia';
 import { formatTime } from '../../utils';
+import { getPostImages } from '../../api/postApi';
 
 const articleList = ref<ArticleListEntity[]>();
 const paramsStore = useArticleParamsStore();
@@ -12,6 +13,12 @@ getArticleList(paramsStore.params).then((res) => {
     articleList.value = res.data.data.data;
     isLoading.value = false;
 });
+const getImages = (articleId: string, userId: string) => {
+    const images = ref<string[]>();
+    getPostImages(articleId, userId).then((res) => {
+        images.value = res.data.data;
+    });
+};
 </script>
 
 <template>
@@ -20,7 +27,6 @@ getArticleList(paramsStore.params).then((res) => {
         <div
             v-for="a in articleList"
             :key="a.articleId"
-            @click="$router.push({ path: '/p/' + a.articleId })"
             class="flex flex-col mb-2 bg-white transition-all dark:bg-dark rounded-md shadow-sm hover:shadow-md p-4"
         >
             <div class="flex flex-row justify-start">
@@ -32,9 +38,18 @@ getArticleList(paramsStore.params).then((res) => {
                 </div>
             </div>
             <div class="my-4 text-left">
-                <span class="dark:text-gray-300 text-gray-800">{{ a.introduction }}</span>
+                <span
+                    @click="$router.push({ path: '/p/' + a.articleId })"
+                    class="dark:text-gray-300 text-gray-800 hover:text-blue-500 transition-all cursor-pointer"
+                >
+                    {{ a.introduction }}</span
+                >
             </div>
-            <div class="my-20">img</div>
+            <div class="my-20">
+                <!--                <div v-for="i in getImages(a.articleId, a.author.userId)">-->
+                <!--                    {{ i }}-->
+                <!--                </div>-->
+            </div>
             <div class="flex flex-row">
                 <LikeBtn />
                 <CommentsLink />

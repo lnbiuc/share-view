@@ -1,9 +1,10 @@
 <script setup lang="ts">
-import { useArticleParamsStore } from '../../pinia';
-import { ArticleListEntity, getArticleList } from '../../api/article/articleApi';
+import { useArticleParamsStore, useFilterAndSortStore } from '../../pinia';
+import { ArticleListEntity, getArticleList } from '../../api/articleApi';
 import { ref } from 'vue';
 import { formatTime } from '../../utils';
 import LikeBtn from '../index/articleList/LikeBtn.vue';
+import { storeToRefs } from 'pinia';
 
 const articleList = ref<ArticleListEntity[]>();
 const paramsStore = useArticleParamsStore();
@@ -13,6 +14,16 @@ getArticleList(paramsStore.params).then((res) => {
     articleList.value = res.data.data.data;
     isLoading.value = false;
 });
+
+const refStore = storeToRefs(useFilterAndSortStore())
+watch(refStore.filter, () => {
+
+})
+
+watch(refStore.sort, () => {
+
+})
+
 </script>
 
 <template>

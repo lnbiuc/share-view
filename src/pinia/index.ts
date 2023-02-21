@@ -1,5 +1,5 @@
 import { defineStore } from 'pinia';
-import { CountEntity, UserEntity } from '../api/login/loginApi';
+import { CountEntity, UserEntity } from '../api/loginApi';
 import { formatDate } from '../utils';
 
 export const useUserStore = defineStore('count', {
@@ -85,13 +85,19 @@ export const useFilterAndSortStore = defineStore('filterAndStore', {
         filter: <string>'hot',
         sort: <string>'releaseTime',
     }),
+    actions: {
+        setDefault() {
+            this.filter = 'hot';
+            this.sort = 'releaseTime';
+        },
+    },
 });
 
 export const useArticleParamsStore = defineStore('articleParams', {
     state: () => ({
         params: {
             pageNumber: 1,
-            pageSize: 7,
+            pageSize: 5,
             filterBy: {
                 authorId: '',
                 categoryId: 0,
@@ -110,7 +116,7 @@ export const useArticleParamsStore = defineStore('articleParams', {
         resetAll() {
             this.params = {
                 pageNumber: 1,
-                pageSize: 7,
+                pageSize: 5,
                 filterBy: {
                     authorId: '',
                     categoryId: 0,

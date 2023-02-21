@@ -1,4 +1,4 @@
-/*@tailwind base;*/
+@tailwind base;
 @tailwind components;
 @tailwind utilities;
 @layer utilities {
@@ -16,5 +16,11 @@
     }
     .text-dark {
         color: #c9d1d9;
+    }
+}
+
+@layer base {
+    ol {
+        list-style-type: unset;
     }
 }

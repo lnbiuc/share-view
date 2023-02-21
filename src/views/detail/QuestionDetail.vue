@@ -1,13 +1,13 @@
 <script setup lang="ts">
 import { useRouteParams } from '@vueuse/router';
-import { getOneArticle } from '../../api/article/articleApi';
+import { getOneArticle } from '../../api/articleApi';
 // @ts-ignore
 import Markdown from 'vue3-markdown-it';
 import { formatTime } from '../../utils';
 // @ts-ignore
 import { View } from '@element-plus/icons-vue';
-import { getAnswersByArticleId } from '../../api/Answer/answerApi';
-import { getCommentsById } from '../../api/comments/commentsApi';
+import { getAnswersByArticleId } from '../../api/answerApi';
+import { getCommentsById } from '../../api/commentsApi';
 import { ElMessage } from 'element-plus';
 // @ts-ignore
 import { ArrowDown } from '@element-plus/icons-vue';
@@ -60,14 +60,14 @@ const getComments = (id: string) => {
 const showComments = (id: string) => {
     return id == currentComments.value;
 };
-const currentSortSelect = ref('LIKE')
-const sortChange = (type:string) => {
+const currentSortSelect = ref('LIKE');
+const sortChange = (type: string) => {
     if (type == 'LIKE') {
-        currentSortSelect.value = 'LIKE'
+        currentSortSelect.value = 'LIKE';
     } else {
-        currentSortSelect.value = 'NEW'
+        currentSortSelect.value = 'NEW';
     }
-}
+};
 </script>
 
 <template>
@@ -134,13 +134,11 @@ const sortChange = (type:string) => {
                             <template #dropdown>
                                 <el-dropdown-menu>
                                     <el-dropdown-item
-                                        @click="sortChange('LIKE');"
+                                        @click="sortChange('LIKE')"
                                         :disabled="currentSortSelect === 'LIKE'"
                                         >LIKE
                                     </el-dropdown-item>
-                                    <el-dropdown-item
-                                        @click="sortChange('NEW')"
-                                        :disabled="currentSortSelect === 'NEW'"
+                                    <el-dropdown-item @click="sortChange('NEW')" :disabled="currentSortSelect === 'NEW'"
                                         >NEW
                                     </el-dropdown-item>
                                 </el-dropdown-menu>

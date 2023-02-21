@@ -4,6 +4,7 @@
             @click="$router.push({ path: '/' })"
             class="w-3/12 dark:text-gray-200 dark:hover:text-purple-300 text-lg font-bold flex justify-end transition-all items-center cursor-pointer hover:text-purple-400"
         >
+<!--            <i-ep-add-location />-->
             Share
         </div>
         <div class="flex justify-end w-5/12">
@@ -11,7 +12,7 @@
                 v-for="nav in navs"
                 :key="nav.name"
                 @click="$router.push({ path: nav.path })"
-                class="flex dark:text-gray-200 dark:hover:text-neutral-800 items-center px-1 mx-1 text-center hover:bg-purple-300 transition-all cursor-pointer"
+                class="flex dark:text-gray-200 dark:hover:text-neutral-800 items-center dark:hover:text-blue-500 dark:border-b-[black] dark:hover:border-blue-500 hover:text-blue-500 border-solider border-b-2 border-b-white hover:border-blue-500 px-1 mx-1 text-center transition-all cursor-pointer"
             >
                 <span class="m-1">{{ nav.name }}</span>
             </div>
@@ -32,7 +33,11 @@
                     <el-avatar shape="circle" :src="loginUser.avatar" />
                     <span class="ml-2 text-lg dark:text-gray-200">{{ loginUser.username }}</span
                     >&nbsp;
-                    <el-icon class="text-lg"><ArrowDown /></el-icon>
+                    <el-icon class="text-xl">
+                        <el-icon color="gray" size="25px" class="ml-2">
+                        <i-material-symbols-keyboard-double-arrow-down-rounded/>
+                        </el-icon>
+                    </el-icon>
                 </span>
                 <template #dropdown>
                     <el-dropdown-menu>
@@ -71,7 +76,7 @@
 
 <script setup lang="ts">
 import { ref, watch } from 'vue';
-import { UserEntity } from '../../api/login/loginApi';
+import { UserEntity } from '../../api/loginApi';
 import { useDialogControlStore, useThemeStore, useUserStore } from '../../pinia';
 import { ElMessage } from 'element-plus';
 // @ts-ignore

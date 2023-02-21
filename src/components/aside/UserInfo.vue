@@ -42,7 +42,7 @@
 <script setup lang="ts">
 import { useUserStore } from '../../pinia';
 import { onMounted, ref } from 'vue';
-import { UserEntity, CountEntity } from '../../api/login/loginApi';
+import { UserEntity, CountEntity } from '../../api/loginApi';
 
 interface userCount {
     user: UserEntity;
