@@ -2,7 +2,8 @@
 import { ref } from 'vue';
 // @ts-ignore
 import { ArrowDown } from '@element-plus/icons-vue';
-import { useFilterAndSortStore } from '../../pinia';
+import { useArticleParamsStore, useFilterAndSortStore } from '../../pinia';
+import { storeToRefs } from 'pinia';
 
 const filterByList: Array<{ name: string; value: string }> = [
     {
@@ -42,11 +43,17 @@ const currentSelectSort = ref(sortByList[0].name);
 const clickSelectSort = (sort: { name: string; value: string }) => {
     currentSelectSort.value = sort.value;
 };
+
+const paramsStore = useArticleParamsStore()
+
+// watch
 watch(currentSelectFilter, async () => {
     store.filter = currentSelectFilter.value;
+    paramsStore.filterChange(currentSelectFilter.value)
 });
 watch(currentSelectSort, async () => {
     store.sort = currentSelectSort.value;
+    paramsStore.sortChange(currentSelectSort.value)
 });
 const displayFilter = (val: string) => {
     if (val == 'releaseTime') {

@@ -52,52 +52,15 @@ const tagBgColor = (type: string) => {
     }
 };
 
-const store = useFilterAndSortStore();
-const refStore = storeToRefs(store);
-watch(refStore.filter, async () => {
-    const paramsStore = useArticleParamsStore();
-    paramsStore.filterChange(refStore.filter.value);
-    isLoad.value = false;
+const paramsStore = useArticleParamsStore()
+const refParamsStore = storeToRefs(paramsStore)
+watch(refParamsStore.params.value, () => {
     getArticleList(paramsStore.params).then((res) => {
         articleList.value = res.data.data.data;
         total.value = res.data.data.total
         isLoad.value = false;
     });
-});
-
-watch(refStore.sort, async () => {
-    if (refStore.sort.value == 'subscribed') {
-        const store = useUserStore();
-        if (store.isLogin) {
-            getArticleListBySubscribe(store.getUserId, 1, 10).then((res) => {
-                total.value = res.data.data.total
-                articleList.value = res.data.data.data;
-                isLoad.value = false;
-            });
-        } else {
-            const dialogControl = useDialogControlStore();
-            dialogControl.loginForm = true;
-            const refUserStore = storeToRefs(store);
-            watch(refUserStore.isLogin, async () => {
-                isLoad.value = true;
-                getArticleListBySubscribe(store.getUserId, 1, 10).then((res) => {
-                    isLoad.value = false;
-                    articleList.value = res.data.data.data;
-                    total.value = res.data.data.total
-                });
-            });
-        }
-        return;
-    }
-    const paramsStore = useArticleParamsStore();
-    paramsStore.sortChange(refStore.sort.value);
-    isLoad.value = true;
-    getArticleList(paramsStore.params).then((res) => {
-        articleList.value = res.data.data.data;
-        isLoad.value = false;
-        total.value = res.data.data.total
-    });
-});
+})
 
 const currentChange = (pageNumber:number) => {
     const store = useArticleParamsStore()
