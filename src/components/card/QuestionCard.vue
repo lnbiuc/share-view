@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { ref } from 'vue';
-import { ArticleListEntity, getArticleList } from '../../api/article/articleApi';
+import { ArticleListEntity, getArticleList } from '../../api/articleApi';
 import { useArticleParamsStore } from '../../pinia';
 // @ts-ignore
 import { View } from '@element-plus/icons-vue';

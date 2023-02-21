@@ -3,7 +3,7 @@
 import { InfoFilled, User, Lock, CircleCheck } from '@element-plus/icons-vue';
 // dialog control
 import { ref } from 'vue';
-import { CountEntity, login, loginParams, register, sendCode, UserEntity } from '../../api/login/loginApi';
+import { CountEntity, login, loginParams, register, sendCode, UserEntity } from '../../api/loginApi';
 import { ElMessage, FormInstance } from 'element-plus';
 import { useDialogControlStore, useUserStore } from '../../pinia';
 import { useLocalStorage, useSessionStorage, useStorage } from '@vueuse/core';

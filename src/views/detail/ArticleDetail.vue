@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { getOneArticle, ArticleContentEntity, likeArticle, addCollection } from '../../api/article/articleApi';
+import { getOneArticle, ArticleContentEntity, likeArticle, addCollection } from '../../api/articleApi';
 // @ts-ignore
 import { StarFilled, CaretTop, CaretBottom } from '@element-plus/icons-vue';
 // @ts-ignore

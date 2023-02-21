@@ -1,5 +1,5 @@
 import axios from 'axios';
-import { UserLiteEntity } from '../article/articleApi';
+import { UserLiteEntity } from './articleApi';
 
 export interface CategoryEntity {
     id: number;

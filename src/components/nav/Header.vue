@@ -71,7 +71,7 @@
 
 <script setup lang="ts">
 import { ref, watch } from 'vue';
-import { UserEntity } from '../../api/login/loginApi';
+import { UserEntity } from '../../api/loginApi';
 import { useDialogControlStore, useThemeStore, useUserStore } from '../../pinia';
 import { ElMessage } from 'element-plus';
 // @ts-ignore

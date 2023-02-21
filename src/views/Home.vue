@@ -15,7 +15,7 @@
 <script setup lang="ts">
 import { ref, watch } from 'vue';
 
-import { getViewHistory, ViewHistoryEntity } from '../api/article/articleApi';
+import { getViewHistory, ViewHistoryEntity } from '../api/articleApi';
 import { useComponentsDisplayControlStore, useUserStore } from '../pinia';
 import { storeToRefs } from 'pinia';
 

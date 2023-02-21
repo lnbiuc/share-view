@@ -1,5 +1,5 @@
 import { defineStore } from 'pinia';
-import { CountEntity, UserEntity } from '../api/login/loginApi';
+import { CountEntity, UserEntity } from '../api/loginApi';
 import { formatDate } from '../utils';
 
 export const useUserStore = defineStore('count', {

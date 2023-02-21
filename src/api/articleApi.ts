@@ -1,5 +1,5 @@
 import axios from 'axios';
-import { UserEntity } from '../login/loginApi';
+import { UserEntity } from './loginApi';
 export interface articleParams {
     pageNumber: number;
     pageSize: number;

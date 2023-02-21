@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ViewHistoryEntity } from '../../api/article/articleApi';
+import { ViewHistoryEntity } from '../../api/articleApi';
 import { formatTime } from '../../utils';
 // @ts-ignore
 import { User } from '@element-plus/icons-vue';
