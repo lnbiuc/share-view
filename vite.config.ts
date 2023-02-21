@@ -7,6 +7,7 @@ import { ElementPlusResolver } from 'unplugin-vue-components/resolvers';
 import { visualizer } from 'rollup-plugin-visualizer';
 import viteCompression from 'vite-plugin-compression';
 import Icons from 'unplugin-icons/vite';
+import IconsResolver from 'unplugin-icons/resolver';
 import path from 'path';
 
 // https://vitejs.dev/config/
@@ -24,11 +25,14 @@ export default defineConfig({
         visualizer(),
         AutoImport({
             imports: ['vue'],
-            resolvers: [ElementPlusResolver()],
+            resolvers: [ElementPlusResolver(), IconsResolver({ prefix: 'Icon' })],
             dts: path.resolve(pathSrc, 'auto-imports.d.ts'),
         }),
         Components({
-            resolvers: [ElementPlusResolver()],
+            resolvers: [
+                ElementPlusResolver(),
+                IconsResolver({ enabledCollections: ['ep', 'vscode-icons', 'logos', 'material-symbols', 'mdi'] }),
+            ],
             dts: path.resolve(pathSrc, 'components.d.ts'),
         }),
         splitVendorChunkPlugin(),
@@ -39,7 +43,9 @@ export default defineConfig({
             algorithm: 'gzip',
             ext: '.gz',
         }),
-        Icons(),
+        Icons({
+            autoInstall: true,
+        }),
     ],
     server: {
         proxy: {
