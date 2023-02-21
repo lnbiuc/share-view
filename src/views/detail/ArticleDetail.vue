@@ -146,14 +146,14 @@ const collect = () => {
         <div class="flex flex-col ls:w-8/12 lg:w-8/12 md:w-8/12 sm:w-full text-left">
             <div class="flex flex-col p-4 dark:bg-dark rounded-md bg-white shadow-sm">
                 <div class="flex flex-row items-center">
-                    <span class="rounded-full py-1 px-2 w-16 text-sm text-center" style="background-color: #79bbff">Article</span>
+                    <span class="rounded-full py-1 px-2 w-16 text-sm text-center" style="background-color: #79bbff"
+                        >Article</span
+                    >
                     <span class="ml-2">
-                    <el-tag
-                        class="mx-1"
-                        v-for="t in data.article.tags">
-                        {{ t.tagName }}
-                    </el-tag>
-                </span>
+                        <el-tag class="mx-1" v-for="t in data.article.tags">
+                            {{ t.tagName }}
+                        </el-tag>
+                    </span>
                 </div>
                 <div class="flex flex-col">
                     <span class="text-4xl dark:text-dark pt-4 pb-2">{{ data.article.title }}</span>

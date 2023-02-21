@@ -18,12 +18,12 @@ const prop = defineProps({
         >
             <div class="flex flex-row justify-start">
                 <span
-                    class="hover:text-blue-500 text-gray-600 transition-all cursor-pointer"
+                    class="hover:text-blue-500 text-gray-600 transition-all cursor-pointer truncate text-sm"
                     @click="$router.push({ path: '/a/' + a.articleId })"
                     >{{ a.title }}</span
                 >
             </div>
-            <div class="flex flex-row justify-start text-md text-gray-400">
+            <div class="flex flex-row justify-start text-md text-gray-400 truncate text-xs">
                 <span class="text-left my-1">{{ a.introduction }}</span>
             </div>
             <div class="flex flex-row justify-between text-sm text-gray-400">

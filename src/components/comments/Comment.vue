@@ -66,7 +66,7 @@ const hasChildren = (arr: []) => {
                                     @{{ z.toUser.username }}
                                 </span>
                                 :
-                                <div class="break-all my-2"> {{ z.content }} </div>
+                                <div class="break-all my-2">{{ z.content }}</div>
                             </div>
                             <div></div>
                             <div class="flex flex-row">

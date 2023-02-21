@@ -1,45 +1,49 @@
 <script setup lang="ts">
 // This starter template is using Vue 3 <script setup> SFCs
 // Check out https://vuejs.org/api/sfc-script-setup.html#script-setup
-import { storeToRefs } from "pinia";
-import { useThemeStore } from "./pinia";
+import { storeToRefs } from 'pinia';
+import { useThemeStore } from './pinia';
 
 const themeStore = storeToRefs(useThemeStore());
 watch(themeStore.isDark, () => {
-    const el = document.getElementById('markdown');
-    if (!el) {
-        return
-    }
-    if (themeStore.isDark.value) {
-        // @ts-ignore
-        el.removeAttribute('class');
-        // @ts-ignore
-        el.classList.add('markdown-body-dark');
-    } else {
-        // @ts-ignore
-        el.removeAttribute('class');
-        // @ts-ignore
-        el.classList.add('markdown-body-light');
-    }
+    const el = document.getElementsByName('markdown');
+    el.forEach((el) => {
+        if (!el) {
+            return;
+        }
+        if (themeStore.isDark.value) {
+            // @ts-ignore
+            el.removeAttribute('class');
+            // @ts-ignore
+            el.classList.add('markdown-body-dark');
+        } else {
+            // @ts-ignore
+            el.removeAttribute('class');
+            // @ts-ignore
+            el.classList.add('markdown-body-light');
+        }
+    });
 });
 onMounted(() => {
-    const el = document.getElementById('markdown');
+    const el = document.getElementsByName('markdown');
     const theme = localStorage.getItem('vueuse-color-scheme');
-    if (!el) {
-        return
-    }
-    if (theme && theme == 'dark') {
-        // @ts-ignore
-        el.removeAttribute('class');
-        // @ts-ignore
-        el.classList.add('markdown-body-dark');
-    } else {
-        // @ts-ignore
-        el.removeAttribute('class');
-        // @ts-ignore
-        el.classList.add('markdown-body-light');
-    }
-})
+    el.forEach((el) => {
+        if (!el) {
+            return;
+        }
+        if (theme && theme == 'dark') {
+            // @ts-ignore
+            el.removeAttribute('class');
+            // @ts-ignore
+            el.classList.add('markdown-body-dark');
+        } else {
+            // @ts-ignore
+            el.removeAttribute('class');
+            // @ts-ignore
+            el.classList.add('markdown-body-light');
+        }
+    });
+});
 </script>
 
 <template>

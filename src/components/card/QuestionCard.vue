@@ -33,9 +33,9 @@ getArticleList(paramsStore.params).then((res) => {
                 >
                     {{ a.title }}
                 </div>
-<!--                <div class="flex mb-4 text-gray-500 text-left leading-6">-->
-<!--                    {{ a.introduction }}-->
-<!--                </div>-->
+                <!--                <div class="flex mb-4 text-gray-500 text-left leading-6">-->
+                <!--                    {{ a.introduction }}-->
+                <!--                </div>-->
                 <div class="flex flex-row items-center">
                     <ShareLink />
                     <el-icon color="gray" class="ml-5 mr-1"><View /></el-icon>
