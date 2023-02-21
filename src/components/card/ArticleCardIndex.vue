@@ -19,18 +19,14 @@
             </div>
             <div class="flex flex-row m">
                 <div class="my-2 flex flex-row align-middle">
-                    <div
-                        class="mr-2 rounded-full m-auto transition-all type cursor-pointer"
-                        :style="{ backgroundColor: tagBgColor(a.type) }"
-                        style="width: 80px"
-                    >
-                        {{ a.type }}
-                    </div>
-                    <div
-                        class="text-lg hover:text-blue-500 py-1 cursor-pointer transition-all"
-                        @click="$router.push({ path: '/a/' + a.articleId })"
-                    >
-                        {{ a.title }}
+                    <div class="text-left">
+                        <span
+                            :style="{ backgroundColor: tagBgColor(a.type) }"
+                            class="px-2 mr-2 rounded-full m-auto transition-all type cursor-pointer">
+                            {{ a.type }}
+                        </span>
+                        <span class="text-lg hover:text-blue-500 py-1 cursor-pointer transition-all text-left"
+                              @click="$router.push({ path: '/a/' + a.articleId })">{{ a.title }}</span>
                     </div>
                 </div>
             </div>
@@ -60,11 +56,7 @@ import { ElMessage } from 'element-plus';
 const articleList = ref<ArticleListEntity[]>();
 const isEmpty = ref<boolean>(false);
 watch(articleList, () => {
-    if (articleList.value?.length == 0) {
-        isEmpty.value = true;
-    } else {
-        isEmpty.value = false;
-    }
+    isEmpty.value = articleList.value?.length == 0;
 });
 // init request
 const data = ref({

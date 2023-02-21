@@ -18,3 +18,9 @@
         color: #c9d1d9;
     }
 }
+
+@layer base {
+    ol {
+        list-style-type: unset;
+    }
+}

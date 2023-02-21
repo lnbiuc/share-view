@@ -120,26 +120,29 @@ const collect = () => {
             <div class="fixed top-1/4">
                 <div class="flex flex-col">
                     <el-icon
-                        class="p-0.5 my-2 cursor-pointer bg-gray-200 rounded-full hover:bg-gray-300 transition-all dark:bg-dark dark:hover:bg-gray-800"
+                        class="p-1.5 my-2 cursor-pointer bg-gray-200 rounded-full hover:bg-gray-300 transition-all dark:bg-dark dark:hover:bg-gray-800"
                         size="40px"
                         color="gray"
                         @click="like(1)"
-                        ><CaretTop
-                    /></el-icon>
+                        >
+                        <i-mdi-like/>
+                    </el-icon>
                     <el-icon
-                        class="p-0.5 my-2 cursor-pointer bg-gray-200 rounded-full hover:bg-gray-300 transition-all dark:bg-dark dark:hover:bg-gray-800"
+                        class="p-1.5 my-2 cursor-pointer bg-gray-200 rounded-full hover:bg-gray-300 transition-all dark:bg-dark dark:hover:bg-gray-800"
                         size="40px"
                         color="gray"
                         @click="like(0)"
-                        ><CaretBottom
-                    /></el-icon>
+                        >
+                        <i-mdi-dislike/>
+                    </el-icon>
                     <el-icon
-                        class="p-0.5 my-2 cursor-pointer bg-gray-200 rounded-full hover:bg-gray-300 transition-all dark:bg-dark dark:hover:bg-gray-800"
+                        class="p-1.5 my-2 cursor-pointer bg-gray-200 rounded-full hover:bg-gray-300 transition-all dark:bg-dark dark:hover:bg-gray-800"
                         size="40px"
                         color="gray"
                         @click="collect"
-                        ><StarFilled /></el-icon
-                    >&nbsp;
+                        >
+                        <i-mdi-bookmark-box-multiple/>
+                    </el-icon>
                 </div>
             </div>
         </div>
