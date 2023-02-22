@@ -1,13 +1,13 @@
 <script setup lang="ts">
 import { useRouteParams } from '@vueuse/router';
-import { getOneArticle } from '../../api/articleApi';
+import { getOneArticle } from '../../axios/api/articleApi';
 // @ts-ignore
 import Markdown from 'vue3-markdown-it';
 import { formatTime } from '../../utils';
 // @ts-ignore
 import { View } from '@element-plus/icons-vue';
-import { getAnswersByArticleId } from '../../api/answerApi';
-import { getCommentsById } from '../../api/commentsApi';
+import { getAnswersByArticleId } from '../../axios/api/answerApi';
+import { getCommentsById } from '../../axios/api/commentsApi';
 import { ElMessage } from 'element-plus';
 // @ts-ignore
 import { ArrowDown } from '@element-plus/icons-vue';

@@ -1,5 +1,5 @@
 import { defineStore, storeToRefs } from 'pinia';
-import { CountEntity, UserEntity } from '../api/loginApi';
+import { CountEntity, UserEntity } from '../axios/api/loginApi';
 import { formatDate } from '../utils';
 
 export const useUserStore = defineStore('count', {

@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { useArticleParamsStore, useFilterAndSortStore } from '../../pinia';
-import { ArticleListEntity, getArticleList } from '../../api/articleApi';
+import { ArticleListEntity, getArticleList } from '../../axios/api/articleApi';
 import { ref } from 'vue';
 import { formatTime } from '../../utils';
 import LikeBtn from '../index/articleList/LikeBtn.vue';

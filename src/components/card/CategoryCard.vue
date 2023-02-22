@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { CategoryEntity, getCategoryList } from '../../api/categoryApi';
+import { CategoryEntity, getCategoryList } from '../../axios/api/categoryApi';
 import { formatTime } from '../../utils';
 import { ref } from 'vue';
 

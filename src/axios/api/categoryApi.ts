@@ -1,4 +1,4 @@
-import axios from '../axios/index';
+import axios from '../index';
 import { UserLiteEntity } from './articleApi';
 
 export interface CategoryEntity {

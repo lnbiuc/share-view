@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { getOneArticle, ArticleContentEntity, likeArticle, addCollection } from '../../api/articleApi';
+import { getOneArticle, ArticleContentEntity, likeArticle, addCollection } from '../../axios/api/articleApi';
 // @ts-ignore
 import { StarFilled, CaretTop, CaretBottom } from '@element-plus/icons-vue';
 // @ts-ignore
@@ -11,6 +11,7 @@ import { useThemeStore, useUserStore } from '../../pinia';
 import { storeToRefs } from 'pinia';
 import { renderToc } from '../../utils';
 import { formatTime } from '../../utils';
+import { subscribeAuthorByAuthorId } from '../../axios/api/subscribeApi';
 const articleId = useRouteParams<string>('articleId');
 const data = ref<ArticleContentEntity>({
     'article': {
@@ -110,6 +111,18 @@ const collect = () => {
         }
     });
 };
+const disableSubscribeBtn = ref<boolean>(false)
+const handlerSubscribe = (userId:string) => {
+    subscribeAuthorByAuthorId(userId).then(res => {
+        if (res.data.code == 200) {
+            disableSubscribeBtn.value = true
+            ElMessage.success("SUCCESS")
+        } else if (res.data.code == 722) {
+            disableSubscribeBtn.value = true
+            ElMessage.warning("you already subscribed")
+        }
+    })
+}
 </script>
 
 <template>
@@ -182,7 +195,7 @@ const collect = () => {
                         </div>
                     </div>
                     <div class="flex items-center mb-4">
-                        <el-button>Subscribe</el-button>
+                        <el-button @click="handlerSubscribe(data.author.userId)" type="primary" :disabled="disableSubscribeBtn">Subscribe Author</el-button>
                     </div>
                 </div>
                 <el-divider>CONTENT</el-divider>

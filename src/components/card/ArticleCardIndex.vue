@@ -2,7 +2,7 @@
 import ShareLink from '../index/articleList/ShareLink.vue';
 import CollectionLink from '../index/articleList/CollectionLink.vue';
 import CommentsLink from '../index/articleList/CommentsLink.vue';
-import { ArticleListEntity, getArticleList } from '../../api/articleApi';
+import { ArticleListEntity, getArticleList } from '../../axios/api/articleApi';
 import { formatTime } from '../../utils';
 import { ref } from 'vue';
 import { useArticleParamsStore } from '../../pinia';

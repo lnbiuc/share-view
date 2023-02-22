@@ -1,9 +1,9 @@
 <script setup lang="ts">
 import { ref } from 'vue';
-import { ArticleListEntity, getArticleList } from '../../api/articleApi';
+import { ArticleListEntity, getArticleList } from '../../axios/api/articleApi';
 import { useArticleParamsStore } from '../../pinia';
 import { formatTime } from '../../utils';
-import { getPostImages } from '../../api/postApi';
+import { getPostImages } from '../../axios/api/postApi';
 
 const articleList = ref<ArticleListEntity[]>();
 const paramsStore = useArticleParamsStore();
