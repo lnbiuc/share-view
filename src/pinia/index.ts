@@ -109,6 +109,7 @@ export const useArticleParamsStore = defineStore('articleParams', {
             sortBy: {
                 hot: false,
                 releaseTime: true,
+                subscribe: false,
             },
         },
     }),
@@ -128,6 +129,7 @@ export const useArticleParamsStore = defineStore('articleParams', {
                 sortBy: {
                     hot: true,
                     releaseTime: false,
+                    subscribe: false,
                 },
             };
         },
@@ -159,8 +161,9 @@ export const useArticleParamsStore = defineStore('articleParams', {
         },
         resetSort() {
             this.params.sortBy = {
-                hot: false,
-                releaseTime: true,
+                hot: true,
+                releaseTime: false,
+                subscribe: false,
             };
         },
         sortChange(value: string) {
@@ -168,9 +171,15 @@ export const useArticleParamsStore = defineStore('articleParams', {
             if (value === 'hot') {
                 this.params.sortBy.hot = true;
                 this.params.sortBy.releaseTime = false;
+                this.params.sortBy.subscribe = false;
             } else if (value === 'new') {
                 this.params.sortBy.hot = false;
                 this.params.sortBy.releaseTime = true;
+                this.params.sortBy.subscribe = false;
+            } else if (value === 'subscribed') {
+                this.params.sortBy.hot = false;
+                this.params.sortBy.releaseTime = false;
+                this.params.sortBy.subscribe = true;
             }
         },
         filterTypeChange(type: number) {

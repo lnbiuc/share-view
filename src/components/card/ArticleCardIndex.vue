@@ -28,6 +28,7 @@ const data = ref({
     sortBy: {
         hot: true,
         releaseTime: false,
+        subscribe: false,
     },
 });
 
