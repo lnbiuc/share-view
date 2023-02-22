@@ -1,5 +1,5 @@
 import { format } from 'timeago.js';
-import { articleParams, getArticleListBySubscribe } from '../api/articleApi';
+import { articleParams, getArticleListBySubscribe } from '../axios/api/articleApi';
 import { useDialogControlStore, useUserStore } from '../pinia';
 import { storeToRefs } from 'pinia';
 

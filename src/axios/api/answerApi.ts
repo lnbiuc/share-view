@@ -1,4 +1,4 @@
-import axios from '../axios/index';
+import axios from '../index';
 
 export function getAnswersByArticleId(articleId: string, num: number, size: number, order: string) {
     return axios({

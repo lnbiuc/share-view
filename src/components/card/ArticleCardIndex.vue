@@ -2,10 +2,10 @@
 import ShareLink from '../index/articleList/ShareLink.vue';
 import CollectionLink from '../index/articleList/CollectionLink.vue';
 import CommentsLink from '../index/articleList/CommentsLink.vue';
-import { ArticleListEntity, getArticleList, getArticleListBySubscribe } from '../../api/articleApi';
+import { ArticleListEntity, getArticleList } from '../../axios/api/articleApi';
 import { formatTime } from '../../utils';
 import { ref } from 'vue';
-import { useArticleParamsStore, useDialogControlStore, useFilterAndSortStore, useUserStore } from '../../pinia';
+import { useArticleParamsStore } from '../../pinia';
 import { storeToRefs } from 'pinia';
 
 const articleList = ref<ArticleListEntity[]>();
@@ -28,14 +28,17 @@ const data = ref({
     sortBy: {
         hot: true,
         releaseTime: false,
+        subscribe: false,
     },
 });
 
-const total = ref(0)
+const total = ref(0);
 const isLoad = ref<boolean>(true);
+const paramsStore = useArticleParamsStore();
+paramsStore.filterTypeChange(0);
 getArticleList(data.value).then((res) => {
     articleList.value = res.data.data.data;
-    total.value = res.data.data.total
+    total.value = res.data.data.total;
     isLoad.value = false;
 });
 
@@ -51,27 +54,25 @@ const tagBgColor = (type: string) => {
             return '#fab6b6';
     }
 };
-
-const paramsStore = useArticleParamsStore()
-const refParamsStore = storeToRefs(paramsStore)
+// request when change
+const refParamsStore = storeToRefs(paramsStore);
 watch(refParamsStore.params.value, () => {
     getArticleList(paramsStore.params).then((res) => {
         articleList.value = res.data.data.data;
-        total.value = res.data.data.total
+        total.value = res.data.data.total;
         isLoad.value = false;
     });
-})
+});
 
-const currentChange = (pageNumber:number) => {
-    const store = useArticleParamsStore()
+const currentChange = (pageNumber: number) => {
+    const store = useArticleParamsStore();
     store.params.pageNumber = pageNumber;
     getArticleList(store.params).then((res) => {
         articleList.value = res.data.data.data;
         isLoad.value = false;
-        total.value = res.data.data.total
+        total.value = res.data.data.total;
     });
-}
-
+};
 </script>
 <template>
     <div class="text-center">
@@ -97,11 +98,15 @@ const currentChange = (pageNumber:number) => {
                     <div class="text-left">
                         <span
                             :style="{ backgroundColor: tagBgColor(a.type) }"
-                            class="px-2 mr-2 rounded-full m-auto transition-all type cursor-pointer">
+                            class="px-2 mr-2 rounded-full m-auto transition-all type cursor-pointer"
+                        >
                             {{ a.type }}
                         </span>
-                        <span class="text-lg hover:text-blue-500 py-1 cursor-pointer transition-all text-left"
-                              @click="$router.push({ path: '/a/' + a.articleId })">{{ a.title }}</span>
+                        <span
+                            class="text-lg hover:text-blue-500 py-1 cursor-pointer transition-all text-left"
+                            @click="$router.push({ path: '/a/' + a.articleId })"
+                            >{{ a.title }}</span
+                        >
                     </div>
                 </div>
             </div>
@@ -111,10 +116,15 @@ const currentChange = (pageNumber:number) => {
             <div class="flex flex-row justify-start">
                 <CommentsLink :comments="a.comments" />
                 <ShareLink />
-                <CollectionLink />
+                <CollectionLink :id="a.articleId" :type="0" />
             </div>
         </div>
-        <Pagination :page-size="data.pageSize" :total="total" @numberChange="currentChange"/>
+        <Pagination
+            :page-size="paramsStore.params.pageSize"
+            :total="total"
+            @numberChange="currentChange"
+            :hide-on-single-page="true"
+        />
     </div>
 </template>
 <style scoped>

@@ -1,14 +1,14 @@
 <template>
     <div class="text-center flex m-auto flex-row sm:max-w-screen-sm md:max-w-screen-md ls:max-w-screen-ls lg:max-w-4xl">
         <div class="flex flex-col w-8/12">
-            <SortBy />
+            <SortBy v-if="$route.path !== '/c'" />
             <router-view />
         </div>
         <div class="flex flex-col w-4/12">
             <el-affix :offset="0">
                 <UserInfo v-if="store.isLogin" :user="store.user" :count="store.count" />
                 <OptionMenu />
-<!--                <ViewHistory v-if="showHistory.viewHistoryDisplay && store.isLogin" :history-list="historyList" />-->
+                <!--                <ViewHistory v-if="showHistory.viewHistoryDisplay && store.isLogin" :history-list="historyList" />-->
             </el-affix>
         </div>
     </div>
@@ -17,7 +17,7 @@
 <script setup lang="ts">
 import { ref, watch } from 'vue';
 
-import { getViewHistory, ViewHistoryEntity } from '../api/articleApi';
+import { getViewHistory, ViewHistoryEntity } from '../axios/api/articleApi';
 import { useComponentsDisplayControlStore, useUserStore } from '../pinia';
 import { storeToRefs } from 'pinia';
 

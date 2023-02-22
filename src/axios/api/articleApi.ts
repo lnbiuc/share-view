@@ -1,4 +1,4 @@
-import axios from '../axios/index';
+import axios from '../index';
 import { UserEntity } from './loginApi';
 export interface articleParams {
     pageNumber: number;
@@ -35,6 +35,7 @@ export interface ArticleListEntity {
     views: number;
     like: number;
     comments: number;
+    images: string[];
 }
 
 export interface TagEntity {
@@ -68,6 +69,7 @@ export interface ArticleEntity {
     views: number;
     like: number;
     comments: number;
+    images: string[];
 }
 
 export interface ArticleContentEntity {
@@ -132,28 +134,5 @@ export function getOneArticle(articleId: string) {
     return axios({
         url: '../api/article/' + articleId,
         method: 'GET',
-    });
-}
-
-export function likeArticle(id: string, type: number, userId: string, isLike: number) {
-    return axios({
-        url: '../api/like/' + id,
-        method: 'GET',
-        params: {
-            type: type,
-            userId: userId,
-            isLike: isLike,
-        },
-    });
-}
-
-export function addCollection(id: string, userId: string, type: number) {
-    return axios({
-        url: '../api/collect/' + id,
-        method: 'GET',
-        params: {
-            userId: userId,
-            type: type,
-        },
     });
 }

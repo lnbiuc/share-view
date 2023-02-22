@@ -1,4 +1,4 @@
-import axios from '../axios/index';
+import axios from '../index';
 
 export function getCommentsById(id: string, num: number, size: number) {
     return axios({

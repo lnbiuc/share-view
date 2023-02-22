@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { ref } from 'vue';
-import { ArticleListEntity, getArticleList } from '../../api/articleApi';
+import { ArticleListEntity, getArticleList } from '../../axios/api/articleApi';
 import { useArticleParamsStore } from '../../pinia';
 import { formatTime } from '../../utils';
 

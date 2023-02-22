@@ -24,6 +24,7 @@ axios.interceptors.response.use((response) => {
         NProgress.done();
         return response;
     } else {
+        // show when dev
         ElMessage.error(JSON.stringify(response.data));
     }
     NProgress.done();

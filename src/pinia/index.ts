@@ -1,5 +1,5 @@
-import { defineStore } from 'pinia';
-import { CountEntity, UserEntity } from '../api/loginApi';
+import { defineStore, storeToRefs } from 'pinia';
+import { CountEntity, UserEntity } from '../axios/api/loginApi';
 import { formatDate } from '../utils';
 
 export const useUserStore = defineStore('count', {
@@ -109,6 +109,7 @@ export const useArticleParamsStore = defineStore('articleParams', {
             sortBy: {
                 hot: false,
                 releaseTime: true,
+                subscribe: false,
             },
         },
     }),
@@ -128,6 +129,7 @@ export const useArticleParamsStore = defineStore('articleParams', {
                 sortBy: {
                     hot: true,
                     releaseTime: false,
+                    subscribe: false,
                 },
             };
         },
@@ -136,9 +138,16 @@ export const useArticleParamsStore = defineStore('articleParams', {
                 authorId: '',
                 categoryId: 0,
                 tagId: 0,
-                type: 0,
+                type: this.params.filterBy.type,
                 startDay: '',
                 endDay: '',
+            };
+        },
+        resetSort() {
+            this.params.sortBy = {
+                hot: true,
+                releaseTime: false,
+                subscribe: false,
             };
         },
         filterChange(value: string) {
@@ -157,20 +166,36 @@ export const useArticleParamsStore = defineStore('articleParams', {
                 this.params.filterBy.endDay = '';
             }
         },
-        resetSort() {
-            this.params.sortBy = {
-                hot: false,
-                releaseTime: true,
-            };
-        },
         sortChange(value: string) {
             this.resetSort();
             if (value === 'hot') {
                 this.params.sortBy.hot = true;
                 this.params.sortBy.releaseTime = false;
+                this.params.sortBy.subscribe = false;
             } else if (value === 'new') {
                 this.params.sortBy.hot = false;
                 this.params.sortBy.releaseTime = true;
+                this.params.sortBy.subscribe = false;
+            } else if (value === 'subscribed') {
+                const userStore = useUserStore();
+                // if not login, open login dialog, watch login status, request after finish login
+                // else change store and get response
+                if (userStore.isLogin == false) {
+                    const loginStore = useDialogControlStore();
+                    loginStore.loginForm = true;
+                    const refUserStore = storeToRefs(userStore);
+                    watch(refUserStore.isLogin, () => {
+                        if (userStore.isLogin == true) {
+                            this.params.sortBy.hot = false;
+                            this.params.sortBy.releaseTime = false;
+                            this.params.sortBy.subscribe = true;
+                        }
+                    });
+                } else {
+                    this.params.sortBy.hot = false;
+                    this.params.sortBy.releaseTime = false;
+                    this.params.sortBy.subscribe = true;
+                }
             }
         },
         filterTypeChange(type: number) {

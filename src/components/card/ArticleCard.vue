@@ -1,34 +1,48 @@
 <script setup lang="ts">
 import { useArticleParamsStore, useFilterAndSortStore } from '../../pinia';
-import { ArticleListEntity, getArticleList } from '../../api/articleApi';
+import { ArticleListEntity, getArticleList } from '../../axios/api/articleApi';
 import { ref } from 'vue';
 import { formatTime } from '../../utils';
 import LikeBtn from '../index/articleList/LikeBtn.vue';
 import { storeToRefs } from 'pinia';
 
+const total = ref(0);
+const isLoad = ref<boolean>(true);
 const articleList = ref<ArticleListEntity[]>();
 const paramsStore = useArticleParamsStore();
+
 paramsStore.filterTypeChange(1);
-const isLoading = ref<boolean>(true);
 getArticleList(paramsStore.params).then((res) => {
     articleList.value = res.data.data.data;
-    isLoading.value = false;
+    isLoad.value = false;
 });
 
-const refStore = storeToRefs(useFilterAndSortStore())
-watch(refStore.filter, () => {
+// request when change
+const refParamsStore = storeToRefs(paramsStore);
+watch(refParamsStore.params.value, () => {
+    isLoad.value = true;
+    getArticleList(paramsStore.params).then((res) => {
+        articleList.value = res.data.data.data;
+        total.value = res.data.data.total;
+        isLoad.value = false;
+    });
+});
 
-})
-
-watch(refStore.sort, () => {
-
-})
-
+const currentChange = (pageNumber: number) => {
+    const store = useArticleParamsStore();
+    store.params.pageNumber = pageNumber;
+    isLoad.value = true;
+    getArticleList(store.params).then((res) => {
+        articleList.value = res.data.data.data;
+        isLoad.value = false;
+        total.value = res.data.data.total;
+    });
+};
 </script>
 
 <template>
-    <Loading :is-loading="isLoading" />
-    <div class="m-2" v-if="!isLoading">
+    <Loading :is-loading="isLoad" />
+    <div class="m-2" v-if="!isLoad">
         <div
             class="mb-2 bg-white dark:bg-dark rounded-md shadow-sm hover:shadow-md p-4 transition-all"
             v-for="a in articleList"
@@ -55,11 +69,17 @@ watch(refStore.sort, () => {
                 </div>
             </div>
             <div class="flex flex-row">
-                <LikeBtn />
+                <LikeBtn :type="0" :id="a.articleId" />
                 <CommentsLink />
                 <ShareLink />
-                <CollectionLink />
+                <CollectionLink :type="0" :id="a.articleId" />
             </div>
         </div>
+        <Pagination
+            :page-size="paramsStore.params.pageSize"
+            :total="total"
+            :hide-on-single-page="true"
+            @numberChange="currentChange"
+        />
     </div>
 </template>

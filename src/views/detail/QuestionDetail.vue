@@ -1,13 +1,13 @@
 <script setup lang="ts">
 import { useRouteParams } from '@vueuse/router';
-import { getOneArticle } from '../../api/articleApi';
+import { getOneArticle } from '../../axios/api/articleApi';
 // @ts-ignore
 import Markdown from 'vue3-markdown-it';
 import { formatTime } from '../../utils';
 // @ts-ignore
 import { View } from '@element-plus/icons-vue';
-import { getAnswersByArticleId } from '../../api/answerApi';
-import { getCommentsById } from '../../api/commentsApi';
+import { getAnswersByArticleId } from '../../axios/api/answerApi';
+import { getCommentsById } from '../../axios/api/commentsApi';
 import { ElMessage } from 'element-plus';
 // @ts-ignore
 import { ArrowDown } from '@element-plus/icons-vue';
@@ -76,9 +76,13 @@ const sortChange = (type: string) => {
         class="flex flex-row text-center justify-center md:m-auto md:my-2 ls:m-auto ls:my-2 lg:m-auto lg:my-2 sm:m-2 rounded-sm sm:max-w-full md:max-w-full ls:max-w-screen-ls lg:max-w-screen-lg"
     >
         <Loading :is-loading="isLoading" />
-        <div class="flex flex-col w-8/12 mr-2 text-left bg-white p-4 dark:bg-dark rounded-md shadow-sm">
+        <div class="flex flex-col w-9/12 mr-2 text-left bg-white p-4 dark:bg-dark rounded-md shadow-sm">
             <div class="flex flex-row items-center">
-                <span class="rounded-full py-1 px-2 w-16 text-sm" style="background-color: #95d475">Question</span>
+                <span
+                    class="rounded-full py-1 px-2 w-20 text-sm dark:text-neutral-800"
+                    style="background-color: #95d475"
+                    >Question</span
+                >
                 <span class="ml-2">
                     <el-tag class="mx-1" v-for="t in ques.article.tags">
                         {{ t.tagName }}
@@ -98,27 +102,19 @@ const sortChange = (type: string) => {
                 &nbsp;·&nbsp;
                 <span> Publish On {{ ques.author.ipAddr }} </span>
             </div>
+            <div class="my-2">
+                <el-button>Subscribe This Question</el-button>
+                <el-button>Add To Collect</el-button>
+            </div>
             <div class="mb-4">
-                <el-divider>QUESTION</el-divider>
                 <Markdown name="markdown" class="markdown-body-light" :source="ques.article.content" />
             </div>
-            <div class="flex flex-row justify-between items-center">
-                <div class="my-2">
-                    <el-button>Subscribe This Question</el-button>
-                    <el-button>Add To Collect</el-button>
-                </div>
-                <div>
-                    <span class="flex flex-row items-center text-gray-500">
-                        <el-icon class="mx-2"><View /></el-icon>
-                        Views
-                        {{ ques.article.views }}
-                    </span>
-                </div>
-            </div>
             <div class="mb-2 mt-3">
-                <div class="flex flex-row justify-between items-center p-2 rounded-md">
+                <div class="flex flex-row justify-between items-center p-2 rounded-md bg-gray-100 dark:bg-neutral-800">
                     <div class="flex flex justify-start items-center">
-                        <span class="text-neutral-700 bg-gray-200 px-3 py-1 rounded-full text-sm">
+                        <span
+                            class="text-neutral-700 bg-gray-200 px-3 py-1 rounded-full text-sm dark:bg-dark dark:text-gray-300"
+                        >
                             Total:{{ total }} Answers
                         </span>
                         <el-button class="ml-4" type="primary">Create Answer</el-button>
@@ -146,8 +142,8 @@ const sortChange = (type: string) => {
                         </el-dropdown>
                     </span>
                 </div>
-                <el-divider>ANSWERS</el-divider>
                 <div class="my-4" v-for="a in answer">
+                    <el-divider />
                     <div class="flex flex-row justify-between items-center">
                         <el-avatar :src="a.author.avatar" size="large" class="flex-start w-2/12" />
                         <div class="flex flex-col w-8/12 mr-4">
@@ -172,7 +168,7 @@ const sortChange = (type: string) => {
                         </span>
                     </div>
                     <div class="mt-3 flex flex-row">
-                        <LikeBtn />
+                        <LikeBtn :id="a.id" :type="2" />
                         <CommentsLink :comments="toLength(a.comments)" @click="getComments(a.id)" />
                         <ShareLink />
                         <CollectionLink />
@@ -184,6 +180,10 @@ const sortChange = (type: string) => {
                 <el-divider />
             </div>
         </div>
-        <div class="flex flex-col w-4/12"></div>
+        <div class="flex flex-col w-3/12">
+            <el-affix :offset="10">
+                <UserInfoLite :user="ques.author" />
+            </el-affix>
+        </div>
     </div>
 </template>

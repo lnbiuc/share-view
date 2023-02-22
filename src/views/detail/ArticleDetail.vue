@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { getOneArticle, ArticleContentEntity, likeArticle, addCollection } from '../../api/articleApi';
+import { getOneArticle, ArticleContentEntity } from '../../axios/api/articleApi';
 // @ts-ignore
 import { StarFilled, CaretTop, CaretBottom } from '@element-plus/icons-vue';
 // @ts-ignore
@@ -11,6 +11,10 @@ import { useThemeStore, useUserStore } from '../../pinia';
 import { storeToRefs } from 'pinia';
 import { renderToc } from '../../utils';
 import { formatTime } from '../../utils';
+import { subscribeAuthorByAuthorId } from '../../axios/api/subscribeApi';
+import { likeArticle } from '../../axios/api/likesApi';
+import { addCollection } from '../../axios/api/collectApi';
+import UserInfoLite from '../../components/aside/UserInfoLite.vue';
 const articleId = useRouteParams<string>('articleId');
 const data = ref<ArticleContentEntity>({
     'article': {
@@ -85,13 +89,9 @@ onBeforeUnmount(() => {
     // @ts-ignore
     tocbot.destroy();
 });
-const subStrTime = (time: string) => {
-    return time.substring(0, 10);
-};
 
 const like = (isLike: number) => {
-    const store = useUserStore();
-    likeArticle(articleId.value, 0, store.getUserId, isLike).then((res) => {
+    likeArticle(articleId.value, 0, isLike).then((res) => {
         if (res.data.code == 200) {
             ElMessage.success('SUCCESS');
         } else {
@@ -101,12 +101,23 @@ const like = (isLike: number) => {
 };
 
 const collect = () => {
-    const store = useUserStore();
-    addCollection(articleId.value, store.getUserId, 0).then((res) => {
+    addCollection(articleId.value, 0).then((res) => {
         if (res.data.code == 200) {
             ElMessage.success('SUCCESS');
         } else {
             ElMessage.warning(res.data.message);
+        }
+    });
+};
+const disableSubscribeBtn = ref<boolean>(false);
+const handlerSubscribe = (userId: string) => {
+    subscribeAuthorByAuthorId(userId).then((res) => {
+        if (res.data.code == 200) {
+            disableSubscribeBtn.value = true;
+            ElMessage.success('SUCCESS');
+        } else if (res.data.code == 722) {
+            disableSubscribeBtn.value = true;
+            ElMessage.warning('you already subscribed');
         }
     });
 };
@@ -116,37 +127,37 @@ const collect = () => {
     <div
         class="article flex flex-row text-center justify-center md:m-auto md:my-2 ls:m-auto ls:my-2 lg:m-auto lg:my-2 sm:m-2 rounded-sm sm:max-w-full md:max-w-full ls:max-w-screen-ls lg:max-w-screen-lg"
     >
-        <div class="ls:flex lg:flex md:flex sm:hidden justify-center w-1/12 relative items-center">
-            <div class="fixed top-1/4">
-                <div class="flex flex-col">
-                    <el-icon
-                        class="p-1.5 my-2 cursor-pointer bg-gray-200 rounded-full hover:bg-gray-300 transition-all dark:bg-dark dark:hover:bg-gray-800"
-                        size="40px"
-                        color="gray"
-                        @click="like(1)"
-                        >
-                        <i-mdi-like/>
-                    </el-icon>
-                    <el-icon
-                        class="p-1.5 my-2 cursor-pointer bg-gray-200 rounded-full hover:bg-gray-300 transition-all dark:bg-dark dark:hover:bg-gray-800"
-                        size="40px"
-                        color="gray"
-                        @click="like(0)"
-                        >
-                        <i-mdi-dislike/>
-                    </el-icon>
-                    <el-icon
-                        class="p-1.5 my-2 cursor-pointer bg-gray-200 rounded-full hover:bg-gray-300 transition-all dark:bg-dark dark:hover:bg-gray-800"
-                        size="40px"
-                        color="gray"
-                        @click="collect"
-                        >
-                        <i-mdi-bookmark-box-multiple/>
-                    </el-icon>
-                </div>
-            </div>
-        </div>
-        <div class="flex flex-col ls:w-8/12 lg:w-8/12 md:w-8/12 sm:w-full text-left">
+        <!--        <div class="ls:flex lg:flex md:flex sm:hidden justify-center w-1/12 relative items-center">-->
+        <!--            <div class="fixed top-1/4">-->
+        <!--                <div class="flex flex-col">-->
+        <!--                    <el-icon-->
+        <!--                        class="p-1.5 my-2 cursor-pointer bg-gray-200 rounded-full hover:bg-gray-300 transition-all dark:bg-dark dark:hover:bg-gray-800"-->
+        <!--                        size="40px"-->
+        <!--                        color="gray"-->
+        <!--                        @click="like(1)"-->
+        <!--                    >-->
+        <!--                        <i-mdi-like />-->
+        <!--                    </el-icon>-->
+        <!--                    <el-icon-->
+        <!--                        class="p-1.5 my-2 cursor-pointer bg-gray-200 rounded-full hover:bg-gray-300 transition-all dark:bg-dark dark:hover:bg-gray-800"-->
+        <!--                        size="40px"-->
+        <!--                        color="gray"-->
+        <!--                        @click="like(0)"-->
+        <!--                    >-->
+        <!--                        <i-mdi-dislike />-->
+        <!--                    </el-icon>-->
+        <!--                    <el-icon-->
+        <!--                        class="p-1.5 my-2 cursor-pointer bg-gray-200 rounded-full hover:bg-gray-300 transition-all dark:bg-dark dark:hover:bg-gray-800"-->
+        <!--                        size="40px"-->
+        <!--                        color="gray"-->
+        <!--                        @click="collect"-->
+        <!--                    >-->
+        <!--                        <i-mdi-bookmark-box-multiple />-->
+        <!--                    </el-icon>-->
+        <!--                </div>-->
+        <!--            </div>-->
+        <!--        </div>-->
+        <div class="flex flex-col ls:w-9/12 lg:w-9/12 md:w-9/12 sm:w-full text-left">
             <div class="flex flex-col p-4 dark:bg-dark rounded-md bg-white shadow-sm">
                 <div class="flex flex-row items-center">
                     <span class="rounded-full py-1 px-2 w-16 text-sm text-center" style="background-color: #79bbff"
@@ -182,7 +193,12 @@ const collect = () => {
                         </div>
                     </div>
                     <div class="flex items-center mb-4">
-                        <el-button>Subscribe</el-button>
+                        <el-button
+                            @click="handlerSubscribe(data.author.userId)"
+                            type="primary"
+                            :disabled="disableSubscribeBtn"
+                            >Subscribe Author</el-button
+                        >
                     </div>
                 </div>
                 <el-divider>CONTENT</el-divider>
@@ -198,23 +214,7 @@ const collect = () => {
         </div>
         <div class="flex ls:flex lg:flex md:hidden sm:hidden flex-col ml-2 w-3/12">
             <Loading :is-loading="isLoading" />
-            <div v-if="!isLoading" class="bg-white rounded-md shadow-sm mb-2 p-4 dark:bg-dark">
-                <el-avatar :size="130" :src="data.author.avatar" />
-                <div class="flex flex-col text-left">
-                    <span class="text-xl font-bold mt-1 dark:text-dark">{{ data.author.username }}</span>
-                    <span class="text-sm text-gray-400">@{{ data.author.userId }}</span>
-                    <span class="text-sm text-gray-400 my-1">Signature:{{ data.author.signature }}</span>
-                    <span class="text-sm text-gray-400"
-                        >Register:
-                        <span v-text="formatTime(data.author.registerTime)"></span>
-                    </span>
-                    <span class="text-sm text-gray-400"
-                        >Last Online:
-                        <span v-text="subStrTime(data.author.lastLogin)"></span>
-                    </span>
-                    <span class="text-sm text-gray-400">IP:{{ data.author.ipAddr }}</span>
-                </div>
-            </div>
+            <UserInfoLite :user="data.author" />
             <el-affix :offset="10">
                 <div
                     class="js-toc text-left text-md transition-all dark:bg-dark dark:text-dark bg-white rounded-md shadow-sm px-4 py-2 overflow-auto break-all"
