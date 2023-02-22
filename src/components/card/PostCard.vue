@@ -12,12 +12,12 @@ getArticleList(paramsStore.params).then((res) => {
     isLoading.value = false;
 });
 
-const { proxy }: any = getCurrentInstance()
-const showImages = (img:[]) => {
+const { proxy }: any = getCurrentInstance();
+const showImages = (img: string[]) => {
     proxy.$viewerApi({
-        images: img
-    })
-}
+        images: img,
+    });
+};
 </script>
 
 <template>
@@ -45,17 +45,18 @@ const showImages = (img:[]) => {
                 >
             </div>
             <div class="mb-4 flex flex-row flex-wrap justify-center items-center">
-                <div v-for="i in a.images"
-                     @click="showImages(a.images)"
-                     :style="{background: 'url(' + i +') center center no-repeat'}"
-                     class="img m-2 shadow-sm hover:shadow-md rounded-md transition-all">
-                </div>
+                <div
+                    v-for="i in a.images"
+                    @click="showImages(a.images)"
+                    :style="{ background: 'url(' + i + ') center center no-repeat' }"
+                    class="img m-2 shadow-sm hover:shadow-md rounded-md transition-all"
+                ></div>
             </div>
             <div class="flex flex-row">
-                <LikeBtn :type="0" :id="a.articleId"/>
+                <LikeBtn :type="0" :id="a.articleId" />
                 <CommentsLink />
                 <ShareLink />
-                <CollectionLink :type="0" :id="a.articleId"/>
+                <CollectionLink :type="0" :id="a.articleId" />
             </div>
         </div>
     </div>
@@ -68,8 +69,8 @@ const showImages = (img:[]) => {
     position: relative;
 }
 
-.img:after{
-    content:'';
-    display:block;
+.img:after {
+    content: '';
+    display: block;
 }
 </style>

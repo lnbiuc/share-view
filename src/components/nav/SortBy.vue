@@ -44,16 +44,16 @@ const clickSelectSort = (sort: { name: string; value: string }) => {
     currentSelectSort.value = sort.value;
 };
 
-const paramsStore = useArticleParamsStore()
+const paramsStore = useArticleParamsStore();
 
 // watch
 watch(currentSelectFilter, async () => {
     store.filter = currentSelectFilter.value;
-    paramsStore.filterChange(currentSelectFilter.value)
+    paramsStore.filterChange(currentSelectFilter.value);
 });
 watch(currentSelectSort, async () => {
     store.sort = currentSelectSort.value;
-    paramsStore.sortChange(currentSelectSort.value)
+    paramsStore.sortChange(currentSelectSort.value);
 });
 const displayFilter = (val: string) => {
     if (val == 'releaseTime') {
@@ -64,13 +64,13 @@ const displayFilter = (val: string) => {
     return 'Mouth';
 };
 
-const taggerColor = (s:{ name: string; value: string }) => {
+const taggerColor = (s: { name: string; value: string }) => {
     if (s.value == currentSelectSort.value) {
-        return '#79bbff'
+        return '#79bbff';
     } else {
-        return 'unset'
+        return 'unset';
     }
-}
+};
 </script>
 
 <template>
@@ -82,7 +82,7 @@ const taggerColor = (s:{ name: string; value: string }) => {
                 class="m-2 cursor-pointer hover:border-blue-500 hover:border-b-2 transition-all"
                 v-for="s in sortByList"
                 @click="clickSelectSort(s)"
-                :style="{color : taggerColor(s)}"
+                :style="{ color: taggerColor(s) }"
                 >{{ s.name }}</span
             >
         </div>

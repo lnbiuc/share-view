@@ -2,19 +2,19 @@
 const props = defineProps({
     total: {
         type: Number,
-        default: 0
+        default: 0,
     },
     pageSize: {
         type: Number,
-        default: 0
-    }
-})
+        default: 0,
+    },
+});
 
 const emit = defineEmits(['numberChange']);
 
-const currentChange = (pageNumber:number) => {
-    emit('numberChange', pageNumber)
-}
+const currentChange = (pageNumber: number) => {
+    emit('numberChange', pageNumber);
+};
 </script>
 
 <template>
@@ -24,7 +24,7 @@ const currentChange = (pageNumber:number) => {
             background
             @current-change="currentChange"
             layout="prev, pager, next"
-            :total="total" />
+            :total="total"
+        />
     </div>
 </template>
-

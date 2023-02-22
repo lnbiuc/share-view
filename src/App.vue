@@ -58,7 +58,7 @@ body {
 }
 
 #nprogress .bar {
-    background: #409EFF !important;
+    background: #409eff !important;
     height: 3px !important;
 }
 

@@ -8,7 +8,7 @@ import { storeToRefs } from 'pinia';
 const articleList = ref<ArticleListEntity[]>();
 const paramsStore = useArticleParamsStore();
 paramsStore.filterTypeChange(2);
-const total = ref(0)
+const total = ref(0);
 const isLoad = ref<boolean>(true);
 getArticleList(paramsStore.params).then((res) => {
     articleList.value = res.data.data.data;
@@ -16,26 +16,26 @@ getArticleList(paramsStore.params).then((res) => {
 });
 
 // request when change
-const refParamsStore = storeToRefs(paramsStore)
+const refParamsStore = storeToRefs(paramsStore);
 watch(refParamsStore.params.value, () => {
-    isLoad.value = true
+    isLoad.value = true;
     getArticleList(paramsStore.params).then((res) => {
         articleList.value = res.data.data.data;
-        total.value = res.data.data.total
+        total.value = res.data.data.total;
         isLoad.value = false;
     });
-})
+});
 
-const currentChange = (pageNumber:number) => {
-    const store = useArticleParamsStore()
+const currentChange = (pageNumber: number) => {
+    const store = useArticleParamsStore();
     store.params.pageNumber = pageNumber;
-    isLoad.value = true
+    isLoad.value = true;
     getArticleList(store.params).then((res) => {
         articleList.value = res.data.data.data;
         isLoad.value = false;
-        total.value = res.data.data.total
+        total.value = res.data.data.total;
     });
-}
+};
 </script>
 
 <template>
@@ -64,6 +64,6 @@ const currentChange = (pageNumber:number) => {
                 </div>
             </div>
         </div>
-        <Pagination :page-size="paramsStore.params.pageSize" :total="total" @numberChange="currentChange"/>
+        <Pagination :page-size="paramsStore.params.pageSize" :total="total" @numberChange="currentChange" />
     </div>
 </template>

@@ -111,18 +111,18 @@ const collect = () => {
         }
     });
 };
-const disableSubscribeBtn = ref<boolean>(false)
-const handlerSubscribe = (userId:string) => {
-    subscribeAuthorByAuthorId(userId).then(res => {
+const disableSubscribeBtn = ref<boolean>(false);
+const handlerSubscribe = (userId: string) => {
+    subscribeAuthorByAuthorId(userId).then((res) => {
         if (res.data.code == 200) {
-            disableSubscribeBtn.value = true
-            ElMessage.success("SUCCESS")
+            disableSubscribeBtn.value = true;
+            ElMessage.success('SUCCESS');
         } else if (res.data.code == 722) {
-            disableSubscribeBtn.value = true
-            ElMessage.warning("you already subscribed")
+            disableSubscribeBtn.value = true;
+            ElMessage.warning('you already subscribed');
         }
-    })
-}
+    });
+};
 </script>
 
 <template>
@@ -137,24 +137,24 @@ const handlerSubscribe = (userId:string) => {
                         size="40px"
                         color="gray"
                         @click="like(1)"
-                        >
-                        <i-mdi-like/>
+                    >
+                        <i-mdi-like />
                     </el-icon>
                     <el-icon
                         class="p-1.5 my-2 cursor-pointer bg-gray-200 rounded-full hover:bg-gray-300 transition-all dark:bg-dark dark:hover:bg-gray-800"
                         size="40px"
                         color="gray"
                         @click="like(0)"
-                        >
-                        <i-mdi-dislike/>
+                    >
+                        <i-mdi-dislike />
                     </el-icon>
                     <el-icon
                         class="p-1.5 my-2 cursor-pointer bg-gray-200 rounded-full hover:bg-gray-300 transition-all dark:bg-dark dark:hover:bg-gray-800"
                         size="40px"
                         color="gray"
                         @click="collect"
-                        >
-                        <i-mdi-bookmark-box-multiple/>
+                    >
+                        <i-mdi-bookmark-box-multiple />
                     </el-icon>
                 </div>
             </div>
@@ -195,7 +195,12 @@ const handlerSubscribe = (userId:string) => {
                         </div>
                     </div>
                     <div class="flex items-center mb-4">
-                        <el-button @click="handlerSubscribe(data.author.userId)" type="primary" :disabled="disableSubscribeBtn">Subscribe Author</el-button>
+                        <el-button
+                            @click="handlerSubscribe(data.author.userId)"
+                            type="primary"
+                            :disabled="disableSubscribeBtn"
+                            >Subscribe Author</el-button
+                        >
                     </div>
                 </div>
                 <el-divider>CONTENT</el-divider>

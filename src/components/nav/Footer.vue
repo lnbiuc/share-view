@@ -2,17 +2,17 @@
     <div class="hover:shadow-md shadow-sm transition-all py-2 mt-2 dark:bg-dark bg-white w-auto text-sm">
         <div class="w-auto text-center m-auto">
             <span
-            >Copyright © 2023 ·
+                >Copyright © 2023 ·
                 <a href="https://vio.vin/" class="hover:text-blue-500 transition-all cursor-pointer">Violet</a>
                 ·
                 <a href="https://beian.miit.gov.cn/" class="hover:text-blue-500 transition-all cursor-pointer"
-                >陕ICP备2021015553号-1</a
+                    >陕ICP备2021015553号-1</a
                 >
             </span>
         </div>
         <div class="w-auto text-center m-auto">
-            <div class="flex flex-row justify-center mt-2"
-            >Powered by
+            <div class="flex flex-row justify-center mt-2">
+                Powered by
                 <a class="hover:scale-110 cursor-pointer transition-all">
                     <i-logos-spring-icon class="m-1" />
                 </a>

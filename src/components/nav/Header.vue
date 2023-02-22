@@ -4,7 +4,7 @@
             @click="$router.push({ path: '/' })"
             class="w-3/12 dark:text-gray-200 dark:hover:text-purple-300 text-lg font-bold flex justify-end transition-all items-center cursor-pointer hover:text-purple-400"
         >
-<!--            <i-ep-add-location />-->
+            <!--            <i-ep-add-location />-->
             Share
         </div>
         <div class="flex justify-end w-5/12">
@@ -35,7 +35,7 @@
                     >&nbsp;
                     <el-icon class="text-xl">
                         <el-icon color="gray" size="25px" class="ml-2">
-                        <i-material-symbols-keyboard-double-arrow-down-rounded/>
+                            <i-material-symbols-keyboard-double-arrow-down-rounded />
                         </el-icon>
                     </el-icon>
                 </span>
