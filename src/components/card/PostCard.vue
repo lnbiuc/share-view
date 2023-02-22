@@ -3,8 +3,6 @@ import { ref } from 'vue';
 import { ArticleListEntity, getArticleList } from '../../axios/api/articleApi';
 import { useArticleParamsStore } from '../../pinia';
 import { formatTime } from '../../utils';
-import { getPostImages } from '../../axios/api/postApi';
-
 const articleList = ref<ArticleListEntity[]>();
 const paramsStore = useArticleParamsStore();
 paramsStore.filterTypeChange(3);
@@ -13,21 +11,22 @@ getArticleList(paramsStore.params).then((res) => {
     articleList.value = res.data.data.data;
     isLoading.value = false;
 });
-const getImages = (articleId: string, userId: string) => {
-    const images = ref<string[]>();
-    getPostImages(articleId, userId).then((res) => {
-        images.value = res.data.data;
-    });
-};
+
+const { proxy }: any = getCurrentInstance()
+const showImages = (img:[]) => {
+    proxy.$viewerApi({
+        images: img
+    })
+}
 </script>
 
 <template>
     <Loading :is-loading="isLoading" />
-    <div class="m-2" v-if="!isLoading">
+    <div class="mr-2 ml-2" v-if="!isLoading">
         <div
             v-for="a in articleList"
             :key="a.articleId"
-            class="flex flex-col mb-2 bg-white transition-all dark:bg-dark rounded-md shadow-sm hover:shadow-md p-4"
+            class="flex flex-col mt-2 bg-white transition-all dark:bg-dark rounded-md shadow-sm hover:shadow-md p-4"
         >
             <div class="flex flex-row justify-start">
                 <div class="flex flex-row justify-center items-center">
@@ -45,17 +44,32 @@ const getImages = (articleId: string, userId: string) => {
                     {{ a.introduction }}</span
                 >
             </div>
-            <div class="my-20">
-                <!--                <div v-for="i in getImages(a.articleId, a.author.userId)">-->
-                <!--                    {{ i }}-->
-                <!--                </div>-->
+            <div class="mb-4 flex flex-row flex-wrap justify-center items-center">
+                <div v-for="i in a.images"
+                     @click="showImages(a.images)"
+                     :style="{background: 'url(' + i +') center center no-repeat'}"
+                     class="img m-2 shadow-sm hover:shadow-md rounded-md transition-all">
+                </div>
             </div>
             <div class="flex flex-row">
-                <LikeBtn />
+                <LikeBtn :type="0" :id="a.articleId"/>
                 <CommentsLink />
                 <ShareLink />
-                <CollectionLink />
+                <CollectionLink :type="0" :id="a.articleId"/>
             </div>
         </div>
     </div>
 </template>
+<style scoped>
+.img {
+    background-size: cover;
+    width: 45%;
+    height: 150px;
+    position: relative;
+}
+
+.img:after{
+    content:'';
+    display:block;
+}
+</style>

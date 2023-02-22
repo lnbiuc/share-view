@@ -35,6 +35,7 @@ export interface ArticleListEntity {
     views: number;
     like: number;
     comments: number;
+    images: string[];
 }
 
 export interface TagEntity {
