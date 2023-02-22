@@ -69,6 +69,7 @@ export interface ArticleEntity {
     views: number;
     like: number;
     comments: number;
+    images: string[];
 }
 
 export interface ArticleContentEntity {

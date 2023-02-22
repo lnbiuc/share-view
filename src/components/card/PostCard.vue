@@ -3,13 +3,14 @@ import { ref } from 'vue';
 import { ArticleListEntity, getArticleList } from '../../axios/api/articleApi';
 import { useArticleParamsStore } from '../../pinia';
 import { formatTime } from '../../utils';
+import { storeToRefs } from 'pinia';
 const articleList = ref<ArticleListEntity[]>();
 const paramsStore = useArticleParamsStore();
 paramsStore.filterTypeChange(3);
-const isLoading = ref<boolean>(true);
+const isLoad = ref<boolean>(true);
 getArticleList(paramsStore.params).then((res) => {
     articleList.value = res.data.data.data;
-    isLoading.value = false;
+    isLoad.value = false;
 });
 
 const { proxy }: any = getCurrentInstance();
@@ -18,11 +19,34 @@ const showImages = (img: string[]) => {
         images: img,
     });
 };
+
+// request when change
+const total = ref(0);
+const refParamsStore = storeToRefs(paramsStore);
+watch(refParamsStore.params.value, () => {
+    isLoad.value = true;
+    getArticleList(paramsStore.params).then((res) => {
+        articleList.value = res.data.data.data;
+        total.value = res.data.data.total;
+        isLoad.value = false;
+    });
+});
+
+const currentChange = (pageNumber: number) => {
+    const store = useArticleParamsStore();
+    store.params.pageNumber = pageNumber;
+    isLoad.value = true;
+    getArticleList(store.params).then((res) => {
+        articleList.value = res.data.data.data;
+        isLoad.value = false;
+        total.value = res.data.data.total;
+    });
+};
 </script>
 
 <template>
-    <Loading :is-loading="isLoading" />
-    <div class="mr-2 ml-2" v-if="!isLoading">
+    <Loading :is-loading="isLoad" />
+    <div class="mr-2 ml-2" v-if="!isLoad">
         <div
             v-for="a in articleList"
             :key="a.articleId"
@@ -59,6 +83,12 @@ const showImages = (img: string[]) => {
                 <CollectionLink :type="0" :id="a.articleId" />
             </div>
         </div>
+        <Pagination
+            :page-size="paramsStore.params.pageSize"
+            :total="total"
+            :hide-on-single-page="true"
+            @numberChange="currentChange"
+        />
     </div>
 </template>
 <style scoped>

@@ -64,6 +64,11 @@ const currentChange = (pageNumber: number) => {
                 </div>
             </div>
         </div>
-        <Pagination :page-size="paramsStore.params.pageSize" :total="total" @numberChange="currentChange" />
+        <Pagination
+            :page-size="paramsStore.params.pageSize"
+            :total="total"
+            @numberChange="currentChange"
+            :hide-on-single-page="true"
+        />
     </div>
 </template>

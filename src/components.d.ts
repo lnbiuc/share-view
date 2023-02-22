@@ -53,9 +53,6 @@ declare module '@vue/runtime-core' {
     IMaterialSymbolsKeyboardDoubleArrowDownRounded: typeof import('~icons/material-symbols/keyboard-double-arrow-down-rounded')['default']
     IMaterialSymbolsShare: typeof import('~icons/material-symbols/share')['default']
     IMaterialSymbolsStar: typeof import('~icons/material-symbols/star')['default']
-    IMdiBookmarkBoxMultiple: typeof import('~icons/mdi/bookmark-box-multiple')['default']
-    IMdiDislike: typeof import('~icons/mdi/dislike')['default']
-    IMdiLike: typeof import('~icons/mdi/like')['default']
     LikeBtn: typeof import('./components/index/articleList/LikeBtn.vue')['default']
     Loading: typeof import('./components/others/Loading.vue')['default']
     LoginForm: typeof import('./components/dialog/LoginForm.vue')['default']
@@ -71,6 +68,7 @@ declare module '@vue/runtime-core' {
     SortBy: typeof import('./components/nav/SortBy.vue')['default']
     TagCard: typeof import('./components/card/TagCard.vue')['default']
     UserInfo: typeof import('./components/aside/UserInfo.vue')['default']
+    UserInfoLite: typeof import('./components/aside/UserInfoLite.vue')['default']
     VideoCard: typeof import('./components/card/VideoCard.vue')['default']
     ViewHistory: typeof import('./components/aside/ViewHistory.vue')['default']
   }

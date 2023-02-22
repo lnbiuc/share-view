@@ -1,7 +1,7 @@
 <template>
     <div class="text-center flex m-auto flex-row sm:max-w-screen-sm md:max-w-screen-md ls:max-w-screen-ls lg:max-w-4xl">
         <div class="flex flex-col w-8/12">
-            <SortBy />
+            <SortBy v-if="$route.path !== '/c'" />
             <router-view />
         </div>
         <div class="flex flex-col w-4/12">

@@ -119,7 +119,12 @@ const currentChange = (pageNumber: number) => {
                 <CollectionLink :id="a.articleId" :type="0" />
             </div>
         </div>
-        <Pagination :page-size="data.pageSize" :total="total" @numberChange="currentChange" />
+        <Pagination
+            :page-size="paramsStore.params.pageSize"
+            :total="total"
+            @numberChange="currentChange"
+            :hide-on-single-page="true"
+        />
     </div>
 </template>
 <style scoped>
