@@ -138,9 +138,16 @@ export const useArticleParamsStore = defineStore('articleParams', {
                 authorId: '',
                 categoryId: 0,
                 tagId: 0,
-                type: 0,
+                type: this.params.filterBy.type,
                 startDay: '',
                 endDay: '',
+            };
+        },
+        resetSort() {
+            this.params.sortBy = {
+                hot: true,
+                releaseTime: false,
+                subscribe: false,
             };
         },
         filterChange(value: string) {
@@ -158,13 +165,6 @@ export const useArticleParamsStore = defineStore('articleParams', {
                 this.params.filterBy.startDay = '';
                 this.params.filterBy.endDay = '';
             }
-        },
-        resetSort() {
-            this.params.sortBy = {
-                hot: true,
-                releaseTime: false,
-                subscribe: false,
-            };
         },
         sortChange(value: string) {
             this.resetSort();

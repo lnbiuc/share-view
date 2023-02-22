@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { getOneArticle, ArticleContentEntity, likeArticle, addCollection } from '../../axios/api/articleApi';
+import { getOneArticle, ArticleContentEntity } from '../../axios/api/articleApi';
 // @ts-ignore
 import { StarFilled, CaretTop, CaretBottom } from '@element-plus/icons-vue';
 // @ts-ignore
@@ -12,6 +12,8 @@ import { storeToRefs } from 'pinia';
 import { renderToc } from '../../utils';
 import { formatTime } from '../../utils';
 import { subscribeAuthorByAuthorId } from '../../axios/api/subscribeApi';
+import { likeArticle } from '../../axios/api/likesApi';
+import { addCollection } from '../../axios/api/collectApi';
 const articleId = useRouteParams<string>('articleId');
 const data = ref<ArticleContentEntity>({
     'article': {
@@ -91,8 +93,7 @@ const subStrTime = (time: string) => {
 };
 
 const like = (isLike: number) => {
-    const store = useUserStore();
-    likeArticle(articleId.value, 0, store.getUserId, isLike).then((res) => {
+    likeArticle(articleId.value, 0, isLike).then((res) => {
         if (res.data.code == 200) {
             ElMessage.success('SUCCESS');
         } else {
@@ -102,8 +103,7 @@ const like = (isLike: number) => {
 };
 
 const collect = () => {
-    const store = useUserStore();
-    addCollection(articleId.value, store.getUserId, 0).then((res) => {
+    addCollection(articleId.value, 0).then((res) => {
         if (res.data.code == 200) {
             ElMessage.success('SUCCESS');
         } else {

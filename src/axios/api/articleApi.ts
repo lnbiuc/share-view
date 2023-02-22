@@ -134,26 +134,3 @@ export function getOneArticle(articleId: string) {
         method: 'GET',
     });
 }
-
-export function likeArticle(id: string, type: number, userId: string, isLike: number) {
-    return axios({
-        url: '../api/like/' + id,
-        method: 'GET',
-        params: {
-            type: type,
-            userId: userId,
-            isLike: isLike,
-        },
-    });
-}
-
-export function addCollection(id: string, userId: string, type: number) {
-    return axios({
-        url: '../api/collect/' + id,
-        method: 'GET',
-        params: {
-            userId: userId,
-            type: type,
-        },
-    });
-}

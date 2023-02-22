@@ -39,6 +39,8 @@ declare module '@vue/runtime-core' {
     ElTooltip: typeof import('element-plus/es')['ElTooltip']
     Footer: typeof import('./components/nav/Footer.vue')['default']
     Header: typeof import('./components/nav/Header.vue')['default']
+    IEpCaretBottom: typeof import('~icons/ep/caret-bottom')['default']
+    IEpCaretTop: typeof import('~icons/ep/caret-top')['default']
     ILogosElement: typeof import('~icons/logos/element')['default']
     ILogosMysql: typeof import('~icons/logos/mysql')['default']
     ILogosRedis: typeof import('~icons/logos/redis')['default']

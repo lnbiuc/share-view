@@ -34,6 +34,8 @@ const data = ref({
 
 const total = ref(0)
 const isLoad = ref<boolean>(true);
+const paramsStore = useArticleParamsStore()
+paramsStore.filterTypeChange(0);
 getArticleList(data.value).then((res) => {
     articleList.value = res.data.data.data;
     total.value = res.data.data.total
@@ -52,8 +54,7 @@ const tagBgColor = (type: string) => {
             return '#fab6b6';
     }
 };
-
-const paramsStore = useArticleParamsStore()
+// request when change
 const refParamsStore = storeToRefs(paramsStore)
 watch(refParamsStore.params.value, () => {
     getArticleList(paramsStore.params).then((res) => {
@@ -112,7 +113,7 @@ const currentChange = (pageNumber:number) => {
             <div class="flex flex-row justify-start">
                 <CommentsLink :comments="a.comments" />
                 <ShareLink />
-                <CollectionLink />
+                <CollectionLink :id="a.articleId" :type="0"/>
             </div>
         </div>
         <Pagination :page-size="data.pageSize" :total="total" @numberChange="currentChange"/>
