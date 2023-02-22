@@ -166,6 +166,10 @@ export const useArticleParamsStore = defineStore('articleParams', {
                 this.params.filterBy.endDay = '';
             }
         },
+        filterChangeCategory(categoryId: string) {
+            this.resetFilter();
+            this.params.filterBy.categoryId = parseInt(categoryId);
+        },
         sortChange(value: string) {
             this.resetSort();
             if (value === 'hot') {

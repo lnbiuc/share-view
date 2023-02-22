@@ -3,7 +3,7 @@ import { useArticleParamsStore, useFilterAndSortStore } from '../../pinia';
 import { ArticleListEntity, getArticleList } from '../../axios/api/articleApi';
 import { ref } from 'vue';
 import { formatTime } from '../../utils';
-import LikeBtn from '../index/articleList/LikeBtn.vue';
+import LikeBtn from '../../components/index/articleList/LikeBtn.vue';
 import { storeToRefs } from 'pinia';
 
 const total = ref(0);
