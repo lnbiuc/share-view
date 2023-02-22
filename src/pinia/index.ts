@@ -1,4 +1,4 @@
-import { defineStore } from 'pinia';
+import { defineStore, storeToRefs } from 'pinia';
 import { CountEntity, UserEntity } from '../api/loginApi';
 import { formatDate } from '../utils';
 
@@ -177,9 +177,25 @@ export const useArticleParamsStore = defineStore('articleParams', {
                 this.params.sortBy.releaseTime = true;
                 this.params.sortBy.subscribe = false;
             } else if (value === 'subscribed') {
-                this.params.sortBy.hot = false;
-                this.params.sortBy.releaseTime = false;
-                this.params.sortBy.subscribe = true;
+                const userStore = useUserStore();
+                // if not login, open login dialog, watch login status, request after finish login
+                // else change store and get response
+                if (userStore.isLogin == false) {
+                    const loginStore = useDialogControlStore();
+                    loginStore.loginForm = true;
+                    const refUserStore = storeToRefs(userStore);
+                    watch(refUserStore.isLogin, () => {
+                        if (userStore.isLogin == true) {
+                            this.params.sortBy.hot = false;
+                            this.params.sortBy.releaseTime = false;
+                            this.params.sortBy.subscribe = true;
+                        }
+                    });
+                } else {
+                    this.params.sortBy.hot = false;
+                    this.params.sortBy.releaseTime = false;
+                    this.params.sortBy.subscribe = true;
+                }
             }
         },
         filterTypeChange(type: number) {
