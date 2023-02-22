@@ -5,20 +5,20 @@ import { ref } from 'vue';
 
 const data = ref<CategoryEntity[]>([
     {
-        'id': 3005,
-        'name': 'Others',
+        'id': 0,
+        'name': '',
         // @ts-ignore
         'author': {
-            'userId': 'GU89dH56',
-            'username': 'user2',
-            'signature': 'Arcade cabinets retro Melon dots maza Pac-Man chase red Namco fruit wocka paku-paku 1980',
-            'avatar': 'https://cube.elemecdn.com/0/88/03b0d39583f48206768a7534e55bcpng.png',
-            'level': 3,
-            'ipAddr': '西安',
+            'userId': '',
+            'username': '',
+            'signature': '',
+            'avatar': '',
+            'level': 0,
+            'ipAddr': '',
         },
-        'introduction': 'Others',
-        'avatar': 'https://user-pic-1308549476.cos.ap-nanjing.myqcloud.com/pic/41541676523794720.png',
-        'createTime': '2023-01-28 10:15:27',
+        'introduction': '',
+        'avatar': '',
+        'createTime': '',
     },
 ]);
 const isLoading = ref<boolean>(true);

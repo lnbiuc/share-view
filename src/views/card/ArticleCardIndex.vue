@@ -1,7 +1,7 @@
 <script setup lang="ts">
-import ShareLink from '../index/articleList/ShareLink.vue';
-import CollectionLink from '../index/articleList/CollectionLink.vue';
-import CommentsLink from '../index/articleList/CommentsLink.vue';
+import ShareLink from '../../components/index/articleList/ShareLink.vue';
+import CollectionLink from '../../components/index/articleList/CollectionLink.vue';
+import CommentsLink from '../../components/index/articleList/CommentsLink.vue';
 import { ArticleListEntity, getArticleList } from '../../axios/api/articleApi';
 import { formatTime } from '../../utils';
 import { ref } from 'vue';
@@ -98,7 +98,7 @@ const currentChange = (pageNumber: number) => {
                     <div class="text-left">
                         <span
                             :style="{ backgroundColor: tagBgColor(a.type) }"
-                            class="px-2 mr-2 rounded-full m-auto transition-all type cursor-pointer"
+                            class="px-2 mr-2 rounded-full m-auto transition-all type cursor-pointer dark:text-light"
                         >
                             {{ a.type }}
                         </span>

@@ -8,9 +8,6 @@ export {}
 declare module '@vue/runtime-core' {
   export interface GlobalComponents {
     AnswerQuestionForm: typeof import('./components/dialog/AnswerQuestionForm.vue')['default']
-    ArticleCard: typeof import('./components/card/ArticleCard.vue')['default']
-    ArticleCardIndex: typeof import('./components/card/ArticleCardIndex.vue')['default']
-    CategoryCard: typeof import('./components/card/CategoryCard.vue')['default']
     CollectionLink: typeof import('./components/index/articleList/CollectionLink.vue')['default']
     Comment: typeof import('./components/comments/Comment.vue')['default']
     CommentForm: typeof import('./components/dialog/CommentForm.vue')['default']
@@ -59,17 +56,13 @@ declare module '@vue/runtime-core' {
     NoResult: typeof import('./components/others/NoResult.vue')['default']
     OptionMenu: typeof import('./components/aside/OptionMenu.vue')['default']
     Pagination: typeof import('./components/index/articleList/Pagination.vue')['default']
-    PostCard: typeof import('./components/card/PostCard.vue')['default']
     PublishArticleForm: typeof import('./components/dialog/PublishArticleForm.vue')['default']
-    QuestionCard: typeof import('./components/card/QuestionCard.vue')['default']
     RouterLink: typeof import('vue-router')['RouterLink']
     RouterView: typeof import('vue-router')['RouterView']
     ShareLink: typeof import('./components/index/articleList/ShareLink.vue')['default']
     SortBy: typeof import('./components/nav/SortBy.vue')['default']
-    TagCard: typeof import('./components/card/TagCard.vue')['default']
     UserInfo: typeof import('./components/aside/UserInfo.vue')['default']
     UserInfoLite: typeof import('./components/aside/UserInfoLite.vue')['default']
-    VideoCard: typeof import('./components/card/VideoCard.vue')['default']
     ViewHistory: typeof import('./components/aside/ViewHistory.vue')['default']
   }
 }
