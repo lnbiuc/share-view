@@ -8,6 +8,7 @@ import { visualizer } from 'rollup-plugin-visualizer';
 import viteCompression from 'vite-plugin-compression';
 import Icons from 'unplugin-icons/vite';
 import IconsResolver from 'unplugin-icons/resolver';
+// import prismjs from 'vite-plugin-prismjs';
 import path from 'path';
 
 // https://vitejs.dev/config/
@@ -46,6 +47,9 @@ export default defineConfig({
         Icons({
             autoInstall: true,
         }),
+        // prismjs({
+        //     languages: 'all',
+        // }),
     ],
     server: {
         proxy: {

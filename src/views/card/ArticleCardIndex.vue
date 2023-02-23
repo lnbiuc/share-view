@@ -7,7 +7,7 @@ import { formatTime } from '../../utils';
 import { ref } from 'vue';
 import { useArticleParamsStore } from '../../pinia';
 import { storeToRefs } from 'pinia';
-
+import { useRouter } from 'vue-router';
 const articleList = ref<ArticleListEntity[]>();
 const isEmpty = ref<boolean>(false);
 watch(articleList, () => {
@@ -73,6 +73,20 @@ const currentChange = (pageNumber: number) => {
         total.value = res.data.data.total;
     });
 };
+
+const router = useRouter();
+const handleToArticleDetail = (type: string, articleId: string) => {
+    switch (type) {
+        case 'Article':
+            return router.push({ path: '/a/' + articleId });
+        case 'Question':
+            return router.push({ path: '/q/' + articleId });
+        case 'Post':
+            return router.push({ path: '/p/' + articleId });
+        case 'Video':
+            return router.push({ path: '/v/' + articleId });
+    }
+};
 </script>
 <template>
     <div class="text-center">
@@ -104,7 +118,7 @@ const currentChange = (pageNumber: number) => {
                         </span>
                         <span
                             class="text-lg hover:text-blue-500 py-1 cursor-pointer transition-all text-left"
-                            @click="$router.push({ path: '/a/' + a.articleId })"
+                            @click="handleToArticleDetail(a.type, a.articleId)"
                             >{{ a.title }}</span
                         >
                     </div>

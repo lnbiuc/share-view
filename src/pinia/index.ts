@@ -55,6 +55,16 @@ export const useUserStore = defineStore('count', {
 export const useDialogControlStore = defineStore('dialog', {
     state: () => ({
         loginForm: <boolean>false,
+        commentForm: <{ status: boolean; data: { toId: string | number; toType: string | number } }>{
+            status: <boolean>false,
+            data: {
+                toId: '',
+                toType: '',
+            },
+        },
+        publishArticleForm: {
+            status: <boolean>false,
+        },
     }),
 });
 

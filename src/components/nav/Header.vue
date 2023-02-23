@@ -72,6 +72,7 @@
         </div>
     </div>
     <LoginForm />
+    <PublishArticleForm />
 </template>
 
 <script setup lang="ts">
