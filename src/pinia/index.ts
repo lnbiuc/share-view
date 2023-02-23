@@ -65,6 +65,9 @@ export const useDialogControlStore = defineStore('dialog', {
         publishArticleForm: {
             status: <boolean>false,
         },
+        askQuestionForm: {
+            status: <boolean>false,
+        },
     }),
 });
 

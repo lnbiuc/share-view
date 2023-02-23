@@ -73,6 +73,7 @@
     </div>
     <LoginForm />
     <PublishArticleForm />
+    <AskQuestionForm />
 </template>
 
 <script setup lang="ts">
@@ -95,6 +96,7 @@ import {
 } from '@element-plus/icons-vue';
 import { storeToRefs } from 'pinia';
 import { useToggle, useStorage, useDark } from '@vueuse/core';
+import AskQuestionForm from '../dialog/AskQuestionForm.vue';
 
 const dialogStore = useDialogControlStore();
 
