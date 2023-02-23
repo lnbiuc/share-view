@@ -67,7 +67,7 @@ const handleClick = (index:number) => {
         case 2:
             return dialogControlStore.publishArticleForm.status = true
         case 3:
-            return console.log('send post')
+            return dialogControlStore.sendPostForm.status = true
     }
 }
 </script>

@@ -68,6 +68,12 @@ export const useDialogControlStore = defineStore('dialog', {
         askQuestionForm: {
             status: <boolean>false,
         },
+        answerQuestionForm: {
+            status: <boolean>false,
+        },
+        sendPostForm: {
+            status: <boolean>false,
+        },
     }),
 });
 

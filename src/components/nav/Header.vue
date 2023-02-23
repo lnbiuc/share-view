@@ -74,6 +74,7 @@
     <LoginForm />
     <PublishArticleForm />
     <AskQuestionForm />
+    <SendPostForm />
 </template>
 
 <script setup lang="ts">
@@ -97,6 +98,7 @@ import {
 import { storeToRefs } from 'pinia';
 import { useToggle, useStorage, useDark } from '@vueuse/core';
 import AskQuestionForm from '../dialog/AskQuestionForm.vue';
+import SendPostForm from '../dialog/SendPostForm.vue';
 
 const dialogStore = useDialogControlStore();
 

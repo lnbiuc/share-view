@@ -195,7 +195,7 @@ const handlePublish = (formEl: FormInstance | undefined) => {
                 :autofocus="true"
                 :default-show-toc="true"
                 @upload-image="handleUploadImage"
-                height="57vh">
+                height="50vh">
             </v-md-editor>
         </div>
     </el-dialog>

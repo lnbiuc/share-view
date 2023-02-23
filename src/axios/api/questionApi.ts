@@ -14,3 +14,14 @@ export function publishQuestion(data: PublishQuestionEntity) {
         data: data,
     });
 }
+
+export function publishAnswer(toId: string, content: string) {
+    return axios({
+        url: '../api/publish/answer',
+        method: 'POST',
+        data: {
+            toId: toId,
+            content: content,
+        },
+    });
+}

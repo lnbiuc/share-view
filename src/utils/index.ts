@@ -50,7 +50,7 @@ export const formatDate = (date: any | object) => {
 export const handleUploadImage = (event: any, insertImage: any, files: any) => {
     uploadFile(files).then((res) => {
         insertImage({
-            url: res.data.data,
+            url: res.data.imgUrl,
             desc: 'image',
         });
     });
