@@ -3,6 +3,7 @@ import './style.css';
 import App from './App.vue';
 import router from './router/index';
 import 'element-plus/theme-chalk/el-message.css';
+import 'element-plus/theme-chalk/el-notification.css';
 import 'highlight.js/styles/github-dark-dimmed.css';
 import { createPinia } from 'pinia';
 import './assets/markdown-light.css';

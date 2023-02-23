@@ -1,12 +1,11 @@
 <script setup lang="ts">
 import { useDialogControlStore } from '../../pinia';
-import { uploadFile } from '../../axios/api/fileApi';
 import { CategoryEntity, getCategoryList } from '../../axios/api/categoryApi';
 import { publishArticle, TagEntity } from '../../axios/api/articleApi';
 import { getAllTags, publishTag } from '../../axios/api/tagApi';
 import { ElMessage, FormInstance } from 'element-plus';
 import { ref } from 'vue';
-import router from '../../router';
+import { handleUploadImage } from '../../utils';
 
 const dialogControlStore = useDialogControlStore();
 
@@ -26,24 +25,21 @@ const getTag = async () => {
 // init category and tags
 getCategory()
 getTag()
+const tag = ref<string>('')
+const createTag = () => {
+    if (tag.value.match('[\u4e00-\u9fa5_a-zA-Z0-9_]{2,10}')) {
+        publishTag(tag.value).then(res => {
+            if (res.data.code == 200) {
+                getTag();
+                ElMessage.success('SUCCESS');
+            }
+        });
+    } else {
+        ElMessage.warning('tag name format error')
+    }
+};
 
-const createTag = (tagName:string) => {
-    publishTag(tagName).then(res => {
-        if (res.data.code == 200) {
-            getTag()
-            ElMessage.success('SUCCESS')
-        }
-    })
-}
 
-const handleUploadImage = (event:any, insertImage:any, files:any) => {
-    uploadFile(files).then(res => {
-        insertImage({
-            url: res.data.data,
-            desc: 'image',
-        })
-    })
-}
 const articleForm = ref<{ title: string, introduction: string, categoryId: number | null, content:string, tagIds: number[] }>({
     title: '',
     introduction: '',
@@ -100,7 +96,7 @@ const handlePublish = (formEl: FormInstance | undefined) => {
             publishArticle(articleForm.value).then(res => {
                 if (res.data.code == 200) {
                     dialogControlStore.publishArticleForm.status = false;
-                    router.push({ path: '/a/' + res.data.data });
+                    ElMessage.success('SUCCESS')
                 } else {
                     ElMessage.error(res.data.message);
                 }
@@ -157,7 +153,7 @@ const handlePublish = (formEl: FormInstance | undefined) => {
                         <el-input v-model="articleForm.title" type="text"/>
                     </el-form-item>
                     <el-form-item label="Introduction" prop="introduction">
-                        <el-input v-model="articleForm.introduction" type="text"/>
+                        <el-input v-model="articleForm.introduction" type="textarea"/>
                     </el-form-item>
                     <el-form-item label="Category" prop="categoryId">
                         <el-select v-model="articleForm.categoryId" clearable placeholder="Select Category" style="width: 100%">
@@ -183,6 +179,12 @@ const handlePublish = (formEl: FormInstance | undefined) => {
                                 :value="t.tagId"
                             />
                         </el-select>
+                    </el-form-item>
+                    <el-form-item label="Create New Tag">
+                        <div class="flex flex-row ">
+                            <el-input v-model="tag" class="flex-grow"/>
+                            <el-button class="ml-3" @click="createTag">Create</el-button>
+                        </div>
                     </el-form-item>
                 </el-form>
             </div>
