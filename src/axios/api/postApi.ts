@@ -1,11 +1,14 @@
 import axios from '../index';
 
-export function getPostImages(articleId: string, userId: string) {
+export interface SendPostEntity {
+    content: string;
+    imgList: number[];
+}
+
+export function sendPost(data: SendPostEntity) {
     return axios({
-        url: '../api/post/' + articleId,
-        method: 'GET',
-        params: {
-            userId: userId,
-        },
+        url: './publish/post',
+        method: 'POST',
+        data: data,
     });
 }

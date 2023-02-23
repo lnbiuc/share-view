@@ -2,6 +2,7 @@ import { format } from 'timeago.js';
 import { articleParams, getArticleListBySubscribe } from '../axios/api/articleApi';
 import { useDialogControlStore, useUserStore } from '../pinia';
 import { storeToRefs } from 'pinia';
+import { uploadFile } from '../axios/api/fileApi';
 
 export const formatTime = (data: string) => {
     return format(data, 'zh_CN');
@@ -45,4 +46,12 @@ export const formatDate = (date: any | object) => {
         day = date.getDate();
     }
     return date.getFullYear() + '-' + mouth + '-' + day;
+};
+export const handleUploadImage = (event: any, insertImage: any, files: any) => {
+    uploadFile(files).then((res) => {
+        insertImage({
+            url: res.data.imgUrl,
+            desc: 'image',
+        });
+    });
 };

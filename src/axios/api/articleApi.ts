@@ -136,3 +136,17 @@ export function getOneArticle(articleId: string) {
         method: 'GET',
     });
 }
+
+export function publishArticle(data: {
+    title: string;
+    introduction: string;
+    categoryId: number | null;
+    content: string;
+    tagIds: number[];
+}) {
+    return axios({
+        url: '../api/publish/article',
+        method: 'POST',
+        data: data,
+    });
+}

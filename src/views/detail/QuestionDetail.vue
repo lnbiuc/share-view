@@ -11,6 +11,7 @@ import { getCommentsById } from '../../axios/api/commentsApi';
 import { ElMessage } from 'element-plus';
 // @ts-ignore
 import { ArrowDown } from '@element-plus/icons-vue';
+import { useDialogControlStore } from '../../pinia';
 const articleId = useRouteParams<string>('questionId');
 const ques = ref();
 const answer = ref();
@@ -68,6 +69,8 @@ const sortChange = (type: string) => {
         currentSortSelect.value = 'NEW';
     }
 };
+
+const dialogControlStore = useDialogControlStore()
 </script>
 
 <template>
@@ -115,9 +118,11 @@ const sortChange = (type: string) => {
                         <span
                             class="text-neutral-700 bg-gray-200 px-3 py-1 rounded-full text-sm dark:bg-dark dark:text-gray-300"
                         >
-                            Total:{{ total }} Answers
+                            Total :
+                            <span class="text-blue-500">{{ total }}</span>
+                            Answers
                         </span>
-                        <el-button class="ml-4" type="primary">Create Answer</el-button>
+                        <el-button class="ml-4" type="primary" @click="dialogControlStore.answerQuestionForm.status = true">Create Answer</el-button>
                     </div>
                     <span>
                         <el-dropdown trigger="click">
@@ -185,5 +190,6 @@ const sortChange = (type: string) => {
                 <UserInfoLite :user="ques.author" />
             </el-affix>
         </div>
+        <AnswerQuestionForm :question="ques.article.title" :question-id="ques.article.articleId"/>
     </div>
 </template>

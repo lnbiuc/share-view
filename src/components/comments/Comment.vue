@@ -2,19 +2,33 @@
 import { formatTime } from '../../utils';
 // @ts-ignore
 import { ArrowUpBold, ArrowDownBold } from '@element-plus/icons-vue';
+import { useDialogControlStore } from '../../pinia';
 
 const props = defineProps({
     comments: {
         type: Object,
     },
 });
+
 const hasChildren = (arr: []) => {
     return arr && arr.length > 0;
 };
+
+const handleCreateComment = () => {
+    const dialogControlStore = useDialogControlStore()
+    dialogControlStore.commentForm.status = true
+}
 </script>
 
 <template>
+    <CommentForm/>
     <div>
+        <div class="flex flex-row justify-between items-center mt-2 bg-gray-100 p-2 rounded-md shadow-sm">
+            <div>
+<!--                Total Comment : <span class="text-blue-500">{{ comments.length }}</span>-->
+            </div>
+            <el-button @click="handleCreateComment()">Create Comment</el-button>
+        </div>
         <div
             v-for="c in comments"
             class="my-2 flex flex-row border-gray-200 dark:border-neutral-800 border-solid border hover:bg-gray-100 dark:hover:bg-neutral-900 transition-all rounded-md p-2"

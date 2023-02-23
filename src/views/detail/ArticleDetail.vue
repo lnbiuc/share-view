@@ -59,14 +59,10 @@ const data = ref<ArticleContentEntity>({
     },
 });
 const isLoading = ref<boolean>(true);
-const isRenderComment = ref<boolean>(false);
 onMounted(() => {
     getOneArticle(articleId.value).then((res) => {
         if (res.data.code == 200) {
             data.value = res.data.data;
-            if (data.value.comments.data.length > 0) {
-                isRenderComment.value = true;
-            }
             nextTick(() => {
                 isLoading.value = false;
                 renderToc();
@@ -124,36 +120,6 @@ const handlerSubscribe = (userId: string) => {
     <div
         class="article flex flex-row text-center justify-center md:m-auto md:my-2 ls:m-auto ls:my-2 lg:m-auto lg:my-2 sm:m-2 rounded-sm sm:max-w-full md:max-w-full ls:max-w-screen-ls lg:max-w-screen-lg"
     >
-        <!--        <div class="ls:flex lg:flex md:flex sm:hidden justify-center w-1/12 relative items-center">-->
-        <!--            <div class="fixed top-1/4">-->
-        <!--                <div class="flex flex-col">-->
-        <!--                    <el-icon-->
-        <!--                        class="p-1.5 my-2 cursor-pointer bg-gray-200 rounded-full hover:bg-gray-300 transition-all dark:bg-dark dark:hover:bg-gray-800"-->
-        <!--                        size="40px"-->
-        <!--                        color="gray"-->
-        <!--                        @click="like(1)"-->
-        <!--                    >-->
-        <!--                        <i-mdi-like />-->
-        <!--                    </el-icon>-->
-        <!--                    <el-icon-->
-        <!--                        class="p-1.5 my-2 cursor-pointer bg-gray-200 rounded-full hover:bg-gray-300 transition-all dark:bg-dark dark:hover:bg-gray-800"-->
-        <!--                        size="40px"-->
-        <!--                        color="gray"-->
-        <!--                        @click="like(0)"-->
-        <!--                    >-->
-        <!--                        <i-mdi-dislike />-->
-        <!--                    </el-icon>-->
-        <!--                    <el-icon-->
-        <!--                        class="p-1.5 my-2 cursor-pointer bg-gray-200 rounded-full hover:bg-gray-300 transition-all dark:bg-dark dark:hover:bg-gray-800"-->
-        <!--                        size="40px"-->
-        <!--                        color="gray"-->
-        <!--                        @click="collect"-->
-        <!--                    >-->
-        <!--                        <i-mdi-bookmark-box-multiple />-->
-        <!--                    </el-icon>-->
-        <!--                </div>-->
-        <!--            </div>-->
-        <!--        </div>-->
         <div class="flex flex-col ls:w-9/12 lg:w-9/12 md:w-9/12 sm:w-full text-left">
             <div class="flex flex-col p-4 dark:bg-dark rounded-md bg-white shadow-sm">
                 <div class="flex flex-row items-center">
@@ -202,10 +168,11 @@ const handlerSubscribe = (userId: string) => {
                 <Loading :is-loading="isLoading" />
                 <div v-show="!isLoading">
                     <Markdown id="markdown" class="markdown-body-light" :source="data.article.content" />
+<!--                    <v-md-preview :text="data.article.content"></v-md-preview>-->
                 </div>
                 <el-divider>END</el-divider>
             </div>
-            <div v-if="isRenderComment" class="flex flex-col my-2 p-4 dark:bg-dark rounded-md bg-white shadow-sm">
+            <div class="flex flex-col my-2 p-4 dark:bg-dark rounded-md bg-white shadow-sm">
                 <Comment :comments="data.comments.data" />
             </div>
         </div>
