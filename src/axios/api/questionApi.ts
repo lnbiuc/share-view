@@ -2,7 +2,7 @@ import axios from '../index';
 
 export interface PublishQuestionEntity {
     title: string;
-    categoryId: number | null;
+    categoryId: number | undefined;
     content: string;
     tagIds: number[];
 }

@@ -9,43 +9,48 @@ import { handleUploadImage } from '../../utils';
 
 const dialogControlStore = useDialogControlStore();
 
-const text = ref<string>('')
-const categoryList = ref<CategoryEntity[]>()
-const tagList = ref<TagEntity[]>()
+const text = ref<string>('');
+const categoryList = ref<CategoryEntity[]>();
+const tagList = ref<TagEntity[]>();
 const getCategory = async () => {
-    getCategoryList(1, 100).then(res => {
-        categoryList.value = res.data.data.data
-    })
-}
+    getCategoryList(1, 100).then((res) => {
+        categoryList.value = res.data.data.data;
+    });
+};
 const getTag = async () => {
-    getAllTags().then(res => {
-        tagList.value = res.data.data
-    })
-}
+    getAllTags().then((res) => {
+        tagList.value = res.data.data;
+    });
+};
 // init category and tags
-getCategory()
-getTag()
-const tag = ref<string>('')
+getCategory();
+getTag();
+const tag = ref<string>('');
 const createTag = () => {
     if (tag.value.match('[\u4e00-\u9fa5_a-zA-Z0-9_]{2,10}')) {
-        publishTag(tag.value).then(res => {
+        publishTag(tag.value).then((res) => {
             if (res.data.code == 200) {
                 getTag();
                 ElMessage.success('SUCCESS');
             }
         });
     } else {
-        ElMessage.warning('tag name format error')
+        ElMessage.warning('tag name format error');
     }
 };
 
-
-const articleForm = ref<{ title: string, introduction: string, categoryId: number | null, content:string, tagIds: number[] }>({
+const articleForm = ref<{
+    title: string;
+    introduction: string;
+    categoryId: number | undefined;
+    content: string;
+    tagIds: number[];
+}>({
     title: '',
     introduction: '',
-    categoryId: null,
+    categoryId: undefined,
     content: '',
-    tagIds: []
+    tagIds: [],
 });
 const validateTitle = (rule: any, value: any, callback: any) => {
     if (value === '') {
@@ -53,7 +58,7 @@ const validateTitle = (rule: any, value: any, callback: any) => {
     } else if (value.length > 64) {
         callback(new Error('title too long'));
     }
-    callback()
+    callback();
 };
 
 const validateIntroduction = (rule: any, value: any, callback: any) => {
@@ -62,41 +67,41 @@ const validateIntroduction = (rule: any, value: any, callback: any) => {
     } else if (value.length > 128) {
         callback(new Error('title too long'));
     }
-    callback()
-}
+    callback();
+};
 const validateCategory = (rule: any, value: any, callback: any) => {
     if (value < 3000) {
         callback(new Error('category is required'));
     }
-    callback()
-}
+    callback();
+};
 
 const validateTags = (rule: any, value: number[], callback: any) => {
     if (value.length > 5 || value.length < 1) {
         callback(new Error('require 1 - 5 tags'));
     }
-    callback()
-}
+    callback();
+};
 const articleFormRules = reactive({
     title: [{ required: true, validator: validateTitle, trigger: 'blur' }],
     introduction: [{ required: true, validator: validateIntroduction, trigger: 'blur' }],
     categoryId: [{ required: true, validator: validateCategory, trigger: 'blur' }],
-    tagIds: [{ required: true, validator: validateTags,trigger: 'blur' }],
+    tagIds: [{ required: true, validator: validateTags, trigger: 'blur' }],
 });
 
 const ruleFormRef = ref<FormInstance>();
 const handlePublish = (formEl: FormInstance | undefined) => {
     if (!formEl) {
-        return
+        return;
     }
-     formEl.validate((valid) => {
+    formEl.validate((valid) => {
         if (!valid) {
             return false;
         } else {
-            publishArticle(articleForm.value).then(res => {
+            publishArticle(articleForm.value).then((res) => {
                 if (res.data.code == 200) {
                     dialogControlStore.publishArticleForm.status = false;
-                    ElMessage.success('SUCCESS')
+                    ElMessage.success('SUCCESS');
                 } else {
                     ElMessage.error(res.data.message);
                 }
@@ -112,18 +117,19 @@ const handlePublish = (formEl: FormInstance | undefined) => {
         :close-on-press-escape="false"
         :fullscreen="true"
         :show-close="false"
-        :draggable="true">
+        :draggable="true"
+    >
         <template #header="{ close, titleId, titleClass }">
             <div class="flex flex-row justify-between px-6">
                 <h4 :id="titleId" :class="titleClass">
                     <el-icon class="el-icon--left">
-                        <i-ep-edit-pen/>
+                        <i-ep-edit-pen />
                     </el-icon>
                     Publish Article
                 </h4>
                 <el-button type="danger" @click="close">
                     <el-icon class="el-icon--left">
-                        <i-ep-circle-close-filled/>
+                        <i-ep-circle-close-filled />
                     </el-icon>
                     Close
                 </el-button>
@@ -133,7 +139,7 @@ const handlePublish = (formEl: FormInstance | undefined) => {
             <div class="flex flex-row justify-end mr-4 px-6">
                 <el-button type="primary" @click="handlePublish(ruleFormRef)">
                     <el-icon class="el-icon--left">
-                        <i-ep-circle-check/>
+                        <i-ep-circle-check />
                     </el-icon>
                     Publish
                 </el-button>
@@ -150,39 +156,29 @@ const handlePublish = (formEl: FormInstance | undefined) => {
                     label-width="auto"
                 >
                     <el-form-item label="Title" prop="title">
-                        <el-input v-model="articleForm.title" type="text"/>
+                        <el-input v-model="articleForm.title" type="text" />
                     </el-form-item>
                     <el-form-item label="Introduction" prop="introduction">
-                        <el-input v-model="articleForm.introduction" type="textarea"/>
+                        <el-input v-model="articleForm.introduction" type="textarea" />
                     </el-form-item>
                     <el-form-item label="Category" prop="categoryId">
-                        <el-select v-model="articleForm.categoryId" clearable placeholder="Select Category" style="width: 100%">
-                            <el-option
-                                v-for="c in categoryList"
-                                :key="c.id"
-                                :label="c.name"
-                                :value="c.id"
-                            />
+                        <el-select
+                            v-model="articleForm.categoryId"
+                            clearable
+                            placeholder="Select Category"
+                            style="width: 100%"
+                        >
+                            <el-option v-for="c in categoryList" :key="c.id" :label="c.name" :value="c.id" />
                         </el-select>
                     </el-form-item>
                     <el-form-item label="Tag" prop="tagIds">
-                        <el-select
-                            v-model="articleForm.tagIds"
-                            multiple
-                            placeholder="Select Tags"
-                            style="width: 100%"
-                        >
-                            <el-option
-                                v-for="t in tagList"
-                                :key="t.tagId"
-                                :label="t.tagName"
-                                :value="t.tagId"
-                            />
+                        <el-select v-model="articleForm.tagIds" multiple placeholder="Select Tags" style="width: 100%">
+                            <el-option v-for="t in tagList" :key="t.tagId" :label="t.tagName" :value="t.tagId" />
                         </el-select>
                     </el-form-item>
                     <el-form-item label="Create New Tag">
-                        <div class="flex flex-row ">
-                            <el-input v-model="tag" class="flex-grow"/>
+                        <div class="flex flex-row">
+                            <el-input v-model="tag" class="flex-grow" />
                             <el-button class="ml-3" @click="createTag">Create</el-button>
                         </div>
                     </el-form-item>
@@ -195,7 +191,8 @@ const handlePublish = (formEl: FormInstance | undefined) => {
                 :autofocus="true"
                 :default-show-toc="true"
                 @upload-image="handleUploadImage"
-                height="50vh">
+                height="50vh"
+            >
             </v-md-editor>
         </div>
     </el-dialog>

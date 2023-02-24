@@ -118,19 +118,19 @@ const handlerSubscribe = (userId: string) => {
     });
 };
 
-const store = useReloadCommentStore()
-const refStore = storeToRefs(store)
+const store = useReloadCommentStore();
+const refStore = storeToRefs(store);
 watch(refStore.count, () => {
     if (refStore.reload.value == data.value.article.articleId) {
-        reloadComment(data.value.article.articleId)
+        reloadComment(data.value.article.articleId);
     }
-})
+});
 
-const reloadComment = (id:string) => {
-    getCommentsById(id, 1, 100).then(res => {
-        data.value.comments = res.data.data
-    })
-}
+const reloadComment = (id: string) => {
+    getCommentsById(id, 1, 100).then((res) => {
+        data.value.comments = res.data.data;
+    });
+};
 </script>
 
 <template>
@@ -185,7 +185,7 @@ const reloadComment = (id:string) => {
                 <Loading :is-loading="isLoading" />
                 <div v-show="!isLoading">
                     <Markdown id="markdown" class="markdown-body-light" :source="data.article.content" />
-<!--                    <v-md-preview :text="data.article.content"></v-md-preview>-->
+                    <!--                    <v-md-preview :text="data.article.content"></v-md-preview>-->
                 </div>
                 <el-divider>END</el-divider>
             </div>

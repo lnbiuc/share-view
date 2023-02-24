@@ -6,16 +6,16 @@ import { useDialogControlStore } from '../../pinia';
 
 const props = defineProps({
     comments: {
-        type: Object
+        type: Object,
     },
     title: {
         type: String,
-        default: ''
+        default: '',
     },
     articleId: {
         type: String,
-        default: ''
-    }
+        default: '',
+    },
 });
 
 const hasChildren = (arr: []) => {
@@ -47,7 +47,6 @@ const handleCreateChildChildComment = (info: string, id: number) => {
     dialogControlStore.commentForm.data.level = 1;
     dialogControlStore.commentForm.data.articleId = props.articleId;
 };
-
 </script>
 
 <template>
@@ -86,15 +85,15 @@ const handleCreateChildChildComment = (info: string, id: number) => {
                 </div>
                 <div class="flex flex-row">
                     <span class="mr-2 text-sm text-gray-500 hover:text-blue-500 cursor-pointer transition-all"
-                    >Like</span
+                        >Like</span
                     >
                     <span class="mr-2 text-sm text-gray-500 hover:text-blue-500 cursor-pointer transition-all"
-                    >Dislike</span
+                        >Dislike</span
                     >
                     <span
                         @click="handleCreateChildComment(c.content, c.id)"
                         class="mr-2 text-sm text-gray-500 hover:text-blue-500 cursor-pointer transition-all"
-                    >Comment</span
+                        >Comment</span
                     >
                 </div>
                 <div v-if="hasChildren(c.childComments)">
@@ -119,16 +118,16 @@ const handleCreateChildChildComment = (info: string, id: number) => {
                                 <div>
                                     <span
                                         class="mr-2 text-xs text-gray-500 hover:text-blue-500 cursor-pointer transition-all"
-                                    >Like</span
+                                        >Like</span
                                     >
                                     <span
                                         class="mr-2 text-xs text-gray-500 hover:text-blue-500 cursor-pointer transition-all"
-                                    >Dislike</span
+                                        >Dislike</span
                                     >
                                     <span
                                         @click="handleCreateChildChildComment(z.content, c.id)"
                                         class="mr-2 text-xs text-gray-500 hover:text-blue-500 cursor-pointer transition-all"
-                                    >Comment</span
+                                        >Comment</span
                                     >
                                     <span class="mr-2 text-xs text-gray-500" v-text="formatTime(z.createTime)" />
                                     <span class="mr-2 text-xs text-gray-500"> IP:{{ z.user.ipAddr }} </span>

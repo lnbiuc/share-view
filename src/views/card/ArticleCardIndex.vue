@@ -88,18 +88,18 @@ const handleToArticleDetail = (type: string, articleId: string) => {
     }
 };
 
-const handleClickComment = (articleId:string, title:string, type:string, info:string) => {
-    handleToArticleDetail(type, articleId)
-    const dialogStore = useDialogControlStore()
-    dialogStore.commentForm.status = true
-    dialogStore.commentForm.data.level = 0
-    dialogStore.commentForm.data.articleId = articleId
+const handleClickComment = (articleId: string, title: string, type: string, info: string) => {
+    handleToArticleDetail(type, articleId);
+    const dialogStore = useDialogControlStore();
+    dialogStore.commentForm.status = true;
+    dialogStore.commentForm.data.level = 0;
+    dialogStore.commentForm.data.articleId = articleId;
     if (type == 'Post') {
-        dialogStore.commentForm.displayInfo = info
+        dialogStore.commentForm.displayInfo = info;
     } else {
-        dialogStore.commentForm.displayInfo = title
+        dialogStore.commentForm.displayInfo = title;
     }
-}
+};
 </script>
 <template>
     <div class="text-center">
@@ -139,11 +139,15 @@ const handleClickComment = (articleId:string, title:string, type:string, info:st
             </div>
             <div
                 @click="handleToArticleDetail(a.type, a.articleId)"
-                class="flex mb-4 text-sm text-gray-500 text-left cursor-default">
+                class="flex mb-4 text-sm text-gray-500 text-left cursor-default"
+            >
                 {{ a.introduction }}
             </div>
             <div class="flex flex-row justify-start">
-                <CommentsLink :comments="a.comments" @click="handleClickComment(a.articleId, a.title, a.type, a.introduction)"/>
+                <CommentsLink
+                    :comments="a.comments"
+                    @click="handleClickComment(a.articleId, a.title, a.type, a.introduction)"
+                />
                 <ShareLink />
                 <CollectionLink :id="a.articleId" :type="0" />
             </div>

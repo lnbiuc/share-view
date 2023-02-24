@@ -44,14 +44,14 @@ const currentChange = (pageNumber: number) => {
     });
 };
 
-const handleClickComment = (articleId:string, info:string) => {
+const handleClickComment = (articleId: string, info: string) => {
     router.push({ path: '/p/' + articleId });
-    const store = useDialogControlStore()
-    store.commentForm.status = true
-    store.commentForm.displayInfo = info
-    store.commentForm.data.level = 0
-    store.commentForm.data.articleId = articleId
-}
+    const store = useDialogControlStore();
+    store.commentForm.status = true;
+    store.commentForm.displayInfo = info;
+    store.commentForm.data.level = 0;
+    store.commentForm.data.articleId = articleId;
+};
 </script>
 
 <template>
@@ -88,7 +88,7 @@ const handleClickComment = (articleId:string, info:string) => {
             </div>
             <div class="flex flex-row">
                 <LikeBtn :type="0" :id="a.articleId" />
-                <CommentsLink @click="handleClickComment(a.articleId, a.introduction)"/>
+                <CommentsLink @click="handleClickComment(a.articleId, a.introduction)" />
                 <ShareLink />
                 <CollectionLink :type="0" :id="a.articleId" />
             </div>

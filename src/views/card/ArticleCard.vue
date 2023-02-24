@@ -40,14 +40,14 @@ const currentChange = (pageNumber: number) => {
     });
 };
 
-const handleClickComment = (title:string, articleId:string) => {
-    router.push({ path: '/a/' + articleId })
-    const dialogStore = useDialogControlStore()
-    dialogStore.commentForm.status = true
-    dialogStore.commentForm.displayInfo = title
-    dialogStore.commentForm.data.level = 0
-    dialogStore.commentForm.data.articleId = articleId
-}
+const handleClickComment = (title: string, articleId: string) => {
+    router.push({ path: '/a/' + articleId });
+    const dialogStore = useDialogControlStore();
+    dialogStore.commentForm.status = true;
+    dialogStore.commentForm.displayInfo = title;
+    dialogStore.commentForm.data.level = 0;
+    dialogStore.commentForm.data.articleId = articleId;
+};
 </script>
 
 <template>
@@ -80,7 +80,7 @@ const handleClickComment = (title:string, articleId:string) => {
             </div>
             <div class="flex flex-row">
                 <LikeBtn :type="0" :id="a.articleId" />
-                <CommentsLink @click="handleClickComment(a.title, a.articleId)"/>
+                <CommentsLink @click="handleClickComment(a.title, a.articleId)" />
                 <ShareLink />
                 <CollectionLink :type="0" :id="a.articleId" />
             </div>

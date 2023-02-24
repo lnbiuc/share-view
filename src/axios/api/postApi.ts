@@ -3,7 +3,7 @@ import axios from '../index';
 export interface SendPostEntity {
     content: string;
     imgList: number[];
-    categoryId: number | null;
+    categoryId: number | undefined;
 }
 
 export function sendPost(data: SendPostEntity) {
