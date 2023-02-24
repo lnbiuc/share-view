@@ -6,6 +6,9 @@ import { useRouter } from 'vue-router';
 import { formatTime } from '../../utils';
 // @ts-ignore
 import Markdown from 'vue3-markdown-it';
+import { useReloadCommentStore } from '../../pinia';
+import { storeToRefs } from 'pinia';
+import { getCommentsById } from '../../axios/api/commentsApi';
 
 const articleId = useRouteParams<string>('postId');
 const isLoad = ref<boolean>(true);
@@ -69,6 +72,20 @@ onMounted(() => {
         }
     });
 });
+
+const store = useReloadCommentStore()
+const refStore = storeToRefs(store)
+watch(refStore.count, () => {
+    if (refStore.reload.value == data.value.article.articleId) {
+        reloadComment(data.value.article.articleId)
+    }
+})
+
+const reloadComment = (id:string) => {
+    getCommentsById(id, 1, 100).then(res => {
+        data.value.comments = res.data.data
+    })
+}
 </script>
 
 <template>

@@ -58,7 +58,7 @@ const handlePublish = () => {
                             </el-icon>
                             Comment To
                         </span>
-                        <span class="text-sm mt-6">
+                        <span class="text-sm mt-6 overflow-auto break-all">
                             {{ refDialogStore.commentForm.value.displayInfo }}
                         </span>
                     </div>
