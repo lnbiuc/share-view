@@ -1,19 +1,44 @@
 <script setup lang="ts">
 import { useDialogControlStore } from '../../pinia';
 import { uploadFile } from '../../axios/api/fileApi';
-import { ElMessage, UploadFile } from 'element-plus';
+import { ElMessage, ElNotification, UploadFile, UploadProps } from 'element-plus';
+import { sendPost } from '../../axios/api/postApi';
+import { ref } from 'vue';
+import { CategoryEntity, getCategoryList } from '../../axios/api/categoryApi';
 
 const dialogControlStore = useDialogControlStore()
-const handlePublish = () => {
-    imageMap.forEach((value, key, map) => {
-        data.value.imgList = []
-        data.value.imgList.push(value)
+
+const categoryList = ref<CategoryEntity[]>()
+const getCategory = async () => {
+    getCategoryList(1, 100).then(res => {
+        categoryList.value = res.data.data.data
     })
 }
+getCategory()
+const handlePublish = () => {
+    data.value.imgList = []
+    imageMap.forEach((value, key, map) => {
+        data.value.imgList.push(value)
+    })
+    if (data.value.categoryId != null && data.value.content.match('[\u4e00-\u9fa5_a-zA-Z0-9_]{2,10}')) {
+        sendPost(data.value).then(res => {
+            if (res.data.code == 200) {
+                dialogControlStore.sendPostForm.status = false
+                ElMessage.success('SUCCESS')
+            } else {
+                ElMessage.error(res.data.message)
+            }
+        })
+    } else {
+        ElMessage.warning('check your input params')
+    }
 
-const data = ref<{imgList: number[], content: string}>({
+}
+
+const data = ref<{imgList: number[], content: string, categoryId: number | null}>({
     imgList: [],
-    content: ''
+    content: '',
+    categoryId: null
 })
 
 const imageMap = new Map()
@@ -37,8 +62,30 @@ const removeImage = (uploadFile: UploadFile) => {
     imageMap.delete(uploadFile.raw?.uid)
 };
 
-const uploadError = () => {
+const uploadError = (error: Error) => {
+    ElNotification({
+        title: 'Error',
+        message: error.message,
+        type: 'error',
+        duration: 0
+    })
+}
 
+const maxImageCount = () => {
+    ElNotification({
+        title: 'Warning',
+        message: 'Add a maximum of 9 images',
+        type: 'warning',
+        duration: 0
+    })
+}
+
+const dialogImageUrl = ref('')
+const dialogVisible = ref(false)
+
+const handlePictureCardPreview: UploadProps['onPreview'] = (uploadFile) => {
+    dialogImageUrl.value = uploadFile.url!
+    dialogVisible.value = true
 }
 </script>
 
@@ -77,23 +124,54 @@ const uploadError = () => {
             </div>
         </template>
         <div class="flex flex-col justify-start mb-4">
-            <span class="mr-3 text-left text-xl">Content:</span>
-            <el-input type="textarea" v-model="data.content"/>
+            <el-form
+                label-position="right"
+                status-icon
+                label-width="auto">
+                <el-form-item label="Content">
+                    <el-input
+                        type="textarea"
+                        maxlength="144"
+                        show-word-limit
+                        autofocus
+                        v-model="data.content"/>
+                </el-form-item>
+                <el-form-item label="Category" prop="categoryId">
+                    <el-select v-model="data.categoryId" clearable placeholder="Select Category" style="width: 100%">
+                        <el-option
+                            v-for="c in categoryList"
+                            :key="c.id"
+                            :label="c.name"
+                            :value="c.id"
+                        />
+                    </el-select>
+                </el-form-item>
+            </el-form>
+
         </div>
-        {{ data }}
         <el-upload
             v-model:file-list="images"
             :http-request="uploadImg"
-            name="img"
             :with-credentials="true"
             list-type="picture-card"
             :on-success="uploadSuccess"
             :on-remove="removeImage"
             :on-error="uploadError"
+            :on-exceed="maxImageCount"
+            :limit="9"
             :drag="true"
+            :on-preview="handlePictureCardPreview"
+            :multiple="true"
         >
-            <el-icon><Plus /></el-icon>
+            <template #default>
+                <el-icon class="w-full">
+                    <i-ep-plus/>
+                </el-icon>
+            </template>
         </el-upload>
+        <el-dialog v-model="dialogVisible">
+            <img class="w-full" :src="dialogImageUrl" alt="Preview Image" />
+        </el-dialog>
     </el-dialog>
 </template>
 

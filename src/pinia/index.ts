@@ -1,6 +1,7 @@
 import { defineStore, storeToRefs } from 'pinia';
 import { CountEntity, UserEntity } from '../axios/api/loginApi';
 import { formatDate } from '../utils';
+import { PublishCommentsEntity } from '../axios/api/commentsApi';
 
 export const useUserStore = defineStore('count', {
     state: () => ({
@@ -55,12 +56,15 @@ export const useUserStore = defineStore('count', {
 export const useDialogControlStore = defineStore('dialog', {
     state: () => ({
         loginForm: <boolean>false,
-        commentForm: <{ status: boolean; data: { toId: string | number; toType: string | number } }>{
+        commentForm: <{ status: boolean; data: PublishCommentsEntity; displayInfo: string }>{
             status: <boolean>false,
             data: {
-                toId: '',
-                toType: '',
+                level: 0,
+                articleId: '',
+                content: '',
+                toCommentId: 0,
             },
+            displayInfo: '',
         },
         publishArticleForm: {
             status: <boolean>false,
@@ -75,6 +79,18 @@ export const useDialogControlStore = defineStore('dialog', {
             status: <boolean>false,
         },
     }),
+});
+
+export const useReloadCommentStore = defineStore('reload-comment', {
+    state: () => ({
+        reload: <string>'',
+        count: <number>0,
+    }),
+    actions: {
+        increase() {
+            this.count++;
+        },
+    },
 });
 
 export const useComponentsDisplayControlStore = defineStore('component-display', {

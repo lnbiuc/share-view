@@ -179,7 +179,7 @@ const dialogControlStore = useDialogControlStore()
                         <CollectionLink />
                     </div>
                     <div v-if="showComments(a.id)">
-                        <Comment :comments="comments" />
+                        <Comment :comments="comments" :article-id="a.id" :title="ques.article.title"/>
                     </div>
                 </div>
                 <el-divider />

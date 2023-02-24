@@ -88,7 +88,7 @@ onMounted(() => {
                 </div>
             </div>
             <div class="my-4">
-                <Markdown id="markdown" class="markdown-body-light" :source="data.article.introduction" />
+                {{ data.article.introduction }}
             </div>
             <div v-viewer class="mb-4">
                 <img v-for="i in data.article.images" :src="i" alt="" />
@@ -100,7 +100,7 @@ onMounted(() => {
                 <CollectionLink :type="0" :id="data.article.articleId" />
             </div>
             <div>
-                <Comment :comments="data.comments.data" />
+                <Comment :comments="data.comments.data" :title="data.article.introduction" :article-id="data.article.articleId"/>
             </div>
         </div>
         <div class="flex ls:flex lg:flex md:hidden sm:hidden flex-col ml-2 w-3/12">

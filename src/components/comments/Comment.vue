@@ -6,28 +6,58 @@ import { useDialogControlStore } from '../../pinia';
 
 const props = defineProps({
     comments: {
-        type: Object,
+        type: Object
     },
+    title: {
+        type: String,
+        default: ''
+    },
+    articleId: {
+        type: String,
+        default: ''
+    }
 });
 
 const hasChildren = (arr: []) => {
     return arr && arr.length > 0;
 };
 
-const handleCreateComment = () => {
-    const dialogControlStore = useDialogControlStore()
-    dialogControlStore.commentForm.status = true
-}
+const handleCommentToArticle = () => {
+    const dialogControlStore = useDialogControlStore();
+    dialogControlStore.commentForm.displayInfo = props.title;
+    dialogControlStore.commentForm.status = true;
+    dialogControlStore.commentForm.data.articleId = props.articleId;
+    dialogControlStore.commentForm.data.level = 0;
+};
+
+const handleCreateChildComment = (info: string, id: number) => {
+    const dialogControlStore = useDialogControlStore();
+    dialogControlStore.commentForm.displayInfo = info;
+    dialogControlStore.commentForm.status = true;
+    dialogControlStore.commentForm.data.toCommentId = id;
+    dialogControlStore.commentForm.data.level = 1;
+    dialogControlStore.commentForm.data.articleId = props.articleId;
+};
+
+const handleCreateChildChildComment = (info: string, id: number) => {
+    const dialogControlStore = useDialogControlStore();
+    dialogControlStore.commentForm.displayInfo = info;
+    dialogControlStore.commentForm.status = true;
+    dialogControlStore.commentForm.data.toCommentId = id;
+    dialogControlStore.commentForm.data.level = 1;
+    dialogControlStore.commentForm.data.articleId = props.articleId;
+};
+
 </script>
 
 <template>
-    <CommentForm/>
+    <CommentForm />
     <div>
         <div class="flex flex-row justify-between items-center mt-2 bg-gray-100 p-2 rounded-md shadow-sm">
             <div>
-<!--                Total Comment : <span class="text-blue-500">{{ comments.length }}</span>-->
+                Total Comment : <span class="text-blue-500">{{ comments?.length }}</span>
             </div>
-            <el-button @click="handleCreateComment()">Create Comment</el-button>
+            <el-button @click="handleCommentToArticle()">Create Comment</el-button>
         </div>
         <div
             v-for="c in comments"
@@ -56,13 +86,15 @@ const handleCreateComment = () => {
                 </div>
                 <div class="flex flex-row">
                     <span class="mr-2 text-sm text-gray-500 hover:text-blue-500 cursor-pointer transition-all"
-                        >Like</span
+                    >Like</span
                     >
                     <span class="mr-2 text-sm text-gray-500 hover:text-blue-500 cursor-pointer transition-all"
-                        >Dislike</span
+                    >Dislike</span
                     >
-                    <span class="mr-2 text-sm text-gray-500 hover:text-blue-500 cursor-pointer transition-all"
-                        >Comment</span
+                    <span
+                        @click="handleCreateChildComment(c.content, c.id)"
+                        class="mr-2 text-sm text-gray-500 hover:text-blue-500 cursor-pointer transition-all"
+                    >Comment</span
                     >
                 </div>
                 <div v-if="hasChildren(c.childComments)">
@@ -87,15 +119,16 @@ const handleCreateComment = () => {
                                 <div>
                                     <span
                                         class="mr-2 text-xs text-gray-500 hover:text-blue-500 cursor-pointer transition-all"
-                                        >Like</span
+                                    >Like</span
                                     >
                                     <span
                                         class="mr-2 text-xs text-gray-500 hover:text-blue-500 cursor-pointer transition-all"
-                                        >Dislike</span
+                                    >Dislike</span
                                     >
                                     <span
+                                        @click="handleCreateChildChildComment(z.content, c.id)"
                                         class="mr-2 text-xs text-gray-500 hover:text-blue-500 cursor-pointer transition-all"
-                                        >Comment</span
+                                    >Comment</span
                                     >
                                     <span class="mr-2 text-xs text-gray-500" v-text="formatTime(z.createTime)" />
                                     <span class="mr-2 text-xs text-gray-500"> IP:{{ z.user.ipAddr }} </span>

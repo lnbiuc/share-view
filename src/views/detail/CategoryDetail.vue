@@ -2,10 +2,11 @@
 import { useRouteParams } from '@vueuse/router';
 import { storeToRefs } from 'pinia';
 import { ArticleListEntity, articleParams, getArticleList } from '../../axios/api/articleApi';
-import { useArticleParamsStore } from '../../pinia';
+import { useArticleParamsStore, useDialogControlStore } from '../../pinia';
 import { ref } from 'vue';
 import axios from '../../axios';
 import { formatTime } from '../../utils';
+import router from '../../router';
 
 const categoryId = useRouteParams<string>('categoryId');
 // request when change
@@ -77,6 +78,31 @@ const tagBgColor = (type: string) => {
 };
 
 
+const handleToArticleDetail = (type: string, articleId: string) => {
+    switch (type) {
+        case 'Article':
+            return router.push({ path: '/a/' + articleId });
+        case 'Question':
+            return router.push({ path: '/q/' + articleId });
+        case 'Post':
+            return router.push({ path: '/p/' + articleId });
+        case 'Video':
+            return router.push({ path: '/v/' + articleId });
+    }
+};
+
+const handleClickComment = (articleId:string, title:string, type:string, info:string) => {
+    handleToArticleDetail(type, articleId)
+    const dialogStore = useDialogControlStore()
+    dialogStore.commentForm.status = true
+    dialogStore.commentForm.data.level = 0
+    dialogStore.commentForm.data.articleId = articleId
+    if (type == 'Post') {
+        dialogStore.commentForm.displayInfo = info
+    } else {
+        dialogStore.commentForm.displayInfo = title
+    }
+}
 </script>
 
 <template>
@@ -113,7 +139,7 @@ const tagBgColor = (type: string) => {
                         </span>
                             <span
                                 class="text-lg hover:text-blue-500 py-1 cursor-pointer transition-all text-left"
-                                @click="$router.push({ path: '/a/' + a.articleId })"
+                                @click="handleToArticleDetail(a.type, a.articleId)"
                             >{{ a.title }}</span
                             >
                         </div>
@@ -123,7 +149,7 @@ const tagBgColor = (type: string) => {
                     {{ a.introduction }}
                 </div>
                 <div class="flex flex-row justify-start">
-                    <CommentsLink :comments="a.comments" />
+                    <CommentsLink :comments="a.comments" @click="handleClickComment(a.articleId, a.title, a.type, a.introduction)"/>
                     <ShareLink />
                     <CollectionLink :id="a.articleId" :type="0" />
                 </div>

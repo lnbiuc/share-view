@@ -5,7 +5,7 @@ import CommentsLink from '../../components/index/articleList/CommentsLink.vue';
 import { ArticleListEntity, getArticleList } from '../../axios/api/articleApi';
 import { formatTime } from '../../utils';
 import { ref } from 'vue';
-import { useArticleParamsStore } from '../../pinia';
+import { useArticleParamsStore, useDialogControlStore } from '../../pinia';
 import { storeToRefs } from 'pinia';
 import { useRouter } from 'vue-router';
 const articleList = ref<ArticleListEntity[]>();
@@ -87,6 +87,19 @@ const handleToArticleDetail = (type: string, articleId: string) => {
             return router.push({ path: '/v/' + articleId });
     }
 };
+
+const handleClickComment = (articleId:string, title:string, type:string, info:string) => {
+    handleToArticleDetail(type, articleId)
+    const dialogStore = useDialogControlStore()
+    dialogStore.commentForm.status = true
+    dialogStore.commentForm.data.level = 0
+    dialogStore.commentForm.data.articleId = articleId
+    if (type == 'Post') {
+        dialogStore.commentForm.displayInfo = info
+    } else {
+        dialogStore.commentForm.displayInfo = title
+    }
+}
 </script>
 <template>
     <div class="text-center">
@@ -124,11 +137,13 @@ const handleToArticleDetail = (type: string, articleId: string) => {
                     </div>
                 </div>
             </div>
-            <div class="flex mb-4 text-sm text-gray-500 text-left">
+            <div
+                @click="handleToArticleDetail(a.type, a.articleId)"
+                class="flex mb-4 text-sm text-gray-500 text-left cursor-default">
                 {{ a.introduction }}
             </div>
             <div class="flex flex-row justify-start">
-                <CommentsLink :comments="a.comments" />
+                <CommentsLink :comments="a.comments" @click="handleClickComment(a.articleId, a.title, a.type, a.introduction)"/>
                 <ShareLink />
                 <CollectionLink :id="a.articleId" :type="0" />
             </div>
