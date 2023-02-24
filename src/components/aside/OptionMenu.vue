@@ -57,19 +57,19 @@ const enterCreateCenter = () => {
         });
     }
 };
-const dialogControlStore = useDialogControlStore()
-const handleClick = (index:number) => {
+const dialogControlStore = useDialogControlStore();
+const handleClick = (index: number) => {
     switch (index) {
         case 0:
-            return dialogControlStore.askQuestionForm.status = true
+            return (dialogControlStore.askQuestionForm.status = true);
         case 1:
-            return console.log('upload vide form')
+            return console.log('upload vide form');
         case 2:
-            return dialogControlStore.publishArticleForm.status = true
+            return (dialogControlStore.publishArticleForm.status = true);
         case 3:
-            return dialogControlStore.sendPostForm.status = true
+            return (dialogControlStore.sendPostForm.status = true);
     }
-}
+};
 </script>
 <template>
     <div class="flex flex-col bg-white mt-2 dark:bg-dark rounded-md hover:shadow-md transition-all shadow-sm p-3">

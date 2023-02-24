@@ -12,6 +12,9 @@ import { subscribeAuthorByAuthorId } from '../../axios/api/subscribeApi';
 import { likeArticle } from '../../axios/api/likesApi';
 import { addCollection } from '../../axios/api/collectApi';
 import UserInfoLite from '../../components/aside/UserInfoLite.vue';
+import { getCommentsById } from '../../axios/api/commentsApi';
+import { useDialogControlStore, useReloadCommentStore } from '../../pinia';
+import { storeToRefs } from 'pinia';
 const articleId = useRouteParams<string>('articleId');
 const data = ref<ArticleContentEntity>({
     'article': {
@@ -114,6 +117,20 @@ const handlerSubscribe = (userId: string) => {
         }
     });
 };
+
+const store = useReloadCommentStore();
+const refStore = storeToRefs(store);
+watch(refStore.count, () => {
+    if (refStore.reload.value == data.value.article.articleId) {
+        reloadComment(data.value.article.articleId);
+    }
+});
+
+const reloadComment = (id: string) => {
+    getCommentsById(id, 1, 100).then((res) => {
+        data.value.comments = res.data.data;
+    });
+};
 </script>
 
 <template>
@@ -168,12 +185,16 @@ const handlerSubscribe = (userId: string) => {
                 <Loading :is-loading="isLoading" />
                 <div v-show="!isLoading">
                     <Markdown id="markdown" class="markdown-body-light" :source="data.article.content" />
-<!--                    <v-md-preview :text="data.article.content"></v-md-preview>-->
+                    <!--                    <v-md-preview :text="data.article.content"></v-md-preview>-->
                 </div>
                 <el-divider>END</el-divider>
             </div>
             <div class="flex flex-col my-2 p-4 dark:bg-dark rounded-md bg-white shadow-sm">
-                <Comment :comments="data.comments.data" />
+                <Comment
+                    :comments="data.comments.data"
+                    :title="data.article.title"
+                    :article-id="data.article.articleId"
+                />
             </div>
         </div>
         <div class="flex ls:flex lg:flex md:hidden sm:hidden flex-col ml-2 w-3/12">

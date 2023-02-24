@@ -6,6 +6,9 @@ import { useRouter } from 'vue-router';
 import { formatTime } from '../../utils';
 // @ts-ignore
 import Markdown from 'vue3-markdown-it';
+import { useReloadCommentStore } from '../../pinia';
+import { storeToRefs } from 'pinia';
+import { getCommentsById } from '../../axios/api/commentsApi';
 
 const articleId = useRouteParams<string>('postId');
 const isLoad = ref<boolean>(true);
@@ -69,13 +72,29 @@ onMounted(() => {
         }
     });
 });
+
+const store = useReloadCommentStore();
+const refStore = storeToRefs(store);
+watch(refStore.count, () => {
+    if (refStore.reload.value == data.value.article.articleId) {
+        reloadComment(data.value.article.articleId);
+    }
+});
+
+const reloadComment = (id: string) => {
+    getCommentsById(id, 1, 100).then((res) => {
+        data.value.comments = res.data.data;
+    });
+};
 </script>
 
 <template>
     <div
         class="flex flex-row text-center justify-center md:m-auto md:my-2 ls:m-auto ls:my-2 lg:m-auto lg:my-2 sm:m-2 rounded-sm sm:max-w-full md:max-w-full ls:max-w-screen-ls lg:max-w-screen-lg"
     >
-        <div class="flex flex-col ls:w-9/12 lg:w-9/12 md:w-9/12 sm:w-full text-left bg-white dark:bg-dark rounded-md shadow-sm p-4">
+        <div
+            class="flex flex-col ls:w-9/12 lg:w-9/12 md:w-9/12 sm:w-full text-left bg-white dark:bg-dark rounded-md shadow-sm p-4"
+        >
             <div class="flex flex-row flex-wrap justify-between items-center">
                 <div class="flex flex-row justify-center items-center">
                     <el-avatar size="large" class="mr-4" :src="data.author.avatar" />
@@ -88,7 +107,7 @@ onMounted(() => {
                 </div>
             </div>
             <div class="my-4">
-                <Markdown id="markdown" class="markdown-body-light" :source="data.article.introduction" />
+                {{ data.article.introduction }}
             </div>
             <div v-viewer class="mb-4">
                 <img v-for="i in data.article.images" :src="i" alt="" />
@@ -100,7 +119,11 @@ onMounted(() => {
                 <CollectionLink :type="0" :id="data.article.articleId" />
             </div>
             <div>
-                <Comment :comments="data.comments.data" />
+                <Comment
+                    :comments="data.comments.data"
+                    :title="data.article.introduction"
+                    :article-id="data.article.articleId"
+                />
             </div>
         </div>
         <div class="flex ls:flex lg:flex md:hidden sm:hidden flex-col ml-2 w-3/12">

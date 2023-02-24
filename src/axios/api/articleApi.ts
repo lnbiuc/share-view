@@ -140,7 +140,7 @@ export function getOneArticle(articleId: string) {
 export function publishArticle(data: {
     title: string;
     introduction: string;
-    categoryId: number | null;
+    categoryId: number | undefined;
     content: string;
     tagIds: number[];
 }) {

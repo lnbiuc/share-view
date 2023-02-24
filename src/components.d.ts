@@ -47,6 +47,7 @@ declare module '@vue/runtime-core' {
     IEpCircleCloseFilled: typeof import('~icons/ep/circle-close-filled')['default']
     IEpEditPen: typeof import('~icons/ep/edit-pen')['default']
     IEpOttom: typeof import('~icons/ep/ottom')['default']
+    IEpPlus: typeof import('~icons/ep/plus')['default']
     IEpWarnTriangleFilled: typeof import('~icons/ep/warn-triangle-filled')['default']
     ILogosElement: typeof import('~icons/logos/element')['default']
     ILogosMysql: typeof import('~icons/logos/mysql')['default']

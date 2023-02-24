@@ -11,7 +11,10 @@ import { getCommentsById } from '../../axios/api/commentsApi';
 import { ElMessage } from 'element-plus';
 // @ts-ignore
 import { ArrowDown } from '@element-plus/icons-vue';
-import { useDialogControlStore } from '../../pinia';
+import { useDialogControlStore, useReloadCommentStore } from '../../pinia';
+import { subscribeAuthorByAuthorId, subscribeQuestionById } from '../../axios/api/subscribeApi';
+import { addCollection } from '../../axios/api/collectApi';
+import { storeToRefs } from 'pinia';
 const articleId = useRouteParams<string>('questionId');
 const ques = ref();
 const answer = ref();
@@ -58,6 +61,12 @@ const getComments = (id: string) => {
     });
 };
 
+const reloadCommentStore = useReloadCommentStore();
+const refReloadCommentStore = storeToRefs(reloadCommentStore);
+watch(refReloadCommentStore.count, () => {
+    getComments(currentComments.value);
+});
+
 const showComments = (id: string) => {
     return id == currentComments.value;
 };
@@ -70,7 +79,48 @@ const sortChange = (type: string) => {
     }
 };
 
-const dialogControlStore = useDialogControlStore()
+const dialogControlStore = useDialogControlStore();
+const subscribeQuestionBtn = ref(false);
+const subscribeQuestion = (id: string) => {
+    subscribeQuestionById(id).then((res) => {
+        if (res.data.code == 200) {
+            ElMessage.success('SUCCESS');
+            subscribeQuestionBtn.value = true;
+        } else if (res.data.code == 722) {
+            subscribeQuestionBtn.value = true;
+            ElMessage.warning(res.data.message);
+        } else {
+            ElMessage.warning(res.data.message);
+        }
+    });
+};
+
+const addCollectionBtn = ref(false);
+const addQuestionCollection = (id: string) => {
+    addCollection(id, 0).then((res) => {
+        if (res.data.code == 200) {
+            ElMessage.success('SUCCESS');
+            addCollectionBtn.value = true;
+        } else if (res.data.code == 719) {
+            addCollectionBtn.value = true;
+            ElMessage.warning(res.data.message);
+        } else {
+            ElMessage.warning(res.data.message);
+        }
+    });
+};
+
+const subscribeAnswerById = (id: string) => {
+    subscribeAuthorByAuthorId(id).then((res) => {
+        if (res.data.code == 200) {
+            ElMessage.success('SUCCESS');
+        } else if (res.data.code == 722) {
+            ElMessage.warning(res.data.message);
+        } else {
+            ElMessage.warning(res.data.message);
+        }
+    });
+};
 </script>
 
 <template>
@@ -106,8 +156,12 @@ const dialogControlStore = useDialogControlStore()
                 <span> Publish On {{ ques.author.ipAddr }} </span>
             </div>
             <div class="my-2">
-                <el-button>Subscribe This Question</el-button>
-                <el-button>Add To Collect</el-button>
+                <el-button @click="subscribeQuestion(ques.article.articleId)" :disabled="subscribeQuestionBtn"
+                    >Subscribe This Question</el-button
+                >
+                <el-button @click="addQuestionCollection(ques.article.articleId)" :disabled="addCollectionBtn"
+                    >Add To Collect</el-button
+                >
             </div>
             <div class="mb-4">
                 <Markdown name="markdown" class="markdown-body-light" :source="ques.article.content" />
@@ -122,7 +176,12 @@ const dialogControlStore = useDialogControlStore()
                             <span class="text-blue-500">{{ total }}</span>
                             Answers
                         </span>
-                        <el-button class="ml-4" type="primary" @click="dialogControlStore.answerQuestionForm.status = true">Create Answer</el-button>
+                        <el-button
+                            class="ml-4"
+                            type="primary"
+                            @click="dialogControlStore.answerQuestionForm.status = true"
+                            >Create Answer</el-button
+                        >
                     </div>
                     <span>
                         <el-dropdown trigger="click">
@@ -159,7 +218,7 @@ const dialogControlStore = useDialogControlStore()
                             <span class="text-xs whitespace-nowrap overflow-clip">{{ a.author.signature }}</span>
                         </div>
                         <div class="flex-end w-2/12 mt-4">
-                            <el-button>Subscribe</el-button>
+                            <el-button @click="subscribeAnswerById(a.author.userId)">Subscribe</el-button>
                         </div>
                     </div>
                     <div class="mt-8">
@@ -176,10 +235,10 @@ const dialogControlStore = useDialogControlStore()
                         <LikeBtn :id="a.id" :type="2" />
                         <CommentsLink :comments="toLength(a.comments)" @click="getComments(a.id)" />
                         <ShareLink />
-                        <CollectionLink />
+                        <CollectionLink :type="1" :id="a.id" />
                     </div>
                     <div v-if="showComments(a.id)">
-                        <Comment :comments="comments" />
+                        <Comment :comments="comments" :article-id="a.id" :title="a.author.username + '\'s Answer'" />
                     </div>
                 </div>
                 <el-divider />
@@ -190,6 +249,6 @@ const dialogControlStore = useDialogControlStore()
                 <UserInfoLite :user="ques.author" />
             </el-affix>
         </div>
-        <AnswerQuestionForm :question="ques.article.title" :question-id="ques.article.articleId"/>
+        <AnswerQuestionForm :question="ques.article.title" :question-id="ques.article.articleId" />
     </div>
 </template>

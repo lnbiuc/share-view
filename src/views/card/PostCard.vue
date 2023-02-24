@@ -1,9 +1,10 @@
 <script setup lang="ts">
 import { ref } from 'vue';
 import { ArticleListEntity, getArticleList } from '../../axios/api/articleApi';
-import { useArticleParamsStore } from '../../pinia';
+import { useArticleParamsStore, useDialogControlStore } from '../../pinia';
 import { formatTime } from '../../utils';
 import { storeToRefs } from 'pinia';
+import router from '../../router';
 const articleList = ref<ArticleListEntity[]>();
 const paramsStore = useArticleParamsStore();
 paramsStore.filterTypeChange(3);
@@ -42,6 +43,15 @@ const currentChange = (pageNumber: number) => {
         total.value = res.data.data.total;
     });
 };
+
+const handleClickComment = (articleId: string, info: string) => {
+    router.push({ path: '/p/' + articleId });
+    const store = useDialogControlStore();
+    store.commentForm.status = true;
+    store.commentForm.displayInfo = info;
+    store.commentForm.data.level = 0;
+    store.commentForm.data.articleId = articleId;
+};
 </script>
 
 <template>
@@ -78,7 +88,7 @@ const currentChange = (pageNumber: number) => {
             </div>
             <div class="flex flex-row">
                 <LikeBtn :type="0" :id="a.articleId" />
-                <CommentsLink />
+                <CommentsLink @click="handleClickComment(a.articleId, a.introduction)" />
                 <ShareLink />
                 <CollectionLink :type="0" :id="a.articleId" />
             </div>
