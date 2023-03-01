@@ -184,7 +184,7 @@ const reloadComment = (id: string) => {
                 <el-divider>CONTENT</el-divider>
                 <Loading :is-loading="isLoading" />
                 <div v-show="!isLoading">
-                    <Markdown id="markdown" class="markdown-body-light" :source="data.article.content" />
+                    <Markdown name="markdown" class="markdown-body-light" :source="data.article.content" />
                     <!--                    <v-md-preview :text="data.article.content"></v-md-preview>-->
                 </div>
                 <el-divider>END</el-divider>
