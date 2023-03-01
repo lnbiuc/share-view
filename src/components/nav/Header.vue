@@ -7,17 +7,17 @@
             <!--            <i-ep-add-location />-->
             Share
         </div>
-        <div class="flex justify-end w-5/12">
+        <div class="flex justify-start w-5/12 ml-10">
             <div
                 v-for="nav in navs"
                 :key="nav.name"
                 @click="$router.push({ path: nav.path })"
-                class="flex dark:text-gray-200 dark:hover:text-neutral-800 items-center dark:hover:text-blue-500 dark:border-b-[black] dark:hover:border-blue-500 hover:text-blue-500 border-solider border-b-2 border-b-white hover:border-blue-500 px-1 mx-1 text-center transition-all cursor-pointer"
+                class="flex dark:text-gray-200 dark:hover:text-neutral-800 items-center dark:hover:text-blue-500 dark:border-b-[black] dark:hover:border-blue-500 hover:text-blue-500 hover:border-blue-500 px-1 mx-1 text-center transition-all cursor-pointer"
             >
                 <span class="m-1">{{ nav.name }}</span>
             </div>
         </div>
-        <div class="flex justify-center items-center w-1/12">
+        <div class="flex justify-end items-center w-1/12 mr-5">
             <el-switch
                 v-model="isSwitchOpen"
                 inline-prompt
@@ -35,7 +35,7 @@
                     >&nbsp;
                     <el-icon class="text-xl">
                         <el-icon color="gray" size="25px" class="ml-2">
-                            <i-material-symbols-keyboard-double-arrow-down-rounded />
+                            <i-ep-arrow-down />
                         </el-icon>
                     </el-icon>
                 </span>

@@ -11,6 +11,10 @@ const props = defineProps({
         type: String,
         default: '',
     },
+    collectCount: {
+        type: Number,
+        default: 19,
+    },
 });
 
 const handlerCollect = () => {
@@ -27,8 +31,11 @@ const handlerCollect = () => {
 </script>
 
 <template>
-    <div class="px-2 flex flex-row items-center text-sm">
-        <el-icon color="gray"> <i-material-symbols-star /> </el-icon>&nbsp;
+    <div class="px-2 flex flex-row items-center text-sm justify-center">
+        <div class="flex flex-row justify-center items-start">
+            <el-icon color="gray" size="17"><i-material-symbols-star /></el-icon>&nbsp;
+        </div>
+        <span class="mr-1 text-gray-400">{{ collectCount }}</span>
         <span class="hover:text-blue-500 transition-all text-gray-400 cursor-pointer" @click="handlerCollect"
             >Collect</span
         >

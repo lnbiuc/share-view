@@ -81,8 +81,8 @@ const handleClickComment = (title: string, articleId: string) => {
             <div class="flex flex-row">
                 <LikeBtn :type="0" :id="a.articleId" />
                 <CommentsLink @click="handleClickComment(a.title, a.articleId)" />
-                <ShareLink />
                 <CollectionLink :type="0" :id="a.articleId" />
+                <ShareLink />
             </div>
         </div>
         <Pagination
