@@ -34,7 +34,7 @@ getCategoryList(1, 10).then((res) => {
         <div
             v-for="a in data"
             :key="a.id"
-            class="flex flex-row mb-2 bg-white transition-all dark:bg-dark rounded-md shadow-sm hover:shadow-md p-4"
+            class="flex flex-row mb-2 bg-light transition-all dark:bg-dark rounded-md shadow-sm hover:shadow-md p-4"
         >
             <div class="flex flex-col justify-center items-center">
                 <el-avatar class="mb-4 shadow-sm" :size="100" shape="square" :src="a.avatar" />

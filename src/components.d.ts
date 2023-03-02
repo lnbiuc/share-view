@@ -57,7 +57,9 @@ declare module '@vue/runtime-core' {
     ILogosTypescriptIcon: typeof import('~icons/logos/typescript-icon')['default']
     ILogosVitejs: typeof import('~icons/logos/vitejs')['default']
     ILogosVue: typeof import('~icons/logos/vue')['default']
+    IMaterialSymbolsCheckSmall: typeof import('~icons/material-symbols/check-small')['default']
     IMaterialSymbolsComment: typeof import('~icons/material-symbols/comment')['default']
+    IMaterialSymbolsOpenInNew: typeof import('~icons/material-symbols/open-in-new')['default']
     IMaterialSymbolsShare: typeof import('~icons/material-symbols/share')['default']
     IMaterialSymbolsStar: typeof import('~icons/material-symbols/star')['default']
     IMdiLike: typeof import('~icons/mdi/like')['default']
@@ -76,5 +78,6 @@ declare module '@vue/runtime-core' {
     UserInfo: typeof import('./components/aside/UserInfo.vue')['default']
     UserInfoLite: typeof import('./components/aside/UserInfoLite.vue')['default']
     ViewHistory: typeof import('./components/aside/ViewHistory.vue')['default']
+    WelcomeCard: typeof import('./components/index/welcome/WelcomeCard.vue')['default']
   }
 }

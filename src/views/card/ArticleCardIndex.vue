@@ -109,7 +109,7 @@ const handleClickComment = (articleId: string, title: string, type: string, info
             v-for="a in articleList"
             :key="a.articleId"
             v-if="!isLoad"
-            class="flex flex-col p-5 dark:bg-dark bg-white hover:shadow-md shadow-sm mt-2 mx-2 rounded-md transition-all"
+            class="flex flex-col p-5 dark:bg-dark bg-light hover:shadow-md shadow-sm mt-2 mx-2 rounded-md transition-all"
         >
             <div class="flex flex-row p-0 text-gray-400">
                 <div class="truncate">

@@ -77,6 +77,28 @@ onMounted(() => {
         }
     });
 });
+onMounted(() => {
+    const el = document.getElementsByName('markdown');
+    const theme = localStorage.getItem('vueuse-color-scheme');
+    el.forEach((el) => {
+        if (!el) {
+            return;
+        }
+        if (theme && theme == 'dark') {
+            // @ts-ignore
+            el.removeAttribute('class');
+            // @ts-ignore
+            el.classList.add('markdown-body-dark');
+            ElMessage.warning('set dark');
+        } else {
+            // @ts-ignore
+            el.removeAttribute('class');
+            // @ts-ignore
+            el.classList.add('markdown-body-light');
+            ElMessage.warning('set light');
+        }
+    });
+});
 onBeforeRouteLeave(() => {
     // @ts-ignore
     tocbot.destroy();
@@ -135,12 +157,14 @@ const reloadComment = (id: string) => {
 
 <template>
     <div
-        class="article flex flex-row text-center justify-center md:m-auto md:my-2 ls:m-auto ls:my-2 lg:m-auto lg:my-2 sm:m-2 rounded-sm sm:max-w-full md:max-w-full ls:max-w-screen-ls lg:max-w-screen-lg"
+        class="article flex flex-row text-center justify-center md:m-auto md:my-2 ls:m-auto ls:my-2 lg:m-auto lg:my-2 sm:m-2 rounded-sm sm:max-w-full md:max-w-full lg:max-w-screen-lg xl:w-[1440px]"
     >
         <div class="flex flex-col ls:w-9/12 lg:w-9/12 md:w-9/12 sm:w-full text-left">
-            <div class="flex flex-col p-4 dark:bg-dark rounded-md bg-white shadow-sm">
+            <div class="flex flex-col p-6 dark:bg-dark rounded-md bg-light shadow-sm">
                 <div class="flex flex-row items-center">
-                    <span class="rounded-full py-1 px-2 w-16 text-sm text-center" style="background-color: #79bbff"
+                    <span
+                        class="rounded-full py-1 px-2 w-16 text-sm text-center dark:text-light"
+                        style="background-color: #79bbff"
                         >Article</span
                     >
                     <span class="ml-2">
@@ -184,12 +208,16 @@ const reloadComment = (id: string) => {
                 <el-divider>CONTENT</el-divider>
                 <Loading :is-loading="isLoading" />
                 <div v-show="!isLoading">
-                    <Markdown name="markdown" class="markdown-body-light" :source="data.article.content" />
-                    <!--                    <v-md-preview :text="data.article.content"></v-md-preview>-->
+                    <Markdown
+                        name="markdown"
+                        id="markdown"
+                        class="markdown-body-light"
+                        :source="data.article.content"
+                    />
                 </div>
                 <el-divider>END</el-divider>
             </div>
-            <div class="flex flex-col my-2 p-4 dark:bg-dark rounded-md bg-white shadow-sm">
+            <div class="flex flex-col my-2 p-4 dark:bg-dark rounded-md bg-light shadow-sm">
                 <Comment
                     :comments="data.comments.data"
                     :title="data.article.title"
@@ -199,10 +227,11 @@ const reloadComment = (id: string) => {
         </div>
         <div class="flex ls:flex lg:flex md:hidden sm:hidden flex-col ml-2 w-3/12">
             <Loading :is-loading="isLoading" />
-            <UserInfoLite :user="data.author" />
+            <UserInfoLite v-show="!isLoading" :user="data.author" />
             <el-affix :offset="10">
                 <div
-                    class="js-toc text-left text-md transition-all dark:bg-dark dark:text-dark bg-white rounded-md shadow-sm px-4 py-2 overflow-auto break-all"
+                    class="js-toc text-left text-md transition-all dark:bg-dark dark:text-dark bg-light rounded-md shadow-sm px-4 py-2 overflow-auto break-all"
+                    v-show="!isLoading"
                 ></div>
             </el-affix>
         </div>
@@ -232,5 +261,6 @@ const reloadComment = (id: string) => {
 
 .is-active-link::before {
     background-color: unset;
+    color: dodgerblue;
 }
 </style>

@@ -19,7 +19,7 @@ getArticleList(paramsStore.params).then((res) => {
     <div class="m-2">
         <div
             v-for="a in articleList"
-            class="flex flex-col mb-2 bg-white transition-all dark:bg-dark rounded-md shadow-sm hover:shadow-md p-4"
+            class="flex flex-col mb-2 bg-light transition-all dark:bg-dark rounded-md shadow-sm hover:shadow-md p-4"
         >
             <div class="my-20" @click="$router.push({ path: '/v/' + a.articleId })">Video</div>
             <div class="truncate flex flex-row dark:text-gray-300 text-gray-800 ml-2">

@@ -129,7 +129,7 @@ const subscribeAnswerById = (id: string) => {
         class="flex flex-row text-center justify-center md:m-auto md:my-2 ls:m-auto ls:my-2 lg:m-auto lg:my-2 sm:m-2 rounded-sm sm:max-w-full md:max-w-full ls:max-w-screen-ls lg:max-w-screen-lg"
     >
         <Loading :is-loading="isLoading" />
-        <div class="flex flex-col w-9/12 mr-2 text-left bg-white p-4 dark:bg-dark rounded-md shadow-sm">
+        <div class="flex flex-col w-9/12 mr-2 text-left bg-light p-4 dark:bg-dark rounded-md shadow-sm">
             <div class="flex flex-row items-center">
                 <span
                     class="rounded-full py-1 px-2 w-20 text-sm dark:text-neutral-800"
