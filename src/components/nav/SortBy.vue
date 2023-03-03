@@ -75,7 +75,7 @@ const taggerColor = (s: { name: string; value: string }) => {
 
 <template>
     <div
-        class="flex flex-row mt-2 mx-2 p-3 dark:bg-dark justify-between items-center bg-white hover:shadow-md shadow-sm rounded-md transition-all"
+        class="flex flex-row mt-2 mx-2 p-3 dark:bg-dark justify-between items-center bg-light hover:shadow-md shadow-sm rounded-md transition-all"
     >
         <div>
             <span

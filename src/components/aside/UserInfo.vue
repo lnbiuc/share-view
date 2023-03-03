@@ -1,5 +1,5 @@
 <template>
-    <div class="flex flex-col bg-white mt-2 dark:bg-dark rounded-md hover:shadow-md transition-all shadow-sm p-3">
+    <div class="flex flex-col bg-light mt-2 dark:bg-dark rounded-md hover:shadow-md transition-all shadow-sm p-3">
         <div class="flex flex-row">
             <div class="flex m-2">
                 <el-avatar shape="square" :src="user.avatar" :size="150" />

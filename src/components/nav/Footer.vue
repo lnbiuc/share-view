@@ -1,5 +1,5 @@
 <template>
-    <div class="hover:shadow-md shadow-sm transition-all py-2 mt-2 dark:bg-dark bg-white w-auto text-sm">
+    <div class="hover:shadow-md shadow-sm transition-all py-2 mt-2 dark:bg-dark bg-light w-auto text-sm">
         <div class="w-auto text-center m-auto">
             <span
                 >Copyright © 2023 ·

@@ -1,8 +1,8 @@
 <template>
-    <div class="flex flex-row h-12 bg-white dark:bg-dark bg-light">
+    <div class="flex flex-row h-[60px] bg-light dark:bg-dark bg-light">
         <div
             @click="$router.push({ path: '/' })"
-            class="w-3/12 dark:text-gray-200 dark:hover:text-purple-300 text-lg font-bold flex justify-end transition-all items-center cursor-pointer hover:text-purple-400"
+            class="w-3/12 dark:text-gray-200 dark:hover:text-purple-300 text-[24px] flex justify-end transition-all items-center cursor-pointer hover:text-purple-400"
         >
             <!--            <i-ep-add-location />-->
             Share

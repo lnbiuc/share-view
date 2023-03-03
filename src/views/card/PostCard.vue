@@ -60,7 +60,7 @@ const handleClickComment = (articleId: string, info: string) => {
         <div
             v-for="a in articleList"
             :key="a.articleId"
-            class="flex flex-col mt-2 bg-white transition-all dark:bg-dark rounded-md shadow-sm hover:shadow-md p-4"
+            class="flex flex-col mt-2 bg-light transition-all dark:bg-dark rounded-md shadow-sm hover:shadow-md p-4"
         >
             <div class="flex flex-row justify-start">
                 <div class="flex flex-row justify-center items-center">

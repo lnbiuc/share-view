@@ -54,7 +54,7 @@ const handleClickComment = (title: string, articleId: string) => {
     <Loading :is-loading="isLoad" />
     <div class="m-2" v-if="!isLoad">
         <div
-            class="mb-2 bg-white dark:bg-dark rounded-md shadow-sm hover:shadow-md p-4 transition-all"
+            class="mb-2 bg-light dark:bg-dark rounded-md shadow-sm hover:shadow-md p-4 transition-all"
             v-for="a in articleList"
             :key="a.articleId"
         >

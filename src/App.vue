@@ -3,6 +3,7 @@
 // Check out https://vuejs.org/api/sfc-script-setup.html#script-setup
 import { storeToRefs } from 'pinia';
 import { useThemeStore } from './pinia';
+import { ElMessage } from 'element-plus';
 
 const themeStore = storeToRefs(useThemeStore());
 watch(themeStore.isDark, () => {
@@ -24,30 +25,10 @@ watch(themeStore.isDark, () => {
         }
     });
 });
-onMounted(() => {
-    const el = document.getElementsByName('markdown');
-    const theme = localStorage.getItem('vueuse-color-scheme');
-    el.forEach((el) => {
-        if (!el) {
-            return;
-        }
-        if (theme && theme == 'dark') {
-            // @ts-ignore
-            el.removeAttribute('class');
-            // @ts-ignore
-            el.classList.add('markdown-body-dark');
-        } else {
-            // @ts-ignore
-            el.removeAttribute('class');
-            // @ts-ignore
-            el.classList.add('markdown-body-light');
-        }
-    });
-});
 </script>
 
 <template>
-    <router-view class="bg-gray-100 dark:bg-dark-black" />
+    <router-view class="bg-light-white dark:bg-dark-black" />
 </template>
 
 <style>

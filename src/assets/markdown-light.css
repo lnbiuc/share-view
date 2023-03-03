@@ -3,7 +3,7 @@
     -webkit-text-size-adjust: 100%;
     margin: 0;
     color: #24292f;
-    background-color: #ffffff;
+    background-color: #f6f6f7;
     font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Noto Sans', Helvetica, Arial, sans-serif,
         'Apple Color Emoji', 'Segoe UI Emoji';
     font-size: 16px;
@@ -254,7 +254,7 @@
     line-height: 10px;
     color: #24292f;
     vertical-align: middle;
-    background-color: #f6f8fa;
+    background-color: #ffffff;
     border: solid 1px rgba(175, 184, 193, 0.2);
     border-bottom-color: rgba(175, 184, 193, 0.2);
     border-radius: 6px;
@@ -572,7 +572,7 @@
 }
 
 .markdown-body-light table tr:nth-child(2n) {
-    background-color: #f6f8fa;
+    background-color: #ffffff;
 }
 
 .markdown-body-light table img {
@@ -732,7 +732,7 @@
     overflow: auto;
     font-size: 85%;
     line-height: 1.45;
-    background-color: #f6f8fa;
+    background-color: #ffffff;
     border-radius: 6px;
 }
 
@@ -772,7 +772,7 @@
 
 .markdown-body-light .csv-data th {
     font-weight: 600;
-    background: #f6f8fa;
+    background: #ffffff;
     border-top: 0;
 }
 
@@ -871,12 +871,12 @@
 }
 
 .markdown-body-light .pl-ii {
-    color: #f6f8fa;
+    color: #ffffff;
     background-color: #82071e;
 }
 
 .markdown-body-light .pl-c2 {
-    color: #f6f8fa;
+    color: #ffffff;
     background-color: #cf222e;
 }
 

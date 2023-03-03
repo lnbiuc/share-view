@@ -93,7 +93,7 @@ const reloadComment = (id: string) => {
         class="flex flex-row text-center justify-center md:m-auto md:my-2 ls:m-auto ls:my-2 lg:m-auto lg:my-2 sm:m-2 rounded-sm sm:max-w-full md:max-w-full ls:max-w-screen-ls lg:max-w-screen-lg"
     >
         <div
-            class="flex flex-col ls:w-9/12 lg:w-9/12 md:w-9/12 sm:w-full text-left bg-white dark:bg-dark rounded-md shadow-sm p-4"
+            class="flex flex-col ls:w-9/12 lg:w-9/12 md:w-9/12 sm:w-full text-left bg-light dark:bg-dark rounded-md shadow-sm p-4"
         >
             <div class="flex flex-row flex-wrap justify-between items-center">
                 <div class="flex flex-row justify-center items-center">

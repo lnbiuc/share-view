@@ -113,7 +113,7 @@ const handleClickComment = (articleId: string, title: string, type: string, info
                 v-for="a in articleList"
                 :key="a.articleId"
                 v-if="!isLoad"
-                class="flex flex-col p-5 dark:bg-dark bg-white hover:shadow-md shadow-sm mb-2 mx-2 rounded-md transition-all"
+                class="flex flex-col p-5 dark:bg-dark bg-light hover:shadow-md shadow-sm mb-2 mx-2 rounded-md transition-all"
             >
                 <div class="flex flex-row p-0 text-gray-400">
                     <div class="truncate">
@@ -168,7 +168,7 @@ const handleClickComment = (articleId: string, title: string, type: string, info
         </div>
         <div class="flex flex-col w-3/12">
             <el-affix :offset="10">
-                <div class="flex flex-col rounded-md shadow-sm bg-white p-4 justify-center items-center dark:bg-dark">
+                <div class="flex flex-col rounded-md shadow-sm bg-light p-4 justify-center items-center dark:bg-dark">
                     <el-avatar :src="category.avatar" :size="140" shape="square" />
                     <span class="text-xl my-2 font-semibold">{{ category.name }}</span>
                     <span class="text-left text-gray-500 text-sm mb-2">

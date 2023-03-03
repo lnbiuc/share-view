@@ -13,7 +13,7 @@ const subStrTime = (time: string) => {
 </script>
 
 <template>
-    <div class="bg-white rounded-md shadow-sm mb-2 p-4 dark:bg-dark">
+    <div class="bg-light rounded-md shadow-sm mb-2 p-4 dark:bg-dark">
         <el-avatar :size="130" :src="user.avatar" />
         <div class="flex flex-col text-left">
             <span class="text-xl font-bold mt-1 dark:text-dark">{{ user.username }}</span>

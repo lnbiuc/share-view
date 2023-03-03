@@ -72,7 +72,7 @@ const handleClick = (index: number) => {
 };
 </script>
 <template>
-    <div class="flex flex-col bg-white mt-2 dark:bg-dark rounded-md hover:shadow-md transition-all shadow-sm p-3">
+    <div class="flex flex-col bg-light mt-2 dark:bg-dark rounded-md hover:shadow-md transition-all shadow-sm p-3">
         <div class="flex justify-start items-center">
             <el-icon color="#409eff"> <UserFilled /> </el-icon>&nbsp;
             <span class="mx-1">Creation Center</span>

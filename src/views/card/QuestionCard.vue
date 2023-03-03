@@ -44,7 +44,7 @@ const currentChange = (pageNumber: number) => {
         <div
             v-for="(a, i) in articleList"
             :key="a.articleId"
-            class="flex flex-row mb-2 bg-white transition-all dark:bg-dark rounded-md shadow-sm hover:shadow-md p-4"
+            class="flex flex-row mb-2 bg-light transition-all dark:bg-dark rounded-md shadow-sm hover:shadow-md p-4"
         >
             <div class="flex flex-col justify-around w-1/12">
                 <span class="text-3xl text-gray-500">{{ i + 1 }}</span>
