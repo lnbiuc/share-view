@@ -19,7 +19,6 @@ const articleId = useRouteParams<string>('articleId');
 const data = ref<ArticleContentEntity>({
     'article': {
         'articleId': '',
-        // @ts-ignore
         'author': {
             'userId': '',
             'username': '',
@@ -29,6 +28,7 @@ const data = ref<ArticleContentEntity>({
             'registerTime': '',
             'lastLogin': '',
             'ipAddr': '',
+			"isSubscribed": false
         },
         'title': '',
         'introduction': '',
@@ -41,6 +41,7 @@ const data = ref<ArticleContentEntity>({
         'setTop': false,
         'views': 0,
         'like': 0,
+		'collect':0,
         'comments': 0,
     },
     'comments': {
@@ -50,24 +51,15 @@ const data = ref<ArticleContentEntity>({
         'total': 0,
         'data': [],
     },
-    'author': {
-        'userId': '',
-        'username': '',
-        'signature': '',
-        'avatar': 'https://cube.elemecdn.com/0/88/03b0d39583f48206768a7534e55bcpng.png',
-        'level': 0,
-        'registerTime': '',
-        'lastLogin': '',
-        'ipAddr': '',
-    },
 });
 const isLoading = ref<boolean>(true);
 onMounted(() => {
     getOneArticle(articleId.value).then((res) => {
         if (res.data.code == 200) {
             data.value = res.data.data;
-            nextTick(() => {
-                isLoading.value = false;
+			isLoading.value = false;
+			disableSubscribeBtn.value = data.value.article.author.isSubscribed
+			nextTick(() => {
                 renderToc();
                 window.scroll({ top: 0, behavior: 'smooth' });
             });
@@ -89,13 +81,11 @@ onMounted(() => {
             el.removeAttribute('class');
             // @ts-ignore
             el.classList.add('markdown-body-dark');
-            ElMessage.warning('set dark');
         } else {
             // @ts-ignore
             el.removeAttribute('class');
             // @ts-ignore
             el.classList.add('markdown-body-light');
-            ElMessage.warning('set light');
         }
     });
 });
@@ -139,6 +129,12 @@ const handlerSubscribe = (userId: string) => {
         }
     });
 };
+const subscribeBtn = ref<string>("Subscribe");
+watch(disableSubscribeBtn, () => {
+	if(disableSubscribeBtn.value){
+		subscribeBtn.value = "Subscribed"
+	}
+})
 
 const store = useReloadCommentStore();
 const refStore = storeToRefs(store);
@@ -180,14 +176,14 @@ const reloadComment = (id: string) => {
                 <div class="flex flex-row justify-between px-2">
                     <div class="flex flex-row mt-4">
                         <div>
-                            <el-avatar :size="60" :src="data.author.avatar" />
+                            <el-avatar :size="60" :src="data.article.author.avatar" />
                         </div>
                         <div class="flex flex-col ml-4 justify-around">
                             <div class="flex flex-row items-center">
                                 <div class="flex">
-                                    <span class="text-lg text-gray-800 dark:text-dark">{{ data.author.username }}</span>
+                                    <span class="text-lg text-gray-800 dark:text-dark">{{ data.article.author.username }}</span>
                                     <span class="text-sm text-gray-400 flex items-center mt-1 dark:text-dark"
-                                        >&nbsp;@{{ data.author.userId }}</span
+                                        >&nbsp;@{{ data.article.author.userId }}</span
                                     >
                                 </div>
                             </div>
@@ -198,10 +194,10 @@ const reloadComment = (id: string) => {
                     </div>
                     <div class="flex items-center mb-4">
                         <el-button
-                            @click="handlerSubscribe(data.author.userId)"
+                            @click="handlerSubscribe(data.article.author.userId)"
                             type="primary"
                             :disabled="disableSubscribeBtn"
-                            >Subscribe Author</el-button
+                            >{{ subscribeBtn }}</el-button
                         >
                     </div>
                 </div>
@@ -227,7 +223,7 @@ const reloadComment = (id: string) => {
         </div>
         <div class="flex ls:flex lg:flex md:hidden sm:hidden flex-col ml-2 w-3/12">
             <Loading :is-loading="isLoading" />
-            <UserInfoLite v-show="!isLoading" :user="data.author" />
+            <UserInfoLite v-show="!isLoading" :user="data.article.author" />
             <el-affix :offset="10">
                 <div
                     class="js-toc text-left text-md transition-all dark:bg-dark dark:text-dark bg-light rounded-md shadow-sm px-4 py-2 overflow-auto break-all"
