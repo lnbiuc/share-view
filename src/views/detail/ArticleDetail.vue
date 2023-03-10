@@ -7,14 +7,16 @@ import Markdown from 'vue3-markdown-it';
 import { useRouteParams } from '@vueuse/router';
 import { ElMessage } from 'element-plus';
 import { onBeforeRouteLeave, useRouter } from 'vue-router';
-import { renderToc } from '../../utils';
 import { subscribeAuthorByAuthorId } from '../../axios/api/subscribeApi';
 import { likeArticle } from '../../axios/api/likesApi';
 import { addCollection } from '../../axios/api/collectApi';
 import UserInfoLite from '../../components/aside/UserInfoLite.vue';
 import { getCommentsById } from '../../axios/api/commentsApi';
-import { useDialogControlStore, useReloadCommentStore } from '../../pinia';
+import {useDialogControlStore, useReloadCommentStore, useThemeStore} from '../../pinia';
 import { storeToRefs } from 'pinia';
+import MdEditor from 'md-editor-v3';
+import {ref} from "vue";
+import 'md-editor-v3/lib/style.css';
 const articleId = useRouteParams<string>('articleId');
 const data = ref<ArticleContentEntity>({
     'article': {
@@ -60,7 +62,6 @@ onMounted(() => {
 			isLoading.value = false;
 			disableSubscribeBtn.value = data.value.article.author.isSubscribed
 			nextTick(() => {
-                renderToc();
                 window.scroll({ top: 0, behavior: 'smooth' });
             });
         } else {
@@ -88,14 +89,6 @@ onMounted(() => {
             el.classList.add('markdown-body-light');
         }
     });
-});
-onBeforeRouteLeave(() => {
-    // @ts-ignore
-    tocbot.destroy();
-});
-onBeforeUnmount(() => {
-    // @ts-ignore
-    tocbot.destroy();
 });
 
 const like = (isLike: number) => {
@@ -149,6 +142,23 @@ const reloadComment = (id: string) => {
         data.value.comments = res.data.data;
     });
 };
+
+const themeStore = useThemeStore()
+const refThemeStore = storeToRefs(themeStore)
+const currentTheme = ref<string>(themeStore.isDark ? 'dark' : 'light')
+watch(refThemeStore.isDark, (val) => {
+	currentTheme.value = val ? 'dark' : 'light'
+})
+
+const MdCatalog = MdEditor.MdCatalog;
+
+const state = reactive({
+	theme: 'dark',
+	text: '标题',
+	id: 'my-editor'
+});
+
+const scrollElement = document.documentElement;
 </script>
 
 <template>
@@ -204,12 +214,18 @@ const reloadComment = (id: string) => {
                 <el-divider>CONTENT</el-divider>
                 <Loading :is-loading="isLoading" />
                 <div v-show="!isLoading">
-                    <Markdown
-                        name="markdown"
-                        id="markdown"
-                        class="markdown-body-light"
-                        :source="data.article.content"
-                    />
+<!--                    <Markdown-->
+<!--                        name="markdown"-->
+<!--                        id="markdown"-->
+<!--                        class="markdown-body-light"-->
+<!--                        :source="data.article.content"-->
+<!--                    />-->
+					<md-editor
+						:editor-id="state.id"
+						:show-code-row-number="true"
+						v-model="data.article.content"
+						:theme="currentTheme"
+						:preview-only="true"/>
                 </div>
                 <el-divider>END</el-divider>
             </div>
@@ -226,9 +242,15 @@ const reloadComment = (id: string) => {
             <UserInfoLite v-show="!isLoading" :user="data.article.author" />
             <el-affix :offset="10">
                 <div
-                    class="js-toc text-left text-md transition-all dark:bg-dark dark:text-dark bg-light rounded-md shadow-sm px-4 py-2 overflow-auto break-all"
+                    class="text-left text-md transition-all dark:bg-dark dark:text-dark bg-light rounded-md shadow-sm px-4 py-2 overflow-auto break-all"
                     v-show="!isLoading"
-                ></div>
+                >
+					<md-catalog
+						:editor-id="state.id"
+						:scroll-element="scrollElement"
+						:theme="currentTheme"
+					/>
+				</div>
             </el-affix>
         </div>
     </div>
@@ -236,27 +258,5 @@ const reloadComment = (id: string) => {
 <style scoped>
 .article {
     min-height: 100vh;
-}
-</style>
-<style>
-.toc-link {
-    text-decoration: none !important;
-}
-
-.toc-list {
-    padding-left: 20px !important;
-}
-
-.toc-link::before {
-    background-color: unset;
-}
-
-.toc-list-item {
-    font-size: small;
-}
-
-.is-active-link::before {
-    background-color: unset;
-    color: dodgerblue;
 }
 </style>
