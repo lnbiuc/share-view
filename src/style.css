@@ -1,4 +1,4 @@
-@tailwind base;
+/*@tailwind base;*/
 @tailwind components;
 @tailwind utilities;
 @layer utilities {
@@ -7,9 +7,11 @@
     }
     .bg-dark {
         background-color: #252529;
+        border: 0.1rem solid #323232;
     }
     .bg-light {
-        background-color: #f6f6f7;
+        background-color: #ffffff;
+        border: 0.1rem solid #e6e6e6;
     }
     .bg-light-white {
         background-color: #ffffff;
@@ -22,8 +24,6 @@
     }
 }
 
-@layer base {
-    ol {
-        list-style-type: unset;
-    }
+.md-editor-dark {
+    --md-bk-color: #252529 !important;
 }

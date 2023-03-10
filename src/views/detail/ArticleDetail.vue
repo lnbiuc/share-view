@@ -2,24 +2,23 @@
 import { getOneArticle, ArticleContentEntity } from '../../axios/api/articleApi';
 // @ts-ignore
 import { StarFilled, CaretTop, CaretBottom } from '@element-plus/icons-vue';
-// @ts-ignore
-import Markdown from 'vue3-markdown-it';
 import { useRouteParams } from '@vueuse/router';
 import { ElMessage } from 'element-plus';
-import { onBeforeRouteLeave, useRouter } from 'vue-router';
-import { renderToc } from '../../utils';
+import { useRouter } from 'vue-router';
 import { subscribeAuthorByAuthorId } from '../../axios/api/subscribeApi';
 import { likeArticle } from '../../axios/api/likesApi';
 import { addCollection } from '../../axios/api/collectApi';
 import UserInfoLite from '../../components/aside/UserInfoLite.vue';
 import { getCommentsById } from '../../axios/api/commentsApi';
-import { useDialogControlStore, useReloadCommentStore } from '../../pinia';
+import { useReloadCommentStore, useThemeStore } from '../../pinia';
 import { storeToRefs } from 'pinia';
+import MdEditor from 'md-editor-v3';
+import { ref } from 'vue';
+import 'md-editor-v3/lib/style.css';
 const articleId = useRouteParams<string>('articleId');
 const data = ref<ArticleContentEntity>({
     'article': {
         'articleId': '',
-        // @ts-ignore
         'author': {
             'userId': '',
             'username': '',
@@ -29,6 +28,7 @@ const data = ref<ArticleContentEntity>({
             'registerTime': '',
             'lastLogin': '',
             'ipAddr': '',
+            'isSubscribed': false,
         },
         'title': '',
         'introduction': '',
@@ -41,6 +41,7 @@ const data = ref<ArticleContentEntity>({
         'setTop': false,
         'views': 0,
         'like': 0,
+        'collect': 0,
         'comments': 0,
     },
     'comments': {
@@ -50,25 +51,15 @@ const data = ref<ArticleContentEntity>({
         'total': 0,
         'data': [],
     },
-    'author': {
-        'userId': '',
-        'username': '',
-        'signature': '',
-        'avatar': 'https://cube.elemecdn.com/0/88/03b0d39583f48206768a7534e55bcpng.png',
-        'level': 0,
-        'registerTime': '',
-        'lastLogin': '',
-        'ipAddr': '',
-    },
 });
 const isLoading = ref<boolean>(true);
 onMounted(() => {
     getOneArticle(articleId.value).then((res) => {
         if (res.data.code == 200) {
             data.value = res.data.data;
+            isLoading.value = false;
+            disableSubscribeBtn.value = data.value.article.author.isSubscribed;
             nextTick(() => {
-                isLoading.value = false;
-                renderToc();
                 window.scroll({ top: 0, behavior: 'smooth' });
             });
         } else {
@@ -89,23 +80,13 @@ onMounted(() => {
             el.removeAttribute('class');
             // @ts-ignore
             el.classList.add('markdown-body-dark');
-            ElMessage.warning('set dark');
         } else {
             // @ts-ignore
             el.removeAttribute('class');
             // @ts-ignore
             el.classList.add('markdown-body-light');
-            ElMessage.warning('set light');
         }
     });
-});
-onBeforeRouteLeave(() => {
-    // @ts-ignore
-    tocbot.destroy();
-});
-onBeforeUnmount(() => {
-    // @ts-ignore
-    tocbot.destroy();
 });
 
 const like = (isLike: number) => {
@@ -139,6 +120,12 @@ const handlerSubscribe = (userId: string) => {
         }
     });
 };
+const subscribeBtn = ref<string>('Subscribe');
+watch(disableSubscribeBtn, () => {
+    if (disableSubscribeBtn.value) {
+        subscribeBtn.value = 'Subscribed';
+    }
+});
 
 const store = useReloadCommentStore();
 const refStore = storeToRefs(store);
@@ -153,6 +140,23 @@ const reloadComment = (id: string) => {
         data.value.comments = res.data.data;
     });
 };
+
+const themeStore = useThemeStore();
+const refThemeStore = storeToRefs(themeStore);
+const currentTheme = ref<'dark' | 'light'>(themeStore.isDark ? 'dark' : 'light');
+watch(refThemeStore.isDark, (val) => {
+    currentTheme.value = val ? 'dark' : 'light';
+});
+
+const MdCatalog = MdEditor.MdCatalog;
+
+const state = reactive({
+    theme: 'dark',
+    text: '标题',
+    id: 'my-editor',
+});
+
+const scrollElement = document.documentElement;
 </script>
 
 <template>
@@ -180,14 +184,16 @@ const reloadComment = (id: string) => {
                 <div class="flex flex-row justify-between px-2">
                     <div class="flex flex-row mt-4">
                         <div>
-                            <el-avatar :size="60" :src="data.author.avatar" />
+                            <el-avatar :size="60" :src="data.article.author.avatar" />
                         </div>
                         <div class="flex flex-col ml-4 justify-around">
                             <div class="flex flex-row items-center">
                                 <div class="flex">
-                                    <span class="text-lg text-gray-800 dark:text-dark">{{ data.author.username }}</span>
+                                    <span class="text-lg text-gray-800 dark:text-dark">{{
+                                        data.article.author.username
+                                    }}</span>
                                     <span class="text-sm text-gray-400 flex items-center mt-1 dark:text-dark"
-                                        >&nbsp;@{{ data.author.userId }}</span
+                                        >&nbsp;@{{ data.article.author.userId }}</span
                                     >
                                 </div>
                             </div>
@@ -198,21 +204,28 @@ const reloadComment = (id: string) => {
                     </div>
                     <div class="flex items-center mb-4">
                         <el-button
-                            @click="handlerSubscribe(data.author.userId)"
+                            @click="handlerSubscribe(data.article.author.userId)"
                             type="primary"
                             :disabled="disableSubscribeBtn"
-                            >Subscribe Author</el-button
+                            >{{ subscribeBtn }}</el-button
                         >
                     </div>
                 </div>
                 <el-divider>CONTENT</el-divider>
                 <Loading :is-loading="isLoading" />
                 <div v-show="!isLoading">
-                    <Markdown
-                        name="markdown"
-                        id="markdown"
-                        class="markdown-body-light"
-                        :source="data.article.content"
+                    <!--                    <Markdown-->
+                    <!--                        name="markdown"-->
+                    <!--                        id="markdown"-->
+                    <!--                        class="markdown-body-light"-->
+                    <!--                        :source="data.article.content"-->
+                    <!--                    />-->
+                    <md-editor
+                        :editor-id="state.id"
+                        :show-code-row-number="true"
+                        v-model="data.article.content"
+                        :theme="currentTheme"
+                        :preview-only="true"
                     />
                 </div>
                 <el-divider>END</el-divider>
@@ -227,12 +240,14 @@ const reloadComment = (id: string) => {
         </div>
         <div class="flex ls:flex lg:flex md:hidden sm:hidden flex-col ml-2 w-3/12">
             <Loading :is-loading="isLoading" />
-            <UserInfoLite v-show="!isLoading" :user="data.author" />
+            <UserInfoLite v-show="!isLoading" :user="data.article.author" />
             <el-affix :offset="10">
                 <div
-                    class="js-toc text-left text-md transition-all dark:bg-dark dark:text-dark bg-light rounded-md shadow-sm px-4 py-2 overflow-auto break-all"
+                    class="text-left text-md transition-all dark:bg-dark dark:text-dark bg-light rounded-md shadow-sm px-4 py-2 overflow-auto break-all"
                     v-show="!isLoading"
-                ></div>
+                >
+                    <md-catalog :editor-id="state.id" :scroll-element="scrollElement" :theme="currentTheme" />
+                </div>
             </el-affix>
         </div>
     </div>
@@ -240,27 +255,5 @@ const reloadComment = (id: string) => {
 <style scoped>
 .article {
     min-height: 100vh;
-}
-</style>
-<style>
-.toc-link {
-    text-decoration: none !important;
-}
-
-.toc-list {
-    padding-left: 20px !important;
-}
-
-.toc-link::before {
-    background-color: unset;
-}
-
-.toc-list-item {
-    font-size: small;
-}
-
-.is-active-link::before {
-    background-color: unset;
-    color: dodgerblue;
 }
 </style>

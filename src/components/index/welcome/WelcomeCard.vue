@@ -36,31 +36,31 @@ onMounted(() => {
                     <el-icon size="32" color="rgb(59, 130, 246)">
                         <i-material-symbols-check-small />
                     </el-icon>
-                    Better reading experience
+                    Elevate your reading experience with our product.
                 </span>
                 <span class="check-list">
                     <el-icon size="32" color="rgb(59, 130, 246)">
                         <i-material-symbols-check-small />
                     </el-icon>
-                    Faster content finding
+                    Say goodbye to slow content searches and hello to lightning-fast results.
                 </span>
                 <span class="check-list">
                     <el-icon size="32" color="rgb(59, 130, 246)">
                         <i-material-symbols-check-small />
                     </el-icon>
-                    More ways to share
+                    Share your content in more ways than ever before.
                 </span>
                 <span class="check-list">
                     <el-icon size="32" color="rgb(59, 130, 246)">
                         <i-material-symbols-check-small />
                     </el-icon>
-                    Better markdown syntax support
+                    Enjoy seamless markdown syntax support for a better writing experience.
                 </span>
                 <span class="check-list">
                     <el-icon size="32" color="rgb(59, 130, 246)">
                         <i-material-symbols-check-small />
                     </el-icon>
-                    More beautiful appearance
+                    Experience the beauty of our product's appearance.
                 </span>
             </div>
             <div class="flex flex-row ml-3 mb-4">

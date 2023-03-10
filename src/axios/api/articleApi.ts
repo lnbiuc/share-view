@@ -34,6 +34,7 @@ export interface ArticleListEntity {
     setTop: boolean;
     views: number;
     like: number;
+    collect: number;
     comments: number;
     images: string[];
 }
@@ -52,30 +53,31 @@ export interface UserLiteEntity {
     registerTime: string;
     lastLogin: string;
     ipAddr: string;
+    isSubscribed: boolean;
 }
 
 export interface ArticleEntity {
     articleId: string;
-    author: UserEntity;
+    author: UserLiteEntity;
     title: string;
     introduction: string;
-    content: string;
     type: string;
     tags: TagEntity[];
     category: string;
+    content: string;
     releaseTime: string;
     lastUpdate: string;
     setTop: boolean;
     views: number;
     like: number;
+    collect: number;
     comments: number;
-    images: string[];
+    images?: any;
 }
 
 export interface ArticleContentEntity {
     article: ArticleEntity;
     comments: CommentListEntity;
-    author: UserLiteEntity;
 }
 
 export interface CommentListEntity {
@@ -93,15 +95,6 @@ export interface ViewHistoryEntity {
     introduction: string;
     author: UserLiteEntity;
     time: string;
-}
-
-export interface UserLiteEntity {
-    userId: string;
-    username: string;
-    signature: string;
-    avatar: string;
-    level: number;
-    ipAddr: string;
 }
 
 export function getArticleList(data: articleParams) {

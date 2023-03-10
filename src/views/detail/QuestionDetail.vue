@@ -1,8 +1,6 @@
 <script setup lang="ts">
 import { useRouteParams } from '@vueuse/router';
 import { getOneArticle } from '../../axios/api/articleApi';
-// @ts-ignore
-import Markdown from 'vue3-markdown-it';
 import { formatTime } from '../../utils';
 // @ts-ignore
 import { View } from '@element-plus/icons-vue';

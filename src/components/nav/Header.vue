@@ -12,7 +12,7 @@
                 v-for="nav in navs"
                 :key="nav.name"
                 @click="$router.push({ path: nav.path })"
-                class="flex dark:text-gray-200 dark:hover:text-neutral-800 items-center dark:hover:text-blue-500 dark:border-b-[black] dark:hover:border-blue-500 hover:text-blue-500 hover:border-blue-500 px-1 mx-1 text-center transition-all cursor-pointer"
+                class="flex dark:text-gray-200 items-center dark:hover:text-blue-500 dark:border-b-[black] dark:hover:border-blue-500 hover:text-blue-500 hover:border-blue-500 px-1 mx-1 text-center transition-all cursor-pointer"
             >
                 <span class="m-1">{{ nav.name }}</span>
             </div>
@@ -24,7 +24,7 @@
                 :active-icon="Moon"
                 :inactive-icon="Sunny"
                 :change="switchChange()"
-                style="--el-switch-on-color: #2a2a2a; --el-switch-off-color: #c7c7c7"
+                style="--el-switch-on-color: #181818; --el-switch-off-color: #c7c7c7"
             />
         </div>
         <div class="user flex w-3/12 justify-start items-center" v-if="store.isLogin">

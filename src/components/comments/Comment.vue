@@ -3,6 +3,8 @@ import { formatTime } from '../../utils';
 // @ts-ignore
 import { ArrowUpBold, ArrowDownBold } from '@element-plus/icons-vue';
 import { useDialogControlStore } from '../../pinia';
+import { likeArticle } from '../../axios/api/likesApi';
+import { ElMessage } from 'element-plus';
 
 const props = defineProps({
     comments: {
@@ -47,6 +49,17 @@ const handleCreateChildChildComment = (info: string, id: number) => {
     dialogControlStore.commentForm.data.level = 1;
     dialogControlStore.commentForm.data.articleId = props.articleId;
 };
+
+const handleClickLike = (commentId: string) => {
+    likeArticle(commentId, 1, 1).then((res) => {
+        if (res.data.code == 200) {
+            // TODO emit get  comment
+            ElMessage.success('SUCCESS');
+        } else {
+            ElMessage.warning(res.data.message);
+        }
+    });
+};
 </script>
 
 <template>
@@ -90,8 +103,11 @@ const handleCreateChildChildComment = (info: string, id: number) => {
                         <div
                             class="flex flex-row items-center mr-2 text-sm text-gray-500 hover:text-blue-500 cursor-pointer transition-all"
                         >
-                            <i-mdi-like />
-                            <span class="ml-1"> 23 </span>
+                            <el-icon color="blue" v-if="c.isLiked" @click="handleClickLike(c.id)">
+                                <i-mdi-like />
+                            </el-icon>
+                            <i-mdi-like v-if="!c.isLiked" />
+                            <span class="ml-1"> {{ c.likesCount }} </span>
                         </div>
                         <div
                             @click="handleCreateChildComment(c.content, c.id)"
@@ -129,8 +145,11 @@ const handleCreateChildChildComment = (info: string, id: number) => {
                                     <div
                                         class="flex flex-row items-center mr-2 text-xs text-gray-500 hover:text-blue-500 cursor-pointer transition-all"
                                     >
-                                        <i-mdi-like />
-                                        <span class="ml-1"> 23 </span>
+                                        <el-icon color="blue" v-if="z.isLiked">
+                                            <i-mdi-like />
+                                        </el-icon>
+                                        <i-mdi-like v-if="!z.isLiked" />
+                                        <span class="ml-1"> {{ z.likesCount }} </span>
                                     </div>
                                     <div
                                         @click="handleCreateChildChildComment(z.content, c.id)"

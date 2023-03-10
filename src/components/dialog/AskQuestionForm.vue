@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { useDialogControlStore } from '../../pinia';
+import { useDialogControlStore, useThemeStore } from '../../pinia';
 import { ref } from 'vue';
 import { ElMessage, ElNotification, FormInstance } from 'element-plus';
 import { CategoryEntity, getCategoryList } from '../../axios/api/categoryApi';
@@ -7,6 +7,8 @@ import { TagEntity } from '../../axios/api/articleApi';
 import { getAllTags, publishTag } from '../../axios/api/tagApi';
 import { handleUploadImage } from '../../utils';
 import { publishQuestion } from '../../axios/api/questionApi';
+import { storeToRefs } from 'pinia';
+import MdEditor from 'md-editor-v3';
 
 const dialogControlStore = useDialogControlStore();
 const questionForm = ref<{ title: string; categoryId: number | undefined; content: string; tagIds: number[] }>({
@@ -103,6 +105,13 @@ const handlePublish = (formEl: FormInstance | undefined) => {
         }
     });
 };
+
+const themeStore = useThemeStore();
+const refThemeStore = storeToRefs(themeStore);
+const currentTheme = ref<'dark' | 'light'>(themeStore.isDark ? 'dark' : 'light');
+watch(refThemeStore.isDark, (val) => {
+    currentTheme.value = val ? 'dark' : 'light';
+});
 </script>
 
 <template>
@@ -190,15 +199,14 @@ const handlePublish = (formEl: FormInstance | undefined) => {
             </el-icon>
             <span class="ml-4">Out of maximum length</span>
         </div>
-        <v-md-editor
+        <md-editor
             v-model="questionForm.content"
-            :tab-size="4"
-            :disabled-menus="[]"
-            :autofocus="true"
-            :default-show-toc="true"
-            @upload-image="handleUploadImage"
-            height="50vh"
-        >
-        </v-md-editor>
+            :theme="currentTheme"
+            :tab-width="4"
+            :show-code-row-number="true"
+            :auto-focus="true"
+            style="height: 50vh"
+            @on-upload-img="handleUploadImage"
+        />
     </el-dialog>
 </template>
