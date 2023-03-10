@@ -1,8 +1,11 @@
 <script setup lang="ts">
-import { useDialogControlStore } from '../../pinia';
+import {useDialogControlStore, useThemeStore} from '../../pinia';
 import { handleUploadImage } from '../../utils';
 import { publishAnswer } from '../../axios/api/questionApi';
 import { ElMessage } from 'element-plus';
+import MdEditor from 'md-editor-v3';
+import {storeToRefs} from "pinia";
+import {ref} from "vue";
 
 const props = defineProps({
     question: {
@@ -35,6 +38,13 @@ const handlePublish = () => {
         ElMessage.warning('content required');
     }
 };
+
+const themeStore = useThemeStore()
+const refThemeStore = storeToRefs(themeStore)
+const currentTheme = ref<string>(themeStore.isDark ? 'dark' : 'light')
+watch(refThemeStore.isDark, (val) => {
+	currentTheme.value = val ? 'dark' : 'light'
+})
 </script>
 
 <template>
@@ -72,15 +82,14 @@ const handlePublish = () => {
                 </el-button>
             </div>
         </template>
-        <v-md-editor
-            v-model="answer.content"
-            :tab-size="4"
-            :disabled-menus="[]"
-            :autofocus="true"
-            :default-show-toc="true"
-            @upload-image="handleUploadImage"
-            height="80vh"
-        >
-        </v-md-editor>
+		<md-editor
+			v-model="answer.content"
+			:theme="currentTheme"
+			:tab-width="4"
+			:show-code-row-number="true"
+			:auto-focus="true"
+			style="height: 80vh"
+			@on-upload-img="handleUploadImage"
+		/>
     </el-dialog>
 </template>

@@ -1,12 +1,13 @@
 <script setup lang="ts">
-import { useDialogControlStore } from '../../pinia';
+import {useDialogControlStore, useThemeStore} from '../../pinia';
 import { CategoryEntity, getCategoryList } from '../../axios/api/categoryApi';
 import { publishArticle, TagEntity } from '../../axios/api/articleApi';
 import { getAllTags, publishTag } from '../../axios/api/tagApi';
 import { ElMessage, FormInstance } from 'element-plus';
 import { ref } from 'vue';
 import { handleUploadImage } from '../../utils';
-
+import MdEditor from 'md-editor-v3';
+import {storeToRefs} from "pinia";
 const dialogControlStore = useDialogControlStore();
 
 const text = ref<string>('');
@@ -109,6 +110,14 @@ const handlePublish = (formEl: FormInstance | undefined) => {
         }
     });
 };
+
+const themeStore = useThemeStore()
+const refThemeStore = storeToRefs(themeStore)
+const currentTheme = ref<string>(themeStore.isDark ? 'dark' : 'light')
+watch(refThemeStore.isDark, (val) => {
+	currentTheme.value = val ? 'dark' : 'light'
+})
+
 </script>
 
 <template>
@@ -184,16 +193,15 @@ const handlePublish = (formEl: FormInstance | undefined) => {
                     </el-form-item>
                 </el-form>
             </div>
-            <v-md-editor
+            <md-editor
                 v-model="articleForm.content"
-                :tab-size="4"
-                :disabled-menus="[]"
-                :autofocus="true"
-                :default-show-toc="true"
-                @upload-image="handleUploadImage"
-                height="50vh"
-            >
-            </v-md-editor>
+				:theme="currentTheme"
+				:tab-width="4"
+				:show-code-row-number="true"
+				:auto-focus="true"
+				style="height: 50vh"
+				@on-upload-img="handleUploadImage"
+            />
         </div>
     </el-dialog>
 </template>
