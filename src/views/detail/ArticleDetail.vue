@@ -2,20 +2,18 @@
 import { getOneArticle, ArticleContentEntity } from '../../axios/api/articleApi';
 // @ts-ignore
 import { StarFilled, CaretTop, CaretBottom } from '@element-plus/icons-vue';
-// @ts-ignore
-import Markdown from 'vue3-markdown-it';
 import { useRouteParams } from '@vueuse/router';
 import { ElMessage } from 'element-plus';
-import { onBeforeRouteLeave, useRouter } from 'vue-router';
+import { useRouter } from 'vue-router';
 import { subscribeAuthorByAuthorId } from '../../axios/api/subscribeApi';
 import { likeArticle } from '../../axios/api/likesApi';
 import { addCollection } from '../../axios/api/collectApi';
 import UserInfoLite from '../../components/aside/UserInfoLite.vue';
 import { getCommentsById } from '../../axios/api/commentsApi';
-import {useDialogControlStore, useReloadCommentStore, useThemeStore} from '../../pinia';
+import { useReloadCommentStore, useThemeStore } from '../../pinia';
 import { storeToRefs } from 'pinia';
 import MdEditor from 'md-editor-v3';
-import {ref} from "vue";
+import { ref } from 'vue';
 import 'md-editor-v3/lib/style.css';
 const articleId = useRouteParams<string>('articleId');
 const data = ref<ArticleContentEntity>({
@@ -30,7 +28,7 @@ const data = ref<ArticleContentEntity>({
             'registerTime': '',
             'lastLogin': '',
             'ipAddr': '',
-			"isSubscribed": false
+            'isSubscribed': false,
         },
         'title': '',
         'introduction': '',
@@ -43,7 +41,7 @@ const data = ref<ArticleContentEntity>({
         'setTop': false,
         'views': 0,
         'like': 0,
-		'collect':0,
+        'collect': 0,
         'comments': 0,
     },
     'comments': {
@@ -59,9 +57,9 @@ onMounted(() => {
     getOneArticle(articleId.value).then((res) => {
         if (res.data.code == 200) {
             data.value = res.data.data;
-			isLoading.value = false;
-			disableSubscribeBtn.value = data.value.article.author.isSubscribed
-			nextTick(() => {
+            isLoading.value = false;
+            disableSubscribeBtn.value = data.value.article.author.isSubscribed;
+            nextTick(() => {
                 window.scroll({ top: 0, behavior: 'smooth' });
             });
         } else {
@@ -122,12 +120,12 @@ const handlerSubscribe = (userId: string) => {
         }
     });
 };
-const subscribeBtn = ref<string>("Subscribe");
+const subscribeBtn = ref<string>('Subscribe');
 watch(disableSubscribeBtn, () => {
-	if(disableSubscribeBtn.value){
-		subscribeBtn.value = "Subscribed"
-	}
-})
+    if (disableSubscribeBtn.value) {
+        subscribeBtn.value = 'Subscribed';
+    }
+});
 
 const store = useReloadCommentStore();
 const refStore = storeToRefs(store);
@@ -143,19 +141,19 @@ const reloadComment = (id: string) => {
     });
 };
 
-const themeStore = useThemeStore()
-const refThemeStore = storeToRefs(themeStore)
-const currentTheme = ref<string>(themeStore.isDark ? 'dark' : 'light')
+const themeStore = useThemeStore();
+const refThemeStore = storeToRefs(themeStore);
+const currentTheme = ref<'dark' | 'light'>(themeStore.isDark ? 'dark' : 'light');
 watch(refThemeStore.isDark, (val) => {
-	currentTheme.value = val ? 'dark' : 'light'
-})
+    currentTheme.value = val ? 'dark' : 'light';
+});
 
 const MdCatalog = MdEditor.MdCatalog;
 
 const state = reactive({
-	theme: 'dark',
-	text: '标题',
-	id: 'my-editor'
+    theme: 'dark',
+    text: '标题',
+    id: 'my-editor',
 });
 
 const scrollElement = document.documentElement;
@@ -191,7 +189,9 @@ const scrollElement = document.documentElement;
                         <div class="flex flex-col ml-4 justify-around">
                             <div class="flex flex-row items-center">
                                 <div class="flex">
-                                    <span class="text-lg text-gray-800 dark:text-dark">{{ data.article.author.username }}</span>
+                                    <span class="text-lg text-gray-800 dark:text-dark">{{
+                                        data.article.author.username
+                                    }}</span>
                                     <span class="text-sm text-gray-400 flex items-center mt-1 dark:text-dark"
                                         >&nbsp;@{{ data.article.author.userId }}</span
                                     >
@@ -214,18 +214,19 @@ const scrollElement = document.documentElement;
                 <el-divider>CONTENT</el-divider>
                 <Loading :is-loading="isLoading" />
                 <div v-show="!isLoading">
-<!--                    <Markdown-->
-<!--                        name="markdown"-->
-<!--                        id="markdown"-->
-<!--                        class="markdown-body-light"-->
-<!--                        :source="data.article.content"-->
-<!--                    />-->
-					<md-editor
-						:editor-id="state.id"
-						:show-code-row-number="true"
-						v-model="data.article.content"
-						:theme="currentTheme"
-						:preview-only="true"/>
+                    <!--                    <Markdown-->
+                    <!--                        name="markdown"-->
+                    <!--                        id="markdown"-->
+                    <!--                        class="markdown-body-light"-->
+                    <!--                        :source="data.article.content"-->
+                    <!--                    />-->
+                    <md-editor
+                        :editor-id="state.id"
+                        :show-code-row-number="true"
+                        v-model="data.article.content"
+                        :theme="currentTheme"
+                        :preview-only="true"
+                    />
                 </div>
                 <el-divider>END</el-divider>
             </div>
@@ -245,12 +246,8 @@ const scrollElement = document.documentElement;
                     class="text-left text-md transition-all dark:bg-dark dark:text-dark bg-light rounded-md shadow-sm px-4 py-2 overflow-auto break-all"
                     v-show="!isLoading"
                 >
-					<md-catalog
-						:editor-id="state.id"
-						:scroll-element="scrollElement"
-						:theme="currentTheme"
-					/>
-				</div>
+                    <md-catalog :editor-id="state.id" :scroll-element="scrollElement" :theme="currentTheme" />
+                </div>
             </el-affix>
         </div>
     </div>

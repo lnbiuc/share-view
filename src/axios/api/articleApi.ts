@@ -34,6 +34,7 @@ export interface ArticleListEntity {
     setTop: boolean;
     views: number;
     like: number;
+    collect: number;
     comments: number;
     images: string[];
 }

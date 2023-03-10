@@ -148,7 +148,7 @@ const handleClickComment = (articleId: string, title: string, type: string, info
                     :comments="a.comments"
                     @click="handleClickComment(a.articleId, a.title, a.type, a.introduction)"
                 />
-                <CollectionLink :id="a.articleId" :type="0" :collect-count="a.collect"/>
+                <CollectionLink :id="a.articleId" :type="0" :collect-count="a.collect" />
                 <ShareLink />
             </div>
         </div>

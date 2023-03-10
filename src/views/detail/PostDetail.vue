@@ -5,7 +5,6 @@ import { ElMessage } from 'element-plus';
 import { useRouter } from 'vue-router';
 import { formatTime } from '../../utils';
 // @ts-ignore
-import Markdown from 'vue3-markdown-it';
 import { useReloadCommentStore } from '../../pinia';
 import { storeToRefs } from 'pinia';
 import { getCommentsById } from '../../axios/api/commentsApi';
@@ -15,7 +14,6 @@ const isLoad = ref<boolean>(true);
 const data = ref<ArticleContentEntity>({
     'article': {
         'articleId': '',
-        // @ts-ignore
         'author': {
             'userId': '',
             'username': '',
@@ -25,6 +23,7 @@ const data = ref<ArticleContentEntity>({
             'registerTime': '',
             'lastLogin': '',
             'ipAddr': '',
+            'isSubscribed': false,
         },
         'title': '',
         'introduction': '',
@@ -37,8 +36,8 @@ const data = ref<ArticleContentEntity>({
         'setTop': false,
         'views': 0,
         'like': 0,
+        'collect': 0,
         'comments': 0,
-        'images': [],
     },
     'comments': {
         'pageNumber': 1,
@@ -46,16 +45,6 @@ const data = ref<ArticleContentEntity>({
         'currentSize': 0,
         'total': 0,
         'data': [],
-    },
-    'author': {
-        'userId': '',
-        'username': '',
-        'signature': '',
-        'avatar': 'https://cube.elemecdn.com/0/88/03b0d39583f48206768a7534e55bcpng.png',
-        'level': 0,
-        'registerTime': '',
-        'lastLogin': '',
-        'ipAddr': '',
     },
 });
 onMounted(() => {
@@ -97,9 +86,9 @@ const reloadComment = (id: string) => {
         >
             <div class="flex flex-row flex-wrap justify-between items-center">
                 <div class="flex flex-row justify-center items-center">
-                    <el-avatar size="large" class="mr-4" :src="data.author.avatar" />
-                    <span class="text-2xl">{{ data.author.username }}</span>
-                    <span class="text-xs mx-1 text-gray-500">@{{ data.author.userId }}</span>
+                    <el-avatar size="large" class="mr-4" :src="data.article.author.avatar" />
+                    <span class="text-2xl">{{ data.article.author.username }}</span>
+                    <span class="text-xs mx-1 text-gray-500">@{{ data.article.author.userId }}</span>
                     <span class="text-sm text-gray-500" v-text="formatTime(data.article.releaseTime)"></span>
                 </div>
                 <div class="flex flex-row items-center">
@@ -128,7 +117,7 @@ const reloadComment = (id: string) => {
         </div>
         <div class="flex ls:flex lg:flex md:hidden sm:hidden flex-col ml-2 w-3/12">
             <el-affix :offset="10">
-                <UserInfoLite :user="data.author" />
+                <UserInfoLite :user="data.article.author" />
             </el-affix>
         </div>
     </div>

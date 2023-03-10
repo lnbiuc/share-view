@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import {useDialogControlStore, useThemeStore} from '../../pinia';
+import { useDialogControlStore, useThemeStore } from '../../pinia';
 import { CategoryEntity, getCategoryList } from '../../axios/api/categoryApi';
 import { publishArticle, TagEntity } from '../../axios/api/articleApi';
 import { getAllTags, publishTag } from '../../axios/api/tagApi';
@@ -7,7 +7,7 @@ import { ElMessage, FormInstance } from 'element-plus';
 import { ref } from 'vue';
 import { handleUploadImage } from '../../utils';
 import MdEditor from 'md-editor-v3';
-import {storeToRefs} from "pinia";
+import { storeToRefs } from 'pinia';
 const dialogControlStore = useDialogControlStore();
 
 const text = ref<string>('');
@@ -111,13 +111,12 @@ const handlePublish = (formEl: FormInstance | undefined) => {
     });
 };
 
-const themeStore = useThemeStore()
-const refThemeStore = storeToRefs(themeStore)
-const currentTheme = ref<string>(themeStore.isDark ? 'dark' : 'light')
+const themeStore = useThemeStore();
+const refThemeStore = storeToRefs(themeStore);
+const currentTheme = ref<'dark' | 'light'>(themeStore.isDark ? 'dark' : 'light');
 watch(refThemeStore.isDark, (val) => {
-	currentTheme.value = val ? 'dark' : 'light'
-})
-
+    currentTheme.value = val ? 'dark' : 'light';
+});
 </script>
 
 <template>
@@ -195,12 +194,12 @@ watch(refThemeStore.isDark, (val) => {
             </div>
             <md-editor
                 v-model="articleForm.content"
-				:theme="currentTheme"
-				:tab-width="4"
-				:show-code-row-number="true"
-				:auto-focus="true"
-				style="height: 50vh"
-				@on-upload-img="handleUploadImage"
+                :theme="currentTheme"
+                :tab-width="4"
+                :show-code-row-number="true"
+                :auto-focus="true"
+                style="height: 50vh"
+                @on-upload-img="handleUploadImage"
             />
         </div>
     </el-dialog>

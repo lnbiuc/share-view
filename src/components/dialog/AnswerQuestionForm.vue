@@ -1,11 +1,11 @@
 <script setup lang="ts">
-import {useDialogControlStore, useThemeStore} from '../../pinia';
+import { useDialogControlStore, useThemeStore } from '../../pinia';
 import { handleUploadImage } from '../../utils';
 import { publishAnswer } from '../../axios/api/questionApi';
 import { ElMessage } from 'element-plus';
 import MdEditor from 'md-editor-v3';
-import {storeToRefs} from "pinia";
-import {ref} from "vue";
+import { storeToRefs } from 'pinia';
+import { ref } from 'vue';
 
 const props = defineProps({
     question: {
@@ -39,12 +39,12 @@ const handlePublish = () => {
     }
 };
 
-const themeStore = useThemeStore()
-const refThemeStore = storeToRefs(themeStore)
-const currentTheme = ref<string>(themeStore.isDark ? 'dark' : 'light')
+const themeStore = useThemeStore();
+const refThemeStore = storeToRefs(themeStore);
+const currentTheme = ref<'dark' | 'light'>(themeStore.isDark ? 'dark' : 'light');
 watch(refThemeStore.isDark, (val) => {
-	currentTheme.value = val ? 'dark' : 'light'
-})
+    currentTheme.value = val ? 'dark' : 'light';
+});
 </script>
 
 <template>
@@ -82,14 +82,14 @@ watch(refThemeStore.isDark, (val) => {
                 </el-button>
             </div>
         </template>
-		<md-editor
-			v-model="answer.content"
-			:theme="currentTheme"
-			:tab-width="4"
-			:show-code-row-number="true"
-			:auto-focus="true"
-			style="height: 80vh"
-			@on-upload-img="handleUploadImage"
-		/>
+        <md-editor
+            v-model="answer.content"
+            :theme="currentTheme"
+            :tab-width="4"
+            :show-code-row-number="true"
+            :auto-focus="true"
+            style="height: 80vh"
+            @on-upload-img="handleUploadImage"
+        />
     </el-dialog>
 </template>
