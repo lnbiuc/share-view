@@ -15,13 +15,13 @@ import 'md-editor-v3/lib/style.css';
 const pinia = createPinia();
 const app = createApp(App);
 // https://github.com/surmon-china/videojs-player#usage-vue
-import VueVideoPlayer from '@videojs-player/vue'
-import 'video.js/dist/video-js.css'
+import VueVideoPlayer from '@videojs-player/vue';
+import 'video.js/dist/video-js.css';
 
 app.use(VueViewer);
 app.use(router);
 app.use(pinia);
-app.use(VueVideoPlayer)
+app.use(VueVideoPlayer);
 
 app.config.globalProperties.$router = router;
 
