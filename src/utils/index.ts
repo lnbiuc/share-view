@@ -1,6 +1,7 @@
 import { format } from 'timeago.js';
 import { uploadFile } from '../axios/api/fileApi';
 import { ElMessage } from 'element-plus';
+import { useDialogControlStore, useUserStore } from '../pinia';
 
 export const formatTime = (data: string) => {
     return format(data, 'zh_CN');
@@ -39,6 +40,16 @@ export const handleUploadImage = async (files: any, callback: any) => {
             });
         })
     );
-
     callback(res.map((item) => item.data.data.imgUrl));
+};
+
+export const checkLoginStatus = () => {
+    const userStore = useUserStore();
+    if (userStore.isLogin) {
+        return true;
+    } else {
+        const dialogStore = useDialogControlStore();
+        dialogStore.loginForm = true;
+        return false;
+    }
 };

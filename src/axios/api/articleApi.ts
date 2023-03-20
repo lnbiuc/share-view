@@ -1,5 +1,4 @@
 import axios from '../index';
-import { UserEntity } from './loginApi';
 export interface articleParams {
     pageNumber: number;
     pageSize: number;

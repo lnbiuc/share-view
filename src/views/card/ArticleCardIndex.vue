@@ -5,7 +5,7 @@ import CommentsLink from '../../components/index/articleList/CommentsLink.vue';
 import { ArticleListEntity, getArticleList } from '../../axios/api/articleApi';
 import { formatTime } from '../../utils';
 import { ref } from 'vue';
-import { useArticleParamsStore, useDialogControlStore } from '../../pinia';
+import { useArticleParamsStore, useDialogControlStore, useUserStore } from '../../pinia';
 import { storeToRefs } from 'pinia';
 import { useRouter } from 'vue-router';
 const articleList = ref<ArticleListEntity[]>();
@@ -16,7 +16,7 @@ watch(articleList, () => {
 // init request
 const data = ref({
     pageNumber: 1,
-    pageSize: 5,
+    pageSize: 7,
     filterBy: {
         authorId: '',
         categoryId: 0,
@@ -36,10 +36,12 @@ const total = ref(0);
 const isLoad = ref<boolean>(true);
 const paramsStore = useArticleParamsStore();
 paramsStore.filterTypeChange(0);
-getArticleList(data.value).then((res) => {
-    articleList.value = res.data.data.data;
-    total.value = res.data.data.total;
-    isLoad.value = false;
+onMounted(() => {
+    getArticleList(data.value).then((res) => {
+        articleList.value = res.data.data.data;
+        total.value = res.data.data.total;
+        isLoad.value = false;
+    });
 });
 
 const tagBgColor = (type: string) => {
@@ -89,6 +91,23 @@ const handleToArticleDetail = (type: string, articleId: string) => {
 };
 
 const handleClickComment = (articleId: string, title: string, type: string, info: string) => {
+    const userStore = useUserStore();
+    if (userStore.isLogin) {
+        goArticleAndComment(articleId, title, type, info);
+    } else {
+        const dialogStore = useDialogControlStore();
+        dialogStore.loginForm = true;
+        const refUserStore = storeToRefs(userStore);
+        const stop = watch(refUserStore.isLogin, () => {
+            if (refUserStore.isLogin) {
+                goArticleAndComment(articleId, title, type, info);
+            }
+            stop();
+        });
+    }
+};
+
+const goArticleAndComment = (articleId: string, title: string, type: string, info: string) => {
     handleToArticleDetail(type, articleId);
     const dialogStore = useDialogControlStore();
     dialogStore.commentForm.status = true;
@@ -125,7 +144,7 @@ const handleClickComment = (articleId: string, title: string, type: string, info
                     <div class="text-left">
                         <span
                             :style="{ backgroundColor: tagBgColor(a.type) }"
-                            class="px-2 mr-2 rounded-full m-auto transition-all type cursor-pointer dark:text-light"
+                            class="px-2 py-[2px] mr-2 rounded-full m-auto transition-all type cursor-default dark:text-light"
                         >
                             {{ a.type }}
                         </span>

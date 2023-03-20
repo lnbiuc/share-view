@@ -1,6 +1,8 @@
 <script setup lang="ts">
 import { addCollection } from '../../../axios/api/collectApi';
 import { ElMessage } from 'element-plus';
+import { useDialogControlStore, useUserStore } from '../../../pinia';
+import { storeToRefs } from 'pinia';
 
 const props = defineProps({
     type: {
@@ -18,6 +20,23 @@ const props = defineProps({
 });
 
 const handlerCollect = () => {
+    const userStore = useUserStore();
+    if (userStore.isLogin) {
+        execAddCollection();
+    } else {
+        const dialogStore = useDialogControlStore();
+        dialogStore.loginForm = true;
+        const refUserStore = storeToRefs(userStore);
+        const stop = watch(refUserStore.isLogin, () => {
+            if (refUserStore.isLogin) {
+                execAddCollection();
+            }
+            stop();
+        });
+    }
+};
+
+const execAddCollection = () => {
     if (props.type !== -1 && props.id !== '') {
         addCollection(props.id, props.type).then((res) => {
             if (res.data.code == 200) {

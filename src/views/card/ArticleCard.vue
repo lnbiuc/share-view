@@ -80,15 +80,15 @@ const handleClickComment = (title: string, articleId: string) => {
             </div>
             <div class="flex flex-row">
                 <LikeBtn :type="0" :id="a.articleId" />
-                <CommentsLink @click="handleClickComment(a.title, a.articleId)" />
-                <CollectionLink :type="0" :id="a.articleId" />
+                <CommentsLink @click="handleClickComment(a.title, a.articleId)" :comments="a.comments" />
+                <CollectionLink :type="0" :id="a.articleId" :collect-count="a.collect" />
                 <ShareLink />
             </div>
         </div>
         <Pagination
             :page-size="paramsStore.params.pageSize"
             :total="total"
-            :hide-on-single-page="true"
+            hide-on-single-page
             @numberChange="currentChange"
         />
     </div>

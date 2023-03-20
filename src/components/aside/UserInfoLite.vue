@@ -18,7 +18,7 @@ const subStrTime = (time: string) => {
         <div class="flex flex-col text-left">
             <span class="text-xl font-bold mt-1 dark:text-dark">{{ user.username }}</span>
             <span class="text-sm text-gray-400">@{{ user.userId }}</span>
-            <span class="text-sm text-gray-400 my-1">Signature:{{ user.signature }}</span>
+            <span class="text-sm text-gray-400 my-2" style="text-indent: 24px">Signature:{{ user.signature }}</span>
             <span class="text-sm text-gray-400"
                 >Register:
                 <span v-text="formatTime(user.registerTime)"></span>

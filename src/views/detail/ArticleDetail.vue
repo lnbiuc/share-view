@@ -12,9 +12,10 @@ import UserInfoLite from '../../components/aside/UserInfoLite.vue';
 import { getCommentsById } from '../../axios/api/commentsApi';
 import { useReloadCommentStore, useThemeStore } from '../../pinia';
 import { storeToRefs } from 'pinia';
-import MdEditor from 'md-editor-v3';
 import { ref } from 'vue';
+import MdEditor from 'md-editor-v3';
 import 'md-editor-v3/lib/style.css';
+import { checkLoginStatus } from '../../utils';
 const articleId = useRouteParams<string>('articleId');
 const data = ref<ArticleContentEntity>({
     'article': {
@@ -110,16 +111,19 @@ const collect = () => {
 };
 const disableSubscribeBtn = ref<boolean>(false);
 const handlerSubscribe = (userId: string) => {
-    subscribeAuthorByAuthorId(userId).then((res) => {
-        if (res.data.code == 200) {
-            disableSubscribeBtn.value = true;
-            ElMessage.success('SUCCESS');
-        } else if (res.data.code == 722) {
-            disableSubscribeBtn.value = true;
-            ElMessage.warning('you already subscribed');
-        }
-    });
+    if (checkLoginStatus()) {
+        subscribeAuthorByAuthorId(userId).then((res) => {
+            if (res.data.code == 200) {
+                disableSubscribeBtn.value = true;
+                ElMessage.success('SUCCESS');
+            } else if (res.data.code == 722) {
+                disableSubscribeBtn.value = true;
+                ElMessage.warning('you already subscribed');
+            }
+        });
+    }
 };
+
 const subscribeBtn = ref<string>('Subscribe');
 watch(disableSubscribeBtn, () => {
     if (disableSubscribeBtn.value) {
@@ -161,7 +165,7 @@ const scrollElement = document.documentElement;
 
 <template>
     <div
-        class="article flex flex-row text-center justify-center md:m-auto md:my-2 ls:m-auto ls:my-2 lg:m-auto lg:my-2 sm:m-2 rounded-sm sm:max-w-full md:max-w-full lg:max-w-screen-lg xl:w-[1440px]"
+        class="min-h-[100vh] flex flex-row text-center justify-center md:m-auto md:my-2 ls:m-auto ls:my-2 lg:m-auto lg:my-2 sm:m-2 rounded-sm sm:max-w-full md:max-w-full lg:max-w-screen-lg xl:w-[1440px]"
     >
         <div class="flex flex-col ls:w-9/12 lg:w-9/12 md:w-9/12 sm:w-full text-left">
             <div class="flex flex-col p-6 dark:bg-dark rounded-md bg-light shadow-sm">
@@ -192,7 +196,7 @@ const scrollElement = document.documentElement;
                                     <span class="text-lg text-gray-800 dark:text-dark">{{
                                         data.article.author.username
                                     }}</span>
-                                    <span class="text-sm text-gray-400 flex items-center mt-1 dark:text-dark"
+                                    <span class="text-sm text-gray-400 flex items-center mt-1"
                                         >&nbsp;@{{ data.article.author.userId }}</span
                                     >
                                 </div>
@@ -252,8 +256,3 @@ const scrollElement = document.documentElement;
         </div>
     </div>
 </template>
-<style scoped>
-.article {
-    min-height: 100vh;
-}
-</style>

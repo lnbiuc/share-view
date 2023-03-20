@@ -34,7 +34,7 @@
                     <span class="ml-2 text-lg dark:text-gray-200">{{ loginUser.username }}</span
                     >&nbsp;
                     <el-icon class="text-xl">
-                        <el-icon color="gray" size="25px" class="ml-2">
+                        <el-icon color="gray" class="ml-2">
                             <i-ep-arrow-down />
                         </el-icon>
                     </el-icon>
@@ -64,7 +64,7 @@
             </el-dropdown>
         </div>
         <div
-            class="px-2 my-2 bg-purple-200 hover:bg-purple-300 flex items-center rounded-full transition-all cursor-pointer"
+            class="px-2 my-3 bg-purple-200 hover:bg-purple-300 flex items-center rounded-full transition-all cursor-pointer"
             @click="dialogStore.loginForm = true"
             v-if="!store.isLogin"
         >

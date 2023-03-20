@@ -18,6 +18,7 @@ declare module '@vue/runtime-core' {
         ElAvatar: typeof import('element-plus/es')['ElAvatar'];
         ElBacktop: typeof import('element-plus/es')['ElBacktop'];
         ElButton: typeof import('element-plus/es')['ElButton'];
+        ElButtonGroup: typeof import('element-plus/es')['ElButtonGroup'];
         ElDialog: typeof import('element-plus/es')['ElDialog'];
         ElDivider: typeof import('element-plus/es')['ElDivider'];
         ElDropdown: typeof import('element-plus/es')['ElDropdown'];

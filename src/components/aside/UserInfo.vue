@@ -11,7 +11,7 @@
             </div>
         </div>
         <div class="flex flex-row mt-2 mb-1 ml-1 text-left">
-            <span class="text-gray-500 text-sm">{{ user.signature }}</span>
+            <span class="text-gray-500 text-sm" style="text-indent: 36px">{{ user.signature }}</span>
         </div>
         <div class="flex flex-col mt-2 mx-1">
             <div class="flex flex-row justify-between items-center">

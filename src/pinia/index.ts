@@ -132,7 +132,7 @@ export const useArticleParamsStore = defineStore('articleParams', {
     state: () => ({
         params: {
             pageNumber: 1,
-            pageSize: 5,
+            pageSize: 7,
             filterBy: {
                 authorId: '',
                 categoryId: 0,
@@ -152,7 +152,7 @@ export const useArticleParamsStore = defineStore('articleParams', {
         resetAll() {
             this.params = {
                 pageNumber: 1,
-                pageSize: 5,
+                pageSize: 7,
                 filterBy: {
                     authorId: '',
                     categoryId: 0,

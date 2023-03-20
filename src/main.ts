@@ -6,8 +6,6 @@ import 'element-plus/theme-chalk/el-message.css';
 import 'element-plus/theme-chalk/el-notification.css';
 // import 'highlight.js/styles/github-dark-dimmed.css';
 import { createPinia } from 'pinia';
-import './assets/markdown-light.css';
-import './assets/markdown-dark.css';
 import 'element-plus/theme-chalk/dark/css-vars.css';
 import 'viewerjs/dist/viewer.css';
 import VueViewer from 'v-viewer';

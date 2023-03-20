@@ -37,6 +37,7 @@
         "@types/marked": "^4.0.8",
         "@types/node": "^18.11.19",
         "@types/prismjs": "^1.26.0",
+        "@types/video.js": "7.x",
         "@vitejs/plugin-vue": "^3.2.0",
         "autoprefixer": "^10.4.13",
         "postcss": "^8.4.21",

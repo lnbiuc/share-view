@@ -19,6 +19,8 @@ You can learn more about Take Over mode [here](https://github.com/johnsoncodehk/
 
 tailwind.css
 
-## Design Drawing
+## Bugs
 
-![image4](./Design-drawing/%E8%AE%BE%E8%AE%A1%E5%9B%BE.png)
+1. 评论取消点赞响应错误
+2. 用户信息中，点赞字段 count 数没有更新
+3. get article by id 中，"isSubscribed"字段值错误

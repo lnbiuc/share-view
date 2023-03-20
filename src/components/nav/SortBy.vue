@@ -4,6 +4,7 @@ import { ref } from 'vue';
 import { ArrowDown } from '@element-plus/icons-vue';
 import { useArticleParamsStore, useFilterAndSortStore } from '../../pinia';
 import { storeToRefs } from 'pinia';
+import { checkLoginStatus } from '../../utils';
 
 const filterByList: Array<{ name: string; value: string }> = [
     {
@@ -39,9 +40,17 @@ const currentSelectFilter = ref(filterByList[0].value);
 const clickSelectFilter = (filter: { name: string; value: string }) => {
     currentSelectFilter.value = filter.value;
 };
-const currentSelectSort = ref(sortByList[0].name);
+const currentSelectSort = ref(sortByList[0].value);
 const clickSelectSort = (sort: { name: string; value: string }) => {
-    currentSelectSort.value = sort.value;
+    if (sort.value == 'subscribed') {
+        if (checkLoginStatus()) {
+            currentSelectSort.value = sort.value;
+        } else {
+            return;
+        }
+    } else {
+        currentSelectSort.value = sort.value;
+    }
 };
 
 const paramsStore = useArticleParamsStore();
@@ -53,6 +62,13 @@ watch(currentSelectFilter, async () => {
 });
 watch(currentSelectSort, async () => {
     store.sort = currentSelectSort.value;
+    if (currentSelectSort.value == 'subscribed') {
+        if (checkLoginStatus()) {
+            paramsStore.sortChange(currentSelectSort.value);
+        } else {
+            return;
+        }
+    }
     paramsStore.sortChange(currentSelectSort.value);
 });
 const displayFilter = (val: string) => {
@@ -66,7 +82,7 @@ const displayFilter = (val: string) => {
 
 const taggerColor = (s: { name: string; value: string }) => {
     if (s.value == currentSelectSort.value) {
-        return '#79bbff';
+        return '#3B82F6';
     } else {
         return 'unset';
     }

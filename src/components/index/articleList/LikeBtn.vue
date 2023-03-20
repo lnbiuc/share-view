@@ -27,17 +27,16 @@ const handledLikeClick = (isLike: number) => {
 
 <template>
     <div class="flex flex-row">
-        <span
-            class="flex items-center text-blue-500 font-medium rounded-md hover:shadow-sm bg-blue-100 hover:bg-blue-200 transition-all py-0.5 px-2 cursor-pointer"
-            @click="handledLikeClick(1)"
-        >
-            Like<el-icon :size="20"><i-ep-caret-top /></el-icon
-        ></span>
-        <span
-            class="flex items-center text-blue-500 font-medium rounded-md hover:shadow-sm bg-blue-100 hover:bg-blue-200 transition-all py-0.5 px-2 cursor-pointer mx-1"
-            @click="handledLikeClick(0)"
-        >
-            <el-icon><i-ep-caret-bottom /></el-icon
-        ></span>
+        <el-button-group>
+            <el-button @click="handledLikeClick(1)" plain type="primary">
+                Like
+                <el-icon :size="20">
+                    <i-ep-caret-top />
+                </el-icon>
+            </el-button>
+            <el-button @click="handledLikeClick(0)" plain type="primary">
+                <el-icon :size="20"><i-ep-caret-bottom /></el-icon>
+            </el-button>
+        </el-button-group>
     </div>
 </template>

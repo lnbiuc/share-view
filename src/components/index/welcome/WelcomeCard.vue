@@ -2,6 +2,7 @@
 import { storeToRefs } from 'pinia';
 import { useThemeStore } from '../../../pinia';
 import { ElMessage } from 'element-plus';
+import { useScroll } from '@vueuse/core';
 
 const toGithub = (url: string) => {
     window.open(url, '_blank');
@@ -10,24 +11,21 @@ const toGithub = (url: string) => {
 const themeStore = storeToRefs(useThemeStore());
 const isDark = ref<boolean>(false);
 watch(themeStore.isDark, () => {
-    if (themeStore.isDark.value) {
-        isDark.value = true;
-    } else {
-        isDark.value = false;
-    }
+    isDark.value = themeStore.isDark.value;
 });
 onMounted(() => {
     const theme = localStorage.getItem('vueuse-color-scheme');
-    if (theme === 'dark') {
-        isDark.value = true;
-    } else {
-        isDark.value = false;
-    }
+    isDark.value = theme === 'dark';
 });
+
+const getStart = () => {
+    const el = document.getElementById('articleList');
+    window.scroll({ behavior: 'smooth', top: el?.offsetTop });
+};
 </script>
 
 <template>
-    <div class="flex flex-row justify-between sm:w-full md:w-10/12 lg:w-8/12 xl:w-6/12 m-auto mainCard mt-[150px]">
+    <div class="flex flex-row justify-between sm:w-full md:w-10/12 lg:w-8/12 xl:w-6/12 m-auto h-[600px] mt-[150px]">
         <div class="flex flex-col">
             <span class="text-[60px] font-semibold text-blue-500 my-5"> Share </span>
             <span class="text-[30px] font-semibold text-blue-400"> A web-based knowledge sharing platform </span>
@@ -36,35 +34,35 @@ onMounted(() => {
                     <el-icon size="32" color="rgb(59, 130, 246)">
                         <i-material-symbols-check-small />
                     </el-icon>
-                    Elevate your reading experience with our product.
+                    Improve your reading with our product.
                 </span>
                 <span class="check-list">
                     <el-icon size="32" color="rgb(59, 130, 246)">
                         <i-material-symbols-check-small />
                     </el-icon>
-                    Say goodbye to slow content searches and hello to lightning-fast results.
+                    Get fast search results with our product.
                 </span>
                 <span class="check-list">
                     <el-icon size="32" color="rgb(59, 130, 246)">
                         <i-material-symbols-check-small />
                     </el-icon>
-                    Share your content in more ways than ever before.
+                    Share your content in more ways.
                 </span>
                 <span class="check-list">
                     <el-icon size="32" color="rgb(59, 130, 246)">
                         <i-material-symbols-check-small />
                     </el-icon>
-                    Enjoy seamless markdown syntax support for a better writing experience.
+                    Use markdown syntax for better writing.
                 </span>
                 <span class="check-list">
                     <el-icon size="32" color="rgb(59, 130, 246)">
                         <i-material-symbols-check-small />
                     </el-icon>
-                    Experience the beauty of our product's appearance.
+                    Our product looks beautiful.
                 </span>
             </div>
             <div class="flex flex-row ml-3 mb-4">
-                <el-button type="primary" size="large">Get Start</el-button>
+                <el-button type="primary" size="large" @click="getStart">Get Start</el-button>
                 <div
                     class="flex flex-row items-center ml-4 cursor-pointer"
                     @click="toGithub('https://github.com/lnbiuc/share-view')"
@@ -98,10 +96,6 @@ onMounted(() => {
 </template>
 <style>
 .check-list {
-    @apply flex flex-row text-xl h-10;
-}
-
-.mainCard {
-    height: 700px;
+    @apply flex flex-row text-xl;
 }
 </style>

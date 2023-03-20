@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { useRouteParams } from '@vueuse/router';
-import { getOneArticle } from '../../axios/api/articleApi';
+import { ArticleContentEntity, getOneArticle } from '../../axios/api/articleApi';
 import { formatTime } from '../../utils';
 // @ts-ignore
 import { View } from '@element-plus/icons-vue';
@@ -9,12 +9,50 @@ import { getCommentsById } from '../../axios/api/commentsApi';
 import { ElMessage } from 'element-plus';
 // @ts-ignore
 import { ArrowDown } from '@element-plus/icons-vue';
-import { useDialogControlStore, useReloadCommentStore } from '../../pinia';
+import { useDialogControlStore, useReloadCommentStore, useThemeStore } from '../../pinia';
 import { subscribeAuthorByAuthorId, subscribeQuestionById } from '../../axios/api/subscribeApi';
 import { addCollection } from '../../axios/api/collectApi';
 import { storeToRefs } from 'pinia';
+import { ref } from 'vue';
+import MdEditor from 'md-editor-v3';
+import 'md-editor-v3/lib/style.css';
 const articleId = useRouteParams<string>('questionId');
-const ques = ref();
+const ques = ref<ArticleContentEntity>({
+    'article': {
+        'articleId': '',
+        'author': {
+            'userId': '',
+            'username': '',
+            'signature': '',
+            'avatar': 'https://cube.elemecdn.com/0/88/03b0d39583f48206768a7534e55bcpng.png',
+            'level': 0,
+            'registerTime': '',
+            'lastLogin': '',
+            'ipAddr': '',
+            'isSubscribed': false,
+        },
+        'title': '',
+        'introduction': '',
+        'type': 'Article',
+        'tags': [],
+        'category': '',
+        'content': '',
+        'releaseTime': '',
+        'lastUpdate': '',
+        'setTop': false,
+        'views': 0,
+        'like': 0,
+        'collect': 0,
+        'comments': 0,
+    },
+    'comments': {
+        'pageNumber': 1,
+        'pageSize': 0,
+        'currentSize': 0,
+        'total': 0,
+        'data': [],
+    },
+});
 const answer = ref();
 const isLoading = ref<boolean>(true);
 
@@ -119,12 +157,25 @@ const subscribeAnswerById = (id: string) => {
         }
     });
 };
+
+const themeStore = useThemeStore();
+const refThemeStore = storeToRefs(themeStore);
+const currentTheme = ref<'dark' | 'light'>(themeStore.isDark ? 'dark' : 'light');
+watch(refThemeStore.isDark, (val) => {
+    currentTheme.value = val ? 'dark' : 'light';
+});
+
+const state = reactive({
+    theme: 'dark',
+    text: '标题',
+    id: 'my-editor',
+});
 </script>
 
 <template>
     <div
         v-if="!isLoading"
-        class="flex flex-row text-center justify-center md:m-auto md:my-2 ls:m-auto ls:my-2 lg:m-auto lg:my-2 sm:m-2 rounded-sm sm:max-w-full md:max-w-full ls:max-w-screen-ls lg:max-w-screen-lg"
+        class="min-h-[100vh] flex flex-row text-center justify-center md:m-auto md:my-2 ls:m-auto ls:my-2 lg:m-auto lg:my-2 sm:m-2 rounded-sm sm:max-w-full md:max-w-full lg:max-w-screen-lg xl:w-[1440px]"
     >
         <Loading :is-loading="isLoading" />
         <div class="flex flex-col w-9/12 mr-2 text-left bg-light p-4 dark:bg-dark rounded-md shadow-sm">
@@ -151,7 +202,7 @@ const subscribeAnswerById = (id: string) => {
                 &nbsp;·&nbsp;
                 <span v-html="formatTime(ques.article.releaseTime)" />
                 &nbsp;·&nbsp;
-                <span> Publish On {{ ques.author.ipAddr }} </span>
+                <span> Publish On {{ ques.article.author.ipAddr }} </span>
             </div>
             <div class="my-2">
                 <el-button @click="subscribeQuestion(ques.article.articleId)" :disabled="subscribeQuestionBtn"
@@ -162,7 +213,14 @@ const subscribeAnswerById = (id: string) => {
                 >
             </div>
             <div class="mb-4">
-                <Markdown name="markdown" class="markdown-body-light" :source="ques.article.content" />
+                <md-editor
+                    :editor-id="state.id"
+                    :show-code-row-number="true"
+                    v-model="ques.article.content"
+                    :theme="currentTheme"
+                    :preview-only="true"
+                />
+                <!--                <Markdown name="markdown" class="markdown-body-light" :source="ques.article.content" />-->
             </div>
             <div class="mb-2 mt-3">
                 <div class="flex flex-row justify-between items-center p-2 rounded-md bg-gray-100 dark:bg-neutral-800">
@@ -244,7 +302,7 @@ const subscribeAnswerById = (id: string) => {
         </div>
         <div class="flex flex-col w-3/12">
             <el-affix :offset="10">
-                <UserInfoLite :user="ques.author" />
+                <UserInfoLite :user="ques.article.author" />
             </el-affix>
         </div>
         <AnswerQuestionForm :question="ques.article.title" :question-id="ques.article.articleId" />
