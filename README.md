@@ -21,6 +21,10 @@ tailwind.css
 
 ## Bugs
 
-1. 评论取消点赞响应错误
-2. 用户信息中，点赞字段 count 数没有更新
-3. get article by id 中，"isSubscribed"字段值错误
+-   [x] 1.评论取消点赞响应错误
+-   [x] 2.用户信息中，点赞字段 count 数没有更新
+-   [x] 3.get article by id 中，"isSubscribed"字段值错误
+-   [ ] 4.get question 中缺少 isSubscribe question 字段
+-   [ ] 5.create answer error
+-   [ ] 6.comment sort by
+-   [ ] 7.post image layout

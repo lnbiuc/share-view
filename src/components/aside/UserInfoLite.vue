@@ -14,7 +14,9 @@ const subStrTime = (time: string) => {
 
 <template>
     <div class="bg-light rounded-md shadow-sm mb-2 p-4 dark:bg-dark">
-        <el-avatar :size="130" :src="user.avatar" />
+        <div class="flex flex-grow justify-center mb-4">
+            <el-avatar :size="130" :src="user.avatar" />
+        </div>
         <div class="flex flex-col text-left">
             <span class="text-xl font-bold mt-1 dark:text-dark">{{ user.username }}</span>
             <span class="text-sm text-gray-400">@{{ user.userId }}</span>

@@ -16,6 +16,7 @@ import { ref } from 'vue';
 import MdEditor from 'md-editor-v3';
 import 'md-editor-v3/lib/style.css';
 import { checkLoginStatus } from '../../utils';
+import Detail from './Detail.vue';
 const articleId = useRouteParams<string>('articleId');
 const data = ref<ArticleContentEntity>({
     'article': {
@@ -124,13 +125,6 @@ const handlerSubscribe = (userId: string) => {
     }
 };
 
-const subscribeBtn = ref<string>('Subscribe');
-watch(disableSubscribeBtn, () => {
-    if (disableSubscribeBtn.value) {
-        subscribeBtn.value = 'Subscribed';
-    }
-});
-
 const store = useReloadCommentStore();
 const refStore = storeToRefs(store);
 watch(refStore.count, () => {
@@ -164,10 +158,8 @@ const scrollElement = document.documentElement;
 </script>
 
 <template>
-    <div
-        class="min-h-[100vh] flex flex-row text-center justify-center md:m-auto md:my-2 ls:m-auto ls:my-2 lg:m-auto lg:my-2 sm:m-2 rounded-sm sm:max-w-full md:max-w-full lg:max-w-screen-lg xl:w-[1440px]"
-    >
-        <div class="flex flex-col ls:w-9/12 lg:w-9/12 md:w-9/12 sm:w-full text-left">
+    <Detail>
+        <template #left>
             <div class="flex flex-col p-6 dark:bg-dark rounded-md bg-light shadow-sm">
                 <div class="flex flex-row items-center">
                     <span
@@ -210,9 +202,14 @@ const scrollElement = document.documentElement;
                         <el-button
                             @click="handlerSubscribe(data.article.author.userId)"
                             type="primary"
-                            :disabled="disableSubscribeBtn"
-                            >{{ subscribeBtn }}</el-button
+                            v-if="!disableSubscribeBtn"
+                            plain
+                            >Subscribe</el-button
                         >
+                        <el-button type="primary" :disabled="true" v-if="disableSubscribeBtn" plain>
+                            <i-ep-circle-check class="mr-1" />
+                            Subscribed
+                        </el-button>
                     </div>
                 </div>
                 <el-divider>CONTENT</el-divider>
@@ -241,11 +238,11 @@ const scrollElement = document.documentElement;
                     :article-id="data.article.articleId"
                 />
             </div>
-        </div>
-        <div class="flex ls:flex lg:flex md:hidden sm:hidden flex-col ml-2 w-3/12">
+        </template>
+        <template #right>
             <Loading :is-loading="isLoading" />
             <UserInfoLite v-show="!isLoading" :user="data.article.author" />
-            <el-affix :offset="10">
+            <el-affix :offset="8">
                 <div
                     class="text-left text-md transition-all dark:bg-dark dark:text-dark bg-light rounded-md shadow-sm px-4 py-2 overflow-auto break-all"
                     v-show="!isLoading"
@@ -253,6 +250,6 @@ const scrollElement = document.documentElement;
                     <md-catalog :editor-id="state.id" :scroll-element="scrollElement" :theme="currentTheme" />
                 </div>
             </el-affix>
-        </div>
-    </div>
+        </template>
+    </Detail>
 </template>
