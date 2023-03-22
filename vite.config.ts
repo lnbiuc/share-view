@@ -25,7 +25,6 @@ export default defineConfig({
         },
         port: 3000,
     },
-    base: 'https://share.vio.vin/',
     resolve: {
         alias: {
             '@': pathSrc,
