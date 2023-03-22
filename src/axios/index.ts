@@ -4,6 +4,30 @@ import { ElMessage } from 'element-plus';
 import NProgress from 'nprogress';
 import 'nprogress/nprogress.css';
 
+// const apiAxios = axios.create({
+//     // baseURL: process.env.NODE_ENV === 'production' && /^\/api/.test(url) ? 'https://share.vio.vin' : './',
+//     baseURL: 'https://share.vio.vin/',
+// });
+//
+const isProduction = process.env.NODE_ENV === 'production'
+
+const baseURL = isProduction ? 'https://share.vio.vin' : process.env.BASE_URL
+
+const apiAxios = axios.create({
+    baseURL,
+})
+
+if (!isProduction) {
+    const apiProxy = process.env.API_PROXY
+    apiAxios.interceptors.request.use((config) => {
+
+        if (config.url?.startsWith('/api')) {
+            config.url = `${apiProxy}${config.url}`
+        }
+        return config
+    })
+}
+
 NProgress.configure({
     showSpinner: false,
     minimum: 0.2,
@@ -13,13 +37,13 @@ NProgress.configure({
 });
 
 //前置拦截
-axios.interceptors.request.use((config) => {
+apiAxios.interceptors.request.use((config) => {
     NProgress.start();
     return config;
 });
 
 //后置拦截
-axios.interceptors.response.use((response) => {
+apiAxios.interceptors.response.use((response) => {
     if (response.data.code == 200) {
         NProgress.done();
         return response;
@@ -31,4 +55,4 @@ axios.interceptors.response.use((response) => {
     return response;
 });
 
-export default axios;
+export default apiAxios;
