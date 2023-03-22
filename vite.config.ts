@@ -8,7 +8,6 @@ import { visualizer } from 'rollup-plugin-visualizer';
 import viteCompression from 'vite-plugin-compression';
 import Icons from 'unplugin-icons/vite';
 import IconsResolver from 'unplugin-icons/resolver';
-// import prismjs from 'vite-plugin-prismjs';
 import path from 'path';
 
 // https://vitejs.dev/config/
@@ -16,6 +15,17 @@ import path from 'path';
 const pathSrc = path.resolve(__dirname, 'src');
 
 export default defineConfig({
+    server: {
+        proxy: {
+            '/api': {
+                target: 'https://share.vio.vin/api',
+                changeOrigin: true,
+                rewrite: (path) => path.replace(/^\/api/, ''),
+            },
+        },
+        port: 3000,
+    },
+    base: 'https://share.vio.vin/',
     resolve: {
         alias: {
             '@': pathSrc,
@@ -47,30 +57,14 @@ export default defineConfig({
         Icons({
             autoInstall: true,
         }),
-        // prismjs({
-        //     languages: 'all',
-        // }),
     ],
-    server: {
-        proxy: {
-            '/api': {
-                target: 'https://share.vio.vin/api',
-                changeOrigin: true,
-                rewrite: (path) => path.replace(/^\/api/, ''),
-            },
-        },
-        port: 3000,
-    },
     build: {
         rollupOptions: {
             input: {
-                // @ts-ignore
                 main: resolve(__dirname, 'index.html'),
             },
             output: {
-                // 最小化拆分包
                 manualChunks: (id) => {
-                    // @ts-ignore
                     if (id.includes('node_modules')) {
                         return id.toString().split('node_modules/')[1].split('/')[0].toString();
                     }
@@ -80,6 +74,7 @@ export default defineConfig({
                 assetFileNames: 'share/assets/[ext]/[name].[hash].[ext]',
             },
         },
+        minify: 'terser',
         terserOptions: {
             compress: {
                 drop_console: true,
