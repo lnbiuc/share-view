@@ -61,6 +61,8 @@ declare module '@vue/runtime-core' {
     IMaterialSymbolsCheckSmall: typeof import('~icons/material-symbols/check-small')['default']
     IMaterialSymbolsComment: typeof import('~icons/material-symbols/comment')['default']
     IMaterialSymbolsOpenInNew: typeof import('~icons/material-symbols/open-in-new')['default']
+    IMaterialSymbolsPlayCircleOutline: typeof import('~icons/material-symbols/play-circle-outline')['default']
+    IMaterialSymbolsPlayCircleOutlineRounded: typeof import('~icons/material-symbols/play-circle-outline-rounded')['default']
     IMaterialSymbolsShare: typeof import('~icons/material-symbols/share')['default']
     IMaterialSymbolsStar: typeof import('~icons/material-symbols/star')['default']
     IMdiLike: typeof import('~icons/mdi/like')['default']

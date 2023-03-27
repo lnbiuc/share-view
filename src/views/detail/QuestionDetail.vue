@@ -1,22 +1,23 @@
 <script setup lang="ts">
-import { useRouteParams } from '@vueuse/router';
-import { ArticleContentEntity, getOneArticle } from '../../axios/api/articleApi';
-import { formatTime } from '../../utils';
+import {useRouteParams} from '@vueuse/router';
+import {ArticleContentEntity, getOneArticle} from '../../axios/api/articleApi';
+import {formatTime} from '../../utils';
 // @ts-ignore
-import { View } from '@element-plus/icons-vue';
-import { getAnswersByArticleId } from '../../axios/api/answerApi';
-import { getCommentsById } from '../../axios/api/commentsApi';
-import { ElMessage } from 'element-plus';
+import {View} from '@element-plus/icons-vue';
+import {getAnswersByArticleId} from '../../axios/api/answerApi';
+import {getCommentsById} from '../../axios/api/commentsApi';
+import {ElMessage} from 'element-plus';
 // @ts-ignore
-import { ArrowDown } from '@element-plus/icons-vue';
-import { useDialogControlStore, useReloadCommentStore, useThemeStore } from '../../pinia';
-import { subscribeAuthorByAuthorId, subscribeQuestionById } from '../../axios/api/subscribeApi';
-import { addCollection } from '../../axios/api/collectApi';
-import { storeToRefs } from 'pinia';
-import { ref } from 'vue';
+import {ArrowDown} from '@element-plus/icons-vue';
+import {useDialogControlStore, useReloadCommentStore, useThemeStore} from '../../pinia';
+import {subscribeAuthorByAuthorId, subscribeQuestionById} from '../../axios/api/subscribeApi';
+import {addCollection} from '../../axios/api/collectApi';
+import {storeToRefs} from 'pinia';
+import {ref} from 'vue';
 import MdEditor from 'md-editor-v3';
 import 'md-editor-v3/lib/style.css';
-import Detail from './Detail.vue';
+import Detail from '../../layout/DefaultDetailLayout.vue';
+import DefaultDetailLayout from "../../layout/DefaultDetailLayout.vue";
 
 const articleId = useRouteParams<string>('questionId');
 const ques = ref<ArticleContentEntity>({
@@ -176,14 +177,14 @@ const state = reactive({
 
 <template>
     <div>
-        <Detail>
+        <DefaultDetailLayout>
             <template #left>
                 <div class="flex flex-col p-6 dark:bg-dark rounded-md bg-light shadow-sm">
                     <div class="flex flex-row items-center">
                         <span
                             class="rounded-full py-1 px-2 w-16 text-sm text-center dark:text-light"
                             style="background-color: #95d475"
-                            >Question</span
+                        >Question</span
                         >
                         <span class="ml-2">
                             <el-tag class="mx-1" v-for="t in ques.article.tags">
@@ -200,16 +201,16 @@ const state = reactive({
                         </span>
                         <span> @{{ ques.article.author.userId }} </span>
                         &nbsp;·&nbsp;
-                        <span v-html="formatTime(ques.article.releaseTime)" />
+                        <span v-html="formatTime(ques.article.releaseTime)"/>
                         &nbsp;·&nbsp;
                         <span> Publish On {{ ques.article.author.ipAddr }} </span>
                     </div>
                     <div class="my-2">
                         <el-button @click="subscribeQuestion(ques.article.articleId)" :disabled="subscribeQuestionBtn"
-                            >Subscribe
+                        >Subscribe
                         </el-button>
                         <el-button @click="addQuestionCollection(ques.article.articleId)" :disabled="addCollectionBtn"
-                            >Collect
+                        >Collect
                         </el-button>
                     </div>
                     <div class="mb-4">
@@ -220,7 +221,6 @@ const state = reactive({
                             :theme="currentTheme"
                             :preview-only="true"
                         />
-                        <!--                <Markdown name="markdown" class="markdown-body-light" :source="ques.article.content" />-->
                     </div>
                     <div class="flex flex justify-between items-center dark:bg-neutral-900 p-3 rounded-md">
                         <div>
@@ -235,14 +235,14 @@ const state = reactive({
                                 class="ml-4"
                                 type="primary"
                                 @click="dialogControlStore.answerQuestionForm.status = true"
-                                >Create Answer
+                            >Create Answer
                             </el-button>
                         </div>
                         <el-dropdown trigger="click">
                             <span class="el-dropdown-link align-top cursor-pointer">
                                 <el-button>
                                     {{ currentSortSelect }}
-                                    <el-icon><ArrowDown /></el-icon>
+                                    <el-icon><ArrowDown/></el-icon>
                                 </el-button>
                             </span>
                             <template #dropdown>
@@ -250,19 +250,19 @@ const state = reactive({
                                     <el-dropdown-item
                                         @click="sortChange('LIKE')"
                                         :disabled="currentSortSelect === 'LIKE'"
-                                        >LIKE
+                                    >LIKE
                                     </el-dropdown-item>
                                     <el-dropdown-item @click="sortChange('NEW')" :disabled="currentSortSelect === 'NEW'"
-                                        >NEW
+                                    >NEW
                                     </el-dropdown-item>
                                 </el-dropdown-menu>
                             </template>
                         </el-dropdown>
                     </div>
                     <div class="my-4" v-for="a in answer">
-                        <el-divider />
+                        <el-divider/>
                         <div class="flex flex-row justify-between items-center">
-                            <el-avatar :src="a.author.avatar" size="large" class="flex-start w-2/12" />
+                            <el-avatar :src="a.author.avatar" size="large" class="flex-start w-2/12"/>
                             <div class="flex flex-col w-8/12 mr-4">
                                 <div>
                                     <span class="text-lg cursor-pointer">{{ a.author.username }}</span>
@@ -275,20 +275,20 @@ const state = reactive({
                             </div>
                         </div>
                         <div class="mt-8">
-                            <Markdown name="markdown" class="markdown-body-light" :source="a.content" />
+                            <Markdown name="markdown" class="markdown-body-light" :source="a.content"/>
                         </div>
                         <div class="text-xs mt-3 mx-2 flex flex-row justify-between">
                             <span class="text-gray-500">Publish On: {{ a.releaseTime }} </span>
                             <span>
                                 Last Modify:
-                                <span v-text="formatTime(a.lastUpdate)" />
+                                <span v-text="formatTime(a.lastUpdate)"/>
                             </span>
                         </div>
                         <div class="mt-3 flex flex-row">
-                            <LikeBtn :id="a.id" :type="2" />
-                            <CommentsLink :comments="toLength(a.comments)" @click="getComments(a.id)" />
-                            <ShareLink />
-                            <CollectionLink :type="1" :id="a.id" />
+                            <LikeBtn :id="a.id" :type="2"/>
+                            <CommentsLink :comments="toLength(a.comments)" @click="getComments(a.id)"/>
+                            <ShareLink/>
+                            <CollectionLink :type="1" :id="a.id"/>
                         </div>
                         <div v-if="showComments(a.id)">
                             <Comment
@@ -297,16 +297,16 @@ const state = reactive({
                                 :title="a.author.username + '\'s Answer'"
                             />
                         </div>
-                        <el-divider />
+                        <el-divider/>
                     </div>
                 </div>
             </template>
             <template #right>
                 <el-affix :offset="8">
-                    <UserInfoLite :user="ques.article.author" />
+                    <UserInfoLite :user="ques.article.author"/>
                 </el-affix>
             </template>
-        </Detail>
-        <AnswerQuestionForm :question="ques.article.title" :question-id="ques.article.articleId" />
+        </DefaultDetailLayout>
+        <AnswerQuestionForm :question="ques.article.title" :question-id="ques.article.articleId"/>
     </div>
 </template>
