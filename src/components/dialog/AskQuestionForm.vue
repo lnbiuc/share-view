@@ -130,7 +130,7 @@ watch(refThemeStore.isDark, (val) => {
                     </el-icon>
                     Ask Question
                 </h4>
-                <el-button type="danger" @click="close">
+                <el-button type="danger" @click="close" plain>
                     <el-icon class="el-icon--left">
                         <i-ep-circle-close-filled />
                     </el-icon>
@@ -140,7 +140,13 @@ watch(refThemeStore.isDark, (val) => {
         </template>
         <template #footer>
             <div class="flex flex-row justify-end mr-4 px-6">
-                <el-button type="primary" @click="handlePublish(ruleFormRef)">
+                <el-button
+                    type="primary"
+                    plain
+                    @click="handlePublish(ruleFormRef)"
+                    color="#626aef"
+                    :dark="themeStore.isDark"
+                >
                     <el-icon class="el-icon--left">
                         <i-ep-circle-check />
                     </el-icon>
@@ -177,7 +183,9 @@ watch(refThemeStore.isDark, (val) => {
             <el-form-item label="Create New Tag">
                 <div class="flex flex-row">
                     <el-input v-model="tag" class="flex-grow" />
-                    <el-button class="ml-3" @click="createTag">Create</el-button>
+                    <el-button plain bg color="#626aef" :dark="themeStore.isDark" class="ml-3" @click="createTag"
+                        >Create</el-button
+                    >
                 </div>
             </el-form-item>
         </el-form>

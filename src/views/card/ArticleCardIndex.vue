@@ -148,17 +148,15 @@ const goArticleAndComment = (articleId: string, title: string, type: string, inf
                         >
                             {{ a.type }}
                         </span>
-                        <span
-                            class="text-lg hover:text-blue-500 py-1 cursor-pointer transition-all text-left"
-                            @click="handleToArticleDetail(a.type, a.articleId)"
-                            >{{ a.title }}</span
-                        >
+                        <span class="text-lg py-1 title" @click="handleToArticleDetail(a.type, a.articleId)">{{
+                            a.title
+                        }}</span>
                     </div>
                 </div>
             </div>
             <div
                 @click="handleToArticleDetail(a.type, a.articleId)"
-                class="flex mb-4 text-sm text-gray-500 text-left cursor-default"
+                class="flex mb-4 mt-2 text-sm text-gray-500 text-left cursor-default"
             >
                 {{ a.introduction }}
             </div>

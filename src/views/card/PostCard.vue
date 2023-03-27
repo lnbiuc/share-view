@@ -65,26 +65,29 @@ const handleClickComment = (articleId: string, info: string) => {
             <div class="flex flex-row justify-start">
                 <div class="flex flex-row justify-center items-center">
                     <el-avatar class="mr-4" size="large" :src="a.author.avatar" />
-                    <span class="text-2xl mr-2 dark:text-gray-300 text-gray-800">{{ a.author.username }}</span>
-                    <span class="text-sm text-gray-500 mt-1">@{{ a.author.userId }}&nbsp;&nbsp;&nbsp;</span>
+                    <span class="text-xl mr-2 title">{{ a.author.username }}</span>
+                    <span class="text-sm text-gray-500 mt-1">@{{ a.author.userId }}&nbsp;·&nbsp;</span>
                     <span class="text-sm text-gray-500 mt-1" v-text="formatTime(a.releaseTime)"></span>
                 </div>
             </div>
             <div class="my-4 text-left">
-                <span
-                    @click="$router.push({ path: '/p/' + a.articleId })"
-                    class="dark:text-gray-300 text-gray-800 hover:text-blue-500 transition-all cursor-pointer"
-                >
+                <span @click="$router.push({ path: '/p/' + a.articleId })" class="title leading-6">
                     {{ a.introduction }}</span
                 >
             </div>
             <div class="mb-4 flex flex-row flex-wrap justify-center items-center">
-                <div
-                    v-for="i in a.images"
-                    @click="showImages(a.images)"
-                    :style="{ background: 'url(' + i + ') center center no-repeat' }"
-                    class="img m-2 shadow-sm hover:shadow-md rounded-md transition-all"
-                ></div>
+                <!--                <div v-for="i in a.images" @click="showImages(a.images)" :style="{ background: 'url(' + i + ') center center no-repeat' }"-->
+                <!--                    class="img m-2 shadow-sm hover:shadow-md rounded-md transition-all">-->
+                <!--				</div>-->
+                <div v-if="a.images.length > 0" class="w-full">
+                    <div v-if="a.images.length === 1">
+                        <div
+                            @click="showImages(a.images)"
+                            :style="{ background: 'url(' + a.images[0] + ') center center no-repeat' }"
+                            class="h-[300px] w-full img bg-cover"
+                        ></div>
+                    </div>
+                </div>
             </div>
             <div class="flex flex-row">
                 <LikeBtn :type="0" :id="a.articleId" />
@@ -101,16 +104,3 @@ const handleClickComment = (articleId: string, info: string) => {
         />
     </div>
 </template>
-<style scoped>
-.img {
-    background-size: cover;
-    width: 45%;
-    height: 150px;
-    position: relative;
-}
-
-.img:after {
-    content: '';
-    display: block;
-}
-</style>

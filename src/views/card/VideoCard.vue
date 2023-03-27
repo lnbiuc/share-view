@@ -1,9 +1,9 @@
 <script setup lang="ts">
-import {onMounted, ref} from 'vue';
-import {ArticleListEntity, getArticleList} from '../../axios/api/articleApi';
-import {useArticleParamsStore} from '../../pinia';
-import {formatTime} from '../../utils';
-import {storeToRefs} from "pinia";
+import { onMounted, ref } from 'vue';
+import { ArticleListEntity, getArticleList } from '../../axios/api/articleApi';
+import { useArticleParamsStore } from '../../pinia';
+import { formatTime } from '../../utils';
+import { storeToRefs } from 'pinia';
 
 const articleList = ref<ArticleListEntity[]>();
 const paramsStore = useArticleParamsStore();
@@ -16,29 +16,29 @@ const fetchData = () => {
         total.value = res.data.data.total;
         isLoading.value = false;
     });
-}
+};
 
 onMounted(() => {
-    fetchData()
-})
+    fetchData();
+});
 
-const total = ref<number>(0)
+const total = ref<number>(0);
 const currentChange = (pageNumber: number) => {
     paramsStore.params.pageNumber = pageNumber;
     isLoading.value = true;
-    fetchData()
-}
+    fetchData();
+};
 
 // request when change
 const refParamsStore = storeToRefs(paramsStore);
 watch(refParamsStore.params.value, () => {
     isLoading.value = true;
-    fetchData()
+    fetchData();
 });
 </script>
 
 <template>
-    <Loading :is-loading="isLoading"/>
+    <Loading :is-loading="isLoading" />
     <div class="m-2">
         <div
             v-for="a in articleList"
@@ -47,31 +47,40 @@ watch(refParamsStore.params.value, () => {
         >
             <div
                 @click="$router.push({ path: '/v/' + a.articleId })"
-                class="my-1 mb-3 text-left ml-2 pl-2 text-2xl cursor-pointer hover:text-blue-500 transition-all">
+                class="my-1 mb-3 text-left ml-2 pl-2 text-2xl cursor-pointer hover:text-blue-500 transition-all"
+            >
                 {{ a.introduction }}
             </div>
             <div class="p-2" @click="$router.push({ path: '/v/' + a.articleId })">
-                <div class="h-[300px] rounded-md shadow-md mb-2 bg-cover flex justify-center items-center video-preview"
-                     :style="{ background: 'url(' + a.images[0] + ') center center no-repeat' }">
+                <div
+                    class="h-[300px] rounded-md shadow-md mb-2 bg-cover flex justify-center items-center video-preview"
+                    :style="{ background: 'url(' + a.images[0] + ') center center no-repeat' }"
+                >
                     <el-icon size="100" color="rgb(156,163,175)" class="play-btn cursor-pointer">
-                        <i-material-symbols-play-circle-outline/>
+                        <i-material-symbols-play-circle-outline />
                     </el-icon>
                 </div>
             </div>
             <div class="truncate flex flex-row dark:text-gray-300 text-gray-800 ml-2 mb-3 items-center">
                 <div class="mr-2">
-                    <el-avatar :src="a.author.avatar" shape="square"/>
+                    <el-avatar :src="a.author.avatar" shape="square" />
                 </div>
-                <span class="hover:text-blue-500 text-xl cursor-pointer transition-all">{{ a.author.username }} ·&nbsp;</span>
+                <span class="hover:text-blue-500 text-xl cursor-pointer transition-all"
+                    >{{ a.author.username }} ·&nbsp;</span
+                >
                 <span v-text="formatTime(a.releaseTime)"></span>
-                <span class="hover:text-blue-500 cursor-pointer transition-all text-gray-500 dark:text-gray-400" v-for="t in a.tags" :key="t.tagId">
+                <span
+                    class="hover:text-blue-500 cursor-pointer transition-all text-gray-500 dark:text-gray-400"
+                    v-for="t in a.tags"
+                    :key="t.tagId"
+                >
                     &nbsp;· {{ t.tagName }}</span
                 >
             </div>
             <div class="flex flex-row">
-                <CommentsLink/>
-                <ShareLink/>
-                <CollectionLink/>
+                <CommentsLink />
+                <ShareLink />
+                <CollectionLink />
             </div>
         </div>
         <Pagination
@@ -88,7 +97,8 @@ watch(refParamsStore.params.value, () => {
     transition: 0.2s all ease;
 }
 
-.play-btn, .play-btn:before {
+.play-btn,
+.play-btn:before {
     opacity: 0;
     transition: 0.2s all ease;
 }

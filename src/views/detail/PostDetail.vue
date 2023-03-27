@@ -1,14 +1,14 @@
 <script setup lang="ts">
-import {useRouteParams} from '@vueuse/router';
-import {ArticleContentEntity, getOneArticle} from '../../axios/api/articleApi';
-import {ElMessage} from 'element-plus';
-import {useRouter} from 'vue-router';
-import {formatTime} from '../../utils';
+import { useRouteParams } from '@vueuse/router';
+import { ArticleContentEntity, getOneArticle } from '../../axios/api/articleApi';
+import { ElMessage } from 'element-plus';
+import { useRouter } from 'vue-router';
+import { formatTime } from '../../utils';
 // @ts-ignore
-import {useReloadCommentStore} from '../../pinia';
-import {storeToRefs} from 'pinia';
-import {getCommentsById} from '../../axios/api/commentsApi';
-import DefaultDetailLayout from "../../layout/DefaultDetailLayout.vue";
+import { useReloadCommentStore } from '../../pinia';
+import { storeToRefs } from 'pinia';
+import { getCommentsById } from '../../axios/api/commentsApi';
+import DefaultDetailLayout from '../../layout/DefaultDetailLayout.vue';
 
 const articleId = useRouteParams<string>('postId');
 const isLoad = ref<boolean>(true);
@@ -54,7 +54,7 @@ onMounted(() => {
             data.value = res.data.data;
             nextTick(() => {
                 isLoad.value = false;
-                window.scroll({top: 0, behavior: 'smooth'});
+                window.scroll({ top: 0, behavior: 'smooth' });
             });
         } else {
             ElMessage.error(res.data.message);
@@ -84,7 +84,7 @@ const reloadComment = (id: string) => {
             <div class="flex flex-col p-6 dark:bg-dark rounded-md bg-light shadow-sm">
                 <div class="flex flex-row flex-wrap justify-between items-center">
                     <div class="flex flex-row justify-center items-center">
-                        <el-avatar size="large" class="mr-4" :src="data.article.author.avatar"/>
+                        <el-avatar size="large" class="mr-4" :src="data.article.author.avatar" />
                         <span class="text-2xl">{{ data.article.author.username }}</span>
                         <span class="text-xs mx-1 text-gray-500">@{{ data.article.author.userId }}</span>
                         <span class="text-sm text-gray-500" v-text="formatTime(data.article.releaseTime)"></span>
@@ -97,13 +97,13 @@ const reloadComment = (id: string) => {
                     {{ data.article.introduction }}
                 </div>
                 <div class="mb-4 w-full" v-viewer>
-                    <img class="w-full shadow-md rounded-md my-1" v-for="i in data.article.images" :src="i" alt=""/>
+                    <img class="w-full shadow-md rounded-md my-1" v-for="i in data.article.images" :src="i" alt="" />
                 </div>
                 <div class="flex flex-row">
-                    <LikeBtn :type="0" :id="data.article.articleId"/>
-                    <CommentsLink/>
-                    <ShareLink/>
-                    <CollectionLink :type="0" :id="data.article.articleId"/>
+                    <LikeBtn :type="0" :id="data.article.articleId" />
+                    <CommentsLink />
+                    <ShareLink />
+                    <CollectionLink :type="0" :id="data.article.articleId" />
                 </div>
                 <div>
                     <Comment
@@ -116,7 +116,7 @@ const reloadComment = (id: string) => {
         </template>
         <template #right>
             <el-affix :offset="10">
-                <UserInfoLite :user="data.article.author"/>
+                <UserInfoLite :user="data.article.author" />
             </el-affix>
         </template>
     </DefaultDetailLayout>

@@ -1,13 +1,13 @@
 <template>
     <div class="flex flex-col bg-light mt-2 dark:bg-dark rounded-md hover:shadow-md transition-all shadow-sm p-3">
         <div class="flex flex-row">
-            <div class="flex m-2">
+            <div class="flex mr-2 mb-2 shadow-sm rounded-xl hover:shadow-md transition-all">
                 <el-avatar shape="square" :src="user.avatar" :size="150" />
             </div>
             <div class="flex flex-col mb-2 text-left justify-end">
-                <span class="text-lg font-bold">&nbsp;{{ user.username }}</span>
+                <span class="text-base font-bold">&nbsp;{{ user.username }}</span>
                 <span class="text-sm m-0.5 text-gray-400">@{{ user.userId }}</span>
-                <span class="text-sm text-gray-400">&nbsp;IP:{{ user.ipAddr }}</span>
+                <span class="text-sm text-gray-400">&nbsp;{{ user.ipAddr }}</span>
             </div>
         </div>
         <div class="flex flex-row mt-2 mb-1 ml-1 text-left">
@@ -15,8 +15,8 @@
         </div>
         <div class="flex flex-col mt-2 mx-1">
             <div class="flex flex-row justify-between items-center">
-                <span class="text-sm">Lv:{{ levelStart }}</span>
-                <span class="text-sm">Lv:{{ levelEnd }}</span>
+                <span class="text-sm dark:text-gray-300">Lv:{{ levelStart }}</span>
+                <span class="text-sm dark:text-gray-300">Lv:{{ levelEnd }}</span>
             </div>
             <div class="mt-1">
                 <el-progress :percentage="level" :show-text="false" />
@@ -24,15 +24,15 @@
             <div class="mt-4 mb-2 flex flex-row justify-around">
                 <div class="flex flex-col">
                     <span class="text-lg text-blue-400 font-bold">{{ count.publish }}</span>
-                    <span class="mt-1">Publish</span>
+                    <span class="mt-1 dark:text-gray-300">Publish</span>
                 </div>
                 <div class="flex flex-col">
                     <span class="text-lg text-blue-400 font-bold">{{ count.like }}</span>
-                    <span class="mt-1">Like</span>
+                    <span class="mt-1 dark:text-gray-300">Like</span>
                 </div>
                 <div class="flex flex-col">
                     <span class="text-lg text-blue-400 font-bold">{{ count.collection }}</span>
-                    <span class="mt-1">Collection</span>
+                    <span class="mt-1 dark:text-gray-300">Collection</span>
                 </div>
             </div>
         </div>

@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { useDialogControlStore } from '../../pinia';
+import { useDialogControlStore, useThemeStore } from '../../pinia';
 import { uploadFile } from '../../axios/api/fileApi';
 import {
     ElMessage,
@@ -92,6 +92,8 @@ const handlePictureCardPreview: UploadProps['onPreview'] = (uploadFile) => {
     dialogImageUrl.value = uploadFile.url!;
     dialogVisible.value = true;
 };
+
+const themeStore = useThemeStore();
 </script>
 
 <template>
@@ -109,7 +111,7 @@ const handlePictureCardPreview: UploadProps['onPreview'] = (uploadFile) => {
                     </el-icon>
                     <span class="text-xl"> Send Post </span>
                 </h4>
-                <el-button type="danger" @click="close">
+                <el-button type="danger" @click="close" plain>
                     <el-icon class="el-icon--left">
                         <i-ep-circle-close-filled />
                     </el-icon>
@@ -119,7 +121,7 @@ const handlePictureCardPreview: UploadProps['onPreview'] = (uploadFile) => {
         </template>
         <template #footer>
             <div class="flex flex-row justify-end mr-4 px-6">
-                <el-button type="primary" @click="handlePublish">
+                <el-button type="primary" @click="handlePublish" plain :dark="themeStore.isDark" color="#626aef">
                     <el-icon class="el-icon--left">
                         <i-ep-circle-check />
                     </el-icon>

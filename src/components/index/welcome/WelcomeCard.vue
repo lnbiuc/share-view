@@ -1,17 +1,16 @@
 <script setup lang="ts">
 import { storeToRefs } from 'pinia';
 import { useThemeStore } from '../../../pinia';
-import { ElMessage } from 'element-plus';
-import { useScroll } from '@vueuse/core';
 
 const toGithub = (url: string) => {
     window.open(url, '_blank');
 };
 
-const themeStore = storeToRefs(useThemeStore());
+const themeStore = useThemeStore();
+const refThemeStore = storeToRefs(themeStore);
 const isDark = ref<boolean>(false);
-watch(themeStore.isDark, () => {
-    isDark.value = themeStore.isDark.value;
+watch(refThemeStore.isDark, () => {
+    isDark.value = refThemeStore.isDark.value;
 });
 onMounted(() => {
     const theme = localStorage.getItem('vueuse-color-scheme');
@@ -62,12 +61,14 @@ const getStart = () => {
                 </span>
             </div>
             <div class="flex flex-row ml-3 mb-4">
-                <el-button type="primary" size="large" @click="getStart">Get Start</el-button>
+                <el-button plain bg color="#626aef" :dark="themeStore.isDark" type="primary" @click="getStart"
+                    >Get Start</el-button
+                >
                 <div
                     class="flex flex-row items-center ml-4 cursor-pointer"
                     @click="toGithub('https://github.com/lnbiuc/share-view')"
                 >
-                    <span class="text-xl text-gray-500 hover:text-blue-500 transition-all">
+                    <span class="text-base text-gray-500 hover:text-blue-500 transition-all">
                         View this project in Github
                     </span>
                     <el-tooltip content="https://github.com/lnbiuc/share-view">
@@ -96,6 +97,6 @@ const getStart = () => {
 </template>
 <style>
 .check-list {
-    @apply flex flex-row text-xl;
+    @apply flex flex-row text-base dark:text-gray-300;
 }
 </style>

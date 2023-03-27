@@ -2,6 +2,7 @@
 import { CategoryEntity, getCategoryList } from '../../axios/api/categoryApi';
 import { formatTime } from '../../utils';
 import { ref } from 'vue';
+import { useThemeStore } from '../../pinia';
 
 const data = ref<CategoryEntity[]>([
     {
@@ -26,6 +27,8 @@ getCategoryList(1, 10).then((res) => {
     data.value = res.data.data.data;
     isLoading.value = false;
 });
+
+const themeStore = useThemeStore();
 </script>
 
 <template>
@@ -38,7 +41,7 @@ getCategoryList(1, 10).then((res) => {
         >
             <div class="flex flex-col justify-center items-center">
                 <el-avatar class="mb-4 shadow-sm" :size="100" shape="square" :src="a.avatar" />
-                <el-button>Subscribe</el-button>
+                <el-button plain bg color="#626aef" :dark="themeStore.isDark">Subscribe</el-button>
             </div>
             <div class="flex flex-col ml-4 justify-center">
                 <span

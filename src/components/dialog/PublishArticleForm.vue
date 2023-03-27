@@ -187,7 +187,15 @@ watch(refThemeStore.isDark, (val) => {
                     <el-form-item label="Create New Tag">
                         <div class="flex flex-row">
                             <el-input v-model="tag" class="flex-grow" />
-                            <el-button class="ml-3" @click="createTag">Create</el-button>
+                            <el-button
+                                plain
+                                bg
+                                color="#626aef"
+                                :dark="themeStore.isDark"
+                                class="ml-3"
+                                @click="createTag"
+                                >Create</el-button
+                            >
                         </div>
                     </el-form-item>
                 </el-form>

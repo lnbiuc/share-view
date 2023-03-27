@@ -7,11 +7,11 @@
     }
     .bg-dark {
         background-color: #252529;
-        border: 0.1rem solid #323232;
+        @apply border-dark;
     }
     .bg-light {
         background-color: #ffffff;
-        border: 0.1rem solid #e6e6e6;
+        @apply border-light;
     }
     .bg-light-white {
         background-color: #ffffff;
@@ -21,6 +21,24 @@
     }
     .text-dark {
         color: #c9d1d9;
+    }
+    .border-dark {
+        border: 1px solid #323232;
+    }
+    .border-light {
+        border: 1px solid #e6e6e6;
+    }
+    .bg-dark-hover {
+        background-color: #323232;
+    }
+    .bg-light-hover {
+        background-color: #e6e6e6;
+    }
+    .title {
+        @apply cursor-pointer transition-all text-left text-neutral-900 hover:text-blue-500 dark:text-gray-300 dark:hover:text-blue-500 font-medium;
+    }
+    .img {
+        @apply shadow-sm hover:shadow-md rounded-md transition-all;
     }
 }
 

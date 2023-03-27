@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { useDialogControlStore, useReloadCommentStore } from '../../pinia';
+import { useDialogControlStore, useReloadCommentStore, useThemeStore } from '../../pinia';
 import { publishComments } from '../../axios/api/commentsApi';
 import { ElMessage } from 'element-plus';
 import { storeToRefs } from 'pinia';
@@ -43,6 +43,8 @@ const handlePublish = () => {
         }
     }
 };
+
+const themeStore = useThemeStore();
 </script>
 
 <template>
@@ -68,7 +70,7 @@ const handlePublish = () => {
                         </span>
                     </div>
                 </h4>
-                <el-button type="danger" @click="close">
+                <el-button type="danger" @click="close" plain>
                     <el-icon class="el-icon--left">
                         <i-ep-circle-close-filled />
                     </el-icon>
@@ -78,7 +80,7 @@ const handlePublish = () => {
         </template>
         <template #footer>
             <div class="flex flex-row justify-end mr-4">
-                <el-button type="primary" @click="handlePublish">
+                <el-button type="primary" @click="handlePublish" color="#626aef" plain :dark="themeStore.isDark">
                     <el-icon class="el-icon--left">
                         <i-ep-circle-check />
                     </el-icon>

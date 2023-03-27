@@ -9,23 +9,22 @@ import 'nprogress/nprogress.css';
 //     baseURL: 'https://share.vio.vin/',
 // });
 //
-const isProduction = process.env.NODE_ENV === 'production'
+const isProduction = process.env.NODE_ENV === 'production';
 
-const baseURL = isProduction ? 'https://share.vio.vin' : process.env.BASE_URL
+const baseURL = isProduction ? 'https://share.vio.vin' : process.env.BASE_URL;
 
 const apiAxios = axios.create({
     baseURL,
-})
+});
 
 if (!isProduction) {
-    const apiProxy = process.env.API_PROXY
+    const apiProxy = process.env.API_PROXY;
     apiAxios.interceptors.request.use((config) => {
-
         if (config.url?.startsWith('/api')) {
-            config.url = `${apiProxy}${config.url}`
+            config.url = `${apiProxy}${config.url}`;
         }
-        return config
-    })
+        return config;
+    });
 }
 
 NProgress.configure({

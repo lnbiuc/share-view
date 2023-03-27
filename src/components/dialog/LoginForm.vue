@@ -5,7 +5,7 @@ import { InfoFilled, User, Lock, CircleCheck } from '@element-plus/icons-vue';
 import { ref } from 'vue';
 import { CountEntity, login, loginParams, register, sendCode, UserEntity } from '../../axios/api/loginApi';
 import { ElMessage, FormInstance } from 'element-plus';
-import { useDialogControlStore, useUserStore } from '../../pinia';
+import { useDialogControlStore, useThemeStore, useUserStore } from '../../pinia';
 import { useLocalStorage, useSessionStorage, useStorage } from '@vueuse/core';
 
 // const dialogFormVisible = ref(false);
@@ -238,6 +238,8 @@ const loginSuccess = (userData: UserEntity, token: string, count: CountEntity) =
         useSessionStorage<CountEntity>('count', count);
     }
 };
+
+const themeStore = useThemeStore();
 </script>
 
 <template>
@@ -277,11 +279,7 @@ const loginSuccess = (userData: UserEntity, token: string, count: CountEntity) =
             <el-form-item label="Account" prop="account">
                 <el-input :prefix-icon="User" v-model="codeForm.account" type="text" placeholder="your phone or email">
                     <template #suffix>
-                        <el-button
-                            @click="HandlerSendCode"
-                            style="border: none; background-color: unset"
-                            :disabled="sendCodeStatus"
-                        >
+                        <el-button @click="HandlerSendCode" :disabled="sendCodeStatus">
                             <span v-show="!sendCodeStatus">Send Code</span>
                             <span v-show="sendCodeStatus">{{ count }} s</span>
                         </el-button>
@@ -360,8 +358,16 @@ const loginSuccess = (userData: UserEntity, token: string, count: CountEntity) =
 
         <template #footer>
             <span class="dialog-footer">
-                <el-button @click="dialogStore.loginForm = false">Cancel</el-button>
-                <el-button type="primary" @click="handlerSubmit(ruleFormRef)"> Confirm </el-button>
+                <el-button type="danger" plain @click="dialogStore.loginForm = false">Cancel</el-button>
+                <el-button
+                    plain
+                    color="#626aef"
+                    :dark="themeStore.isDark"
+                    type="primary"
+                    @click="handlerSubmit(ruleFormRef)"
+                >
+                    Confirm
+                </el-button>
             </span>
         </template>
     </el-dialog>

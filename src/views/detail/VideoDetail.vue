@@ -1,15 +1,15 @@
 <script setup lang="ts">
-import {ArticleContentEntity, getOneArticle} from "../../axios/api/articleApi";
-import {useRouteParams} from "@vueuse/router";
-import {ref} from "vue";
-import {ElMessage} from "element-plus";
-import {useRouter} from "vue-router";
-import VideoDetailLayout from "../../layout/VideoDetailLayout.vue";
+import { ArticleContentEntity, getOneArticle } from '../../axios/api/articleApi';
+import { useRouteParams } from '@vueuse/router';
+import { ref } from 'vue';
+import { ElMessage } from 'element-plus';
+import { useRouter } from 'vue-router';
+import VideoDetailLayout from '../../layout/VideoDetailLayout.vue';
 const videoId = useRouteParams<string>('videoId');
 const data = ref<ArticleContentEntity>();
-const disableSubscribeBtn = ref<boolean | undefined>(false)
+const disableSubscribeBtn = ref<boolean | undefined>(false);
 onMounted(() => {
-    getOneArticle(videoId.value).then(res => {
+    getOneArticle(videoId.value).then((res) => {
         if (res.data.code == 200) {
             data.value = res.data.data;
             disableSubscribeBtn.value = data.value?.article.author.isSubscribed;
@@ -20,9 +20,8 @@ onMounted(() => {
             ElMessage.error(res.data.message);
             useRouter().back();
         }
-    })
-})
-
+    });
+});
 </script>
 
 <template>
@@ -41,9 +40,7 @@ onMounted(() => {
                     :prefer-full-window="true"
                 />
             </template>
-            <template #author>
-
-            </template>
+            <template #author> </template>
             <template #comment>
                 <Comment
                     :comments="data?.comments.data"

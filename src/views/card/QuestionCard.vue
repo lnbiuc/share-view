@@ -44,22 +44,19 @@ const currentChange = (pageNumber: number) => {
         <div
             v-for="(a, i) in articleList"
             :key="a.articleId"
-            class="flex flex-row mb-2 bg-light transition-all dark:bg-dark rounded-md shadow-sm hover:shadow-md p-4"
+            class="flex flex-row mb-2 bg-light transition-all dark:bg-dark rounded-md shadow-sm hover:shadow-md py-4 pr-4 pl-2"
         >
             <div class="flex flex-col justify-around w-1/12">
                 <span class="text-3xl text-gray-500">{{ i + 1 }}</span>
                 <span />
             </div>
-            <div class="w-11/12">
-                <div
-                    class="text-md font-semibold text-left hover:text-blue-500 py-2 cursor-pointer transition-all"
-                    @click="$router.push({ path: '/q/' + a.articleId })"
-                >
+            <div class="w-11/12 ml-2">
+                <div class="text-left py-2 title" @click="$router.push({ path: '/q/' + a.articleId })">
                     {{ a.title }}
                 </div>
                 <div class="flex flex-row items-center">
                     <ShareLink />
-                    <el-icon color="gray" class="ml-5 mr-1"><View /></el-icon>
+                    <el-icon color="rgb(156, 163, 175)" size="20" class="ml-5 mr-1"><View /></el-icon>
                     <span class="text-gray-500">{{ a.views }}</span>
                 </div>
             </div>

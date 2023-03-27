@@ -1,23 +1,23 @@
 <script setup lang="ts">
-import {getOneArticle, ArticleContentEntity} from '../../axios/api/articleApi';
+import { getOneArticle, ArticleContentEntity } from '../../axios/api/articleApi';
 // @ts-ignore
-import {StarFilled, CaretTop, CaretBottom} from '@element-plus/icons-vue';
-import {useRouteParams} from '@vueuse/router';
-import {ElMessage} from 'element-plus';
-import {useRouter} from 'vue-router';
-import {subscribeAuthorByAuthorId} from '../../axios/api/subscribeApi';
-import {likeArticle} from '../../axios/api/likesApi';
-import {addCollection} from '../../axios/api/collectApi';
+import { StarFilled, CaretTop, CaretBottom } from '@element-plus/icons-vue';
+import { useRouteParams } from '@vueuse/router';
+import { ElMessage } from 'element-plus';
+import { useRouter } from 'vue-router';
+import { subscribeAuthorByAuthorId } from '../../axios/api/subscribeApi';
+import { likeArticle } from '../../axios/api/likesApi';
+import { addCollection } from '../../axios/api/collectApi';
 import UserInfoLite from '../../components/aside/UserInfoLite.vue';
-import {getCommentsById} from '../../axios/api/commentsApi';
-import {useReloadCommentStore, useThemeStore} from '../../pinia';
-import {storeToRefs} from 'pinia';
-import {ref} from 'vue';
+import { getCommentsById } from '../../axios/api/commentsApi';
+import { useReloadCommentStore, useThemeStore } from '../../pinia';
+import { storeToRefs } from 'pinia';
+import { ref } from 'vue';
 import MdEditor from 'md-editor-v3';
 import 'md-editor-v3/lib/style.css';
-import {checkLoginStatus} from '../../utils';
+import { checkLoginStatus } from '../../utils';
 import Detail from '../../layout/DefaultDetailLayout.vue';
-import DefaultDetailLayout from "../../layout/DefaultDetailLayout.vue";
+import DefaultDetailLayout from '../../layout/DefaultDetailLayout.vue';
 
 const articleId = useRouteParams<string>('articleId');
 const data = ref<ArticleContentEntity>({
@@ -64,7 +64,7 @@ onMounted(() => {
             isLoading.value = false;
             disableSubscribeBtn.value = data.value.article.author.isSubscribed;
             nextTick(() => {
-                window.scroll({top: 0, behavior: 'smooth'});
+                window.scroll({ top: 0, behavior: 'smooth' });
             });
         } else {
             ElMessage.error(res.data.message);
@@ -167,7 +167,7 @@ const scrollElement = document.documentElement;
                     <span
                         class="rounded-full py-1 px-2 w-16 text-sm text-center dark:text-light"
                         style="background-color: #79bbff"
-                    >Article</span
+                        >Article</span
                     >
                     <span class="ml-2">
                         <el-tag class="mx-1" v-for="t in data.article.tags">
@@ -182,16 +182,16 @@ const scrollElement = document.documentElement;
                 <div class="flex flex-row justify-between px-2">
                     <div class="flex flex-row mt-4">
                         <div>
-                            <el-avatar :size="60" :src="data.article.author.avatar"/>
+                            <el-avatar :size="60" :src="data.article.author.avatar" />
                         </div>
                         <div class="flex flex-col ml-4 justify-around">
                             <div class="flex flex-row items-center">
                                 <div class="flex">
                                     <span class="text-lg text-gray-800 dark:text-dark">{{
-                                            data.article.author.username
-                                        }}</span>
+                                        data.article.author.username
+                                    }}</span>
                                     <span class="text-sm text-gray-400 flex items-center mt-1"
-                                    >&nbsp;@{{ data.article.author.userId }}</span
+                                        >&nbsp;@{{ data.article.author.userId }}</span
                                     >
                                 </div>
                             </div>
@@ -206,17 +206,16 @@ const scrollElement = document.documentElement;
                             type="primary"
                             v-if="!disableSubscribeBtn"
                             plain
-                        >Subscribe
-                        </el-button
-                        >
+                            >Subscribe
+                        </el-button>
                         <el-button type="primary" :disabled="true" v-if="disableSubscribeBtn" plain>
-                            <i-ep-circle-check class="mr-1"/>
+                            <i-ep-circle-check class="mr-1" />
                             Subscribed
                         </el-button>
                     </div>
                 </div>
                 <el-divider>CONTENT</el-divider>
-                <Loading :is-loading="isLoading"/>
+                <Loading :is-loading="isLoading" />
                 <div v-show="!isLoading">
                     <md-editor
                         :editor-id="state.id"
@@ -237,14 +236,14 @@ const scrollElement = document.documentElement;
             </div>
         </template>
         <template #right>
-            <Loading :is-loading="isLoading"/>
-            <UserInfoLite v-show="!isLoading" :user="data.article.author"/>
+            <Loading :is-loading="isLoading" />
+            <UserInfoLite v-show="!isLoading" :user="data.article.author" />
             <el-affix :offset="8">
                 <div
                     class="text-left text-md transition-all dark:bg-dark dark:text-dark bg-light rounded-md shadow-sm px-4 py-2 overflow-auto break-all"
                     v-show="!isLoading"
                 >
-                    <md-catalog :editor-id="state.id" :scroll-element="scrollElement" :theme="currentTheme"/>
+                    <md-catalog :editor-id="state.id" :scroll-element="scrollElement" :theme="currentTheme" />
                 </div>
             </el-affix>
         </template>

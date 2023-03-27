@@ -69,12 +69,12 @@ const handleClickComment = (title: string, articleId: string) => {
             </div>
             <div class="flex flex-col">
                 <div
-                    class="text-lg font-semibold text-left hover:text-blue-500 py-2 cursor-pointer transition-all"
+                    class="text-lg text-left py-2 text-left title"
                     @click="$router.push({ path: '/a/' + a.articleId })"
                 >
                     {{ a.title }}
                 </div>
-                <div class="flex mb-4 text-gray-500 text-left leading-6">
+                <div class="flex mb-4 text-gray-500 text-left leading-6 text-sm">
                     {{ a.introduction }}
                 </div>
             </div>

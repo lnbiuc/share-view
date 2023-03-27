@@ -2,7 +2,7 @@
 import { checkLoginStatus, formatTime } from '../../utils';
 // @ts-ignore
 import { ArrowUpBold, ArrowDownBold } from '@element-plus/icons-vue';
-import { useDialogControlStore, useReloadCommentStore, useUserStore } from '../../pinia';
+import { useDialogControlStore, useReloadCommentStore, useThemeStore, useUserStore } from '../../pinia';
 import { likeArticle } from '../../axios/api/likesApi';
 import { ElMessage } from 'element-plus';
 import { storeToRefs } from 'pinia';
@@ -73,6 +73,8 @@ const handleClickLike = (commentId: string, isLike: number) => {
         });
     }
 };
+
+const themeStore = useThemeStore();
 </script>
 
 <template>
@@ -84,7 +86,9 @@ const handleClickLike = (commentId: string, isLike: number) => {
             <div class="text-gray-500">
                 Total Comment : <span class="text-blue-500">{{ comments?.length }}</span>
             </div>
-            <el-button @click="handleCommentToArticle()">Create Comment</el-button>
+            <el-button plain bg color="#626aef" :dark="themeStore.isDark" @click="handleCommentToArticle()"
+                >Create Comment</el-button
+            >
         </div>
         <div
             v-for="c in comments"

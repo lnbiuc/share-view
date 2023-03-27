@@ -1,6 +1,6 @@
 <template>
-    <div class="px-2 flex flex-row items-center text-sm">
-        <el-icon color="gray" size="17">
+    <div class="pr-2 flex flex-row items-center text-sm transition-all cursor-pointer">
+        <el-icon color="rgb(156, 163, 175)" size="20">
             <i-material-symbols-comment />
         </el-icon>
         <span class="mx-1 text-gray-400">{{ comments }}</span>
