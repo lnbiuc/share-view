@@ -11,6 +11,7 @@ paramsStore.filterTypeChange(3);
 const isLoad = ref<boolean>(true);
 getArticleList(paramsStore.params).then((res) => {
     articleList.value = res.data.data.data;
+	total.value = res.data.data.total;
     isLoad.value = false;
 });
 
@@ -34,10 +35,9 @@ watch(refParamsStore.params.value, () => {
 });
 
 const currentChange = (pageNumber: number) => {
-    const store = useArticleParamsStore();
-    store.params.pageNumber = pageNumber;
+	paramsStore.params.pageNumber = pageNumber;
     isLoad.value = true;
-    getArticleList(store.params).then((res) => {
+    getArticleList(paramsStore.params).then((res) => {
         articleList.value = res.data.data.data;
         isLoad.value = false;
         total.value = res.data.data.total;
@@ -75,18 +75,30 @@ const handleClickComment = (articleId: string, info: string) => {
                     {{ a.introduction }}</span
                 >
             </div>
-            <div class="mb-4 flex flex-row flex-wrap justify-center items-center">
-                <!--                <div v-for="i in a.images" @click="showImages(a.images)" :style="{ background: 'url(' + i + ') center center no-repeat' }"-->
-                <!--                    class="img m-2 shadow-sm hover:shadow-md rounded-md transition-all">-->
-                <!--				</div>-->
+            <div class="mb-2 flex flex-row flex-wrap justify-center items-center">
                 <div v-if="a.images.length > 0" class="w-full">
-                    <div v-if="a.images.length === 1">
-                        <div
-                            @click="showImages(a.images)"
-                            :style="{ background: 'url(' + a.images[0] + ') center center no-repeat' }"
-                            class="h-[300px] w-full img bg-cover"
-                        ></div>
+                    <div v-if="a.images.length === 1" class="max-h-[350px] overflow-hidden flex justify-center items-center">
+						<img
+							@click="showImages(a.images)"
+							:src="a.images[0]"
+							:alt="a.images[0]"
+							class="h-full rounded-md shadow-sm hover:shadow-md my-2 transition-all rounded-md"
+						>
                     </div>
+					<div v-if="a.images.length === 2">
+						<img
+							@click="showImages(a.images)"
+							:src="a.images[0]"
+							:alt="a.images[0]"
+							class="h-full object-cover rounded-md shadow-sm hover:shadow-md my-2 transition-all"
+						>
+						<img
+							@click="showImages(a.images)"
+							:src="a.images[1]"
+							:alt="a.images[1]"
+							class="h-full object-cover rounded-md shadow-sm hover:shadow-md my-2 transition-all"
+						>
+					</div>
                 </div>
             </div>
             <div class="flex flex-row">
@@ -96,11 +108,12 @@ const handleClickComment = (articleId: string, info: string) => {
                 <CollectionLink :type="0" :id="a.articleId" />
             </div>
         </div>
-        <Pagination
-            :page-size="paramsStore.params.pageSize"
-            :total="total"
-            :hide-on-single-page="true"
-            @numberChange="currentChange"
-        />
+		<Pagination
+			:current-page="paramsStore.params.pageNumber"
+			:page-size="paramsStore.params.pageSize"
+			:total="total"
+			@numberChange="currentChange"
+			:hide-on-single-page="true"
+		/>
     </div>
 </template>

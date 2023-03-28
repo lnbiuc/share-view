@@ -170,6 +170,7 @@ const goArticleAndComment = (articleId: string, title: string, type: string, inf
             </div>
         </div>
         <Pagination
+			:current-page="paramsStore.params.pageNumber"
             :page-size="paramsStore.params.pageSize"
             :total="total"
             @numberChange="currentChange"

@@ -4,17 +4,13 @@ import { ElMessage } from 'element-plus';
 import NProgress from 'nprogress';
 import 'nprogress/nprogress.css';
 
-// const apiAxios = axios.create({
-//     // baseURL: process.env.NODE_ENV === 'production' && /^\/api/.test(url) ? 'https://share.vio.vin' : './',
-//     baseURL: 'https://share.vio.vin/',
-// });
-//
 const isProduction = process.env.NODE_ENV === 'production';
 
 const baseURL = isProduction ? 'https://share.vio.vin' : process.env.BASE_URL;
 
 const apiAxios = axios.create({
     baseURL,
+    withCredentials: true,
 });
 
 if (!isProduction) {
