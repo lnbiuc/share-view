@@ -1,9 +1,7 @@
 <script setup lang="ts">
 import { ref } from 'vue';
-// @ts-ignore
 import { ArrowDown } from '@element-plus/icons-vue';
 import { useArticleParamsStore, useFilterAndSortStore } from '../../pinia';
-import { storeToRefs } from 'pinia';
 import { checkLoginStatus } from '../../utils';
 
 const filterByList: Array<{ name: string; value: string }> = [

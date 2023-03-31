@@ -14,7 +14,7 @@ const props = defineProps({
     },
 });
 const handledLikeClick = (isLike: number) => {
-    if (props.type !== -1 && props.id !== '') {
+    if (props.type !== -1 && props.id) {
         likeArticle(props.id, props.type, isLike).then((res) => {
             if (res.data.code == 200) {
                 ElMessage.success('SUCCESS');

@@ -2,6 +2,8 @@ import { defineStore, storeToRefs } from 'pinia';
 import { CountEntity, UserEntity } from '../axios/api/loginApi';
 import { formatDate } from '../utils';
 import { PublishCommentsEntity } from '../axios/api/commentsApi';
+import { CategoryEntity, getCategoryList } from '../axios/api/categoryApi';
+import { getAllTags, TagEntity } from '../axios/api/tagApi';
 
 export const useUserStore = defineStore('count', {
     state: () => ({
@@ -18,7 +20,6 @@ export const useUserStore = defineStore('count', {
             return state.token;
         },
         getUserId(state) {
-            // @ts-ignore
             return state.user.userId;
         },
     },
@@ -240,6 +241,25 @@ export const useArticleParamsStore = defineStore('articleParams', {
         filterTypeChange(type: number) {
             this.resetAll();
             this.params.filterBy.type = type;
+        },
+    },
+});
+
+export const useCategoryAndTagsStore = defineStore('categoryAndTags', {
+    state: () => ({
+        category: <CategoryEntity[]>[],
+        tags: <TagEntity[]>[],
+    }),
+    actions: {
+        refreshCategory() {
+            getCategoryList(1, 100).then((res) => {
+                this.category = res.data.data.data;
+            });
+        },
+        refreshTags() {
+            getAllTags().then((res) => {
+                this.tags = res.data.data;
+            });
         },
     },
 });

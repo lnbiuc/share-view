@@ -1,12 +1,12 @@
 <script setup lang="ts">
 import { ViewHistoryEntity } from '../../axios/api/articleApi';
 import { formatTime } from '../../utils';
-// @ts-ignore
-import { User } from '@element-plus/icons-vue';
+import { PropType } from 'vue';
 
 const prop = defineProps({
     historyList: {
-        type: Array<ViewHistoryEntity>,
+        type: Object as PropType<ViewHistoryEntity[]>,
+        required: true,
     },
 });
 </script>

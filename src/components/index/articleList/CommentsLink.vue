@@ -9,9 +9,6 @@
 </template>
 
 <script setup lang="ts">
-// @ts-ignore
-import { ChatDotRound } from '@element-plus/icons-vue';
-
 const props = defineProps({
     comments: {
         type: Number,

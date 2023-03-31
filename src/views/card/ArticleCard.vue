@@ -86,7 +86,7 @@ const handleClickComment = (title: string, articleId: string) => {
             </div>
         </div>
         <Pagination
-			:current-page="paramsStore.params.pageNumber"
+            :current-page="paramsStore.params.pageNumber"
             :page-size="paramsStore.params.pageSize"
             :total="total"
             hide-on-single-page

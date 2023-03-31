@@ -228,11 +228,7 @@ const scrollElement = document.documentElement;
                 <el-divider>END</el-divider>
             </div>
             <div class="flex flex-col my-2 p-4 dark:bg-dark rounded-md bg-light shadow-sm">
-                <Comment
-                    :comments="data.comments.data"
-                    :title="data.article.title"
-                    :article-id="data.article.articleId"
-                />
+                <Comment :comments="data.comments" :title="data.article.title" :article-id="data.article.articleId" />
             </div>
         </template>
         <template #right>

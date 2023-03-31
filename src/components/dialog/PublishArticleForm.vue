@@ -1,37 +1,28 @@
 <script setup lang="ts">
-import { useDialogControlStore, useThemeStore } from '../../pinia';
-import { CategoryEntity, getCategoryList } from '../../axios/api/categoryApi';
+import { useCategoryAndTagsStore, useDialogControlStore, useThemeStore } from '../../pinia';
+import { CategoryEntity } from '../../axios/api/categoryApi';
 import { publishArticle, TagEntity } from '../../axios/api/articleApi';
-import { getAllTags, publishTag } from '../../axios/api/tagApi';
-import { ElMessage, FormInstance } from 'element-plus';
-import { ref } from 'vue';
+import { publishTag } from '../../axios/api/tagApi';
+import { ElMessage, FormInstance, FormRules } from 'element-plus';
+import { Ref, ref } from 'vue';
 import { handleUploadImage } from '../../utils';
 import MdEditor from 'md-editor-v3';
 import { storeToRefs } from 'pinia';
+
 const dialogControlStore = useDialogControlStore();
 
 const text = ref<string>('');
-const categoryList = ref<CategoryEntity[]>();
-const tagList = ref<TagEntity[]>();
-const getCategory = async () => {
-    getCategoryList(1, 100).then((res) => {
-        categoryList.value = res.data.data.data;
-    });
-};
-const getTag = async () => {
-    getAllTags().then((res) => {
-        tagList.value = res.data.data;
-    });
-};
-// init category and tags
-getCategory();
-getTag();
+const categoryAndTagsStore = useCategoryAndTagsStore();
+const refCategoryAndTagsStore = storeToRefs(categoryAndTagsStore);
+const categoryList: Ref<CategoryEntity[]> = ref(refCategoryAndTagsStore.category);
+const tagList: Ref<TagEntity[]> = ref(refCategoryAndTagsStore.tags);
+
 const tag = ref<string>('');
 const createTag = () => {
     if (tag.value.match('[\u4e00-\u9fa5_a-zA-Z0-9_]{2,10}')) {
         publishTag(tag.value).then((res) => {
             if (res.data.code == 200) {
-                getTag();
+                categoryAndTagsStore.refreshTags();
                 ElMessage.success('SUCCESS');
             }
         });
@@ -83,7 +74,7 @@ const validateTags = (rule: any, value: number[], callback: any) => {
     }
     callback();
 };
-const articleFormRules = reactive({
+const articleFormRules: FormRules = reactive({
     title: [{ required: true, validator: validateTitle, trigger: 'blur' }],
     introduction: [{ required: true, validator: validateIntroduction, trigger: 'blur' }],
     categoryId: [{ required: true, validator: validateCategory, trigger: 'blur' }],
@@ -194,8 +185,8 @@ watch(refThemeStore.isDark, (val) => {
                                 :dark="themeStore.isDark"
                                 class="ml-3"
                                 @click="createTag"
-                                >Create</el-button
-                            >
+                                >Create
+                            </el-button>
                         </div>
                     </el-form-item>
                 </el-form>

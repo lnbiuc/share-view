@@ -1,5 +1,4 @@
 <script setup lang="ts">
-// @ts-ignore
 import { Loading } from '@element-plus/icons-vue';
 const props = defineProps({
     isLoading: {

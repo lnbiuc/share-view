@@ -307,6 +307,6 @@ const state = reactive({
                 </el-affix>
             </template>
         </DefaultDetailLayout>
-        <AnswerQuestionForm :question="ques.article.title" :question-id="ques.article.articleId" />
+        <AnswerQuestionForm :question-title="ques.article.title" :question-id="ques.article.articleId" />
     </div>
 </template>

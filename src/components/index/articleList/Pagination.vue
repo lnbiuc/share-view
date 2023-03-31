@@ -8,10 +8,10 @@ const props = defineProps({
         type: Number,
         default: 0,
     },
-	currentPage: {
-		type: Number,
-		default: 0,
-	}
+    currentPage: {
+        type: Number,
+        default: 0,
+    },
 });
 
 const emit = defineEmits(['numberChange']);
@@ -24,7 +24,7 @@ const currentChange = (pageNumber: number) => {
 <template>
     <div class="mt-4 mb-2 flex flex-row justify-center">
         <el-pagination
-			:current-page="currentPage"
+            :current-page="currentPage"
             :page-size="pageSize"
             background
             @current-change="currentChange"

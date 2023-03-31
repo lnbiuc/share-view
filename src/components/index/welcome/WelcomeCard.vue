@@ -80,23 +80,17 @@ const getStart = () => {
             </div>
         </div>
         <div>
-            <img
-                v-show="isDark"
-                src="../../../assets/main-card-dark.svg"
-                alt="card"
-                style="position: relative; top: -50px"
-            />
-            <img
-                v-show="!isDark"
-                src="../../../assets/main-card-light.svg"
-                alt="card"
-                style="position: relative; top: -50px"
-            />
+            <img v-show="isDark" src="../../../assets/main-card-dark.svg" alt="card" class="welcome-svg" />
+            <img v-show="!isDark" src="../../../assets/main-card-light.svg" alt="card" class="welcome-svg" />
         </div>
     </div>
 </template>
 <style>
 .check-list {
     @apply flex flex-row text-base dark:text-gray-300;
+}
+
+.welcome-svg {
+    @apply w-10/12 flex flex-col items-center justify-center;
 }
 </style>

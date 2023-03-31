@@ -1,7 +1,4 @@
-<script setup lang="ts">
-// @ts-ignore
-import { Share } from '@element-plus/icons-vue';
-</script>
+<script setup lang="ts"></script>
 
 <template>
     <div class="px-2 flex flex-row items-center text-sm">

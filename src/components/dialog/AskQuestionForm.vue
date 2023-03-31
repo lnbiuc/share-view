@@ -1,17 +1,17 @@
 <script setup lang="ts">
-import { useDialogControlStore, useThemeStore } from '../../pinia';
-import { ref } from 'vue';
-import { ElMessage, ElNotification, FormInstance } from 'element-plus';
-import { CategoryEntity, getCategoryList } from '../../axios/api/categoryApi';
+import { useCategoryAndTagsStore, useDialogControlStore, useThemeStore } from '../../pinia';
+import { Ref, ref } from 'vue';
+import { ElMessage, FormInstance, FormRules } from 'element-plus';
+import { CategoryEntity } from '../../axios/api/categoryApi';
 import { TagEntity } from '../../axios/api/articleApi';
-import { getAllTags, publishTag } from '../../axios/api/tagApi';
+import { publishTag } from '../../axios/api/tagApi';
 import { handleUploadImage } from '../../utils';
 import { publishQuestion } from '../../axios/api/questionApi';
 import { storeToRefs } from 'pinia';
 import MdEditor from 'md-editor-v3';
 
 const dialogControlStore = useDialogControlStore();
-const questionForm = ref<{ title: string; categoryId: number | undefined; content: string; tagIds: number[] }>({
+const questionForm: Ref<{ title: string; categoryId: number | undefined; content: string; tagIds: number[] }> = ref({
     title: '',
     categoryId: undefined,
     content: '',
@@ -23,27 +23,16 @@ watch(questionForm.value, () => {
     showAlert.value = contentLength.value < 0;
 });
 const showAlert = ref<boolean>(false);
-const categoryList = ref<CategoryEntity[]>();
-const tagList = ref<TagEntity[]>();
-const getCategory = async () => {
-    getCategoryList(1, 100).then((res) => {
-        categoryList.value = res.data.data.data;
-    });
-};
-const getTag = async () => {
-    getAllTags().then((res) => {
-        tagList.value = res.data.data;
-    });
-};
-// init category and tags
-getCategory();
-getTag();
+const categoryAndTagsStore = useCategoryAndTagsStore();
+const refCategoryAndTagsStore = storeToRefs(categoryAndTagsStore);
+const categoryList: Ref<CategoryEntity[]> = ref(refCategoryAndTagsStore.category);
+const tagList: Ref<TagEntity[]> = ref(refCategoryAndTagsStore.tags);
 const tag = ref<string>('');
 const createTag = () => {
     if (tag.value.match('[\u4e00-\u9fa5_a-zA-Z0-9_]{2,10}')) {
         publishTag(tag.value).then((res) => {
             if (res.data.code == 200) {
-                getTag();
+                categoryAndTagsStore.refreshTags();
                 ElMessage.success('SUCCESS');
             } else {
                 ElMessage.error(res.data.message);
@@ -79,7 +68,7 @@ const validateTags = (rule: any, value: number[], callback: any) => {
         callback();
     }
 };
-const questionFormRules = reactive({
+const questionFormRules: FormRules = reactive<FormRules>({
     title: [{ required: true, validator: validateTitle, trigger: 'blur' }],
     categoryId: [{ required: true, validator: validateCategory, trigger: 'blur' }],
     tagIds: [{ required: true, validator: validateTags, trigger: 'blur' }],
@@ -184,8 +173,8 @@ watch(refThemeStore.isDark, (val) => {
                 <div class="flex flex-row">
                     <el-input v-model="tag" class="flex-grow" />
                     <el-button plain bg color="#626aef" :dark="themeStore.isDark" class="ml-3" @click="createTag"
-                        >Create</el-button
-                    >
+                        >Create
+                    </el-button>
                 </div>
             </el-form-item>
         </el-form>

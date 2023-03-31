@@ -56,7 +56,7 @@ const level = ref<number>(0);
 const levelStart = ref<number>(0);
 const levelEnd = ref<number>(0);
 onMounted(() => {
-    level.value = props.user.level * 10;
+    level.value = Math.floor(props.user.level / 10) + 1;
     levelStart.value = parseInt(props.user.level / 10 + '') + 1;
     levelEnd.value = parseInt(props.user.level / 10 + '') + 2;
 });
