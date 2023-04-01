@@ -12,7 +12,10 @@
             <el-affix :offset="0" target="#scrollContent">
                 <UserInfo v-if="store.isLogin" :user="store.user" :count="store.count" />
                 <OptionMenu />
-                <ViewHistory v-if="showHistory.viewHistoryDisplay && store.isLogin" :history-list="historyList ? historyList : []" />
+                <ViewHistory
+                    v-if="showHistory.viewHistoryDisplay && store.isLogin"
+                    :history-list="historyList ? historyList : []"
+                />
             </el-affix>
         </div>
     </div>

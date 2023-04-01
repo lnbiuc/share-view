@@ -9,6 +9,7 @@ import { ChildComment, CommentsEntity } from '../../axios/api/commentsApi';
 const props = defineProps({
     comments: {
         type: Object as PropType<CommentsEntity>,
+        default: [],
     },
     title: {
         type: String,
@@ -58,7 +59,7 @@ const handleCreateChildChildComment = (info: string, id: number) => {
 // const emit = defineEmits(['reloadComment'])
 const handleClickLike = (commentId: number, isLike: number) => {
     if (checkLoginStatus()) {
-        likeArticle(commentId, 1, isLike).then((res) => {
+        likeArticle(commentId.toString(), 1, isLike).then((res) => {
             if (res.data.code == 200) {
                 // emit('reloadComment', props.articleId)
                 // TODO emit get comment

@@ -71,7 +71,7 @@ export interface ArticleEntity {
     like: number;
     collect: number;
     comments: number;
-    images?: any;
+    images: any;
 }
 
 export interface ArticleContentEntity {
