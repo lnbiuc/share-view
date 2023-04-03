@@ -1,11 +1,40 @@
 <script setup lang="ts">
-import { onMounted, ref } from 'vue';
+import { onMounted, Ref, ref } from 'vue';
 import { ArticleListEntity, getArticleList } from '../../axios/api/articleApi';
 import { useArticleParamsStore } from '../../pinia';
 import { formatTime } from '../../utils';
 import { storeToRefs } from 'pinia';
 
-const articleList = ref<ArticleListEntity[]>();
+const articleList: Ref<ArticleListEntity[]> = ref([
+    {
+        articleId: '',
+        author: {
+            userId: '',
+            username: '',
+            signature: '',
+            avatar: 'https://cube.elemecdn.com/0/88/03b0d39583f48206768a7534e55bcpng.png',
+            level: 0,
+            registerTime: '',
+            lastLogin: '',
+            ipAddr: '',
+            isSubscribed: false,
+        },
+        title: '',
+        introduction: '',
+        type: '',
+        tags: [],
+        category: '',
+        content: '',
+        releaseTime: '',
+        lastUpdate: '',
+        setTop: false,
+        views: 0,
+        like: 0,
+        collect: 0,
+        comments: 0,
+        images: [],
+    },
+]);
 const paramsStore = useArticleParamsStore();
 paramsStore.filterTypeChange(4);
 const isLoading = ref<boolean>(true);

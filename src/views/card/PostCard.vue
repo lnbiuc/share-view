@@ -1,11 +1,40 @@
 <script setup lang="ts">
-import { ref } from 'vue';
+import { Ref, ref } from 'vue';
 import { ArticleListEntity, getArticleList } from '../../axios/api/articleApi';
 import { useArticleParamsStore, useDialogControlStore } from '../../pinia';
 import { formatTime } from '../../utils';
 import { storeToRefs } from 'pinia';
 import router from '../../router';
-const articleList = ref<ArticleListEntity[]>();
+const articleList: Ref<ArticleListEntity[]> = ref([
+    {
+        articleId: '',
+        author: {
+            userId: '',
+            username: '',
+            signature: '',
+            avatar: 'https://cube.elemecdn.com/0/88/03b0d39583f48206768a7534e55bcpng.png',
+            level: 0,
+            registerTime: '',
+            lastLogin: '',
+            ipAddr: '',
+            isSubscribed: false,
+        },
+        title: '',
+        introduction: '',
+        type: '',
+        tags: [],
+        category: '',
+        content: '',
+        releaseTime: '',
+        lastUpdate: '',
+        setTop: false,
+        views: 0,
+        like: 0,
+        collect: 0,
+        comments: 0,
+        images: [],
+    },
+]);
 const paramsStore = useArticleParamsStore();
 paramsStore.filterTypeChange(3);
 const isLoad = ref<boolean>(true);
@@ -81,26 +110,96 @@ const handleClickComment = (articleId: string, info: string) => {
                         v-if="a.images.length === 1"
                         class="max-h-[350px] overflow-hidden flex justify-center items-center"
                     >
-                        <img
+                        <div
                             @click="showImages(a.images)"
-                            :src="a.images[0]"
-                            :alt="a.images[0]"
-                            class="h-full rounded-md shadow-sm hover:shadow-md my-2 transition-all rounded-md"
-                        />
+                            :style="{
+                                backgroundImage: 'url(' + a.images[0] + ')',
+                                background: 'center center / no-repeat',
+                            }"
+                            class="bg-cover bg-center h-[300px] w-full mb-2 rounded-sm shadow-sm"
+                        ></div>
                     </div>
-                    <div v-if="a.images.length === 2">
-                        <img
+                    <div v-if="a.images.length === 2" class="flex flex-row w-full justify-between items-center mb-2">
+                        <div
                             @click="showImages(a.images)"
-                            :src="a.images[0]"
-                            :alt="a.images[0]"
-                            class="h-full object-cover rounded-md shadow-sm hover:shadow-md my-2 transition-all"
-                        />
-                        <img
+                            :style="{
+                                backgroundImage: 'url(' + a.images[0] + ')',
+                                background: 'center center / no-repeat',
+                            }"
+                            class="bg-cover bg-center h-[250px] w-6/12 rounded-sm shadow-sm mr-1"
+                        ></div>
+                        <div
                             @click="showImages(a.images)"
-                            :src="a.images[1]"
-                            :alt="a.images[1]"
-                            class="h-full object-cover rounded-md shadow-sm hover:shadow-md my-2 transition-all"
-                        />
+                            :style="{
+                                backgroundImage: 'url(' + a.images[1] + ')',
+                                background: 'center center / no-repeat',
+                            }"
+                            class="bg-cover bg-center h-[250px] w-6/12 rounded-sm shadow-sm ml-1"
+                        ></div>
+                    </div>
+                    <div v-if="a.images.length === 3" class="flex flex-row w-full justify-between items-center mb-2">
+                        <div
+                            @click="showImages(a.images)"
+                            :style="{
+                                backgroundImage: 'url(' + a.images[0] + ')',
+                                background: 'center center / no-repeat',
+                            }"
+                            class="bg-cover bg-center h-[200px] w-4/12 rounded-sm shadow-sm mr-2"
+                        ></div>
+                        <div
+                            @click="showImages(a.images)"
+                            :style="{
+                                backgroundImage: 'url(' + a.images[1] + ')',
+                                background: 'center center / no-repeat',
+                            }"
+                            class="bg-cover bg-center h-[200px] w-4/12 rounded-sm shadow-sm"
+                        ></div>
+                        <div
+                            @click="showImages(a.images)"
+                            :style="{
+                                backgroundImage: 'url(' + a.images[2] + ')',
+                                background: 'center center / no-repeat',
+                            }"
+                            class="bg-cover bg-center h-[200px] w-4/12 rounded-sm shadow-sm ml-2"
+                        ></div>
+                    </div>
+                    <div v-if="a.images.length === 4" class="flex flex-col w-full justify-between items-center mb-2">
+                        <div class="flex flex-row w-full">
+                            <div
+                                @click="showImages(a.images)"
+                                :style="{
+                                    backgroundImage: 'url(' + a.images[0] + ')',
+                                    background: 'center center / no-repeat',
+                                }"
+                                class="bg-cover bg-center h-[200px] w-6/12 rounded-sm shadow-sm mr-1"
+                            ></div>
+                            <div
+                                @click="showImages(a.images)"
+                                :style="{
+                                    backgroundImage: 'url(' + a.images[1] + ')',
+                                    background: 'center center / no-repeat',
+                                }"
+                                class="bg-cover bg-center h-[200px] w-6/12 rounded-sm shadow-sm ml-1"
+                            ></div>
+                        </div>
+                        <div class="flex flex-row w-full mt-2">
+                            <div
+                                @click="showImages(a.images)"
+                                :style="{
+                                    backgroundImage: 'url(' + a.images[2] + ')',
+                                    background: 'center center / no-repeat',
+                                }"
+                                class="bg-cover bg-center h-[200px] w-6/12 rounded-sm shadow-sm mr-1"
+                            ></div>
+                            <div
+                                @click="showImages(a.images)"
+                                :style="{
+                                    backgroundImage: 'url(' + a.images[3] + ')',
+                                    background: 'center center / no-repeat',
+                                }"
+                                class="bg-cover bg-center h-[200px] w-6/12 rounded-sm shadow-sm ml-1"
+                            ></div>
+                        </div>
                     </div>
                 </div>
             </div>

@@ -1,16 +1,16 @@
 <script setup lang="ts">
-import {useRouteParams} from '@vueuse/router';
-import {ArticleContentEntity, getOneArticle} from '../../axios/api/articleApi';
-import {formatTime} from '../../utils';
-import {AnswerAndCommentEntity, getAnswersByArticleId} from '../../axios/api/answerApi';
-import {getCommentsById} from '../../axios/api/commentsApi';
-import {ElMessage} from 'element-plus';
-import {ArrowDown} from '@element-plus/icons-vue';
-import {useDialogControlStore, useReloadCommentStore, useThemeStore} from '../../pinia';
-import {subscribeAuthorByAuthorId, subscribeQuestionById} from '../../axios/api/subscribeApi';
-import {addCollection} from '../../axios/api/collectApi';
-import {storeToRefs} from 'pinia';
-import {Ref, ref} from 'vue';
+import { useRouteParams } from '@vueuse/router';
+import { ArticleContentEntity, getOneArticle } from '../../axios/api/articleApi';
+import { formatTime } from '../../utils';
+import { AnswerAndCommentEntity, getAnswersByArticleId } from '../../axios/api/answerApi';
+import { getCommentsById } from '../../axios/api/commentsApi';
+import { ElMessage } from 'element-plus';
+import { ArrowDown } from '@element-plus/icons-vue';
+import { useDialogControlStore, useReloadCommentStore, useThemeStore } from '../../pinia';
+import { subscribeAuthorByAuthorId, subscribeQuestionById } from '../../axios/api/subscribeApi';
+import { addCollection } from '../../axios/api/collectApi';
+import { storeToRefs } from 'pinia';
+import { Ref, ref } from 'vue';
 import MdEditor from 'md-editor-v3';
 import 'md-editor-v3/lib/style.css';
 import DefaultDetailLayout from '../../layout/DefaultDetailLayout.vue';
@@ -53,27 +53,29 @@ const ques: Ref<ArticleContentEntity> = ref({
         data: [],
     },
 });
-const answer: Ref<AnswerAndCommentEntity[]> = ref([{
-    id: "",
-    toId: "",
-    author: {
-        userId: "",
-        username: "",
-        signature: "",
-        avatar: "https://cube.elemecdn.com/0/88/03b0d39583f48206768a7534e55bcpng.png",
-        level: 0,
-        registerTime: "",
-        lastLogin: "",
-        ipAddr: "",
-        isSubscribed: false
+const answer: Ref<AnswerAndCommentEntity[]> = ref([
+    {
+        id: '',
+        toId: '',
+        author: {
+            userId: '',
+            username: '',
+            signature: '',
+            avatar: 'https://cube.elemecdn.com/0/88/03b0d39583f48206768a7534e55bcpng.png',
+            level: 0,
+            registerTime: '',
+            lastLogin: '',
+            ipAddr: '',
+            isSubscribed: false,
+        },
+        content: '',
+        releaseTime: '',
+        lastUpdate: '',
+        like: 0,
+        dislike: 0,
+        comments: [],
     },
-    content: "",
-    releaseTime: "",
-    lastUpdate: "",
-    like: 0,
-    dislike: 0,
-    comments: []
-}]);
+]);
 const isLoading = ref<boolean>(true);
 
 onMounted(() => {
@@ -190,9 +192,9 @@ const state = reactive({
                 <div class="flex flex-col p-6 dark:bg-dark rounded-md bg-light shadow-sm">
                     <div class="flex flex-row items-center">
                         <span
-                                class="rounded-full py-1 px-2 w-16 text-sm text-center dark:text-light"
-                                style="background-color: #95d475"
-                        >Question</span
+                            class="rounded-full py-1 px-2 w-16 text-sm text-center dark:text-light"
+                            style="background-color: #95d475"
+                            >Question</span
                         >
                         <span class="ml-2">
                             <el-tag class="mx-1" v-for="t in ques.article.tags">
@@ -209,69 +211,69 @@ const state = reactive({
                         </span>
                         <span> @{{ ques.article.author.userId }} </span>
                         &nbsp;·&nbsp;
-                        <span v-html="formatTime(ques.article.releaseTime)"/>
+                        <span v-html="formatTime(ques.article.releaseTime)" />
                         &nbsp;·&nbsp;
                         <span> Publish On {{ ques.article.author.ipAddr }} </span>
                     </div>
                     <div class="my-2">
                         <el-button @click="subscribeQuestion(ques.article.articleId)" :disabled="subscribeQuestionBtn"
-                        >Subscribe
+                            >Subscribe
                         </el-button>
                         <el-button @click="addQuestionCollection(ques.article.articleId)" :disabled="addCollectionBtn"
-                        >Collect
+                            >Collect
                         </el-button>
                     </div>
                     <div class="mb-4">
                         <md-editor
-                                :editor-id="state.id"
-                                :show-code-row-number="true"
-                                v-model="ques.article.content"
-                                :theme="currentTheme"
-                                :preview-only="true"
-                                preview-theme="cyanosis"
+                            :editor-id="state.id"
+                            :show-code-row-number="true"
+                            v-model="ques.article.content"
+                            :theme="currentTheme"
+                            :preview-only="true"
+                            preview-theme="cyanosis"
                         />
                     </div>
                     <div class="flex justify-between items-center dark:bg-neutral-900 p-3 rounded-md">
                         <div>
                             <span
-                                    class="text-neutral-700 bg-gray-200 px-3 py-1 rounded-full text-sm dark:bg-dark dark:text-gray-300"
+                                class="text-neutral-700 bg-gray-200 px-3 py-1 rounded-full text-sm dark:bg-dark dark:text-gray-300"
                             >
                                 Total :
                                 <span class="text-blue-500">{{ total }}</span>
                                 Answers
                             </span>
                             <el-button
-                                    class="ml-4"
-                                    type="primary"
-                                    @click="dialogControlStore.answerQuestionForm.status = true"
-                            >Create Answer
+                                class="ml-4"
+                                type="primary"
+                                @click="dialogControlStore.answerQuestionForm.status = true"
+                                >Create Answer
                             </el-button>
                         </div>
                         <el-dropdown trigger="click">
                             <span class="el-dropdown-link align-top cursor-pointer">
                                 <el-button>
                                     {{ currentSortSelect }}
-                                    <el-icon><ArrowDown/></el-icon>
+                                    <el-icon><ArrowDown /></el-icon>
                                 </el-button>
                             </span>
                             <template #dropdown>
                                 <el-dropdown-menu>
                                     <el-dropdown-item
-                                            @click="sortChange('LIKE')"
-                                            :disabled="currentSortSelect === 'LIKE'"
-                                    >LIKE
+                                        @click="sortChange('LIKE')"
+                                        :disabled="currentSortSelect === 'LIKE'"
+                                        >LIKE
                                     </el-dropdown-item>
                                     <el-dropdown-item @click="sortChange('NEW')" :disabled="currentSortSelect === 'NEW'"
-                                    >NEW
+                                        >NEW
                                     </el-dropdown-item>
                                 </el-dropdown-menu>
                             </template>
                         </el-dropdown>
                     </div>
                     <div class="my-4" v-for="a in answer">
-                        <el-divider/>
+                        <el-divider />
                         <div class="flex flex-row justify-between items-center">
-                            <el-avatar :src="a.author.avatar" size="large" class="flex-start w-2/12"/>
+                            <el-avatar :src="a.author.avatar" size="large" class="flex-start w-2/12" />
                             <div class="flex flex-col w-8/12 mr-4">
                                 <div>
                                     <span class="text-lg cursor-pointer">{{ a.author.username }}</span>
@@ -287,32 +289,32 @@ const state = reactive({
                             <span class="text-gray-500">Publish On: {{ a.releaseTime }} </span>
                             <span>
                                 Last Modify:
-                                <span v-text="formatTime(a.lastUpdate)"/>
+                                <span v-text="formatTime(a.lastUpdate)" />
                             </span>
                         </div>
                         <div class="mt-3 flex flex-row">
-                            <LikeBtn :id="a.id" :type="2"/>
-                            <CommentsLink :comments="a.comments.length" @click="getComments(a.id)"/>
-                            <ShareLink/>
-                            <CollectionLink :type="1" :id="a.id"/>
+                            <LikeBtn :id="a.id" :type="2" />
+                            <CommentsLink :comments="a.comments.length" @click="getComments(a.id)" />
+                            <ShareLink />
+                            <CollectionLink :type="1" :id="a.id" />
                         </div>
                         <div v-if="showComments(a.id)">
                             <Comment
-                                    :comments="comments"
-                                    :article-id="a.id"
-                                    :title="a.author.username + '\'s Answer'"
+                                :comments="comments"
+                                :article-id="a.id"
+                                :title="a.author.username + '\'s Answer'"
                             />
                         </div>
-                        <el-divider/>
+                        <el-divider />
                     </div>
                 </div>
             </template>
             <template #right>
                 <el-affix :offset="8">
-                    <UserInfoLite :user="ques.article.author"/>
+                    <UserInfoLite :user="ques.article.author" />
                 </el-affix>
             </template>
         </DefaultDetailLayout>
-        <AnswerQuestionForm :question-title="ques.article.title" :question-id="ques.article.articleId"/>
+        <AnswerQuestionForm :question-title="ques.article.title" :question-id="ques.article.articleId" />
     </div>
 </template>

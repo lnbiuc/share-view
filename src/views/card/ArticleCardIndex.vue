@@ -4,11 +4,41 @@ import CollectionLink from '../../components/index/articleList/CollectionLink.vu
 import CommentsLink from '../../components/index/articleList/CommentsLink.vue';
 import { ArticleListEntity, getArticleList } from '../../axios/api/articleApi';
 import { formatTime } from '../../utils';
-import { ref } from 'vue';
+import { Ref, ref } from 'vue';
 import { useArticleParamsStore, useDialogControlStore, useUserStore } from '../../pinia';
 import { storeToRefs } from 'pinia';
 import { useRouter } from 'vue-router';
-const articleList = ref<ArticleListEntity[]>();
+
+const articleList: Ref<ArticleListEntity[]> = ref([
+    {
+        articleId: '',
+        author: {
+            userId: '',
+            username: '',
+            signature: '',
+            avatar: 'https://cube.elemecdn.com/0/88/03b0d39583f48206768a7534e55bcpng.png',
+            level: 0,
+            registerTime: '',
+            lastLogin: '',
+            ipAddr: '',
+            isSubscribed: false,
+        },
+        title: '',
+        introduction: '',
+        type: '',
+        tags: [],
+        category: '',
+        content: '',
+        releaseTime: '',
+        lastUpdate: '',
+        setTop: false,
+        views: 0,
+        like: 0,
+        collect: 0,
+        comments: 0,
+        images: [],
+    },
+]);
 const isEmpty = ref<boolean>(false);
 watch(articleList, () => {
     isEmpty.value = articleList.value?.length == 0;
@@ -182,6 +212,7 @@ const goArticleAndComment = (articleId: string, title: string, type: string, inf
 .type {
     opacity: 0.9;
 }
+
 .type:hover {
     opacity: 1;
 }

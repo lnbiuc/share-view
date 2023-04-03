@@ -51,9 +51,7 @@ const data: Ref<ArticleContentEntity> = ref({
         pageSize: 0,
         currentSize: 0,
         total: 6,
-        data: [
-
-        ],
+        data: [],
     },
 });
 const isLoading = ref<boolean>(true);
@@ -144,7 +142,7 @@ const scrollElement = document.documentElement;
                 <div class="flex flex-row flex-wrap justify-between items-center">
                     <span
                         class="rounded-full py-1 px-2 w-16 text-sm text-center dark:text-light"
-                        style="background-color: #79BBFF"
+                        style="background-color: #79bbff"
                         >Article</span
                     >
                     <span class="ml-2">
