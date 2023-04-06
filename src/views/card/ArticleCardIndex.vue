@@ -178,7 +178,7 @@ const goArticleAndComment = (articleId: string, title: string, type: string, inf
                         >
                             {{ a.type }}
                         </span>
-                        <span class="text-lg py-1 title" @click="handleToArticleDetail(a.type, a.articleId)">{{
+                        <span v-if="a.type !== 'Video'" class="text-lg py-1 title" @click="handleToArticleDetail(a.type, a.articleId)">{{
                             a.title
                         }}</span>
                     </div>

@@ -1,5 +1,5 @@
 import { format } from 'timeago.js';
-import { uploadFile } from '../axios/api/fileApi';
+import { uploadImage } from '../axios/api/fileApi';
 import { ElMessage } from 'element-plus';
 import { useDialogControlStore, useUserStore } from '../pinia';
 
@@ -28,7 +28,7 @@ export const handleUploadImage = async (files: any, callback: any) => {
             return new Promise((rev, rej) => {
                 const form = new FormData();
                 form.append('file', files);
-                uploadFile(files).then((res) => {
+                uploadImage(files).then((res) => {
                     if (res.data.code == 200) {
                         rev(res);
                         ElMessage.success('image upload success');

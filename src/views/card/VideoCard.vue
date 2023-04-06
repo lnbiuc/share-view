@@ -76,7 +76,7 @@ watch(refParamsStore.params.value, () => {
         >
             <div
                 @click="$router.push({ path: '/v/' + a.articleId })"
-                class="my-1 mb-3 text-left ml-2 pl-2 text-2xl cursor-pointer hover:text-blue-500 transition-all"
+                class="my-1 mb-3 title text-left pl-2 text-2xl cursor-pointer hover:text-blue-500 transition-all"
             >
                 {{ a.introduction }}
             </div>
@@ -99,14 +99,14 @@ watch(refParamsStore.params.value, () => {
                 >
                 <span v-text="formatTime(a.releaseTime)"></span>
                 <span
-                    class="hover:text-blue-500 cursor-pointer transition-all text-gray-500 dark:text-gray-400"
+                    class="title"
                     v-for="t in a.tags"
                     :key="t.tagId"
                 >
                     &nbsp;· {{ t.tagName }}</span
                 >
             </div>
-            <div class="flex flex-row">
+            <div class="flex flex-row ml-2">
                 <CommentsLink />
                 <ShareLink />
                 <CollectionLink />

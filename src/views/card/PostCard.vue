@@ -85,137 +85,112 @@ const handleClickComment = (articleId: string, info: string) => {
 
 <template>
     <Loading :is-loading="isLoad" />
-    <div class="mr-2 ml-2" v-if="!isLoad">
-        <div
-            v-for="a in articleList"
-            :key="a.articleId"
-            class="flex flex-col mt-2 bg-light transition-all dark:bg-dark rounded-md shadow-sm hover:shadow-md p-4"
-        >
-            <div class="flex flex-row justify-start">
-                <div class="flex flex-row justify-center items-center">
-                    <el-avatar class="mr-4" size="large" :src="a.author.avatar" />
-                    <span class="text-xl mr-2 title">{{ a.author.username }}</span>
-                    <span class="text-sm text-gray-500 mt-1">@{{ a.author.userId }}&nbsp;·&nbsp;</span>
-                    <span class="text-sm text-gray-500 mt-1" v-text="formatTime(a.releaseTime)"></span>
+    <Transition appear>
+        <div class="mr-2 ml-2" v-if="!isLoad">
+            <div
+                v-for="a in articleList"
+                :key="a.articleId"
+                class="flex flex-col mt-2 bg-light transition-all dark:bg-dark rounded-md shadow-sm hover:shadow-md p-4"
+            >
+                <div class="flex flex-row justify-start">
+                    <div class="flex flex-row justify-center items-center">
+                        <el-avatar class="mr-4" size="large" :src="a.author.avatar" />
+                        <span class="text-xl mr-2 title">{{ a.author.username }}</span>
+                        <span class="text-sm text-gray-500 mt-1">@{{ a.author.userId }}&nbsp;·&nbsp;</span>
+                        <span class="text-sm text-gray-500 mt-1" v-text="formatTime(a.releaseTime)"></span>
+                    </div>
                 </div>
-            </div>
-            <div class="my-4 text-left">
+                <div class="mt-4 mb-2 text-left">
                 <span @click="$router.push({ path: '/p/' + a.articleId })" class="title leading-6">
                     {{ a.introduction }}</span
                 >
-            </div>
-            <div class="mb-2 flex flex-row flex-wrap justify-center items-center">
-                <div v-if="a.images.length > 0" class="w-full">
-                    <div
-                        v-if="a.images.length === 1"
-                        class="max-h-[350px] overflow-hidden flex justify-center items-center"
-                    >
+                </div>
+                <div class="flex flex-row flex-wrap justify-center items-center">
+                    <div v-if="a.images.length > 0" class="w-full">
                         <div
-                            @click="showImages(a.images)"
-                            :style="{
-                                backgroundImage: 'url(' + a.images[0] + ')',
-                                background: 'center center / no-repeat',
-                            }"
-                            class="bg-cover bg-center h-[300px] w-full mb-2 rounded-sm shadow-sm"
-                        ></div>
-                    </div>
-                    <div v-if="a.images.length === 2" class="flex flex-row w-full justify-between items-center mb-2">
-                        <div
-                            @click="showImages(a.images)"
-                            :style="{
-                                backgroundImage: 'url(' + a.images[0] + ')',
-                                background: 'center center / no-repeat',
-                            }"
-                            class="bg-cover bg-center h-[250px] w-6/12 rounded-sm shadow-sm mr-1"
-                        ></div>
-                        <div
-                            @click="showImages(a.images)"
-                            :style="{
-                                backgroundImage: 'url(' + a.images[1] + ')',
-                                background: 'center center / no-repeat',
-                            }"
-                            class="bg-cover bg-center h-[250px] w-6/12 rounded-sm shadow-sm ml-1"
-                        ></div>
-                    </div>
-                    <div v-if="a.images.length === 3" class="flex flex-row w-full justify-between items-center mb-2">
-                        <div
-                            @click="showImages(a.images)"
-                            :style="{
-                                backgroundImage: 'url(' + a.images[0] + ')',
-                                background: 'center center / no-repeat',
-                            }"
-                            class="bg-cover bg-center h-[200px] w-4/12 rounded-sm shadow-sm mr-2"
-                        ></div>
-                        <div
-                            @click="showImages(a.images)"
-                            :style="{
-                                backgroundImage: 'url(' + a.images[1] + ')',
-                                background: 'center center / no-repeat',
-                            }"
-                            class="bg-cover bg-center h-[200px] w-4/12 rounded-sm shadow-sm"
-                        ></div>
-                        <div
-                            @click="showImages(a.images)"
-                            :style="{
-                                backgroundImage: 'url(' + a.images[2] + ')',
-                                background: 'center center / no-repeat',
-                            }"
-                            class="bg-cover bg-center h-[200px] w-4/12 rounded-sm shadow-sm ml-2"
-                        ></div>
-                    </div>
-                    <div v-if="a.images.length === 4" class="flex flex-col w-full justify-between items-center mb-2">
-                        <div class="flex flex-row w-full">
+                            v-if="a.images.length === 1"
+                            class="grid grid-cols-1 grid-rows-1 gap-2"
+                        >
                             <div
                                 @click="showImages(a.images)"
                                 :style="{
-                                    backgroundImage: 'url(' + a.images[0] + ')',
-                                    background: 'center center / no-repeat',
-                                }"
-                                class="bg-cover bg-center h-[200px] w-6/12 rounded-sm shadow-sm mr-1"
-                            ></div>
-                            <div
-                                @click="showImages(a.images)"
-                                :style="{
-                                    backgroundImage: 'url(' + a.images[1] + ')',
-                                    background: 'center center / no-repeat',
-                                }"
-                                class="bg-cover bg-center h-[200px] w-6/12 rounded-sm shadow-sm ml-1"
+                                backgroundImage: 'url(' + a.images[0] + ')',
+                                background: 'center center / no-repeat',
+                            }"
+                                class="bg-cover bg-center h-[350px] w-full rounded-sm shadow-sm"
                             ></div>
                         </div>
-                        <div class="flex flex-row w-full mt-2">
+                        <div v-if="a.images.length === 2" class="grid grid-cols-2 grid-rows-1 gap-2">
                             <div
+                                v-for="image in a.images"
                                 @click="showImages(a.images)"
                                 :style="{
-                                    backgroundImage: 'url(' + a.images[2] + ')',
-                                    background: 'center center / no-repeat',
-                                }"
-                                class="bg-cover bg-center h-[200px] w-6/12 rounded-sm shadow-sm mr-1"
+                                backgroundImage: 'url(' + image + ')',
+                                background: 'center center / no-repeat',
+                            }"
+                                class="bg-cover bg-center h-[250px] w-full rounded-sm shadow-sm"
                             ></div>
+                        </div>
+                        <div v-if="a.images.length <= 4 && a.images.length >= 3" class="grid grid-cols-2 grid-rows-2 gap-2">
                             <div
+                                v-for="image in a.images"
                                 @click="showImages(a.images)"
                                 :style="{
-                                    backgroundImage: 'url(' + a.images[3] + ')',
+                                    backgroundImage: 'url(' + image + ')',
                                     background: 'center center / no-repeat',
                                 }"
-                                class="bg-cover bg-center h-[200px] w-6/12 rounded-sm shadow-sm ml-1"
+                                class="bg-cover bg-center h-[200px] w-full rounded-sm shadow-sm"
+                            ></div>
+                        </div>
+                        <div v-if="a.images.length >= 5 && a.images.length <= 6" class="grid grid-cols-3 grid-rows-2 gap-2">
+                            <div
+                                v-for="image in a.images"
+                                @click="showImages(a.images)"
+                                :style="{
+                                    backgroundImage: 'url(' + image + ')',
+                                    background: 'center center / no-repeat',
+                                }"
+                                class="bg-cover bg-center h-[200px] w-full rounded-sm shadow-sm"
+                            ></div>
+                        </div>
+                        <div v-if="a.images.length >= 6" class="grid grid-cols-3 grid-rows-3 gap-2">
+                            <div
+                                v-for="image in a.images"
+                                @click="showImages(a.images)"
+                                :style="{
+                                    backgroundImage: 'url(' + image + ')',
+                                    background: 'center center / no-repeat',
+                                }"
+                                class="bg-cover bg-center h-[200px] w-full rounded-sm shadow-sm"
                             ></div>
                         </div>
                     </div>
                 </div>
+                <div class="flex flex-row mt-4">
+                    <LikeBtn :type="0" :id="a.articleId" />
+                    <CommentsLink @click="handleClickComment(a.articleId, a.introduction)" :comments="a.comments"/>
+                    <ShareLink />
+                    <CollectionLink :collect-count="a.collect" :type="0" :id="a.articleId" />
+                </div>
             </div>
-            <div class="flex flex-row">
-                <LikeBtn :type="0" :id="a.articleId" />
-                <CommentsLink @click="handleClickComment(a.articleId, a.introduction)" />
-                <ShareLink />
-                <CollectionLink :type="0" :id="a.articleId" />
-            </div>
+            <Pagination
+                :current-page="paramsStore.params.pageNumber"
+                :page-size="paramsStore.params.pageSize"
+                :total="total"
+                @numberChange="currentChange"
+                :hide-on-single-page="true"
+            />
         </div>
-        <Pagination
-            :current-page="paramsStore.params.pageNumber"
-            :page-size="paramsStore.params.pageSize"
-            :total="total"
-            @numberChange="currentChange"
-            :hide-on-single-page="true"
-        />
-    </div>
+    </Transition>
 </template>
+<style>
+.v-enter-active,
+.v-leave-active {
+    transition: opacity 0.2s ease;
+}
+
+.v-enter-from,
+.v-leave-to {
+    opacity: 0;
+}
+</style>

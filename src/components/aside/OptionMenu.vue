@@ -63,7 +63,7 @@ const handleClick = (index: number) => {
         case 0:
             return (dialogControlStore.askQuestionForm.status = true);
         case 1:
-            return console.log('upload vide form');
+            return (dialogControlStore.uploadVideoForm.status = true);
         case 2:
             return (dialogControlStore.publishArticleForm.status = true);
         case 3:

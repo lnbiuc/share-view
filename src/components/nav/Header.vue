@@ -80,6 +80,7 @@
     <PublishArticleForm />
     <AskQuestionForm />
     <SendPostForm />
+    <UploadVideoForm />
 </template>
 
 <script setup lang="ts">

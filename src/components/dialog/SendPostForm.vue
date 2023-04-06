@@ -1,11 +1,12 @@
 <script setup lang="ts">
 import { useCategoryAndTagsStore, useDialogControlStore, useThemeStore } from '../../pinia';
-import { uploadFile } from '../../axios/api/fileApi';
+import { uploadImage } from '../../axios/api/fileApi';
 import { ElMessage, ElNotification, UploadFile, UploadProps, UploadRequestOptions } from 'element-plus';
 import { sendPost } from '../../axios/api/postApi';
 import { Ref, ref } from 'vue';
 import { CategoryEntity, getCategoryList } from '../../axios/api/categoryApi';
 import { storeToRefs } from 'pinia';
+import {uploadError, uploadSuccess} from "../../common/message";
 
 const dialogControlStore = useDialogControlStore();
 const categoryAndTagsStore = useCategoryAndTagsStore();
@@ -39,11 +40,11 @@ const data = ref<{ imgList: number[]; content: string; categoryId: number | unde
 const imageMap = ref<Map<number | undefined, number>>(new Map());
 
 const uploadImg = (param: UploadRequestOptions) => {
-    return uploadFile(param.file).then((res) => {
+    return uploadImage(param.file).then((res) => {
         if (res.data.code == 200) {
             // @ts-ignore
             imageMap.value.set(param.file.uid, res.data.data.fileId);
-            ElMessage.success('SUCCESS');
+            uploadSuccess(res.data.message)
         } else {
             ElMessage.error(res.data.message);
         }
@@ -54,15 +55,6 @@ const images = ref([]);
 
 const removeImage = (uploadFile: UploadFile) => {
     imageMap.value.delete(uploadFile.raw?.uid);
-};
-
-const uploadError = (error: Error) => {
-    ElNotification({
-        title: 'Error',
-        message: error.message,
-        type: 'error',
-        duration: 0,
-    });
 };
 
 const maxImageCount = () => {

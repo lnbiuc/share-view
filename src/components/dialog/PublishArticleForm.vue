@@ -8,6 +8,7 @@ import { Ref, ref } from 'vue';
 import { handleUploadImage } from '../../utils';
 import MdEditor from 'md-editor-v3';
 import { storeToRefs } from 'pinia';
+import {validateCategory, validateIntroduction, validateTags, validateTitle} from "../../common/vaildator";
 
 const dialogControlStore = useDialogControlStore();
 
@@ -44,36 +45,7 @@ const articleForm = ref<{
     content: '',
     tagIds: [],
 });
-const validateTitle = (rule: any, value: any, callback: any) => {
-    if (value === '') {
-        callback(new Error('title is required'));
-    } else if (value.length > 64) {
-        callback(new Error('title too long'));
-    }
-    callback();
-};
 
-const validateIntroduction = (rule: any, value: any, callback: any) => {
-    if (value === '') {
-        callback(new Error('title is required'));
-    } else if (value.length > 128) {
-        callback(new Error('title too long'));
-    }
-    callback();
-};
-const validateCategory = (rule: any, value: any, callback: any) => {
-    if (value < 3000) {
-        callback(new Error('category is required'));
-    }
-    callback();
-};
-
-const validateTags = (rule: any, value: number[], callback: any) => {
-    if (value.length > 5 || value.length < 1) {
-        callback(new Error('require 1 - 5 tags'));
-    }
-    callback();
-};
 const articleFormRules: FormRules = reactive({
     title: [{ required: true, validator: validateTitle, trigger: 'blur' }],
     introduction: [{ required: true, validator: validateIntroduction, trigger: 'blur' }],
@@ -155,10 +127,10 @@ watch(refThemeStore.isDark, (val) => {
                     label-width="auto"
                 >
                     <el-form-item label="Title" prop="title">
-                        <el-input v-model="articleForm.title" type="text" />
+                        <el-input v-model="articleForm.title" type="text" maxlength="64" show-word-limit />
                     </el-form-item>
                     <el-form-item label="Introduction" prop="introduction">
-                        <el-input v-model="articleForm.introduction" type="textarea" />
+                        <el-input v-model="articleForm.introduction" type="textarea" maxlength="144" show-word-limit />
                     </el-form-item>
                     <el-form-item label="Category" prop="categoryId">
                         <el-select

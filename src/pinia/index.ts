@@ -79,6 +79,9 @@ export const useDialogControlStore = defineStore('dialog', {
         sendPostForm: {
             status: <boolean>false,
         },
+        uploadVideoForm: {
+            status: <boolean>false,
+        }
     }),
 });
 
