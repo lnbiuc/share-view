@@ -5,14 +5,14 @@ export interface TagEntity {
     tagName: string;
 }
 
-export function getAllTags() {
+export const getAllTags = async () => {
     return axios({
         url: './api/tag/get',
         method: 'GET',
     });
 }
 
-export function publishTag(tagName: string) {
+export const publishTag = async (tagName: string) => {
     let formData = new FormData();
     formData.append('tagName', tagName);
     return axios({

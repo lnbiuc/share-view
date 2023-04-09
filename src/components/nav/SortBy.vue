@@ -1,8 +1,8 @@
 <script setup lang="ts">
-import { ref } from 'vue';
-import { ArrowDown } from '@element-plus/icons-vue';
-import { useArticleParamsStore, useFilterAndSortStore } from '../../pinia';
-import { checkLoginStatus } from '../../utils';
+import {ref} from 'vue';
+import {ArrowDown} from '@element-plus/icons-vue';
+import {useArticleParamsStore, useFilterAndSortStore} from '../../pinia';
+import {checkLoginStatus} from '../../utils';
 
 const filterByList: Array<{ name: string; value: string }> = [
     {
@@ -89,30 +89,30 @@ const taggerColor = (s: { name: string; value: string }) => {
 
 <template>
     <div
-        class="flex flex-row mt-2 mx-2 p-3 dark:bg-dark justify-between items-center bg-light hover:shadow-md shadow-sm rounded-md transition-all"
+            class="flex flex-row mt-2 mx-2 p-3 dark:bg-dark justify-between items-center bg-light hover:shadow-md shadow-sm rounded-md transition-all"
     >
         <div class="dark:text-gray-300">
             <span
-                class="m-2 cursor-pointer transition-all"
-                v-for="s in sortByList"
-                @click="clickSelectSort(s)"
-                :style="{ color: taggerColor(s) }"
-                >{{ s.name }}</span
+                    class="m-2 cursor-pointer transition-all"
+                    v-for="s in sortByList"
+                    @click="clickSelectSort(s)"
+                    :style="{ color: taggerColor(s) }"
+            >{{ s.name }}</span
             >
         </div>
         <div class="flex items-center mr-2">
             <el-dropdown trigger="click">
                 <span class="el-dropdown-link align-top cursor-pointer text-base">
                     {{ displayFilter(currentSelectFilter) }}
-                    <el-icon><ArrowDown /></el-icon>
+                    <el-icon><ArrowDown/></el-icon>
                 </span>
                 <template #dropdown>
                     <el-dropdown-menu>
                         <el-dropdown-item
-                            @click="clickSelectFilter(f)"
-                            :disabled="f.value === currentSelectFilter"
-                            v-for="f in filterByList"
-                            >{{ f.name }}
+                                @click="clickSelectFilter(f)"
+                                :disabled="f.value === currentSelectFilter"
+                                v-for="f in filterByList"
+                        >{{ f.name }}
                         </el-dropdown-item>
                     </el-dropdown-menu>
                 </template>

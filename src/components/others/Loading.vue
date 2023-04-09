@@ -11,7 +11,7 @@ const props = defineProps({
 <template>
     <div
         v-if="props.isLoading"
-        class="fixed inset-0 flex justify-center items-center bg-gray-200 dark:bg-neutral-950 opacity-50"
+        class="fixed inset-0 flex justify-center items-center bg-gray-200 dark:bg-neutral-950 opacity-0"
     >
         <div class="h-full w-full z-50 flex flex-col justify-center items-center">
             <el-icon :size="60" color="gray" class="animate-spin"><Loading /></el-icon>

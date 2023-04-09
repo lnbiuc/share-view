@@ -42,6 +42,7 @@ declare module '@vue/runtime-core' {
     ElTag: typeof import('element-plus/es')['ElTag']
     ElTooltip: typeof import('element-plus/es')['ElTooltip']
     ElUpload: typeof import('element-plus/es')['ElUpload']
+    FilterBy: typeof import('./components/nav/FilterBy.vue')['default']
     Footer: typeof import('./components/nav/Footer.vue')['default']
     Header: typeof import('./components/nav/Header.vue')['default']
     IEpArrowDown: typeof import('~icons/ep/arrow-down')['default']

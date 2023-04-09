@@ -81,45 +81,47 @@ const handleClickComment = (title: string, articleId: string) => {
 
 <template>
     <Loading :is-loading="isLoad" />
-    <div class="m-2" v-if="!isLoad">
-        <div
-            class="mb-2 bg-light dark:bg-dark rounded-md shadow-sm hover:shadow-md p-4 transition-all"
-            v-for="a in articleList"
-            :key="a.articleId"
-        >
-            <div class="flex flex-row p-0 text-gray-400">
-                <div class="truncate">
-                    <span class="hover:text-blue-500 cursor-pointer transition-all">{{ a.author.username }} · </span>
-                    <span v-text="formatTime(a.releaseTime)"></span>
-                    <span class="hover:text-blue-500 cursor-pointer transition-all" v-for="t in a.tags" :key="t.tagId">
+    <transition appear>
+        <div class="m-2" v-if="!isLoad">
+            <div
+                class="mb-2 bg-light dark:bg-dark rounded-md shadow-sm hover:shadow-md p-4 transition-all"
+                v-for="a in articleList"
+                :key="a.articleId"
+            >
+                <div class="flex flex-row p-0 text-gray-400">
+                    <div class="truncate">
+                        <span class="hover:text-blue-500 cursor-pointer transition-all">{{ a.author.username }} · </span>
+                        <span v-text="formatTime(a.releaseTime)"></span>
+                        <span class="hover:text-blue-500 cursor-pointer transition-all" v-for="t in a.tags" :key="t.tagId">
                         · {{ t.tagName }}</span
+                        >
+                    </div>
+                </div>
+                <div class="flex flex-col">
+                    <div
+                        class="text-lg text-left py-2 text-left title"
+                        @click="$router.push({ path: '/a/' + a.articleId })"
                     >
+                        {{ a.title }}
+                    </div>
+                    <div class="flex mb-4 text-gray-500 text-left leading-6 text-sm">
+                        {{ a.introduction }}
+                    </div>
+                </div>
+                <div class="flex flex-row">
+                    <LikeBtn :type="0" :id="a.articleId" />
+                    <CommentsLink @click="handleClickComment(a.title, a.articleId)" :comments="a.comments" />
+                    <CollectionLink :type="0" :id="a.articleId" :collect-count="a.collect" />
+                    <ShareLink />
                 </div>
             </div>
-            <div class="flex flex-col">
-                <div
-                    class="text-lg text-left py-2 text-left title"
-                    @click="$router.push({ path: '/a/' + a.articleId })"
-                >
-                    {{ a.title }}
-                </div>
-                <div class="flex mb-4 text-gray-500 text-left leading-6 text-sm">
-                    {{ a.introduction }}
-                </div>
-            </div>
-            <div class="flex flex-row">
-                <LikeBtn :type="0" :id="a.articleId" />
-                <CommentsLink @click="handleClickComment(a.title, a.articleId)" :comments="a.comments" />
-                <CollectionLink :type="0" :id="a.articleId" :collect-count="a.collect" />
-                <ShareLink />
-            </div>
+            <Pagination
+                :current-page="paramsStore.params.pageNumber"
+                :page-size="paramsStore.params.pageSize"
+                :total="total"
+                hide-on-single-page
+                @numberChange="currentChange"
+            />
         </div>
-        <Pagination
-            :current-page="paramsStore.params.pageNumber"
-            :page-size="paramsStore.params.pageSize"
-            :total="total"
-            hide-on-single-page
-            @numberChange="currentChange"
-        />
-    </div>
+    </transition>
 </template>

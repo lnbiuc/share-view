@@ -6,7 +6,7 @@ export interface SendPostEntity {
     categoryId: number | undefined;
 }
 
-export function sendPost(data: SendPostEntity) {
+export const sendPost = async (data: SendPostEntity) => {
     return axios({
         url: './api/publish/post',
         method: 'POST',

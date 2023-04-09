@@ -10,7 +10,7 @@ export interface publishVideosParams {
     tagIds: number[];
 }
 
-export const publishVideo = (params: publishVideosParams) => {
+export const publishVideo = async (params: publishVideosParams) => {
     return axios({
         url: 'api/publish/video',
         method: 'POST',
