@@ -25,7 +25,7 @@ onMounted(() => {
 })
 
 const {proxy}: any = getCurrentInstance();
-const showImages = (img: string[]) => {
+const showImages = (img: string) => {
     proxy.$viewerApi({
         images: img,
     });
