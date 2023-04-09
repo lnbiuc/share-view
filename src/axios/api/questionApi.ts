@@ -7,7 +7,7 @@ export interface PublishQuestionEntity {
     tagIds: number[];
 }
 
-export function publishQuestion(data: PublishQuestionEntity) {
+export const publishQuestion = async (data: PublishQuestionEntity) => {
     return axios({
         url: './api/publish/question',
         method: 'POST',
@@ -15,7 +15,7 @@ export function publishQuestion(data: PublishQuestionEntity) {
     });
 }
 
-export function publishAnswer(toId: string, content: string) {
+export const publishAnswer = async (toId: string, content: string) => {
     return axios({
         url: '../api/publish/answer',
         method: 'POST',

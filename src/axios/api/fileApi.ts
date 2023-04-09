@@ -1,6 +1,6 @@
 import axios from '../index';
 
-export function uploadImage(file: any) {
+export const uploadImage = async (file: any) => {
     let formData = new FormData();
     formData.append('img', file);
     return axios({
@@ -11,7 +11,7 @@ export function uploadImage(file: any) {
     });
 }
 
-export function uploadVideo(file: any) {
+export const uploadVideo = async (file: any) => {
     let formData = new FormData();
     formData.append('video', file);
     return axios({

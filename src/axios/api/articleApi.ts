@@ -1,4 +1,5 @@
 import axios from '../index';
+
 export interface articleParams {
     pageNumber: number;
     pageSize: number;
@@ -97,22 +98,11 @@ export interface ViewHistoryEntity {
     time: string;
 }
 
-export function getArticleList(data: articleParams) {
+export const getArticleList = async (data: articleParams) => {
     return axios.post('./api/article/page', data);
 }
 
-export function getArticleListBySubscribe(userId: string, number: number, size: number) {
-    return axios({
-        url: './api/article/subscribe/' + userId,
-        method: 'GET',
-        params: {
-            pageNumber: number,
-            pageSize: size,
-        },
-    });
-}
-
-export function getViewHistory(userId: string, number: number, size: number) {
+export const getViewHistory = async (userId: string, number: number, size: number) => {
     return axios({
         url: './api/article/history/' + userId,
         method: 'GET',
@@ -123,20 +113,20 @@ export function getViewHistory(userId: string, number: number, size: number) {
     });
 }
 
-export function getOneArticle(articleId: string) {
+export const getOneArticle = async (articleId: string) => {
     return axios({
         url: '../api/article/' + articleId,
         method: 'GET',
     });
 }
 
-export function publishArticle(data: {
+export const publishArticle = async (data: {
     title: string;
     introduction: string;
     categoryId: number | undefined;
     content: string;
     tagIds: number[];
-}) {
+}) => {
     return axios({
         url: '../api/publish/article',
         method: 'POST',

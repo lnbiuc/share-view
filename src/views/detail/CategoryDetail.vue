@@ -15,6 +15,7 @@ const total = ref(0);
 const isLoad = ref<boolean>(true);
 
 const paramsStore = useArticleParamsStore();
+paramsStore.resetAll();
 paramsStore.filterChangeCategory(categoryId.value);
 const refParamsStore = storeToRefs(paramsStore);
 const articleList: Ref<ArticleListEntity[]> = ref([

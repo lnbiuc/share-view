@@ -1,5 +1,5 @@
 import axios from '../index';
-import { UserLiteEntity } from './articleApi';
+import {UserLiteEntity} from './articleApi';
 
 export interface CategoryEntity {
     id: number;
@@ -10,7 +10,7 @@ export interface CategoryEntity {
     createTime: string;
 }
 
-export function getCategoryList(number: number, size: number) {
+export const getCategoryList = async (number: number, size: number) => {
     return axios({
         method: 'GET',
         url: './api/category/get',

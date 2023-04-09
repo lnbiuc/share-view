@@ -33,24 +33,25 @@ const themeStore = useThemeStore();
 
 <template>
     <Loading :is-loading="isLoading" />
-    <div class="m-2" v-if="!isLoading">
-        <div
-            v-for="a in data"
-            :key="a.id"
-            class="flex flex-row mb-2 bg-light transition-all dark:bg-dark rounded-md shadow-sm hover:shadow-md p-4"
-        >
-            <div class="flex flex-col justify-center items-center">
-                <el-avatar class="mb-4 shadow-sm" :size="100" shape="square" :src="a.avatar" />
-                <el-button plain bg color="#626aef" :dark="themeStore.isDark">Subscribe</el-button>
-            </div>
-            <div class="flex flex-col ml-4 justify-center">
+    <transition appear>
+        <div class="m-2" v-if="!isLoading">
+            <div
+                v-for="a in data"
+                :key="a.id"
+                class="flex flex-row mb-2 bg-light transition-all dark:bg-dark rounded-md shadow-sm hover:shadow-md p-4"
+            >
+                <div class="flex flex-col justify-center items-center">
+                    <el-avatar class="mb-4 shadow-sm" :size="100" shape="square" :src="a.avatar" />
+                    <el-button plain bg color="#626aef" :dark="themeStore.isDark">Subscribe</el-button>
+                </div>
+                <div class="flex flex-col ml-4 justify-center">
                 <span
                     class="text-left font-semibold text-xl mb-2 hover:text-blue-500 cursor-pointer transition-all"
                     @click="$router.push({ path: '/c/' + a.id })"
-                    >{{ a.name }}</span
+                >{{ a.name }}</span
                 >
-                <span class="text-gray-500 text-left mb-2">{{ a.introduction }}</span>
-                <span class="text-left text-gray-500 text-sm mb-2">
+                    <span class="text-gray-500 text-left mb-2">{{ a.introduction }}</span>
+                    <span class="text-left text-gray-500 text-sm mb-2">
                     Create In
                     <el-tooltip :content="a.createTime">
                         <span class="cursor-pointer">
@@ -65,13 +66,14 @@ const themeStore = useThemeStore();
                         {{ a.author.username }}
                     </span>
                 </span>
-                <div class="flex flex-row text-gray-500">
-                    <span class="mr-2">Article:10</span>
-                    <span class="mr-2">Question:20</span>
-                    <span class="mr-2">Post:15</span>
-                    <span class="mr-2">Video:5</span>
+                    <div class="flex flex-row text-gray-500">
+                        <span class="mr-2">Article:10</span>
+                        <span class="mr-2">Question:20</span>
+                        <span class="mr-2">Post:15</span>
+                        <span class="mr-2">Video:5</span>
+                    </div>
                 </div>
             </div>
         </div>
-    </div>
+    </transition>
 </template>

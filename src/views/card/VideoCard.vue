@@ -69,43 +69,45 @@ watch(refParamsStore.params.value, () => {
 
 <template>
     <Loading :is-loading="isLoading" />
-    <div class="m-2">
-        <div
-            v-for="a in articleList"
-            v-show="!isLoading"
-            class="flex flex-col mb-2 bg-light transition-all dark:bg-dark rounded-md shadow-sm hover:shadow-md p-4"
-        >
+    <transition appear>
+        <div class="m-2">
             <div
-                @click="$router.push({ path: '/v/' + a.articleId })"
-                class="my-1 mb-3 title text-left pl-2 text-2xl cursor-pointer hover:text-blue-500 transition-all"
+                v-for="a in articleList"
+                v-show="!isLoading"
+                class="flex flex-col mb-2 bg-light transition-all dark:bg-dark rounded-md shadow-sm hover:shadow-md p-4"
             >
-                {{ a.introduction }}
-            </div>
-            <video-card-layout :images="a.images[0]" :article-id="a.articleId" class="px-2 mb-2" />
-            <div class="truncate flex flex-row dark:text-gray-300 text-gray-800 ml-2 mb-3 items-center">
-                <div class="mr-2">
-                    <el-avatar :src="a.author.avatar" shape="square" />
-                </div>
-                <span class="hover:text-blue-500 text-xl cursor-pointer transition-all"
-                    >{{ a.author.username }} ·&nbsp;</span
+                <div
+                    @click="$router.push({ path: '/v/' + a.articleId })"
+                    class="my-1 mb-3 title text-left pl-2 text-2xl cursor-pointer hover:text-blue-500 transition-all"
                 >
-                <span v-text="formatTime(a.releaseTime)"></span>
-                <span class="title" v-for="t in a.tags" :key="t.tagId"> &nbsp;· {{ t.tagName }}</span>
+                    {{ a.introduction }}
+                </div>
+                <video-card-layout :images="a.images[0]" :article-id="a.articleId" class="px-2 mb-2" />
+                <div class="truncate flex flex-row dark:text-gray-300 text-gray-800 ml-2 mb-3 items-center">
+                    <div class="mr-2">
+                        <el-avatar :src="a.author.avatar" shape="square" />
+                    </div>
+                    <span class="hover:text-blue-500 text-xl cursor-pointer transition-all"
+                    >{{ a.author.username }} ·&nbsp;</span
+                    >
+                    <span v-text="formatTime(a.releaseTime)"></span>
+                    <span class="title" v-for="t in a.tags" :key="t.tagId"> &nbsp;· {{ t.tagName }}</span>
+                </div>
+                <div class="flex flex-row ml-2">
+                    <CommentsLink />
+                    <ShareLink />
+                    <CollectionLink />
+                </div>
             </div>
-            <div class="flex flex-row ml-2">
-                <CommentsLink />
-                <ShareLink />
-                <CollectionLink />
-            </div>
+            <Pagination
+                :current-page="paramsStore.params.pageNumber"
+                :page-size="paramsStore.params.pageSize"
+                :total="total"
+                hide-on-single-page
+                @numberChange="currentChange"
+            />
         </div>
-        <Pagination
-            :current-page="paramsStore.params.pageNumber"
-            :page-size="paramsStore.params.pageSize"
-            :total="total"
-            hide-on-single-page
-            @numberChange="currentChange"
-        />
-    </div>
+    </transition>
 </template>
 <style scoped>
 .video-preview:hover > .play-btn {
