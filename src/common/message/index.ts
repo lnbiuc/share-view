@@ -1,4 +1,4 @@
-import {ElNotification} from "element-plus";
+import { ElNotification } from 'element-plus';
 
 export const uploadError = (error: Error) => {
     ElNotification({
@@ -15,4 +15,4 @@ export const uploadSuccess = (message: string) => {
         message: message,
         type: 'success',
     });
-}
+};

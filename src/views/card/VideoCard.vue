@@ -4,6 +4,7 @@ import { ArticleListEntity, getArticleList } from '../../axios/api/articleApi';
 import { useArticleParamsStore } from '../../pinia';
 import { formatTime } from '../../utils';
 import { storeToRefs } from 'pinia';
+import VideoCardLayout from '../../layout/VideoCardLayout.vue';
 
 const articleList: Ref<ArticleListEntity[]> = ref([
     {
@@ -80,16 +81,7 @@ watch(refParamsStore.params.value, () => {
             >
                 {{ a.introduction }}
             </div>
-            <div class="p-2" @click="$router.push({ path: '/v/' + a.articleId })">
-                <div
-                    class="h-[300px] rounded-md shadow-md mb-2 bg-cover flex justify-center items-center video-preview"
-                    :style="{ background: 'url(' + a.images[0] + ') center center no-repeat' }"
-                >
-                    <el-icon size="100" color="rgb(156,163,175)" class="play-btn cursor-pointer">
-                        <i-material-symbols-play-circle-outline />
-                    </el-icon>
-                </div>
-            </div>
+            <video-card-layout :images="a.images[0]" :article-id="a.articleId" class="px-2 mb-2" />
             <div class="truncate flex flex-row dark:text-gray-300 text-gray-800 ml-2 mb-3 items-center">
                 <div class="mr-2">
                     <el-avatar :src="a.author.avatar" shape="square" />
@@ -98,13 +90,7 @@ watch(refParamsStore.params.value, () => {
                     >{{ a.author.username }} ·&nbsp;</span
                 >
                 <span v-text="formatTime(a.releaseTime)"></span>
-                <span
-                    class="title"
-                    v-for="t in a.tags"
-                    :key="t.tagId"
-                >
-                    &nbsp;· {{ t.tagName }}</span
-                >
+                <span class="title" v-for="t in a.tags" :key="t.tagId"> &nbsp;· {{ t.tagName }}</span>
             </div>
             <div class="flex flex-row ml-2">
                 <CommentsLink />
@@ -124,17 +110,6 @@ watch(refParamsStore.params.value, () => {
 <style scoped>
 .video-preview:hover > .play-btn {
     opacity: 0.8;
-    transition: 0.2s all ease;
-}
-
-.play-btn,
-.play-btn:before {
-    opacity: 0;
-    transition: 0.2s all ease;
-}
-
-.play-btn:hover {
-    color: rgb(229, 231, 235);
     transition: 0.2s all ease;
 }
 </style>

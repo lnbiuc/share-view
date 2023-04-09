@@ -8,7 +8,7 @@ import { Ref, ref } from 'vue';
 import { handleUploadImage } from '../../utils';
 import MdEditor from 'md-editor-v3';
 import { storeToRefs } from 'pinia';
-import {validateCategory, validateIntroduction, validateTags, validateTitle} from "../../common/vaildator";
+import { validateCategory, validateIntroduction, validateTags, validateTitle } from '../../common/vaildator';
 
 const dialogControlStore = useDialogControlStore();
 

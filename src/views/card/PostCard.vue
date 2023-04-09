@@ -5,6 +5,8 @@ import { useArticleParamsStore, useDialogControlStore } from '../../pinia';
 import { formatTime } from '../../utils';
 import { storeToRefs } from 'pinia';
 import router from '../../router';
+import ImageGirdLayout from '../../layout/ImageGirdLayout.vue';
+
 const articleList: Ref<ArticleListEntity[]> = ref([
     {
         articleId: '',
@@ -101,74 +103,14 @@ const handleClickComment = (articleId: string, info: string) => {
                     </div>
                 </div>
                 <div class="mt-4 mb-2 text-left">
-                <span @click="$router.push({ path: '/p/' + a.articleId })" class="title leading-6">
-                    {{ a.introduction }}</span
-                >
+                    <span @click="$router.push({ path: '/p/' + a.articleId })" class="title leading-6">
+                        {{ a.introduction }}</span
+                    >
                 </div>
-                <div class="flex flex-row flex-wrap justify-center items-center">
-                    <div v-if="a.images.length > 0" class="w-full">
-                        <div
-                            v-if="a.images.length === 1"
-                            class="grid grid-cols-1 grid-rows-1 gap-2"
-                        >
-                            <div
-                                @click="showImages(a.images)"
-                                :style="{
-                                backgroundImage: 'url(' + a.images[0] + ')',
-                                background: 'center center / no-repeat',
-                            }"
-                                class="bg-cover bg-center h-[350px] w-full rounded-sm shadow-sm"
-                            ></div>
-                        </div>
-                        <div v-if="a.images.length === 2" class="grid grid-cols-2 grid-rows-1 gap-2">
-                            <div
-                                v-for="image in a.images"
-                                @click="showImages(a.images)"
-                                :style="{
-                                backgroundImage: 'url(' + image + ')',
-                                background: 'center center / no-repeat',
-                            }"
-                                class="bg-cover bg-center h-[250px] w-full rounded-sm shadow-sm"
-                            ></div>
-                        </div>
-                        <div v-if="a.images.length <= 4 && a.images.length >= 3" class="grid grid-cols-2 grid-rows-2 gap-2">
-                            <div
-                                v-for="image in a.images"
-                                @click="showImages(a.images)"
-                                :style="{
-                                    backgroundImage: 'url(' + image + ')',
-                                    background: 'center center / no-repeat',
-                                }"
-                                class="bg-cover bg-center h-[200px] w-full rounded-sm shadow-sm"
-                            ></div>
-                        </div>
-                        <div v-if="a.images.length >= 5 && a.images.length <= 6" class="grid grid-cols-3 grid-rows-2 gap-2">
-                            <div
-                                v-for="image in a.images"
-                                @click="showImages(a.images)"
-                                :style="{
-                                    backgroundImage: 'url(' + image + ')',
-                                    background: 'center center / no-repeat',
-                                }"
-                                class="bg-cover bg-center h-[200px] w-full rounded-sm shadow-sm"
-                            ></div>
-                        </div>
-                        <div v-if="a.images.length >= 6" class="grid grid-cols-3 grid-rows-3 gap-2">
-                            <div
-                                v-for="image in a.images"
-                                @click="showImages(a.images)"
-                                :style="{
-                                    backgroundImage: 'url(' + image + ')',
-                                    background: 'center center / no-repeat',
-                                }"
-                                class="bg-cover bg-center h-[200px] w-full rounded-sm shadow-sm"
-                            ></div>
-                        </div>
-                    </div>
-                </div>
+                <image-gird-layout :images="a.images" />
                 <div class="flex flex-row mt-4">
                     <LikeBtn :type="0" :id="a.articleId" />
-                    <CommentsLink @click="handleClickComment(a.articleId, a.introduction)" :comments="a.comments"/>
+                    <CommentsLink @click="handleClickComment(a.articleId, a.introduction)" :comments="a.comments" />
                     <ShareLink />
                     <CollectionLink :collect-count="a.collect" :type="0" :id="a.articleId" />
                 </div>

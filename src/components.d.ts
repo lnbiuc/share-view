@@ -9,6 +9,7 @@ export {}
 
 declare module '@vue/runtime-core' {
   export interface GlobalComponents {
+    AllTypePreviewList: typeof import('./components/common/AllTypePreviewList.vue')['default']
     AnswerQuestionForm: typeof import('./components/dialog/AnswerQuestionForm.vue')['default']
     AskQuestionForm: typeof import('./components/dialog/AskQuestionForm.vue')['default']
     CollectionLink: typeof import('./components/index/articleList/CollectionLink.vue')['default']
@@ -66,7 +67,9 @@ declare module '@vue/runtime-core' {
     IMaterialSymbolsPlayCircleOutline: typeof import('~icons/material-symbols/play-circle-outline')['default']
     IMaterialSymbolsShare: typeof import('~icons/material-symbols/share')['default']
     IMaterialSymbolsStar: typeof import('~icons/material-symbols/star')['default']
+    IMdiEye: typeof import('~icons/mdi/eye')['default']
     IMdiLike: typeof import('~icons/mdi/like')['default']
+    IMdiThumbUp: typeof import('~icons/mdi/thumb-up')['default']
     IMdiUser: typeof import('~icons/mdi/user')['default']
     LikeBtn: typeof import('./components/index/articleList/LikeBtn.vue')['default']
     Loading: typeof import('./components/others/Loading.vue')['default']

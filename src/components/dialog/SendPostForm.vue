@@ -6,7 +6,7 @@ import { sendPost } from '../../axios/api/postApi';
 import { Ref, ref } from 'vue';
 import { CategoryEntity, getCategoryList } from '../../axios/api/categoryApi';
 import { storeToRefs } from 'pinia';
-import {uploadError, uploadSuccess} from "../../common/message";
+import { uploadError, uploadSuccess } from '../../common/message';
 
 const dialogControlStore = useDialogControlStore();
 const categoryAndTagsStore = useCategoryAndTagsStore();
@@ -44,7 +44,7 @@ const uploadImg = (param: UploadRequestOptions) => {
         if (res.data.code == 200) {
             // @ts-ignore
             imageMap.value.set(param.file.uid, res.data.data.fileId);
-            uploadSuccess(res.data.message)
+            uploadSuccess(res.data.message);
         } else {
             ElMessage.error(res.data.message);
         }

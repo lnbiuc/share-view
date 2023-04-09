@@ -1,13 +1,13 @@
 import axios from '../index';
 
 export interface publishVideosParams {
-    videoId: string,
-    url: string,
-    preview: string,
-    title: string,
-    introduction: string,
-    categoryId: number | undefined,
-    tagIds: number[],
+    videoId: string;
+    url: string;
+    preview: string;
+    title: string;
+    introduction: string;
+    categoryId: number | undefined;
+    tagIds: number[];
 }
 
 export const publishVideo = (params: publishVideosParams) => {
@@ -16,4 +16,4 @@ export const publishVideo = (params: publishVideosParams) => {
         method: 'POST',
         data: params,
     });
-}
+};

@@ -2,6 +2,7 @@ import { format } from 'timeago.js';
 import { uploadImage } from '../axios/api/fileApi';
 import { ElMessage } from 'element-plus';
 import { useDialogControlStore, useUserStore } from '../pinia';
+import { Router, useRouter } from 'vue-router';
 
 export const formatTime = (data: string) => {
     return format(data, 'zh_CN');
@@ -51,5 +52,18 @@ export const checkLoginStatus = () => {
         const dialogStore = useDialogControlStore();
         dialogStore.loginForm = true;
         return false;
+    }
+};
+
+export const tagBgColor = (type: string) => {
+    switch (type) {
+        case 'Post':
+            return '#eebe77';
+        case 'Question':
+            return '#95d475';
+        case 'Article':
+            return '#79bbff';
+        case 'Video':
+            return '#fab6b6';
     }
 };

@@ -90,6 +90,7 @@ export interface CommentListEntity {
 export interface ViewHistoryEntity {
     id: number;
     articleId: string;
+    type: string;
     title: string;
     introduction: string;
     author: UserLiteEntity;

@@ -83,6 +83,14 @@ const reloadComment = (id: string) => {
     <DefaultDetailLayout>
         <template #left>
             <div class="flex flex-col p-6 dark:bg-dark rounded-md bg-light shadow-sm">
+                <div class="mb-4">
+                    <span
+                        class="rounded-full py-1 px-2 w-14 text-sm text-center dark:text-light"
+                        style="background-color: #eebe77"
+                    >
+                        Video
+                    </span>
+                </div>
                 <div class="flex flex-row flex-wrap justify-between items-center">
                     <div class="flex flex-row justify-center items-center">
                         <el-avatar size="large" class="mr-4" :src="data.article.author.avatar" />

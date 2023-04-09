@@ -94,10 +94,10 @@ const themeStore = useThemeStore();
             v-for="comment in comments!.data"
             class="my-2 flex flex-row dark:border-neutral-800 transition-all rounded-md p-2 bg-gray-50 dark:bg-neutral-900"
         >
-            <div class="flex w-2/12 justify-center items-start my-2">
+            <div class="flex justify-center items-start my-2 mx-1">
                 <el-avatar :src="comment.user.avatar" :size="70" />
             </div>
-            <div class="flex flex-col ml-2 w-10/12">
+            <div class="flex flex-col ml-2 flex-grow">
                 <div class="flex flex-row">
                     <div class="flex flex-row flex-1 overflow-clip items-center">
                         <span class="text-xl mr-1 hover:text-blue-500 cursor-pointer transition-all">
