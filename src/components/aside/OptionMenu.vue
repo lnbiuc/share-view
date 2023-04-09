@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { useDialogControlStore, useUserStore } from '../../pinia';
+import { useDialogControlStore, useThemeStore, useUserStore } from '../../pinia';
 // @ts-ignore
 import { UserFilled, ArrowRight } from '@element-plus/icons-vue';
 import router from '../../router';
@@ -63,22 +63,24 @@ const handleClick = (index: number) => {
         case 0:
             return (dialogControlStore.askQuestionForm.status = true);
         case 1:
-            return console.log('upload vide form');
+            return (dialogControlStore.uploadVideoForm.status = true);
         case 2:
             return (dialogControlStore.publishArticleForm.status = true);
         case 3:
             return (dialogControlStore.sendPostForm.status = true);
     }
 };
+
+const themeStore = useThemeStore();
 </script>
 <template>
     <div class="flex flex-col bg-light mt-2 dark:bg-dark rounded-md hover:shadow-md transition-all shadow-sm p-3">
         <div class="flex justify-start items-center">
             <el-icon color="#409eff"> <UserFilled /> </el-icon>&nbsp;
-            <span class="mx-1">Creation Center</span>
+            <span class="mx-1 dark:text-gray-300">Creation Center</span>
         </div>
         <div class="flex flex-row my-6">
-            <div v-for="b in btn" :key="b.index" class="flex flex-col w-20 items-center">
+            <div v-for="b in btn" :key="b.index" class="flex flex-col w-20 items-center dark:text-gray-300">
                 <div
                     :style="styObject(b.index)"
                     @click="handleClick(b.index)"
@@ -92,22 +94,14 @@ const handleClick = (index: number) => {
         <div class="flex flex-row rounded-md dark:bg-dark-black bg-gray-100 justify-around">
             <div class="flex flex-col m-2 p-2">
                 <span class="text-gray-500">Today Views</span>
-                <span class="text-lg mt-2">42</span>
+                <span class="text-lg mt-2 dark:text-gray-300">42</span>
             </div>
             <div class="flex flex-col m-2 p-2">
                 <span class="text-gray-500">Today Likes</span>
-                <span class="text-lg mt-2">20</span>
+                <span class="text-lg mt-2 dark:text-gray-300">20</span>
             </div>
         </div>
-        <!--        <div-->
-        <!--            class="mt-3 mx-0.5 p-2 border-blue-400 border border-[1px] border-solid rounded-md cursor-pointer transition-all flex items-center hover:bg-blue-100"-->
-        <!--        >-->
-        <!--            <span class="text-center m-auto align-middle text-blue-400" @click="enterCreateCenter">-->
-        <!--                Enter Creation Center-->
-        <!--                <el-icon><ArrowRight /></el-icon>-->
-        <!--            </span>-->
-        <!--        </div>-->
-        <el-button plain type="primary" class="mt-3">
+        <el-button plain bg color="#626aef" :dark="themeStore.isDark" type="primary" class="mt-3" style="height: 40px">
             Enter Creation Center
             <el-icon><ArrowRight /></el-icon>
         </el-button>

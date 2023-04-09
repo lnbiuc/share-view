@@ -2,9 +2,8 @@
     <div class="flex flex-row h-[60px] bg-light dark:bg-dark bg-light">
         <div
             @click="$router.push({ path: '/' })"
-            class="w-3/12 dark:text-gray-200 dark:hover:text-purple-300 text-[24px] flex justify-end transition-all items-center cursor-pointer hover:text-purple-400"
+            class="w-3/12 dark:text-gray-200 dark:hover:text-blue-500 text-[24px] flex justify-end transition-all items-center cursor-pointer hover:text-blue-500"
         >
-            <!--            <i-ep-add-location />-->
             Share
         </div>
         <div class="flex justify-start w-5/12 ml-10">
@@ -19,19 +18,20 @@
         </div>
         <div class="flex justify-end items-center w-1/12 mr-5">
             <el-switch
+                size="large"
                 v-model="isSwitchOpen"
                 inline-prompt
                 :active-icon="Moon"
                 :inactive-icon="Sunny"
                 :change="switchChange()"
-                style="--el-switch-on-color: #181818; --el-switch-off-color: #c7c7c7"
+                style="--el-switch-on-color: #000000; --el-switch-off-color: #aaaaaa"
             />
         </div>
         <div class="user flex w-3/12 justify-start items-center" v-if="store.isLogin">
             <el-dropdown trigger="click">
                 <span class="el-dropdown-link flex flex-row items-center cursor-pointer">
                     <el-avatar shape="circle" :src="loginUser.avatar" />
-                    <span class="ml-2 text-lg dark:text-gray-200">{{ loginUser.username }}</span
+                    <span class="ml-2 text-xl dark:text-gray-300">{{ loginUser.username }}</span
                     >&nbsp;
                     <el-icon class="text-xl">
                         <el-icon color="gray" class="ml-2">
@@ -63,18 +63,24 @@
                 </template>
             </el-dropdown>
         </div>
-        <div
-            class="px-2 my-3 bg-purple-200 hover:bg-purple-300 flex items-center rounded-full transition-all cursor-pointer"
-            @click="dialogStore.loginForm = true"
-            v-if="!store.isLogin"
-        >
-            <span class="m-2 dark:text-black">Login / Register</span>
+        <div class="flex justify-center items-center">
+            <el-button
+                plain
+                bg
+                color="#626aef"
+                :dark="themeStore.isDark"
+                round
+                @click="dialogStore.loginForm = true"
+                v-if="!store.isLogin"
+                >Login / Register</el-button
+            >
         </div>
     </div>
     <LoginForm />
     <PublishArticleForm />
     <AskQuestionForm />
     <SendPostForm />
+    <UploadVideoForm />
 </template>
 
 <script setup lang="ts">

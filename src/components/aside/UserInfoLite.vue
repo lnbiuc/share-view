@@ -1,10 +1,12 @@
 <script setup lang="ts">
 import { formatTime } from '../../utils';
+import { PropType } from 'vue';
+import { UserLiteEntity } from '../../axios/api/articleApi';
 
 const props = defineProps({
     user: {
-        type: Object,
-        default: {},
+        type: Object as PropType<UserLiteEntity>,
+        required: true,
     },
 });
 const subStrTime = (time: string) => {

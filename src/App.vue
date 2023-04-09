@@ -2,7 +2,7 @@
 // This starter template is using Vue 3 <script setup> SFCs
 // Check out https://vuejs.org/api/sfc-script-setup.html#script-setup
 import { storeToRefs } from 'pinia';
-import { useThemeStore } from './pinia';
+import { useCategoryAndTagsStore, useThemeStore } from './pinia';
 import { ElMessage } from 'element-plus';
 
 const themeStore = storeToRefs(useThemeStore());
@@ -25,6 +25,10 @@ watch(themeStore.isDark, () => {
         }
     });
 });
+
+const categoryAndTagsStore = useCategoryAndTagsStore();
+categoryAndTagsStore.refreshCategory();
+categoryAndTagsStore.refreshTags();
 </script>
 
 <template>

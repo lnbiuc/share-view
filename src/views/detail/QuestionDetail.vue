@@ -2,60 +2,80 @@
 import { useRouteParams } from '@vueuse/router';
 import { ArticleContentEntity, getOneArticle } from '../../axios/api/articleApi';
 import { formatTime } from '../../utils';
-// @ts-ignore
-import { View } from '@element-plus/icons-vue';
-import { getAnswersByArticleId } from '../../axios/api/answerApi';
+import { AnswerAndCommentEntity, getAnswersByArticleId } from '../../axios/api/answerApi';
 import { getCommentsById } from '../../axios/api/commentsApi';
 import { ElMessage } from 'element-plus';
-// @ts-ignore
 import { ArrowDown } from '@element-plus/icons-vue';
 import { useDialogControlStore, useReloadCommentStore, useThemeStore } from '../../pinia';
 import { subscribeAuthorByAuthorId, subscribeQuestionById } from '../../axios/api/subscribeApi';
 import { addCollection } from '../../axios/api/collectApi';
 import { storeToRefs } from 'pinia';
-import { ref } from 'vue';
+import { Ref, ref } from 'vue';
 import MdEditor from 'md-editor-v3';
 import 'md-editor-v3/lib/style.css';
-import Detail from './Detail.vue';
+import DefaultDetailLayout from '../../layout/DefaultDetailLayout.vue';
 
 const articleId = useRouteParams<string>('questionId');
-const ques = ref<ArticleContentEntity>({
-    'article': {
-        'articleId': '',
-        'author': {
-            'userId': '',
-            'username': '',
-            'signature': '',
-            'avatar': 'https://cube.elemecdn.com/0/88/03b0d39583f48206768a7534e55bcpng.png',
-            'level': 0,
-            'registerTime': '',
-            'lastLogin': '',
-            'ipAddr': '',
-            'isSubscribed': false,
+const ques: Ref<ArticleContentEntity> = ref({
+    article: {
+        articleId: '',
+        author: {
+            userId: '',
+            username: '',
+            signature: '',
+            avatar: 'https://cube.elemecdn.com/0/88/03b0d39583f48206768a7534e55bcpng.png',
+            level: 1,
+            registerTime: '',
+            lastLogin: '',
+            ipAddr: '',
+            isSubscribed: false,
         },
-        'title': '',
-        'introduction': '',
-        'type': 'Article',
-        'tags': [],
-        'category': '',
-        'content': '',
-        'releaseTime': '',
-        'lastUpdate': '',
-        'setTop': false,
-        'views': 0,
-        'like': 0,
-        'collect': 0,
-        'comments': 0,
+        title: '',
+        introduction: '',
+        type: '',
+        tags: [],
+        category: '',
+        content: '',
+        releaseTime: '',
+        lastUpdate: '',
+        setTop: false,
+        views: 0,
+        like: 0,
+        collect: 0,
+        comments: 0,
+        images: [],
     },
-    'comments': {
-        'pageNumber': 1,
-        'pageSize': 0,
-        'currentSize': 0,
-        'total': 0,
-        'data': [],
+    comments: {
+        pageNumber: 0,
+        pageSize: 0,
+        currentSize: 0,
+        total: 0,
+        data: [],
     },
 });
-const answer = ref();
+const answer: Ref<AnswerAndCommentEntity[]> = ref([
+    {
+        id: '',
+        toId: '',
+        author: {
+            userId: '',
+            username: '',
+            signature: '',
+            avatar: 'https://cube.elemecdn.com/0/88/03b0d39583f48206768a7534e55bcpng.png',
+            level: 0,
+            registerTime: '',
+            lastLogin: '',
+            ipAddr: '',
+            isSubscribed: false,
+        },
+        content: '',
+        releaseTime: '',
+        lastUpdate: '',
+        like: 0,
+        dislike: 0,
+        comments: [],
+    },
+]);
 const isLoading = ref<boolean>(true);
 
 onMounted(() => {
@@ -77,13 +97,6 @@ const getAnswer = () => {
     });
 };
 
-const toLength = (arr: []) => {
-    if (arr) {
-        return arr.length;
-    } else {
-        return 0;
-    }
-};
 const comments = ref();
 const currentComments = ref();
 const getComments = (id: string) => {
@@ -168,15 +181,13 @@ watch(refThemeStore.isDark, (val) => {
 });
 
 const state = reactive({
-    theme: 'dark',
-    text: '标题',
     id: 'my-editor',
 });
 </script>
 
 <template>
     <div>
-        <Detail>
+        <DefaultDetailLayout>
             <template #left>
                 <div class="flex flex-col p-6 dark:bg-dark rounded-md bg-light shadow-sm">
                     <div class="flex flex-row items-center">
@@ -219,10 +230,10 @@ const state = reactive({
                             v-model="ques.article.content"
                             :theme="currentTheme"
                             :preview-only="true"
+                            preview-theme="cyanosis"
                         />
-                        <!--                <Markdown name="markdown" class="markdown-body-light" :source="ques.article.content" />-->
                     </div>
-                    <div class="flex flex justify-between items-center dark:bg-neutral-900 p-3 rounded-md">
+                    <div class="flex justify-between items-center dark:bg-neutral-900 p-3 rounded-md">
                         <div>
                             <span
                                 class="text-neutral-700 bg-gray-200 px-3 py-1 rounded-full text-sm dark:bg-dark dark:text-gray-300"
@@ -274,9 +285,6 @@ const state = reactive({
                                 <el-button @click="subscribeAnswerById(a.author.userId)">Subscribe</el-button>
                             </div>
                         </div>
-                        <div class="mt-8">
-                            <Markdown name="markdown" class="markdown-body-light" :source="a.content" />
-                        </div>
                         <div class="text-xs mt-3 mx-2 flex flex-row justify-between">
                             <span class="text-gray-500">Publish On: {{ a.releaseTime }} </span>
                             <span>
@@ -286,7 +294,7 @@ const state = reactive({
                         </div>
                         <div class="mt-3 flex flex-row">
                             <LikeBtn :id="a.id" :type="2" />
-                            <CommentsLink :comments="toLength(a.comments)" @click="getComments(a.id)" />
+                            <CommentsLink :comments="a.comments.length" @click="getComments(a.id)" />
                             <ShareLink />
                             <CollectionLink :type="1" :id="a.id" />
                         </div>
@@ -306,7 +314,7 @@ const state = reactive({
                     <UserInfoLite :user="ques.article.author" />
                 </el-affix>
             </template>
-        </Detail>
-        <AnswerQuestionForm :question="ques.article.title" :question-id="ques.article.articleId" />
+        </DefaultDetailLayout>
+        <AnswerQuestionForm :question-title="ques.article.title" :question-id="ques.article.articleId" />
     </div>
 </template>

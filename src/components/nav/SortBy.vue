@@ -1,9 +1,7 @@
 <script setup lang="ts">
 import { ref } from 'vue';
-// @ts-ignore
 import { ArrowDown } from '@element-plus/icons-vue';
 import { useArticleParamsStore, useFilterAndSortStore } from '../../pinia';
-import { storeToRefs } from 'pinia';
 import { checkLoginStatus } from '../../utils';
 
 const filterByList: Array<{ name: string; value: string }> = [
@@ -93,9 +91,9 @@ const taggerColor = (s: { name: string; value: string }) => {
     <div
         class="flex flex-row mt-2 mx-2 p-3 dark:bg-dark justify-between items-center bg-light hover:shadow-md shadow-sm rounded-md transition-all"
     >
-        <div>
+        <div class="dark:text-gray-300">
             <span
-                class="m-2 cursor-pointer hover:border-blue-500 hover:border-b-2 transition-all"
+                class="m-2 cursor-pointer transition-all"
                 v-for="s in sortByList"
                 @click="clickSelectSort(s)"
                 :style="{ color: taggerColor(s) }"
@@ -104,7 +102,7 @@ const taggerColor = (s: { name: string; value: string }) => {
         </div>
         <div class="flex items-center mr-2">
             <el-dropdown trigger="click">
-                <span class="el-dropdown-link align-top cursor-pointer">
+                <span class="el-dropdown-link align-top cursor-pointer text-base">
                     {{ displayFilter(currentSelectFilter) }}
                     <el-icon><ArrowDown /></el-icon>
                 </span>

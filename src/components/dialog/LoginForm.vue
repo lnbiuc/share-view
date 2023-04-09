@@ -1,57 +1,47 @@
 <script setup lang="ts">
-// @ts-ignore
 import { InfoFilled, User, Lock, CircleCheck } from '@element-plus/icons-vue';
 // dialog control
-import { ref } from 'vue';
+import { Ref, ref } from 'vue';
 import { CountEntity, login, loginParams, register, sendCode, UserEntity } from '../../axios/api/loginApi';
-import { ElMessage, FormInstance } from 'element-plus';
-import { useDialogControlStore, useUserStore } from '../../pinia';
-import { useLocalStorage, useSessionStorage, useStorage } from '@vueuse/core';
+import { ElMessage, FormInstance, FormRules } from 'element-plus';
+import { useDialogControlStore, useThemeStore, useUserStore } from '../../pinia';
+import { useLocalStorage, useSessionStorage } from '@vueuse/core';
 
-// const dialogFormVisible = ref(false);
 const dialogStore = useDialogControlStore();
-// form type control
 const handlerType = ref(0);
-// api data type
-const data = ref<loginParams>({
+const data: Ref<loginParams> = ref({
     rememberMe: true,
     phone: '',
     email: '',
     code: '',
     password: '',
 });
-// form type0
-const pwdForm = ref<{ account: string; pwd: string }>({ account: '', pwd: '' });
-// form type1
-const codeForm = ref<{ code: string; account: string }>({
+const pwdForm: Ref<{ account: string; pwd: string }> = ref({ account: '', pwd: '' });
+const codeForm: Ref<{ code: string; account: string }> = ref({
     code: '',
     account: '',
 });
-// form type2
-const registerForm = ref<{
+const registerForm: Ref<{
     account: string;
     code: string;
     pwd: string;
-}>({
+}> = ref({
     account: '',
     code: '',
     pwd: '',
 });
 const ruleFormRef = ref<FormInstance>();
 
-// validate function
 const validateAccount = (rule: any, value: any, callback: any) => {
     if (value === '') {
         callback(new Error('account is required'));
     } else if (value.indexOf('@') == -1) {
-        // account type phone
         if (value.match(/^(13[0-9]|14[01456879]|15[0-35-9]|16[2567]|17[0-8]|18[0-9]|19[0-35-9])\d{8}$/)) {
             callback();
         } else {
             callback(new Error('phone format error'));
         }
     } else {
-        // account type email
         if (value.match(/^[A-Za-z0-9\u4e00-\u9fa5]+@[a-zA-Z0-9_-]+(\.[a-zA-Z0-9_-]+)+$/)) {
             callback();
         } else {
@@ -77,21 +67,19 @@ const validatePassword = (rule: any, value: any, callback: any) => {
         callback(new Error('password format error'));
     }
 };
-// form validate
-const pwdFormRules = reactive({
+const pwdFormRules: FormRules = reactive({
     account: [{ required: true, validator: validateAccount, trigger: 'blur' }],
     pwd: [{ required: true, validator: validatePassword, trigger: 'blur' }],
 });
-const codeFormRules = reactive({
+const codeFormRules: FormRules = reactive({
     account: [{ required: true, validator: validateAccount, trigger: 'blur' }],
     code: [{ required: true, validator: validateCode, trigger: 'blur' }],
 });
-const registerFormRules = reactive({
+const registerFormRules: FormRules = reactive({
     account: [{ required: true, validator: validateAccount, trigger: 'blur' }],
     code: [{ required: true, validator: validateCode, trigger: 'blur' }],
     pwd: [{ required: true, validator: validatePassword, trigger: 'blur' }],
 });
-// submit form and login
 const handlerSubmit = (formEl: FormInstance | undefined) => {
     if (!formEl) return;
     formEl.validate((valid) => {
@@ -154,7 +142,6 @@ const cleanData = () => {
         password: '',
     };
 };
-// send code
 const sendCodeStatus = ref<boolean>(false);
 const count = ref<number>(60);
 const HandlerSendCode = () => {
@@ -199,7 +186,6 @@ const HandlerSendCode = () => {
     }
 };
 
-// login success
 const hasLogin = ref<boolean>(false);
 const loginUser = ref<UserEntity>({
     userId: '',
@@ -238,6 +224,8 @@ const loginSuccess = (userData: UserEntity, token: string, count: CountEntity) =
         useSessionStorage<CountEntity>('count', count);
     }
 };
+
+const themeStore = useThemeStore();
 </script>
 
 <template>
@@ -277,11 +265,7 @@ const loginSuccess = (userData: UserEntity, token: string, count: CountEntity) =
             <el-form-item label="Account" prop="account">
                 <el-input :prefix-icon="User" v-model="codeForm.account" type="text" placeholder="your phone or email">
                     <template #suffix>
-                        <el-button
-                            @click="HandlerSendCode"
-                            style="border: none; background-color: unset"
-                            :disabled="sendCodeStatus"
-                        >
+                        <el-button @click="HandlerSendCode" :disabled="sendCodeStatus">
                             <span v-show="!sendCodeStatus">Send Code</span>
                             <span v-show="sendCodeStatus">{{ count }} s</span>
                         </el-button>
@@ -360,8 +344,16 @@ const loginSuccess = (userData: UserEntity, token: string, count: CountEntity) =
 
         <template #footer>
             <span class="dialog-footer">
-                <el-button @click="dialogStore.loginForm = false">Cancel</el-button>
-                <el-button type="primary" @click="handlerSubmit(ruleFormRef)"> Confirm </el-button>
+                <el-button type="danger" plain @click="dialogStore.loginForm = false">Cancel</el-button>
+                <el-button
+                    plain
+                    color="#626aef"
+                    :dark="themeStore.isDark"
+                    type="primary"
+                    @click="handlerSubmit(ruleFormRef)"
+                >
+                    Confirm
+                </el-button>
             </span>
         </template>
     </el-dialog>

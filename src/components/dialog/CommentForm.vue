@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { useDialogControlStore, useReloadCommentStore } from '../../pinia';
+import { useDialogControlStore, useReloadCommentStore, useThemeStore } from '../../pinia';
 import { publishComments } from '../../axios/api/commentsApi';
 import { ElMessage } from 'element-plus';
 import { storeToRefs } from 'pinia';
@@ -8,7 +8,6 @@ const dialogStore = useDialogControlStore();
 const refDialogStore = storeToRefs(dialogStore);
 const params = storeToRefs(dialogStore);
 const handlePublish = () => {
-    console.log(params.commentForm.value);
     if (params.commentForm.value.data.level == 0) {
         if (params.commentForm.value.data.articleId !== '' && params.commentForm.value.data.content !== '') {
             publishComments(params.commentForm.value.data).then((res) => {
@@ -43,6 +42,8 @@ const handlePublish = () => {
         }
     }
 };
+
+const themeStore = useThemeStore();
 </script>
 
 <template>
@@ -55,20 +56,21 @@ const handlePublish = () => {
     >
         <template #header="{ close, titleId, titleClass }">
             <div class="flex flex-row justify-between">
-                <h4 :id="titleId" :class="titleClass">
-                    <div class="flex flex-col">
-                        <span>
-                            <el-icon class="el-icon--left">
-                                <i-ep-edit-pen />
-                            </el-icon>
-                            Comment To
-                        </span>
-                        <span class="text-sm mt-6 overflow-auto break-all">
+                <div :id="titleId" :class="titleClass">
+                    <span class="text-blue-500">
+                        <el-icon class="el-icon--left">
+                            <i-ep-edit-pen />
+                        </el-icon>
+                        Comment To
+                    </span>
+                    <br />
+                    <div class="mt-4">
+                        <span class="text-base overflow-auto break-all">
                             {{ refDialogStore.commentForm.value.displayInfo }}
                         </span>
                     </div>
-                </h4>
-                <el-button type="danger" @click="close">
+                </div>
+                <el-button type="danger" @click="close" plain>
                     <el-icon class="el-icon--left">
                         <i-ep-circle-close-filled />
                     </el-icon>
@@ -78,7 +80,7 @@ const handlePublish = () => {
         </template>
         <template #footer>
             <div class="flex flex-row justify-end mr-4">
-                <el-button type="primary" @click="handlePublish">
+                <el-button type="primary" @click="handlePublish" color="#626aef" plain :dark="themeStore.isDark">
                     <el-icon class="el-icon--left">
                         <i-ep-circle-check />
                     </el-icon>

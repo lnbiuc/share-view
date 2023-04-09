@@ -1,30 +1,20 @@
 <script setup lang="ts">
-import { useDialogControlStore } from '../../pinia';
-import { uploadFile } from '../../axios/api/fileApi';
-import {
-    ElMessage,
-    ElNotification,
-    UploadFile,
-    UploadProps,
-    UploadRequestHandler,
-    UploadRequestOptions,
-} from 'element-plus';
+import { useCategoryAndTagsStore, useDialogControlStore, useThemeStore } from '../../pinia';
+import { uploadImage } from '../../axios/api/fileApi';
+import { ElMessage, ElNotification, UploadFile, UploadProps, UploadRequestOptions } from 'element-plus';
 import { sendPost } from '../../axios/api/postApi';
-import { ref } from 'vue';
+import { Ref, ref } from 'vue';
 import { CategoryEntity, getCategoryList } from '../../axios/api/categoryApi';
+import { storeToRefs } from 'pinia';
+import { uploadError, uploadSuccess } from '../../common/message';
 
 const dialogControlStore = useDialogControlStore();
-
-const categoryList = ref<CategoryEntity[]>();
-const getCategory = async () => {
-    getCategoryList(1, 100).then((res) => {
-        categoryList.value = res.data.data.data;
-    });
-};
-getCategory();
+const categoryAndTagsStore = useCategoryAndTagsStore();
+const refCategoryAndTagsStore = storeToRefs(categoryAndTagsStore);
+const categoryList: Ref<CategoryEntity[]> = ref(refCategoryAndTagsStore.category);
 const handlePublish = () => {
     data.value.imgList = [];
-    imageMap.forEach((value, key, map) => {
+    imageMap.value.forEach((value, key, map) => {
         data.value.imgList.push(value);
     });
     if (data.value.categoryId != null && data.value.content.match('[\u4e00-\u9fa5_a-zA-Z0-9_]{2,10}')) {
@@ -47,33 +37,24 @@ const data = ref<{ imgList: number[]; content: string; categoryId: number | unde
     categoryId: undefined,
 });
 
-const imageMap = new Map();
+const imageMap = ref<Map<number | undefined, number>>(new Map());
 
 const uploadImg = (param: UploadRequestOptions) => {
-    return uploadFile(param.file).then((res) => {
-        // @ts-ignore
-        imageMap.set(param.file.uid, res.data.data.imgId);
-        ElMessage.success('SUCCESS');
+    return uploadImage(param.file).then((res) => {
+        if (res.data.code == 200) {
+            // @ts-ignore
+            imageMap.value.set(param.file.uid, res.data.data.fileId);
+            uploadSuccess(res.data.message);
+        } else {
+            ElMessage.error(res.data.message);
+        }
     });
 };
 
 const images = ref([]);
 
-const uploadSuccess = (res: any, uploadFile: UploadFile) => {
-    data.value.imgList.push(res.data.data.imgId);
-};
-
 const removeImage = (uploadFile: UploadFile) => {
-    imageMap.delete(uploadFile.raw?.uid);
-};
-
-const uploadError = (error: Error) => {
-    ElNotification({
-        title: 'Error',
-        message: error.message,
-        type: 'error',
-        duration: 0,
-    });
+    imageMap.value.delete(uploadFile.raw?.uid);
 };
 
 const maxImageCount = () => {
@@ -92,6 +73,8 @@ const handlePictureCardPreview: UploadProps['onPreview'] = (uploadFile) => {
     dialogImageUrl.value = uploadFile.url!;
     dialogVisible.value = true;
 };
+
+const themeStore = useThemeStore();
 </script>
 
 <template>
@@ -109,7 +92,7 @@ const handlePictureCardPreview: UploadProps['onPreview'] = (uploadFile) => {
                     </el-icon>
                     <span class="text-xl"> Send Post </span>
                 </h4>
-                <el-button type="danger" @click="close">
+                <el-button type="danger" @click="close" plain>
                     <el-icon class="el-icon--left">
                         <i-ep-circle-close-filled />
                     </el-icon>
@@ -119,7 +102,7 @@ const handlePictureCardPreview: UploadProps['onPreview'] = (uploadFile) => {
         </template>
         <template #footer>
             <div class="flex flex-row justify-end mr-4 px-6">
-                <el-button type="primary" @click="handlePublish">
+                <el-button type="primary" @click="handlePublish" plain :dark="themeStore.isDark" color="#626aef">
                     <el-icon class="el-icon--left">
                         <i-ep-circle-check />
                     </el-icon>
@@ -144,7 +127,6 @@ const handlePictureCardPreview: UploadProps['onPreview'] = (uploadFile) => {
             :http-request="uploadImg"
             :with-credentials="true"
             list-type="picture-card"
-            :on-success="uploadSuccess"
             :on-remove="removeImage"
             :on-error="uploadError"
             :on-exceed="maxImageCount"

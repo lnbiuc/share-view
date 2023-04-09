@@ -1,7 +1,5 @@
 <script setup lang="ts">
 import { getOneArticle, ArticleContentEntity } from '../../axios/api/articleApi';
-// @ts-ignore
-import { StarFilled, CaretTop, CaretBottom } from '@element-plus/icons-vue';
 import { useRouteParams } from '@vueuse/router';
 import { ElMessage } from 'element-plus';
 import { useRouter } from 'vue-router';
@@ -12,46 +10,48 @@ import UserInfoLite from '../../components/aside/UserInfoLite.vue';
 import { getCommentsById } from '../../axios/api/commentsApi';
 import { useReloadCommentStore, useThemeStore } from '../../pinia';
 import { storeToRefs } from 'pinia';
-import { ref } from 'vue';
+import { Ref, ref } from 'vue';
 import MdEditor from 'md-editor-v3';
 import 'md-editor-v3/lib/style.css';
 import { checkLoginStatus } from '../../utils';
-import Detail from './Detail.vue';
+import DefaultDetailLayout from '../../layout/DefaultDetailLayout.vue';
+
 const articleId = useRouteParams<string>('articleId');
-const data = ref<ArticleContentEntity>({
-    'article': {
-        'articleId': '',
-        'author': {
-            'userId': '',
-            'username': '',
-            'signature': '',
-            'avatar': 'https://cube.elemecdn.com/0/88/03b0d39583f48206768a7534e55bcpng.png',
-            'level': 0,
-            'registerTime': '',
-            'lastLogin': '',
-            'ipAddr': '',
-            'isSubscribed': false,
+const data: Ref<ArticleContentEntity> = ref({
+    article: {
+        articleId: '',
+        author: {
+            userId: '',
+            username: '',
+            signature: '',
+            avatar: 'https://cube.elemecdn.com/0/88/03b0d39583f48206768a7534e55bcpng.png',
+            level: 1,
+            registerTime: '',
+            lastLogin: '',
+            ipAddr: '',
+            isSubscribed: false,
         },
-        'title': '',
-        'introduction': '',
-        'type': 'Article',
-        'tags': [],
-        'category': '',
-        'content': '',
-        'releaseTime': '',
-        'lastUpdate': '',
-        'setTop': false,
-        'views': 0,
-        'like': 0,
-        'collect': 0,
-        'comments': 0,
+        title: '',
+        introduction: '',
+        type: '',
+        tags: [],
+        category: '',
+        content: '',
+        releaseTime: '',
+        lastUpdate: '',
+        setTop: false,
+        views: 0,
+        like: 0,
+        collect: 0,
+        comments: 0,
+        images: [],
     },
-    'comments': {
-        'pageNumber': 1,
-        'pageSize': 0,
-        'currentSize': 0,
-        'total': 0,
-        'data': [],
+    comments: {
+        pageNumber: 0,
+        pageSize: 0,
+        currentSize: 0,
+        total: 6,
+        data: [],
     },
 });
 const isLoading = ref<boolean>(true);
@@ -67,26 +67,6 @@ onMounted(() => {
         } else {
             ElMessage.error(res.data.message);
             useRouter().back();
-        }
-    });
-});
-onMounted(() => {
-    const el = document.getElementsByName('markdown');
-    const theme = localStorage.getItem('vueuse-color-scheme');
-    el.forEach((el) => {
-        if (!el) {
-            return;
-        }
-        if (theme && theme == 'dark') {
-            // @ts-ignore
-            el.removeAttribute('class');
-            // @ts-ignore
-            el.classList.add('markdown-body-dark');
-        } else {
-            // @ts-ignore
-            el.removeAttribute('class');
-            // @ts-ignore
-            el.classList.add('markdown-body-light');
         }
     });
 });
@@ -149,8 +129,6 @@ watch(refThemeStore.isDark, (val) => {
 const MdCatalog = MdEditor.MdCatalog;
 
 const state = reactive({
-    theme: 'dark',
-    text: '标题',
     id: 'my-editor',
 });
 
@@ -158,10 +136,10 @@ const scrollElement = document.documentElement;
 </script>
 
 <template>
-    <Detail>
+    <DefaultDetailLayout>
         <template #left>
             <div class="flex flex-col p-6 dark:bg-dark rounded-md bg-light shadow-sm">
-                <div class="flex flex-row items-center">
+                <div class="flex flex-row flex-wrap justify-between items-center">
                     <span
                         class="rounded-full py-1 px-2 w-16 text-sm text-center dark:text-light"
                         style="background-color: #79bbff"
@@ -169,7 +147,7 @@ const scrollElement = document.documentElement;
                     >
                     <span class="ml-2">
                         <el-tag class="mx-1" v-for="t in data.article.tags">
-                            {{ t.tagName }}
+                            {{ t.tagName ? t.tagName : '' }}
                         </el-tag>
                     </span>
                 </div>
@@ -204,8 +182,8 @@ const scrollElement = document.documentElement;
                             type="primary"
                             v-if="!disableSubscribeBtn"
                             plain
-                            >Subscribe</el-button
-                        >
+                            >Subscribe
+                        </el-button>
                         <el-button type="primary" :disabled="true" v-if="disableSubscribeBtn" plain>
                             <i-ep-circle-check class="mr-1" />
                             Subscribed
@@ -215,14 +193,9 @@ const scrollElement = document.documentElement;
                 <el-divider>CONTENT</el-divider>
                 <Loading :is-loading="isLoading" />
                 <div v-show="!isLoading">
-                    <!--                    <Markdown-->
-                    <!--                        name="markdown"-->
-                    <!--                        id="markdown"-->
-                    <!--                        class="markdown-body-light"-->
-                    <!--                        :source="data.article.content"-->
-                    <!--                    />-->
                     <md-editor
                         :editor-id="state.id"
+                        preview-theme="cyanosis"
                         :show-code-row-number="true"
                         v-model="data.article.content"
                         :theme="currentTheme"
@@ -232,11 +205,7 @@ const scrollElement = document.documentElement;
                 <el-divider>END</el-divider>
             </div>
             <div class="flex flex-col my-2 p-4 dark:bg-dark rounded-md bg-light shadow-sm">
-                <Comment
-                    :comments="data.comments.data"
-                    :title="data.article.title"
-                    :article-id="data.article.articleId"
-                />
+                <Comment :comments="data.comments" :title="data.article.title" :article-id="data.article.articleId" />
             </div>
         </template>
         <template #right>
@@ -251,5 +220,5 @@ const scrollElement = document.documentElement;
                 </div>
             </el-affix>
         </template>
-    </Detail>
+    </DefaultDetailLayout>
 </template>

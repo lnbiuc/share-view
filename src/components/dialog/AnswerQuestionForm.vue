@@ -8,7 +8,7 @@ import { storeToRefs } from 'pinia';
 import { ref } from 'vue';
 
 const props = defineProps({
-    question: {
+    questionTitle: {
         type: String,
         default: '',
     },
@@ -61,10 +61,10 @@ watch(refThemeStore.isDark, (val) => {
                     <el-icon class="el-icon--left" size="20px">
                         <i-ep-edit-pen />
                     </el-icon>
-                    <span class="text-xl"> Question: {{ question }} </span>
+                    <span class="text-xl"> Question: {{ questionTitle }} </span>
                     <span class="text-sm text-gray-500"> @{{ questionId }} </span>
                 </h4>
-                <el-button type="danger" @click="close">
+                <el-button type="danger" @click="close" plain>
                     <el-icon class="el-icon--left">
                         <i-ep-circle-close-filled />
                     </el-icon>
@@ -74,7 +74,7 @@ watch(refThemeStore.isDark, (val) => {
         </template>
         <template #footer>
             <div class="flex flex-row justify-end mr-4 px-6">
-                <el-button type="primary" @click="handlePublish">
+                <el-button @click="handlePublish" plain color="#626aef" :dark="themeStore.isDark">
                     <el-icon class="el-icon--left">
                         <i-ep-circle-check />
                     </el-icon>

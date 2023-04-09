@@ -1,7 +1,7 @@
 <script setup lang="ts">
-import { useArticleParamsStore, useDialogControlStore, useFilterAndSortStore } from '../../pinia';
+import { useArticleParamsStore, useDialogControlStore } from '../../pinia';
 import { ArticleListEntity, getArticleList } from '../../axios/api/articleApi';
-import { ref } from 'vue';
+import { Ref, ref } from 'vue';
 import { formatTime } from '../../utils';
 import LikeBtn from '../../components/index/articleList/LikeBtn.vue';
 import { storeToRefs } from 'pinia';
@@ -9,7 +9,36 @@ import router from '../../router';
 
 const total = ref(0);
 const isLoad = ref<boolean>(true);
-const articleList = ref<ArticleListEntity[]>();
+const articleList: Ref<ArticleListEntity[]> = ref([
+    {
+        articleId: '',
+        author: {
+            userId: '',
+            username: '',
+            signature: '',
+            avatar: 'https://cube.elemecdn.com/0/88/03b0d39583f48206768a7534e55bcpng.png',
+            level: 0,
+            registerTime: '',
+            lastLogin: '',
+            ipAddr: '',
+            isSubscribed: false,
+        },
+        title: '',
+        introduction: '',
+        type: '',
+        tags: [],
+        category: '',
+        content: '',
+        releaseTime: '',
+        lastUpdate: '',
+        setTop: false,
+        views: 0,
+        like: 0,
+        collect: 0,
+        comments: 0,
+        images: [],
+    },
+]);
 const paramsStore = useArticleParamsStore();
 
 paramsStore.filterTypeChange(1);
@@ -69,12 +98,12 @@ const handleClickComment = (title: string, articleId: string) => {
             </div>
             <div class="flex flex-col">
                 <div
-                    class="text-lg font-semibold text-left hover:text-blue-500 py-2 cursor-pointer transition-all"
+                    class="text-lg text-left py-2 text-left title"
                     @click="$router.push({ path: '/a/' + a.articleId })"
                 >
                     {{ a.title }}
                 </div>
-                <div class="flex mb-4 text-gray-500 text-left leading-6">
+                <div class="flex mb-4 text-gray-500 text-left leading-6 text-sm">
                     {{ a.introduction }}
                 </div>
             </div>
@@ -86,6 +115,7 @@ const handleClickComment = (title: string, articleId: string) => {
             </div>
         </div>
         <Pagination
+            :current-page="paramsStore.params.pageNumber"
             :page-size="paramsStore.params.pageSize"
             :total="total"
             hide-on-single-page
