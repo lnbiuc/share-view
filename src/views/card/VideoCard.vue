@@ -69,11 +69,10 @@ watch(refParamsStore.params.value, () => {
 
 <template>
     <Loading :is-loading="isLoading" />
-    <transition appear>
-        <div class="m-2">
+    <transition>
+        <div class="m-2" v-if="!isLoading">
             <div
                 v-for="a in articleList"
-                v-show="!isLoading"
                 class="flex flex-col mb-2 bg-light transition-all dark:bg-dark rounded-md shadow-sm hover:shadow-md p-4"
             >
                 <div
@@ -88,7 +87,7 @@ watch(refParamsStore.params.value, () => {
                         <el-avatar :src="a.author.avatar" shape="square" />
                     </div>
                     <span class="hover:text-blue-500 text-xl cursor-pointer transition-all"
-                    >{{ a.author.username }} ·&nbsp;</span
+                        >{{ a.author.username }} ·&nbsp;</span
                     >
                     <span v-text="formatTime(a.releaseTime)"></span>
                     <span class="title" v-for="t in a.tags" :key="t.tagId"> &nbsp;· {{ t.tagName }}</span>

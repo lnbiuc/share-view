@@ -8,4 +8,4 @@ export const addCollection = async (id: string, type: number) => {
             type: type,
         },
     });
-}
+};

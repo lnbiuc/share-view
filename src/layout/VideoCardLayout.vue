@@ -6,20 +6,18 @@ const { articleId, images } = defineProps<{
 </script>
 
 <template>
-    <transition appear>
-        <div class="py-2" @click="$router.push({ path: '/v/' + articleId })">
-            <div
-                class="h-[300px] rounded-md shadow-md bg-cover flex justify-center items-center video-preview"
-                :style="{ background: 'url(' + images + ') center center no-repeat' }"
+    <div class="py-2" @click="$router.push({ path: '/v/' + articleId })">
+        <div
+            class="h-[300px] rounded-md shadow-md bg-cover flex justify-center items-center video-preview"
+            :style="{ background: 'url(' + images + ') center center no-repeat' }"
+        >
+            <el-icon
+                size="100"
+                color="rgb(155,163,175)"
+                class="text-gray-300 play-btn cursor-pointer hover:text-gray-200 transition-all"
             >
-                <el-icon
-                    size="100"
-                    color="rgb(155,163,175)"
-                    class="text-gray-300 play-btn cursor-pointer hover:text-gray-200 transition-all"
-                >
-                    <i-material-symbols-play-circle-outline />
-                </el-icon>
-            </div>
+                <i-material-symbols-play-circle-outline />
+            </el-icon>
         </div>
-    </transition>
+    </div>
 </template>

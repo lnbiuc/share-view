@@ -87,7 +87,7 @@ const handleClickComment = (articleId: string, info: string) => {
 
 <template>
     <Loading :is-loading="isLoad" />
-    <Transition appear>
+    <Transition>
         <div class="mr-2 ml-2" v-if="!isLoad">
             <div
                 v-for="a in articleList"

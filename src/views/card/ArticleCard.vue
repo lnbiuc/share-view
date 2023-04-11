@@ -81,7 +81,7 @@ const handleClickComment = (title: string, articleId: string) => {
 
 <template>
     <Loading :is-loading="isLoad" />
-    <transition appear>
+    <transition>
         <div class="m-2" v-if="!isLoad">
             <div
                 class="mb-2 bg-light dark:bg-dark rounded-md shadow-sm hover:shadow-md p-4 transition-all"
@@ -90,10 +90,16 @@ const handleClickComment = (title: string, articleId: string) => {
             >
                 <div class="flex flex-row p-0 text-gray-400">
                     <div class="truncate">
-                        <span class="hover:text-blue-500 cursor-pointer transition-all">{{ a.author.username }} · </span>
+                        <span class="hover:text-blue-500 cursor-pointer transition-all"
+                            >{{ a.author.username }} ·
+                        </span>
                         <span v-text="formatTime(a.releaseTime)"></span>
-                        <span class="hover:text-blue-500 cursor-pointer transition-all" v-for="t in a.tags" :key="t.tagId">
-                        · {{ t.tagName }}</span
+                        <span
+                            class="hover:text-blue-500 cursor-pointer transition-all"
+                            v-for="t in a.tags"
+                            :key="t.tagId"
+                        >
+                            · {{ t.tagName }}</span
                         >
                     </div>
                 </div>

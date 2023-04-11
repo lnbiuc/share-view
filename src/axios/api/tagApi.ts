@@ -10,7 +10,7 @@ export const getAllTags = async () => {
         url: './api/tag/get',
         method: 'GET',
     });
-}
+};
 
 export const publishTag = async (tagName: string) => {
     let formData = new FormData();
@@ -20,4 +20,4 @@ export const publishTag = async (tagName: string) => {
         method: 'POST',
         data: formData,
     });
-}
+};

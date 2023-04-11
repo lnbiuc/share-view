@@ -6,7 +6,9 @@
     >
         <div class="flex flex-col w-8/12" id="scrollContent">
             <SortBy v-if="$route.path !== '/c'" />
-            <router-view />
+            <transition name="fade">
+                <router-view />
+            </transition>
         </div>
         <div class="flex flex-col w-4/12">
             <el-affix :offset="0" target="#scrollContent">

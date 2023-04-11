@@ -24,4 +24,4 @@ export const getAnswersByArticleId = async (articleId: string, num: number, size
             orderBy: order,
         },
     });
-}
+};

@@ -13,7 +13,7 @@ export const publishQuestion = async (data: PublishQuestionEntity) => {
         method: 'POST',
         data: data,
     });
-}
+};
 
 export const publishAnswer = async (toId: string, content: string) => {
     return axios({
@@ -24,4 +24,4 @@ export const publishAnswer = async (toId: string, content: string) => {
             content: content,
         },
     });
-}
+};

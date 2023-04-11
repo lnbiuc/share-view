@@ -9,7 +9,6 @@ import ImageGirdLayout from '../../layout/ImageGirdLayout.vue';
 
 const { articleList } = defineProps<{
     articleList: ArticleListEntity[];
-    isLoad: boolean;
 }>();
 
 const router = useRouter();
@@ -58,33 +57,30 @@ const handleClickComment = (articleId: string, title: string, type: string, info
 </script>
 
 <template>
-    <transition appear>
-        <div>
-            <div
-                v-for="a in articleList"
-                :key="a.articleId"
-                v-if="!isLoad"
-                class="flex flex-col p-5 dark:bg-dark bg-light hover:shadow-md shadow-sm mt-2 mx-2 rounded-md transition-all"
-            >
-                <div class="flex flex-row p-0 text-gray-400">
-                    <div class="truncate">
-                        <span class="hover:text-blue-500 cursor-pointer transition-all">{{ a.author.username }} · </span>
-                        <span v-text="formatTime(a.releaseTime)"></span>
-                        <span class="hover:text-blue-500 cursor-pointer transition-all" v-for="t in a.tags" :key="t.tagId">
+    <div
+        v-for="a in articleList"
+        :key="a.articleId"
+        class="flex flex-col p-5 dark:bg-dark bg-light hover:shadow-md shadow-sm mt-2 mx-2 rounded-md transition-all"
+    >
+        <div class="flex flex-row p-0 text-gray-400">
+            <div class="truncate">
+                <span class="hover:text-blue-500 cursor-pointer transition-all">{{ a.author.username }} · </span>
+                <span class="text-sm" v-text="formatTime(a.releaseTime)"></span>
+                <span class="hover:text-blue-500 cursor-pointer transition-all" v-for="t in a.tags" :key="t.tagId">
                     · {{ t.tagName }}</span
-                        >
-                    </div>
-                </div>
-                <div class="flex flex-row m">
-                    <div class="my-2 flex flex-row align-middle">
-                        <div class="text-left">
+                >
+            </div>
+        </div>
+        <div class="flex flex-row m">
+            <div class="my-2 flex flex-row align-middle">
+                <div class="text-left">
                     <span
                         :style="{ backgroundColor: tagBgColor(a.type) }"
-                        class="px-2 py-[2px] mr-2 rounded-full m-auto transition-all type cursor-default dark:text-light"
+                        class="px-[15px] py-[2px] mr-2 text-sm font-medium rounded-full m-auto transition-all type cursor-default dark:text-light"
                     >
                         {{ a.type }}
                     </span>
-                            <span class="text-lg py-1 title" @click="handleToArticleDetail(a.type, a.articleId)">
+                    <span class="text-base py-1 title leading-7" @click="handleToArticleDetail(a.type, a.articleId)">
                         <span v-if="a.type === 'Article' || a.type === 'Question'">
                             {{ a.title }}
                         </span>
@@ -92,33 +88,31 @@ const handleClickComment = (articleId: string, title: string, type: string, info
                             {{ a.introduction }}
                         </span>
                     </span>
-                        </div>
-                    </div>
-                </div>
-                <div
-                    v-if="a.type === 'Article' || a.type === 'Question'"
-                    @click="handleToArticleDetail(a.type, a.articleId)"
-                    class="flex text-sm text-gray-500 text-left cursor-default"
-                >
-                    {{ a.introduction }}
-                </div>
-                <div v-if="a.type === 'Video'">
-                    <video-card-layout :images="a.images[0]" :article-id="a.articleId" />
-                </div>
-                <div v-if="a.type === 'Post'" class="mt-1">
-                    <image-gird-layout :images="a.images" />
-                </div>
-                <div class="flex flex-row justify-start mt-2">
-                    <CommentsLink
-                        :comments="a.comments"
-                        @click="handleClickComment(a.articleId, a.title, a.type, a.introduction)"
-                    />
-                    <CollectionLink :id="a.articleId" :type="0" :collect-count="a.collect" />
-                    <ShareLink />
                 </div>
             </div>
         </div>
-    </transition>
+        <div
+            v-if="a.type === 'Article' || a.type === 'Question'"
+            @click="handleToArticleDetail(a.type, a.articleId)"
+            class="flex text-xs text-gray-500 text-left cursor-default"
+        >
+            {{ a.introduction }}
+        </div>
+        <div v-if="a.type === 'Video'">
+            <video-card-layout :images="a.images[0]" :article-id="a.articleId" />
+        </div>
+        <div v-if="a.type === 'Post'" class="mt-1">
+            <image-gird-layout :images="a.images" />
+        </div>
+        <div class="flex flex-row justify-start mt-2">
+            <CommentsLink
+                :comments="a.comments"
+                @click="handleClickComment(a.articleId, a.title, a.type, a.introduction)"
+            />
+            <CollectionLink :id="a.articleId" :type="0" :collect-count="a.collect" />
+            <ShareLink />
+        </div>
+    </div>
 </template>
 <style scoped>
 .type {
