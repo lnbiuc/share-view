@@ -84,6 +84,7 @@ declare module '@vue/runtime-core' {
     SendPostForm: typeof import('./components/dialog/SendPostForm.vue')['default']
     ShareLink: typeof import('./components/index/articleList/ShareLink.vue')['default']
     SortBy: typeof import('./components/nav/SortBy.vue')['default']
+    SubscribeBtn: typeof import('./components/others/SubscribeBtn.vue')['default']
     UploadVideoForm: typeof import('./components/dialog/UploadVideoForm.vue')['default']
     UserInfo: typeof import('./components/aside/UserInfo.vue')['default']
     UserInfoLite: typeof import('./components/aside/UserInfoLite.vue')['default']

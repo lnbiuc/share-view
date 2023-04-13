@@ -13,3 +13,14 @@ export const subscribeQuestionById = async (questionId: string) => {
         method: 'POST',
     });
 };
+
+export const refreshSubscribe = async (type: string, id: string) => {
+    return axios({
+        url: '../api/publish/subscribe/refresh',
+        method: 'POST',
+        data: {
+            type: type,
+            id: id,
+        },
+    });
+};

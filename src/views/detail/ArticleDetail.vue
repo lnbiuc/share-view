@@ -13,7 +13,6 @@ import { storeToRefs } from 'pinia';
 import { Ref, ref } from 'vue';
 import MdEditor from 'md-editor-v3';
 import 'md-editor-v3/lib/style.css';
-import { checkLoginStatus } from '../../utils';
 import DefaultDetailLayout from '../../layout/DefaultDetailLayout.vue';
 
 const articleId = useRouteParams<string>('articleId');
@@ -91,19 +90,6 @@ const collect = () => {
     });
 };
 const disableSubscribeBtn = ref<boolean>(false);
-const handlerSubscribe = (userId: string) => {
-    if (checkLoginStatus()) {
-        subscribeAuthorByAuthorId(userId).then((res) => {
-            if (res.data.code == 200) {
-                disableSubscribeBtn.value = true;
-                ElMessage.success('SUCCESS');
-            } else if (res.data.code == 722) {
-                disableSubscribeBtn.value = true;
-                ElMessage.warning('you already subscribed');
-            }
-        });
-    }
-};
 
 const store = useReloadCommentStore();
 const refStore = storeToRefs(store);
@@ -133,6 +119,8 @@ const state = reactive({
 });
 
 const scrollElement = document.documentElement;
+
+const reloadSubscribe = () => {};
 </script>
 
 <template>
@@ -177,17 +165,21 @@ const scrollElement = document.documentElement;
                         </div>
                     </div>
                     <div class="flex items-center mb-4">
-                        <el-button
-                            @click="handlerSubscribe(data.article.author.userId)"
-                            type="primary"
-                            v-if="!disableSubscribeBtn"
-                            plain
-                            >Subscribe
-                        </el-button>
-                        <el-button type="primary" :disabled="true" v-if="disableSubscribeBtn" plain>
-                            <i-ep-circle-check class="mr-1" />
-                            Subscribed
-                        </el-button>
+                        <!--                        <el-button-->
+                        <!--                            @click="handlerSubscribe(data.article.author.userId)"-->
+                        <!--                            type="primary"-->
+                        <!--                            v-if="!disableSubscribeBtn"-->
+                        <!--                            plain-->
+                        <!--                            >Subscribe-->
+                        <!--                        </el-button>-->
+                        <!--                        <el-button type="primary" :disabled="true" v-if="disableSubscribeBtn" plain>-->
+                        <!--                            <i-ep-circle-check class="mr-1" />-->
+                        <!--                            Subscribed-->
+                        <!--                        </el-button>-->
+                        <subscribe-btn
+                            :is-subscribed="data.article.author.isSubscribed"
+                            @reload-subscribe="reloadSubscribe"
+                        />
                     </div>
                 </div>
                 <el-divider>CONTENT</el-divider>
