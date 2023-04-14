@@ -14,13 +14,26 @@ export const subscribeQuestionById = async (questionId: string) => {
     });
 };
 
-export const refreshSubscribe = async (type: string, id: string) => {
+export const refreshSubscribe = async (userId: string, articleId: string, type: number) => {
     return axios({
         url: '../api/publish/subscribe/refresh',
         method: 'POST',
         data: {
+            userId: userId,
+            articleId: articleId,
             type: type,
-            id: id,
+        },
+    });
+};
+
+export const cancelSubscribe = async (userId: string, articleId: string, type: number) => {
+    return axios({
+        url: '../api/publish/subscribe/cancel',
+        method: 'DELETE',
+        data: {
+            userId: userId,
+            articleId: articleId,
+            type: type,
         },
     });
 };

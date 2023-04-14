@@ -1,8 +1,8 @@
 <script setup lang="ts">
-import { subscribeAuthorByAuthorId, subscribeQuestionById } from '../../axios/api/subscribeApi';
+import { cancelSubscribe, subscribeAuthorByAuthorId, subscribeQuestionById } from '../../axios/api/subscribeApi';
 import { ElMessage } from 'element-plus';
 
-const { isSubscribed, userId, questionId, type } = defineProps({
+const props = defineProps({
     isSubscribed: {
         type: Boolean,
         default: false,
@@ -28,36 +28,42 @@ const { isSubscribed, userId, questionId, type } = defineProps({
     },
 });
 
-const isDisableSubscribeBtn = ref<boolean>(isSubscribed);
+const isDisableSubscribeBtn = ref<boolean>(false);
+
+watch(
+    () => props.isSubscribed,
+    () => {
+        isDisableSubscribeBtn.value = props.isSubscribed;
+    }
+);
 
 const handleSubscribe = () => {
-    if (isSubscribed) {
+    if (props.isSubscribed) {
         return;
     }
-    if (type === 'user') {
-        if (userId === '') {
+    if (props.type === 'user') {
+        if (props.userId === '') {
             return;
         } else {
-            subscribeAuthorByAuthorId(userId).then((res) => {
+            subscribeAuthorByAuthorId(props.userId).then((res) => {
                 if (res.data.code == 200) {
                     isDisableSubscribeBtn.value = true;
-                    emit('reloadSubscribe');
                     ElMessage.success('SUCCESS');
                 } else if (res.data.code == 722) {
                     isDisableSubscribeBtn.value = true;
                     ElMessage.warning('you already subscribed');
                 }
             });
+            return;
         }
     } else {
-        if (questionId === '') {
+        if (props.questionId === '') {
             return;
         } else {
-            subscribeQuestionById(questionId).then((res) => {
+            subscribeQuestionById(props.questionId).then((res) => {
                 if (res.data.code == 200) {
                     isDisableSubscribeBtn.value = true;
                     ElMessage.success('SUCCESS');
-                    emit('reloadSubscribe');
                 } else if (res.data.code == 722) {
                     isDisableSubscribeBtn.value = true;
                     ElMessage.warning('you already subscribed');
@@ -67,13 +73,30 @@ const handleSubscribe = () => {
     }
 };
 
-const emit = defineEmits(['reloadSubscribe']);
+const handleCancelSubscribe = () => {
+    if (!props.isSubscribed) {
+        return;
+    }
+    if (props.type === 'user') {
+        if (props.userId === '') {
+            return;
+        } else {
+            cancelSubscribe(props.userId, props.questionId, props.type === 'user' ? 1 : 2).then((res) => {
+                if (res.data.code == 200) {
+                    isDisableSubscribeBtn.value = false;
+                    ElMessage.success('SUCCESS');
+                } else {
+                    ElMessage.warning(res.data.message);
+                }
+            });
+        }
+    }
+};
 </script>
 
 <template>
-    <el-button @click="handleSubscribe" type="primary" v-if="!isDisableSubscribeBtn" plain> Subscribe</el-button>
-    <el-button type="primary" :disabled="true" v-if="isDisableSubscribeBtn" plain>
-        <i-ep-circle-check class="mr-1" />
-        Subscribed
+    <el-button @click="handleSubscribe" type="info" v-if="!isDisableSubscribeBtn" plain> Subscribe</el-button>
+    <el-button @click="handleCancelSubscribe" type="danger" v-if="isDisableSubscribeBtn" plain>
+        Cancel Subscribed
     </el-button>
 </template>

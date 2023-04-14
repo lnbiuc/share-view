@@ -3,7 +3,7 @@ import { getOneArticle, ArticleContentEntity } from '../../axios/api/articleApi'
 import { useRouteParams } from '@vueuse/router';
 import { ElMessage } from 'element-plus';
 import { useRouter } from 'vue-router';
-import { subscribeAuthorByAuthorId } from '../../axios/api/subscribeApi';
+import { refreshSubscribe } from '../../axios/api/subscribeApi';
 import { likeArticle } from '../../axios/api/likesApi';
 import { addCollection } from '../../axios/api/collectApi';
 import UserInfoLite from '../../components/aside/UserInfoLite.vue';
@@ -119,8 +119,6 @@ const state = reactive({
 });
 
 const scrollElement = document.documentElement;
-
-const reloadSubscribe = () => {};
 </script>
 
 <template>
@@ -165,20 +163,10 @@ const reloadSubscribe = () => {};
                         </div>
                     </div>
                     <div class="flex items-center mb-4">
-                        <!--                        <el-button-->
-                        <!--                            @click="handlerSubscribe(data.article.author.userId)"-->
-                        <!--                            type="primary"-->
-                        <!--                            v-if="!disableSubscribeBtn"-->
-                        <!--                            plain-->
-                        <!--                            >Subscribe-->
-                        <!--                        </el-button>-->
-                        <!--                        <el-button type="primary" :disabled="true" v-if="disableSubscribeBtn" plain>-->
-                        <!--                            <i-ep-circle-check class="mr-1" />-->
-                        <!--                            Subscribed-->
-                        <!--                        </el-button>-->
                         <subscribe-btn
                             :is-subscribed="data.article.author.isSubscribed"
-                            @reload-subscribe="reloadSubscribe"
+                            :user-id="data.article.author.userId"
+                            type="user"
                         />
                     </div>
                 </div>
