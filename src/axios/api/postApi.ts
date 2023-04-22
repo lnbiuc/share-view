@@ -12,4 +12,4 @@ export const sendPost = async (data: SendPostEntity) => {
         method: 'POST',
         data: data,
     });
-}
+};

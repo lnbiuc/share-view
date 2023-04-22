@@ -3,7 +3,7 @@ import { useRouteParams } from '@vueuse/router';
 import { storeToRefs } from 'pinia';
 import { ArticleListEntity } from '../../axios/api/articleApi';
 import { useArticleParamsStore } from '../../pinia';
-import {Ref, ref} from 'vue';
+import { Ref, ref } from 'vue';
 import axios from '../../axios';
 import { formatTime } from '../../utils';
 import AllTypePreviewList from '../../components/common/AllTypePreviewList.vue';

@@ -18,9 +18,9 @@ const showImages = (img: string[]) => {
                     <div
                         @click="showImages(images)"
                         :style="{
-                        backgroundImage: 'url(' + images[0] + ')',
-                        background: 'center center / no-repeat',
-                    }"
+                            backgroundImage: 'url(' + images[0] + ')',
+                            background: 'center center / no-repeat',
+                        }"
                         class="bg-cover bg-center h-[350px] w-full rounded shadow-sm"
                     ></div>
                 </div>
@@ -29,9 +29,9 @@ const showImages = (img: string[]) => {
                         v-for="image in images"
                         @click="showImages(images)"
                         :style="{
-                        backgroundImage: 'url(' + image + ')',
-                        background: 'center center / no-repeat',
-                    }"
+                            backgroundImage: 'url(' + image + ')',
+                            background: 'center center / no-repeat',
+                        }"
                         class="bg-cover bg-center h-[250px] w-full rounded shadow-sm"
                     ></div>
                 </div>
@@ -40,9 +40,9 @@ const showImages = (img: string[]) => {
                         v-for="image in images"
                         @click="showImages(images)"
                         :style="{
-                        backgroundImage: 'url(' + image + ')',
-                        background: 'center center / no-repeat',
-                    }"
+                            backgroundImage: 'url(' + image + ')',
+                            background: 'center center / no-repeat',
+                        }"
                         class="bg-cover bg-center h-[200px] w-full rounded shadow-sm"
                     ></div>
                 </div>
@@ -51,9 +51,9 @@ const showImages = (img: string[]) => {
                         v-for="image in images"
                         @click="showImages(images)"
                         :style="{
-                        backgroundImage: 'url(' + image + ')',
-                        background: 'center center / no-repeat',
-                    }"
+                            backgroundImage: 'url(' + image + ')',
+                            background: 'center center / no-repeat',
+                        }"
                         class="bg-cover bg-center h-[200px] w-full rounded shadow-sm"
                     ></div>
                 </div>
@@ -62,9 +62,9 @@ const showImages = (img: string[]) => {
                         v-for="image in images"
                         @click="showImages(images)"
                         :style="{
-                        backgroundImage: 'url(' + image + ')',
-                        background: 'center center / no-repeat',
-                    }"
+                            backgroundImage: 'url(' + image + ')',
+                            background: 'center center / no-repeat',
+                        }"
                         class="bg-cover bg-center h-[200px] w-full rounded shadow-sm"
                     ></div>
                 </div>

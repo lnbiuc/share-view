@@ -1,40 +1,39 @@
 <script setup lang="ts">
-import UserCenterLayout from "../../layout/UserCenterLayout.vue";
-import {getUserInfo} from "../../axios/api/userApi";
-import {useRouteParams} from "@vueuse/router";
-import {Ref, ref} from "vue";
-import {UserLiteEntity} from "../../axios/api/articleApi";
-import {formatTime} from "../../utils";
+import UserCenterLayout from '../../layout/UserCenterLayout.vue';
+import { getUserInfo } from '../../axios/api/userApi';
+import { useRouteParams } from '@vueuse/router';
+import { Ref, ref } from 'vue';
+import { UserLiteEntity } from '../../axios/api/articleApi';
+import { formatTime } from '../../utils';
 
 const user: Ref<UserLiteEntity> = ref({
-    userId: "",
-    username: "",
-    signature: "",
-    avatar: "https://cube.elemecdn.com/0/88/03b0d39583f48206768a7534e55bcpng.png",
+    userId: '',
+    username: '',
+    signature: '',
+    avatar: 'https://cube.elemecdn.com/0/88/03b0d39583f48206768a7534e55bcpng.png',
     level: 0,
-    registerTime: "",
-    lastLogin: "",
-    ipAddr: "",
+    registerTime: '',
+    lastLogin: '',
+    ipAddr: '',
     isSubscribed: false,
-})
+});
 const userId = useRouteParams<string>('userId');
 onMounted(() => {
-    getUserInfo(userId.value).then(res => {
-        user.value = res.data.data
-    })
-})
+    getUserInfo(userId.value).then((res) => {
+        user.value = res.data.data;
+    });
+});
 
-const {proxy}: any = getCurrentInstance();
+const { proxy }: any = getCurrentInstance();
 const showImages = (img: string) => {
     proxy.$viewerApi({
         images: img,
     });
 };
 
-const toPercent = (num:number) => {
-    return Math.min(Math.max(num - 1, 0), 999) / 10
-}
-
+const toPercent = (num: number) => {
+    return Math.min(Math.max(num - 1, 0), 999) / 10;
+};
 </script>
 
 <template>
@@ -42,12 +41,13 @@ const toPercent = (num:number) => {
         <template #avatar>
             <div class="avatar">
                 <div
-                        @click="showImages(user.avatar)"
-                        :style="{
+                    @click="showImages(user.avatar)"
+                    :style="{
                         backgroundImage: 'url(' + user.avatar + ')',
-                        background: 'center center / no-repeat',}"
-                        class="bg-cover bg-center h-[200px] w-[200px] rounded shadow-md">
-                </div>
+                        background: 'center center / no-repeat',
+                    }"
+                    class="bg-cover bg-center h-[200px] w-[200px] rounded shadow-md"
+                ></div>
             </div>
         </template>
         <template #userInfo>
@@ -69,25 +69,17 @@ const toPercent = (num:number) => {
             </div>
             <div class="mt-2 flex flex-row flex-wrap">
                 <el-tooltip :content="user.registerTime">
-                    <span class="text-gray-400 text-sm">
-                        Register : {{ formatTime(user.registerTime) }}
-                    </span>
+                    <span class="text-gray-400 text-sm"> Register : {{ formatTime(user.registerTime) }} </span>
                 </el-tooltip>
-                <span class="text-gray-400 mx-1">
-                    ·
-                </span>
+                <span class="text-gray-400 mx-1"> · </span>
                 <el-tooltip :content="user.lastLogin">
-                    <span class="text-gray-400 text-sm">
-                        Last Login : {{ formatTime(user.lastLogin) }}
-                    </span>
+                    <span class="text-gray-400 text-sm"> Last Login : {{ formatTime(user.lastLogin) }} </span>
                 </el-tooltip>
-                <span class="text-gray-400 mx-1">
-                    ·
-                </span>
+                <span class="text-gray-400 mx-1"> · </span>
                 <span class="text-gray-400 text-sm">IP form : {{ user.ipAddr }}</span>
             </div>
             <div class="mt-2 flex flex-col">
-                <el-progress :percentage="toPercent(user.level)" :text-inside="true"/>
+                <el-progress :percentage="toPercent(user.level)" :text-inside="true" />
                 <div class="flex flex-row justify-between mt-1">
                     <span class="text-gray-400 text-xs">Level : {{ Math.floor(toPercent(user.level)) }}</span>
                     <span class="text-gray-400 text-xs">Next : {{ Math.floor(toPercent(user.level)) + 1 }}</span>
@@ -95,7 +87,7 @@ const toPercent = (num:number) => {
             </div>
         </template>
         <template #other>
-            <router-view/>
+            <router-view />
         </template>
     </user-center-layout>
 </template>

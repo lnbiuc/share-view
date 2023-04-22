@@ -68,30 +68,36 @@ const handleClickComment = (articleId: string, title: string, type: string, info
             >
                 <div class="flex flex-row p-0 text-gray-400">
                     <div class="truncate">
-                        <span class="hover:text-blue-500 cursor-pointer transition-all">{{ a.author.username }} · </span>
+                        <span class="hover:text-blue-500 cursor-pointer transition-all"
+                            >{{ a.author.username }} ·
+                        </span>
                         <span v-text="formatTime(a.releaseTime)"></span>
-                        <span class="hover:text-blue-500 cursor-pointer transition-all" v-for="t in a.tags" :key="t.tagId">
-                    · {{ t.tagName }}</span
+                        <span
+                            class="hover:text-blue-500 cursor-pointer transition-all"
+                            v-for="t in a.tags"
+                            :key="t.tagId"
+                        >
+                            · {{ t.tagName }}</span
                         >
                     </div>
                 </div>
                 <div class="flex flex-row m">
                     <div class="my-2 flex flex-row align-middle">
                         <div class="text-left">
-                    <span
-                        :style="{ backgroundColor: tagBgColor(a.type) }"
-                        class="px-2 py-[2px] mr-2 rounded-full m-auto transition-all type cursor-default dark:text-light"
-                    >
-                        {{ a.type }}
-                    </span>
+                            <span
+                                :style="{ backgroundColor: tagBgColor(a.type) }"
+                                class="px-2 py-[2px] mr-2 rounded-full m-auto transition-all type cursor-default dark:text-light"
+                            >
+                                {{ a.type }}
+                            </span>
                             <span class="text-lg py-1 title" @click="handleToArticleDetail(a.type, a.articleId)">
-                        <span v-if="a.type === 'Article' || a.type === 'Question'">
-                            {{ a.title }}
-                        </span>
-                        <span v-if="a.type === 'Video' || a.type === 'Post'">
-                            {{ a.introduction }}
-                        </span>
-                    </span>
+                                <span v-if="a.type === 'Article' || a.type === 'Question'">
+                                    {{ a.title }}
+                                </span>
+                                <span v-if="a.type === 'Video' || a.type === 'Post'">
+                                    {{ a.introduction }}
+                                </span>
+                            </span>
                         </div>
                     </div>
                 </div>

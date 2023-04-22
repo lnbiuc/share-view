@@ -9,7 +9,7 @@ export const uploadImage = async (file: any) => {
         data: formData,
         headers: { 'Content-Type': 'multipart/form-data' },
     });
-}
+};
 
 export const uploadVideo = async (file: any) => {
     let formData = new FormData();
@@ -20,4 +20,4 @@ export const uploadVideo = async (file: any) => {
         data: formData,
         headers: { 'Content-Type': 'multipart/form-data' },
     });
-}
+};

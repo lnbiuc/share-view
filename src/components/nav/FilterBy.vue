@@ -1,6 +1,4 @@
-<script setup lang='ts'>
-
-</script>
+<script setup lang="ts"></script>
 
 <template>
     <div class="flex flex-row rounded-md mx-2 mt-2 p-4 dark:bg-dark">

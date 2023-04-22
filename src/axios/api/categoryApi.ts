@@ -1,5 +1,5 @@
 import axios from '../index';
-import {UserLiteEntity} from './articleApi';
+import { UserLiteEntity } from './articleApi';
 
 export interface CategoryEntity {
     id: number;
@@ -19,4 +19,4 @@ export const getCategoryList = async (number: number, size: number) => {
             pageSize: size,
         },
     });
-}
+};

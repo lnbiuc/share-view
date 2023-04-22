@@ -88,7 +88,7 @@ watch(refParamsStore.params.value, () => {
                         <el-avatar :src="a.author.avatar" shape="square" />
                     </div>
                     <span class="hover:text-blue-500 text-xl cursor-pointer transition-all"
-                    >{{ a.author.username }} ·&nbsp;</span
+                        >{{ a.author.username }} ·&nbsp;</span
                     >
                     <span v-text="formatTime(a.releaseTime)"></span>
                     <span class="title" v-for="t in a.tags" :key="t.tagId"> &nbsp;· {{ t.tagName }}</span>

@@ -1,10 +1,10 @@
 <script setup lang="ts">
-import {ref, Ref} from "vue";
-import {ArticleListEntity, articleParams, getArticleList} from "../../axios/api/articleApi";
-import {useArticleParamsStore} from "../../pinia";
-import {storeToRefs} from "pinia";
-import axios from "../../axios";
-import {useRouteParams} from "@vueuse/router";
+import { ref, Ref } from 'vue';
+import { ArticleListEntity, articleParams, getArticleList } from '../../axios/api/articleApi';
+import { useArticleParamsStore } from '../../pinia';
+import { storeToRefs } from 'pinia';
+import axios from '../../axios';
+import { useRouteParams } from '@vueuse/router';
 
 const articleList: Ref<ArticleListEntity[]> = ref([
     {
@@ -43,7 +43,7 @@ watch(articleList, () => {
 
 const getArticleList = async (data: articleParams) => {
     return axios.post('../../api/article/page', data);
-}
+};
 
 const total = ref(0);
 const isLoad = ref<boolean>(true);
@@ -80,13 +80,12 @@ const currentChange = (pageNumber: number) => {
 };
 </script>
 
-
 <template>
     <transition appear>
         <div class="flex flex-col">
-            <filter-by/>
+            <filter-by />
             <div>
-                <all-type-preview-list :article-list="articleList" :is-load="false"/>
+                <all-type-preview-list :article-list="articleList" :is-load="false" />
                 <Pagination
                     :current-page="paramsStore.params.pageNumber"
                     :page-size="paramsStore.params.pageSize"

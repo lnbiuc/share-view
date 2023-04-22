@@ -100,7 +100,7 @@ export interface ViewHistoryEntity {
 
 export const getArticleList = async (data: articleParams) => {
     return axios.post('./api/article/page', data);
-}
+};
 
 export const getViewHistory = async (userId: string, number: number, size: number) => {
     return axios({
@@ -111,14 +111,14 @@ export const getViewHistory = async (userId: string, number: number, size: numbe
             pageSize: size,
         },
     });
-}
+};
 
 export const getOneArticle = async (articleId: string) => {
     return axios({
         url: '../api/article/' + articleId,
         method: 'GET',
     });
-}
+};
 
 export const publishArticle = async (data: {
     title: string;
@@ -132,4 +132,4 @@ export const publishArticle = async (data: {
         method: 'POST',
         data: data,
     });
-}
+};

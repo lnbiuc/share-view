@@ -9,4 +9,4 @@ export const likeArticle = async (id: string, type: number, isLike: number) => {
             isLike: isLike,
         },
     });
-}
+};

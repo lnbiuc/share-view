@@ -47,12 +47,12 @@ export interface CountEntity {
 
 export const login = async (data: loginParams) => {
     return axios.post('./api/user/login', data);
-}
+};
 
 export const sendCode = async (data: sendCodeParams) => {
     return axios.post('./api/user/code', data);
-}
+};
 
 export const register = async (data: registerParams) => {
     return axios.post('./api/user/register', data);
-}
+};

@@ -59,7 +59,7 @@ export const getCommentsById = async (id: string, num: number, size: number) => 
             pageSize: size,
         },
     });
-}
+};
 
 export const publishComments = async (data: PublishCommentsEntity) => {
     return axios({
@@ -67,4 +67,4 @@ export const publishComments = async (data: PublishCommentsEntity) => {
         method: 'POST',
         data: data,
     });
-}
+};
