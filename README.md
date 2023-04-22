@@ -28,4 +28,5 @@ tailwind.css
 -   [ ] 5.create answer error
 -   [ ] 6.comment sort by
 -   [x] 7.post image layout
--   [ ] 8.subscribe 按钮提取组件
+-   [ ] 8.subscribe 按钮组件
+-   [ ] 9.用户头像和基本信息组件

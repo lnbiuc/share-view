@@ -3,7 +3,7 @@ import { getOneArticle, ArticleContentEntity } from '../../axios/api/articleApi'
 import { useRouteParams } from '@vueuse/router';
 import { ElMessage } from 'element-plus';
 import { useRouter } from 'vue-router';
-import { subscribeAuthorByAuthorId } from '../../axios/api/subscribeApi';
+import { refreshSubscribe } from '../../axios/api/subscribeApi';
 import { likeArticle } from '../../axios/api/likesApi';
 import { addCollection } from '../../axios/api/collectApi';
 import UserInfoLite from '../../components/aside/UserInfoLite.vue';
@@ -13,7 +13,6 @@ import { storeToRefs } from 'pinia';
 import { Ref, ref } from 'vue';
 import MdEditor from 'md-editor-v3';
 import 'md-editor-v3/lib/style.css';
-import { checkLoginStatus } from '../../utils';
 import DefaultDetailLayout from '../../layout/DefaultDetailLayout.vue';
 
 const articleId = useRouteParams<string>('articleId');
@@ -91,19 +90,6 @@ const collect = () => {
     });
 };
 const disableSubscribeBtn = ref<boolean>(false);
-const handlerSubscribe = (userId: string) => {
-    if (checkLoginStatus()) {
-        subscribeAuthorByAuthorId(userId).then((res) => {
-            if (res.data.code == 200) {
-                disableSubscribeBtn.value = true;
-                ElMessage.success('SUCCESS');
-            } else if (res.data.code == 722) {
-                disableSubscribeBtn.value = true;
-                ElMessage.warning('you already subscribed');
-            }
-        });
-    }
-};
 
 const store = useReloadCommentStore();
 const refStore = storeToRefs(store);
@@ -177,17 +163,11 @@ const scrollElement = document.documentElement;
                         </div>
                     </div>
                     <div class="flex items-center mb-4">
-                        <el-button
-                            @click="handlerSubscribe(data.article.author.userId)"
-                            type="primary"
-                            v-if="!disableSubscribeBtn"
-                            plain
-                            >Subscribe
-                        </el-button>
-                        <el-button type="primary" :disabled="true" v-if="disableSubscribeBtn" plain>
-                            <i-ep-circle-check class="mr-1" />
-                            Subscribed
-                        </el-button>
+                        <subscribe-btn
+                            :is-subscribed="data.article.author.isSubscribed"
+                            :user-id="data.article.author.userId"
+                            type="user"
+                        />
                     </div>
                 </div>
                 <el-divider>CONTENT</el-divider>

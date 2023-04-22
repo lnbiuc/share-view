@@ -27,4 +27,23 @@ body {
 a {
     text-decoration: none;
 }
+
+.v-enter-active,
+.v-leave-active {
+    transition: opacity 0.2s ease;
+}
+
+.v-enter-from,
+.v-leave-to {
+    opacity: 0;
+}
+
+.fade-enter-active,
+.fade-leave-active {
+    transition: opacity 0.2s ease;
+}
+.fade-enter,
+.fade-leave-to {
+    opacity: 0;
+}
 </style>

@@ -68,9 +68,9 @@ const currentChange = (pageNumber: number) => {
 </script>
 
 <template>
-    <Loading :is-loading="isLoad" v-if="!isLoad" />
-    <transition appear>
-        <div class="m-2">
+    <Loading :is-loading="isLoad" v-if="isLoad" />
+    <transition>
+        <div class="m-2" v-if="!isLoad">
             <div
                 v-for="(a, i) in articleList"
                 :key="a.articleId"

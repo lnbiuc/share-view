@@ -101,7 +101,7 @@ const currentChange = (pageNumber: number) => {
     <category-detail-layout>
         <template #left>
             <div class="flex flex-col text-left rounded-md flex-grow">
-                <all-type-preview-list :article-list="articleList" :is-load="isLoad" />
+                <all-type-preview-list :article-list="articleList" />
                 <Pagination
                     :current-page="paramsStore.params.pageNumber"
                     :page-size="paramsStore.params.pageSize"

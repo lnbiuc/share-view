@@ -85,7 +85,8 @@ const currentChange = (pageNumber: number) => {
         <div class="flex flex-col">
             <filter-by />
             <div>
-                <all-type-preview-list :article-list="articleList" :is-load="false" />
+                <Loading :is-loading="isLoad" />
+                <all-type-preview-list :article-list="articleList" v-if="!isLoad" />
                 <Pagination
                     :current-page="paramsStore.params.pageNumber"
                     :page-size="paramsStore.params.pageSize"

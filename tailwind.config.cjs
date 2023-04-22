@@ -10,8 +10,9 @@ module.exports = {
             xl: '1440px',
         },
         fontFamily: {
-            sans: ['Graphik', 'sans-serif'],
-            serif: ['Merriweather', 'serif'],
+            sans: ['Roboto Slab', 'sans-serif'], // 无衬线字体
+            serif: ['Georgia', 'serif'], // 衬线字体
+            zh: ['思源宋体', 'serif'], // 中文字体
         },
         extend: {
             spacing: {
@@ -23,6 +24,9 @@ module.exports = {
             },
             borderWidth: {
                 2: '1px',
+            },
+            fontSize: {
+                lg: '1.125rem',
             },
         },
     },

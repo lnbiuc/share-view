@@ -69,11 +69,10 @@ watch(refParamsStore.params.value, () => {
 
 <template>
     <Loading :is-loading="isLoading" />
-    <transition appear>
-        <div class="m-2">
+    <transition>
+        <div class="m-2" v-if="!isLoading">
             <div
                 v-for="a in articleList"
-                v-show="!isLoading"
                 class="flex flex-col mb-2 bg-light transition-all dark:bg-dark rounded-md shadow-sm hover:shadow-md p-4"
             >
                 <div

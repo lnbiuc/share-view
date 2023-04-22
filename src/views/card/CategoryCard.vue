@@ -33,7 +33,7 @@ const themeStore = useThemeStore();
 
 <template>
     <Loading :is-loading="isLoading" />
-    <transition appear>
+    <transition>
         <div class="m-2" v-if="!isLoading">
             <div
                 v-for="a in data"

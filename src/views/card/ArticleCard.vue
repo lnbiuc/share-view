@@ -81,7 +81,7 @@ const handleClickComment = (title: string, articleId: string) => {
 
 <template>
     <Loading :is-loading="isLoad" />
-    <transition appear>
+    <transition>
         <div class="m-2" v-if="!isLoad">
             <div
                 class="mb-2 bg-light dark:bg-dark rounded-md shadow-sm hover:shadow-md p-4 transition-all"
