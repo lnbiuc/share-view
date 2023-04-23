@@ -102,10 +102,12 @@ const taggerColor = (s: { name: string; value: string }) => {
         </div>
         <div class="flex items-center mr-2">
             <el-dropdown trigger="click">
-                <span class="el-dropdown-link align-top cursor-pointer text-base">
+                <div class="el-dropdown-link cursor-pointer flex flex-row items-center">
                     {{ displayFilter(currentSelectFilter) }}
-                    <el-icon><ArrowDown /></el-icon>
-                </span>
+                    <el-icon color="gray" class="ml-2">
+                        <i-ep-arrow-down />
+                    </el-icon>
+                </div>
                 <template #dropdown>
                     <el-dropdown-menu>
                         <el-dropdown-item

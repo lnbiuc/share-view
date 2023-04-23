@@ -18,7 +18,6 @@
         </div>
         <div class="flex justify-end items-center w-1/12 mr-5">
             <el-switch
-                size="large"
                 v-model="isSwitchOpen"
                 inline-prompt
                 :active-icon="Moon"
@@ -33,10 +32,8 @@
                     <el-avatar shape="circle" :src="loginUser.avatar" />
                     <span class="ml-2 text-xl dark:text-gray-300">{{ loginUser.username }}</span
                     >&nbsp;
-                    <el-icon class="text-xl">
-                        <el-icon color="gray" class="ml-2">
-                            <i-ep-arrow-down />
-                        </el-icon>
+                    <el-icon color="gray" class="ml-2 text-xl">
+                        <i-ep-arrow-down />
                     </el-icon>
                 </span>
                 <template #dropdown>
