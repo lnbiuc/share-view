@@ -113,15 +113,23 @@ const themeStore = useThemeStore();
                         <div
                             class="flex flex-row items-center mr-2 text-sm text-gray-500 hover:text-blue-500 cursor-pointer transition-all"
                         >
-                            <div class="flex flex-row items-center justify-center" v-if="comment.isLiked" @click="handleClickLike(comment.id, 0)">
+                            <div
+                                class="flex flex-row items-center justify-center"
+                                v-if="comment.isLiked"
+                                @click="handleClickLike(comment.id, 0)"
+                            >
                                 <el-icon color="#3B82F6" :size="18">
-                                    <i-ant-design-like-filled/>
+                                    <i-ant-design-like-filled />
                                 </el-icon>
                                 <span class="ml-1 text-blue-500"> {{ comment.likesCount }} </span>
                             </div>
-                            <div class="flex flex-row justify-center" v-if="!comment.isLiked" @click="handleClickLike(comment.id, 1)">
+                            <div
+                                class="flex flex-row justify-center"
+                                v-if="!comment.isLiked"
+                                @click="handleClickLike(comment.id, 1)"
+                            >
                                 <el-icon :size="18">
-                                    <i-ant-design-like-outlined/>
+                                    <i-ant-design-like-outlined />
                                 </el-icon>
                                 <span class="ml-1"> {{ comment.likesCount }} </span>
                             </div>
@@ -131,7 +139,7 @@ const themeStore = useThemeStore();
                             class="flex flex-row items-center mr-2 text-sm text-gray-500 hover:text-blue-500 cursor-pointer transition-all"
                         >
                             <el-icon :size="17">
-                                <i-ant-design-message-outlined/>
+                                <i-ant-design-message-outlined />
                             </el-icon>
                             <span class="ml-1">Replay</span>
                         </div>
@@ -167,15 +175,23 @@ const themeStore = useThemeStore();
                                     <div
                                         class="flex flex-row items-center mr-2 text-gray-500 hover:text-blue-500 cursor-pointer transition-all"
                                     >
-                                        <div class="flex flex-row items-center justify-center" v-if="child.isLiked" @click="handleClickLike(comment.id, 0)">
+                                        <div
+                                            class="flex flex-row items-center justify-center"
+                                            v-if="child.isLiked"
+                                            @click="handleClickLike(comment.id, 0)"
+                                        >
                                             <el-icon color="#3B82F6" :size="17">
-                                                <i-ant-design-like-filled/>
+                                                <i-ant-design-like-filled />
                                             </el-icon>
                                             <span class="ml-1 text-blue-500"> {{ child.likesCount }} </span>
                                         </div>
-                                        <div class="flex flex-row items-center justify-center" v-if="!child.isLiked" @click="handleClickLike(child.id, 1)">
+                                        <div
+                                            class="flex flex-row items-center justify-center"
+                                            v-if="!child.isLiked"
+                                            @click="handleClickLike(child.id, 1)"
+                                        >
                                             <el-icon :size="17">
-                                                <i-ant-design-like-outlined/>
+                                                <i-ant-design-like-outlined />
                                             </el-icon>
                                             <span class="ml-1"> {{ child.likesCount }} </span>
                                         </div>
@@ -185,7 +201,7 @@ const themeStore = useThemeStore();
                                         class="flex flex-row items-center mr-2 text-xs text-gray-500 hover:text-blue-500 cursor-pointer transition-all"
                                     >
                                         <el-icon :size="16">
-                                            <i-ant-design-message-outlined/>
+                                            <i-ant-design-message-outlined />
                                         </el-icon>
                                         <span class="ml-1">Replay</span>
                                     </div>

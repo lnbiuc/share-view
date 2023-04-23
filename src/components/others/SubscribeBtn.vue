@@ -1,8 +1,8 @@
 <script setup lang="ts">
 import { cancelSubscribe, subscribeAuthorByAuthorId, subscribeQuestionById } from '../../axios/api/subscribeApi';
 import { ElMessage } from 'element-plus';
-import {useDialogControlStore, useUserStore} from "../../pinia";
-import {storeToRefs} from "pinia";
+import { useDialogControlStore, useUserStore } from '../../pinia';
+import { storeToRefs } from 'pinia';
 
 const props = defineProps({
     isSubscribed: {
@@ -44,13 +44,13 @@ const handleSubscribe = () => {
     } else {
         const dialogForm = useDialogControlStore();
         dialogForm.loginForm = true;
-        const refUserStore = storeToRefs(userStore)
+        const refUserStore = storeToRefs(userStore);
         const unwatch = watch(refUserStore, () => {
             if (refUserStore.isLogin) {
                 doSubscribe();
                 unwatch();
             }
-        })
+        });
     }
 };
 
@@ -85,7 +85,7 @@ const doSubscribe = () => {
             });
         }
     }
-}
+};
 
 const handleCancelSubscribe = () => {
     if (!props.isSubscribed) {

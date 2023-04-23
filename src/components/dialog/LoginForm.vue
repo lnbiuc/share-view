@@ -229,11 +229,7 @@ const themeStore = useThemeStore();
 </script>
 
 <template>
-    <el-dialog
-        class="p-6"
-        v-model="dialogStore.loginForm"
-        width="30%" title="Login / Register"
-        :draggable="true">
+    <el-dialog class="p-6" v-model="dialogStore.loginForm" width="30%" title="Login / Register" :draggable="true">
         <div class="mb-4">
             <el-radio-group v-model="handlerType" label="size control">
                 <el-radio-button label="0">by Password</el-radio-button>

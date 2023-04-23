@@ -32,9 +32,9 @@
                     <el-avatar shape="circle" :src="loginUser.avatar" />
                     <span class="ml-2 text-xl dark:text-gray-300">{{ loginUser.username }}</span
                     >&nbsp;
-                        <el-icon color="gray" class="ml-2 text-xl">
-                            <i-ep-arrow-down />
-                        </el-icon>
+                    <el-icon color="gray" class="ml-2 text-xl">
+                        <i-ep-arrow-down />
+                    </el-icon>
                 </span>
                 <template #dropdown>
                     <el-dropdown-menu>

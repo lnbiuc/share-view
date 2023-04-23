@@ -108,7 +108,13 @@ watch(refThemeStore.isDark, (val) => {
         </template>
         <template #footer>
             <div class="flex flex-row justify-end">
-                <el-button type="primary" @click="handlePublish(ruleFormRef)" plain color="#626aef" :dark="themeStore.isDark">
+                <el-button
+                    type="primary"
+                    @click="handlePublish(ruleFormRef)"
+                    plain
+                    color="#626aef"
+                    :dark="themeStore.isDark"
+                >
                     <el-icon class="el-icon--left">
                         <i-ep-circle-check />
                     </el-icon>
