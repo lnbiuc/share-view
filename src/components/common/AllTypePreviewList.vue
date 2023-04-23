@@ -71,14 +71,16 @@ const handleClickComment = (articleId: string, title: string, type: string, info
                 >
             </div>
         </div>
-        <div class="my-2 flex flex-row justify-start">
+        <div class="my-2 flex flex-row items-start">
             <div
                 :style="{ backgroundColor: tagBgColor(a.type) }"
-                class="px-[15px] py-[2px] text-sm font-medium rounded-sm m-auto transition-all type cursor-default dark:text-light"
+                class="mt-0.5 w-[10px] px-[15px] py-[2px] text-sm font-medium rounded-sm transition-all type cursor-default dark:text-light"
             >
-                {{ a.type.substring(0, 1) }}
+                <span>
+                    {{ a.type.substring(0, 1) }}
+                </span>
             </div>
-            <div class="text-base py-1 title leading-7" @click="handleToArticleDetail(a.type, a.articleId)">
+            <div class="flex flex-grow text-base title leading-7 ml-3" @click="handleToArticleDetail(a.type, a.articleId)">
                 <span v-if="a.type === 'Article' || a.type === 'Question'">
                     {{ a.title }}
                 </span>
@@ -89,7 +91,7 @@ const handleClickComment = (articleId: string, title: string, type: string, info
         </div>
         <div
             v-if="a.type === 'Article' || a.type === 'Question'"
-            class="flex text-xs text-gray-500 text-left cursor-default ml-2"
+            class="flex text-xs text-gray-500 text-left cursor-default mb-1"
         >
             {{ a.introduction }}
         </div>
