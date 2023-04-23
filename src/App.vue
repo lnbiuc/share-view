@@ -46,4 +46,8 @@ a {
 .fade-leave-to {
     opacity: 0;
 }
+
+.el-dialog__header {
+    margin-right: 0;
+}
 </style>

@@ -85,7 +85,7 @@ const themeStore = useThemeStore();
         :draggable="true"
     >
         <template #header="{ close, titleId, titleClass }">
-            <div class="flex flex-row justify-between px-6">
+            <div class="flex flex-row justify-between">
                 <h4 :id="titleId" :class="titleClass">
                     <el-icon class="el-icon--left" size="20px">
                         <i-ep-edit-pen />
@@ -101,7 +101,7 @@ const themeStore = useThemeStore();
             </div>
         </template>
         <template #footer>
-            <div class="flex flex-row justify-end mr-4 px-6">
+            <div class="flex flex-row justify-end">
                 <el-button type="primary" @click="handlePublish" plain :dark="themeStore.isDark" color="#626aef">
                     <el-icon class="el-icon--left">
                         <i-ep-circle-check />

@@ -91,14 +91,14 @@ watch(refThemeStore.isDark, (val) => {
         :draggable="true"
     >
         <template #header="{ close, titleId, titleClass }">
-            <div class="flex flex-row justify-between px-6">
+            <div class="flex flex-row justify-between">
                 <h4 :id="titleId" :class="titleClass">
                     <el-icon class="el-icon--left">
                         <i-ep-edit-pen />
                     </el-icon>
                     Publish Article
                 </h4>
-                <el-button type="danger" @click="close">
+                <el-button type="danger" @click="close" plain>
                     <el-icon class="el-icon--left">
                         <i-ep-circle-close-filled />
                     </el-icon>
@@ -107,8 +107,8 @@ watch(refThemeStore.isDark, (val) => {
             </div>
         </template>
         <template #footer>
-            <div class="flex flex-row justify-end mr-4 px-6">
-                <el-button type="primary" @click="handlePublish(ruleFormRef)">
+            <div class="flex flex-row justify-end">
+                <el-button type="primary" @click="handlePublish(ruleFormRef)" plain color="#626aef" :dark="themeStore.isDark">
                     <el-icon class="el-icon--left">
                         <i-ep-circle-check />
                     </el-icon>

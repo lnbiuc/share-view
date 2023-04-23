@@ -1,6 +1,8 @@
 <script setup lang="ts">
 import { cancelSubscribe, subscribeAuthorByAuthorId, subscribeQuestionById } from '../../axios/api/subscribeApi';
 import { ElMessage } from 'element-plus';
+import {useDialogControlStore, useUserStore} from "../../pinia";
+import {storeToRefs} from "pinia";
 
 const props = defineProps({
     isSubscribed: {
@@ -28,19 +30,31 @@ const props = defineProps({
     },
 });
 
-const isDisableSubscribeBtn = ref<boolean>(false);
+const isDisableSubscribeBtn = ref<boolean>(props.isSubscribed);
 
-watch(
-    () => props.isSubscribed,
-    () => {
-        isDisableSubscribeBtn.value = props.isSubscribed;
-    }
-);
+isDisableSubscribeBtn.value = props.isSubscribed;
 
 const handleSubscribe = () => {
     if (props.isSubscribed) {
         return;
     }
+    const userStore = useUserStore();
+    if (userStore.isLogin) {
+        doSubscribe();
+    } else {
+        const dialogForm = useDialogControlStore();
+        dialogForm.loginForm = true;
+        const refUserStore = storeToRefs(userStore)
+        const unwatch = watch(refUserStore, () => {
+            if (refUserStore.isLogin) {
+                doSubscribe();
+                unwatch();
+            }
+        })
+    }
+};
+
+const doSubscribe = () => {
     if (props.type === 'user') {
         if (props.userId === '') {
             return;
@@ -71,7 +85,7 @@ const handleSubscribe = () => {
             });
         }
     }
-};
+}
 
 const handleCancelSubscribe = () => {
     if (!props.isSubscribed) {
@@ -95,7 +109,7 @@ const handleCancelSubscribe = () => {
 </script>
 
 <template>
-    <el-button @click="handleSubscribe" type="info" v-if="!isDisableSubscribeBtn" plain> Subscribe</el-button>
+    <el-button @click="handleSubscribe" type="primary" v-if="!isDisableSubscribeBtn" plain> Subscribe</el-button>
     <el-button @click="handleCancelSubscribe" type="danger" v-if="isDisableSubscribeBtn" plain>
         Cancel Subscribed
     </el-button>

@@ -41,7 +41,7 @@ export default defineConfig({
         Components({
             resolvers: [
                 ElementPlusResolver(),
-                IconsResolver({ enabledCollections: ['ep', 'vscode-icons', 'logos', 'material-symbols', 'mdi'] }),
+                IconsResolver({ enabledCollections: ['ep', 'vscode-icons', 'logos', 'material-symbols', 'mdi', 'bx', 'bxs', 'ant-design'] }),
             ],
             dts: path.resolve(pathSrc, 'components.d.ts'),
         }),

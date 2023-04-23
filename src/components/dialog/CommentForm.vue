@@ -53,6 +53,9 @@ const themeStore = useThemeStore();
         width="30%"
         title="Create Comment"
         :lock-scroll="false"
+        :modal="false"
+        :draggable="true"
+        :show-close="false"
     >
         <template #header="{ close, titleId, titleClass }">
             <div class="flex flex-row justify-between">
@@ -79,7 +82,7 @@ const themeStore = useThemeStore();
             </div>
         </template>
         <template #footer>
-            <div class="flex flex-row justify-end mr-4">
+            <div class="flex flex-row justify-end">
                 <el-button type="primary" @click="handlePublish" color="#626aef" plain :dark="themeStore.isDark">
                     <el-icon class="el-icon--left">
                         <i-ep-circle-check />
@@ -91,6 +94,9 @@ const themeStore = useThemeStore();
         <el-input
             show-word-limit
             maxlength="144"
+            :autofocus="true"
+            :rows="5"
+            style="font-size: 1.25rem"
             v-model="refDialogStore.commentForm.value.data.content"
             type="textarea"
         />

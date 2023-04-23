@@ -56,12 +56,10 @@ const handleCreateChildChildComment = (info: string, id: number) => {
         dialogControlStore.commentForm.data.articleId = props.articleId;
     }
 };
-// const emit = defineEmits(['reloadComment'])
 const handleClickLike = (commentId: number, isLike: number) => {
     if (checkLoginStatus()) {
         likeArticle(commentId.toString(), 1, isLike).then((res) => {
             if (res.data.code == 200) {
-                // emit('reloadComment', props.articleId)
                 // TODO emit get comment
                 const commentStore = useReloadCommentStore();
                 commentStore.reload = props.articleId;
@@ -111,21 +109,20 @@ const themeStore = useThemeStore();
                     <span class="break-word dark:text-dark">{{ comment.content }}</span>
                 </div>
                 <div class="flex flex-row justify-between items-center">
-                    <div class="text-sm text-gray-500 justify-end">
-                        <span v-text="formatTime(comment.createTime)"></span>
-                    </div>
-                    <div class="flex flex-row">
+                    <div class="flex flex-row my-1">
                         <div
                             class="flex flex-row items-center mr-2 text-sm text-gray-500 hover:text-blue-500 cursor-pointer transition-all"
                         >
-                            <div v-if="comment.isLiked" @click="handleClickLike(comment.id, 0)">
-                                <el-icon color="#3B82F6">
-                                    <i-mdi-like />
+                            <div class="flex flex-row items-center justify-center" v-if="comment.isLiked" @click="handleClickLike(comment.id, 0)">
+                                <el-icon color="#3B82F6" :size="18">
+                                    <i-ant-design-like-filled/>
                                 </el-icon>
                                 <span class="ml-1 text-blue-500"> {{ comment.likesCount }} </span>
                             </div>
-                            <div v-if="!comment.isLiked" @click="handleClickLike(comment.id, 1)">
-                                <i-mdi-like />
+                            <div class="flex flex-row justify-center" v-if="!comment.isLiked" @click="handleClickLike(comment.id, 1)">
+                                <el-icon :size="18">
+                                    <i-ant-design-like-outlined/>
+                                </el-icon>
                                 <span class="ml-1"> {{ comment.likesCount }} </span>
                             </div>
                         </div>
@@ -133,8 +130,14 @@ const themeStore = useThemeStore();
                             @click="handleCreateChildComment(comment.content, comment.id)"
                             class="flex flex-row items-center mr-2 text-sm text-gray-500 hover:text-blue-500 cursor-pointer transition-all"
                         >
-                            <i-material-symbols-comment class="mr-1 mt-[2px]" />Replay
+                            <el-icon :size="17">
+                                <i-ant-design-message-outlined/>
+                            </el-icon>
+                            <span class="ml-1">Replay</span>
                         </div>
+                    </div>
+                    <div class="text-sm text-gray-500 justify-end">
+                        <span v-text="formatTime(comment.createTime)"></span>
                     </div>
                 </div>
                 <div v-if="hasChildren(comment.childComments)">
@@ -160,21 +163,20 @@ const themeStore = useThemeStore();
                                 <div class="break-all my-2">{{ child.content }}</div>
                             </div>
                             <div class="flex flex-row justify-between">
-                                <div>
-                                    <span class="mr-2 text-xs text-gray-500" v-text="formatTime(child.createTime)" />
-                                </div>
                                 <div class="flex flex-row">
                                     <div
-                                        class="flex flex-row items-center mr-2 text-xs text-gray-500 hover:text-blue-500 cursor-pointer transition-all"
+                                        class="flex flex-row items-center mr-2 text-gray-500 hover:text-blue-500 cursor-pointer transition-all"
                                     >
-                                        <div v-if="child.isLiked" @click="handleClickLike(comment.id, 0)">
-                                            <el-icon color="#3B82F6">
-                                                <i-mdi-like />
+                                        <div class="flex flex-row items-center justify-center" v-if="child.isLiked" @click="handleClickLike(comment.id, 0)">
+                                            <el-icon color="#3B82F6" :size="17">
+                                                <i-ant-design-like-filled/>
                                             </el-icon>
                                             <span class="ml-1 text-blue-500"> {{ child.likesCount }} </span>
                                         </div>
-                                        <div v-if="!child.isLiked" @click="handleClickLike(child.id, 1)">
-                                            <i-mdi-like />
+                                        <div class="flex flex-row items-center justify-center" v-if="!child.isLiked" @click="handleClickLike(child.id, 1)">
+                                            <el-icon :size="17">
+                                                <i-ant-design-like-outlined/>
+                                            </el-icon>
                                             <span class="ml-1"> {{ child.likesCount }} </span>
                                         </div>
                                     </div>
@@ -182,8 +184,14 @@ const themeStore = useThemeStore();
                                         @click="handleCreateChildChildComment(child.content, comment.id)"
                                         class="flex flex-row items-center mr-2 text-xs text-gray-500 hover:text-blue-500 cursor-pointer transition-all"
                                     >
-                                        <i-material-symbols-comment class="mr-1 mt-1" />Replay
+                                        <el-icon :size="16">
+                                            <i-ant-design-message-outlined/>
+                                        </el-icon>
+                                        <span class="ml-1">Replay</span>
                                     </div>
+                                </div>
+                                <div>
+                                    <span class="mr-2 text-xs text-gray-500" v-text="formatTime(child.createTime)" />
                                 </div>
                             </div>
                         </div>

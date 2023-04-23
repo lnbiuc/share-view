@@ -27,6 +27,8 @@
     "devDependencies": {
         "@element-plus/icons-vue": "^2.1.0",
         "@iconify-json/ant-design": "^1.1.5",
+        "@iconify-json/bx": "^1.1.6",
+        "@iconify-json/bxs": "^1.1.6",
         "@iconify-json/ep": "^1.1.10",
         "@iconify-json/logos": "^1.1.24",
         "@iconify-json/material-symbols": "^1.1.36",
