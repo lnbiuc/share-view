@@ -8,7 +8,7 @@ export interface SendPostEntity {
 
 export const sendPost = async (data: SendPostEntity) => {
     return axios({
-        url: './api/publish/post',
+        url: '/api/publish/post',
         method: 'POST',
         data: data,
     });

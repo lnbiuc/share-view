@@ -13,7 +13,7 @@ export interface CategoryEntity {
 export const getCategoryList = async (number: number, size: number) => {
     return axios({
         method: 'GET',
-        url: './api/category/get',
+        url: '/api/category/get',
         params: {
             pageNumber: number,
             pageSize: size,

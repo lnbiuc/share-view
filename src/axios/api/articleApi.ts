@@ -99,12 +99,12 @@ export interface ViewHistoryEntity {
 }
 
 export const getArticleList = async (data: articleParams) => {
-    return axios.post('./api/article/page', data);
+    return axios.post('/api/article/page', data);
 };
 
 export const getViewHistory = async (userId: string, number: number, size: number) => {
     return axios({
-        url: './api/article/history/' + userId,
+        url: '/api/article/history/' + userId,
         method: 'GET',
         params: {
             pageNumber: number,
@@ -115,7 +115,7 @@ export const getViewHistory = async (userId: string, number: number, size: numbe
 
 export const getOneArticle = async (articleId: string) => {
     return axios({
-        url: '../api/article/' + articleId,
+        url: '/api/article/' + articleId,
         method: 'GET',
     });
 };
@@ -128,7 +128,7 @@ export const publishArticle = async (data: {
     tagIds: number[];
 }) => {
     return axios({
-        url: '../api/publish/article',
+        url: '/api/publish/article',
         method: 'POST',
         data: data,
     });

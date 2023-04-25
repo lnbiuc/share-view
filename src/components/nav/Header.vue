@@ -23,7 +23,7 @@
                 :active-icon="Moon"
                 :inactive-icon="Sunny"
                 :change="switchChange()"
-                style="--el-switch-on-color: #000000; --el-switch-off-color: #aaaaaa"
+                style="--el-switch-on-color: #000000; --el-switch-off-color: #c8c8c8"
             />
         </div>
         <div class="user flex w-3/12 justify-start items-center" v-if="store.isLogin">
