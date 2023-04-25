@@ -76,7 +76,9 @@ const themeStore = useThemeStore();
 <template>
     <div class="flex flex-col bg-light mt-2 dark:bg-dark rounded-md hover:shadow-md transition-all shadow-sm p-3">
         <div class="flex justify-start items-center">
-            <el-icon color="#409eff"> <UserFilled /> </el-icon>&nbsp;
+            <el-icon color="#409eff" :size="20">
+                <i-ant-design-appstore-filled/>
+            </el-icon>&nbsp;
             <span class="mx-1 dark:text-gray-300">Creation Center</span>
         </div>
         <div class="flex flex-row my-6">
@@ -88,7 +90,7 @@ const themeStore = useThemeStore();
                 >
                     <i class="el-icon text-lg" style="zoom: 1.3" v-html="b.icon" />
                 </div>
-                <span class="text-xs">{{ b.name }}</span>
+                <span class="text-xs text-center">{{ b.name }}</span>
             </div>
         </div>
         <div class="flex flex-row rounded-md dark:bg-dark-black bg-gray-100 justify-around">
@@ -101,10 +103,6 @@ const themeStore = useThemeStore();
                 <span class="text-lg mt-2 dark:text-gray-300">20</span>
             </div>
         </div>
-        <el-button plain bg color="#626aef" :dark="themeStore.isDark" type="primary" class="mt-3" style="height: 40px">
-            Enter Creation Center
-            <el-icon><ArrowRight /></el-icon>
-        </el-button>
     </div>
 </template>
 

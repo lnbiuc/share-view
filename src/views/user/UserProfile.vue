@@ -1,10 +1,17 @@
 <script setup lang="ts">
-import { ref, Ref } from 'vue';
-import { ArticleListEntity, articleParams, getArticleList } from '../../axios/api/articleApi';
-import { useArticleParamsStore } from '../../pinia';
-import { storeToRefs } from 'pinia';
+import {ref, Ref} from 'vue';
+import {
+    ArticleListEntity,
+    articleParams,
+    getArticleList,
+    getViewHistory,
+    ViewHistoryEntity
+} from '../../axios/api/articleApi';
+import {useArticleParamsStore, useUserStore} from '../../pinia';
+import {storeToRefs} from 'pinia';
 import axios from '../../axios';
-import { useRouteParams } from '@vueuse/router';
+import {useRouteParams} from '@vueuse/router';
+import {ElMain, ElMessage} from "element-plus";
 
 const articleList: Ref<ArticleListEntity[]> = ref([
     {
@@ -42,7 +49,7 @@ watch(articleList, () => {
 });
 
 const getArticleList = async (data: articleParams) => {
-    return axios.post('../../api/article/page', data);
+    return axios.post('/api/article/page', data);
 };
 
 const total = ref(0);
@@ -78,21 +85,64 @@ const currentChange = (pageNumber: number) => {
         total.value = res.data.data.total;
     });
 };
+
+const historyList = ref<ViewHistoryEntity[]>();
+
+const showHistory = ref<boolean>(false)
+
+const userStore = useUserStore()
+
+const getUserViewHistory = (pageNumber: number, pageSize: number) => {
+    if (userStore.isLogin && userStore.user.userId === userId.value) {
+        getViewHistory(userId.value, pageNumber, pageSize).then(res => {
+            params.value.total = res.data.data.total
+            if (res.data.data.currentSize > 0) {
+                showHistory.value = true;
+                historyList.value = res.data.data.data;
+            }
+        })
+    }
+}
+
+onMounted(() => {
+    getUserViewHistory(params.value.pageNumber, params.value.pageSize)
+})
+
+
+const params = ref<{ pageNumber: number, pageSize: number, total: number }>({pageNumber: 1, pageSize: 10, total: 0})
+
+const historyCurrentChange = (pageNumber: number) => {
+    params.value.pageNumber = pageNumber
+    getUserViewHistory(params.value.pageNumber, params.value.pageSize);
+}
 </script>
 
 <template>
     <transition appear>
-        <div class="flex flex-col">
-            <filter-by />
-            <div>
-                <Loading :is-loading="isLoad" />
-                <all-type-preview-list :article-list="articleList" v-if="!isLoad" />
+        <div class="flex flex-row">
+            <div class="flex flex-col w-8/12">
+                <filter-by/>
+                <div>
+                    <Loading :is-loading="isLoad"/>
+                    <all-type-preview-list :article-list="articleList" v-if="!isLoad"/>
+                    <Pagination
+                            :current-page="paramsStore.params.pageNumber"
+                            :page-size="paramsStore.params.pageSize"
+                            :total="total"
+                            @numberChange="currentChange"
+                            :hide-on-single-page="true"
+                    />
+                </div>
+            </div>
+            <div class="flex flex-col w-4/12">
+                <option-menu/>
+                <view-history :history-list="historyList ? historyList : []"/>
                 <Pagination
-                    :current-page="paramsStore.params.pageNumber"
-                    :page-size="paramsStore.params.pageSize"
-                    :total="total"
-                    @numberChange="currentChange"
-                    :hide-on-single-page="true"
+                        :current-page="params.pageNumber"
+                        :page-size="params.pageSize"
+                        :total="params.total"
+                        @numberChange="historyCurrentChange"
+                        :hide-on-single-page="true"
                 />
             </div>
         </div>

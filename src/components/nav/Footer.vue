@@ -3,9 +3,9 @@
         <div class="w-auto text-center m-auto">
             <span
                 >Copyright © 2023 ·
-                <a href="https://vio.vin/" class="hover:text-blue-500 transition-all cursor-pointer">Violet</a>
+                <a href="https://vio.vin/" class="text-blue-500 hover:text-blue-600 transition-all cursor-pointer">Violet</a>
                 ·
-                <a href="https://beian.miit.gov.cn/" class="hover:text-blue-500 transition-all cursor-pointer"
+                <a href="https://beian.miit.gov.cn/" class="text-blue-500 hover:text-blue-600 transition-all cursor-pointer"
                     >陕ICP备2021015553号-1</a
                 >
             </span>

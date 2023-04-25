@@ -18,10 +18,10 @@ const currentSort = ref<number>(0);
 
 <template>
     <div
-        class="flex flex-row justify-between rounded-md mx-2 mt-2 p-4 dark:bg-dark border-light hover:shadow-md transition"
+        class="flex flex-row justify-between items-center rounded-md mx-2 mt-2 p-2 dark:bg-dark border-light hover:shadow-md transition"
     >
         <div class="flex flex-row">
-            <span @click="clickSelect(0)" class="cursor-pointer transition" :style="selectedStyle(0)">Post</span>
+            <span @click="clickSelect(0)" class="ml-2 cursor-pointer transition" :style="selectedStyle(0)">Post</span>
             <span @click="clickSelect(1)" class="mx-2 cursor-pointer transition" :style="selectedStyle(1)"
                 >Comment</span
             >

@@ -26,7 +26,6 @@ const currentChange = (pageNumber: number) => {
         <el-pagination
             :current-page="currentPage"
             :page-size="pageSize"
-            background
             @current-change="currentChange"
             layout="prev, pager, next"
             :total="total"
