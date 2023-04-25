@@ -1,9 +1,5 @@
 <script setup lang="ts">
 import { useDialogControlStore, useThemeStore, useUserStore } from '../../pinia';
-// @ts-ignore
-import { UserFilled, ArrowRight } from '@element-plus/icons-vue';
-import router from '../../router';
-import { storeToRefs } from 'pinia';
 const store = useUserStore();
 const btn = [
     {
@@ -42,21 +38,7 @@ const styObject = (index: number) => {
         '--background-color-hover': btn[index].hover,
     };
 };
-const enterCreateCenter = () => {
-    const store = useUserStore();
-    if (store.isLogin) {
-        router.push({ path: '/u/c/' + store.getUserId });
-    } else {
-        const dialogStore = useDialogControlStore();
-        dialogStore.loginForm = true;
-        const refStore = storeToRefs(store);
-        watch(refStore.isLogin, async () => {
-            if (refStore.isLogin) {
-                await router.push({ path: '/u/c/' + store.getUserId });
-            }
-        });
-    }
-};
+
 const dialogControlStore = useDialogControlStore();
 const handleClick = (index: number) => {
     switch (index) {
@@ -76,9 +58,7 @@ const themeStore = useThemeStore();
 <template>
     <div class="flex flex-col bg-light mt-2 dark:bg-dark rounded-md hover:shadow-md transition-all shadow-sm p-3">
         <div class="flex justify-start items-center">
-            <el-icon color="#409eff" :size="20">
-                <i-ant-design-appstore-filled/>
-            </el-icon>&nbsp;
+            <el-icon color="#409eff" :size="20"> <i-ant-design-appstore-filled /> </el-icon>&nbsp;
             <span class="mx-1 dark:text-gray-300">Creation Center</span>
         </div>
         <div class="flex flex-row my-6">
@@ -95,12 +75,12 @@ const themeStore = useThemeStore();
         </div>
         <div class="flex flex-row rounded-md dark:bg-dark-black bg-gray-100 justify-around">
             <div class="flex flex-col m-2 p-2">
-                <span class="text-gray-500">Today Views</span>
-                <span class="text-lg mt-2 dark:text-gray-300">42</span>
+                <span class="text-gray-500 text-center">Today Views</span>
+                <span class="text-lg mt-2 dark:text-gray-300 text-center">42</span>
             </div>
             <div class="flex flex-col m-2 p-2">
-                <span class="text-gray-500">Today Likes</span>
-                <span class="text-lg mt-2 dark:text-gray-300">20</span>
+                <span class="text-gray-500 text-center">Today Likes</span>
+                <span class="text-lg mt-2 dark:text-gray-300 text-center">20</span>
             </div>
         </div>
     </div>

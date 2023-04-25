@@ -109,12 +109,6 @@ const routes = [
                         component: () => import('../views/user/UserSettings.vue'),
                         meta: { title: 'Settings' },
                     },
-                    {
-                        path: '/u/c/:userId',
-                        name: 'CreationCenter',
-                        component: () => import('../views/user/CreationCenter.vue'),
-                        meta: { title: 'CreationCenter' },
-                    },
                 ],
             },
         ],
@@ -129,6 +123,7 @@ const router = createRouter({
 router.beforeEach(() => {
     const store = useFilterAndSortStore();
     store.setDefault();
+    window.scrollTo(0, 0);
 });
 
 export default router;

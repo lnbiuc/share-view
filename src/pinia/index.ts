@@ -136,7 +136,7 @@ export const useArticleParamsStore = defineStore('articleParams', {
     state: () => ({
         params: {
             pageNumber: 1,
-            pageSize: 7,
+            pageSize: 10,
             filterBy: {
                 authorId: '',
                 categoryId: 0,
