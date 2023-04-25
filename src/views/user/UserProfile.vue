@@ -100,6 +100,9 @@ const getUserViewHistory = (pageNumber: number, pageSize: number) => {
             params.value.total = res.data.data.total;
             if (res.data.data.currentSize > 0) {
                 historyList.value = res.data.data.data;
+                isHost.value = true;
+            } else {
+                isHost.value = false;
             }
         });
     }

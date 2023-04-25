@@ -265,7 +265,7 @@ const themeStore = useThemeStore();
             <el-form-item label="Account" prop="account">
                 <el-input :prefix-icon="User" v-model="codeForm.account" type="text" placeholder="your phone or email">
                     <template #suffix>
-                        <el-button @click="HandlerSendCode" :disabled="sendCodeStatus">
+                        <el-button @click="HandlerSendCode" :disabled="sendCodeStatus" link>
                             <span v-show="!sendCodeStatus">Send Code</span>
                             <span v-show="sendCodeStatus">{{ count }} s</span>
                         </el-button>
