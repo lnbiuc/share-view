@@ -12,7 +12,7 @@ export interface publishVideosParams {
 
 export const publishVideo = async (params: publishVideosParams) => {
     return axios({
-        url: 'api/publish/video',
+        url: '/api/publish/video',
         method: 'POST',
         data: params,
     });

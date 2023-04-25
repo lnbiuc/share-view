@@ -16,7 +16,7 @@ export interface AnswerAndCommentEntity {
 
 export const getAnswersByArticleId = async (articleId: string, num: number, size: number, order: string) => {
     return axios({
-        url: '../api/answer/' + articleId,
+        url: '/api/answer/' + articleId,
         method: 'GET',
         params: {
             pageNumber: num,

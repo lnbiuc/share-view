@@ -13,15 +13,7 @@ const apiAxios = axios.create({
     withCredentials: true,
 });
 
-if (!isProduction) {
-    const apiProxy = process.env.API_PROXY;
-    apiAxios.interceptors.request.use((config) => {
-        if (config.url?.startsWith('/api')) {
-            config.url = `${apiProxy}${config.url}`;
-        }
-        return config;
-    });
-}
+apiAxios.defaults.baseURL = baseURL;
 
 NProgress.configure({
     showSpinner: false,

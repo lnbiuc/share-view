@@ -9,7 +9,7 @@ export interface PublishQuestionEntity {
 
 export const publishQuestion = async (data: PublishQuestionEntity) => {
     return axios({
-        url: './api/publish/question',
+        url: '/api/publish/question',
         method: 'POST',
         data: data,
     });
@@ -17,7 +17,7 @@ export const publishQuestion = async (data: PublishQuestionEntity) => {
 
 export const publishAnswer = async (toId: string, content: string) => {
     return axios({
-        url: '../api/publish/answer',
+        url: '/api/publish/answer',
         method: 'POST',
         data: {
             toId: toId,

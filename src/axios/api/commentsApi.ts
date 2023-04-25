@@ -52,7 +52,7 @@ export interface ChildComment {
 
 export const getCommentsById = async (id: string, num: number, size: number) => {
     return axios({
-        url: '../api/comment/' + id,
+        url: '/api/comment/' + id,
         method: 'GET',
         params: {
             pageNumber: num,
@@ -63,7 +63,7 @@ export const getCommentsById = async (id: string, num: number, size: number) => 
 
 export const publishComments = async (data: PublishCommentsEntity) => {
     return axios({
-        url: '../api/publish/comment',
+        url: '/api/publish/comment',
         method: 'POST',
         data: data,
     });

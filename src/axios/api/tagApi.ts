@@ -7,7 +7,7 @@ export interface TagEntity {
 
 export const getAllTags = async () => {
     return axios({
-        url: './api/tag/get',
+        url: '/api/tag/get',
         method: 'GET',
     });
 };
@@ -16,7 +16,7 @@ export const publishTag = async (tagName: string) => {
     let formData = new FormData();
     formData.append('tagName', tagName);
     return axios({
-        url: './api/publish/tag',
+        url: '/api/publish/tag',
         method: 'POST',
         data: formData,
     });
