@@ -1,17 +1,19 @@
 <script setup lang="ts">
-import {ref, Ref} from 'vue';
+import { ref, Ref } from 'vue';
 import {
     ArticleListEntity,
     articleParams,
     getArticleList,
     getViewHistory,
-    ViewHistoryEntity
+    ViewHistoryEntity,
 } from '../../axios/api/articleApi';
-import {useArticleParamsStore, useUserStore} from '../../pinia';
-import {storeToRefs} from 'pinia';
+import { useArticleParamsStore, useUserStore } from '../../pinia';
+import { storeToRefs } from 'pinia';
 import axios from '../../axios';
-import {useRouteParams} from '@vueuse/router';
-import {ElMain, ElMessage} from "element-plus";
+import { useRouteParams } from '@vueuse/router';
+import { ElMain, ElMessage } from 'element-plus';
+import videojs from 'video.js';
+import off = videojs.off;
 
 const articleList: Ref<ArticleListEntity[]> = ref([
     {
@@ -88,62 +90,89 @@ const currentChange = (pageNumber: number) => {
 
 const historyList = ref<ViewHistoryEntity[]>();
 
-const showHistory = ref<boolean>(false)
-
-const userStore = useUserStore()
+const userStore = useUserStore();
 
 const getUserViewHistory = (pageNumber: number, pageSize: number) => {
+    isLoad.value = true;
     if (userStore.isLogin && userStore.user.userId === userId.value) {
-        getViewHistory(userId.value, pageNumber, pageSize).then(res => {
-            params.value.total = res.data.data.total
+        getViewHistory(userId.value, pageNumber, pageSize).then((res) => {
+            isLoad.value = false;
+            params.value.total = res.data.data.total;
             if (res.data.data.currentSize > 0) {
-                showHistory.value = true;
                 historyList.value = res.data.data.data;
+                isHost.value = true;
+            } else {
+                isHost.value = false;
             }
-        })
+        });
     }
-}
+};
+const isHost = ref<boolean>(false);
 
 onMounted(() => {
-    getUserViewHistory(params.value.pageNumber, params.value.pageSize)
-})
+    if (userStore.isLogin && userStore.user.userId === userId.value) {
+        isHost.value = true;
+    }
+    if (isHost.value) {
+        getUserViewHistory(params.value.pageNumber, params.value.pageSize);
+    }
+});
 
-
-const params = ref<{ pageNumber: number, pageSize: number, total: number }>({pageNumber: 1, pageSize: 10, total: 0})
+const params = ref<{ pageNumber: number; pageSize: number; total: number }>({ pageNumber: 1, pageSize: 10, total: 0 });
 
 const historyCurrentChange = (pageNumber: number) => {
-    params.value.pageNumber = pageNumber
+    params.value.pageNumber = pageNumber;
     getUserViewHistory(params.value.pageNumber, params.value.pageSize);
-}
+};
+
+// router change
+watch(userId, () => {
+    isLoad.value = true;
+    paramsStore.params.filterBy.authorId = userId.value;
+    getArticleList(paramsStore.params).then((res) => {
+        articleList.value = res.data.data.data;
+        total.value = res.data.data.total;
+        isLoad.value = false;
+    });
+    if (userId.value === userStore.user.userId) {
+        isHost.value = true;
+        getUserViewHistory(params.value.pageNumber, params.value.pageSize);
+    } else {
+        isHost.value = false;
+    }
+});
 </script>
 
 <template>
     <transition appear>
         <div class="flex flex-row">
-            <div class="flex flex-col w-8/12">
-                <filter-by/>
+            <div class="flex flex-col w-8/12" id="scrollContent_1">
+                <filter-by />
                 <div>
-                    <Loading :is-loading="isLoad"/>
-                    <all-type-preview-list :article-list="articleList" v-if="!isLoad"/>
+                    <Loading :is-loading="isLoad" />
+                    <all-type-preview-list :article-list="articleList" v-if="!isLoad" />
                     <Pagination
-                            :current-page="paramsStore.params.pageNumber"
-                            :page-size="paramsStore.params.pageSize"
-                            :total="total"
-                            @numberChange="currentChange"
-                            :hide-on-single-page="true"
+                        :current-page="paramsStore.params.pageNumber"
+                        :page-size="paramsStore.params.pageSize"
+                        :total="total"
+                        @numberChange="currentChange"
+                        :hide-on-single-page="true"
                     />
                 </div>
             </div>
             <div class="flex flex-col w-4/12">
-                <option-menu/>
-                <view-history :history-list="historyList ? historyList : []"/>
-                <Pagination
+                <el-affix :offset="0" target="#scrollContent_1">
+                    <option-menu class="mr-2" />
+                    <view-history v-if="isHost" class="mr-2" :history-list="historyList ? historyList : []" />
+                    <Pagination
+                        v-if="isHost"
                         :current-page="params.pageNumber"
                         :page-size="params.pageSize"
                         :total="params.total"
                         @numberChange="historyCurrentChange"
                         :hide-on-single-page="true"
-                />
+                    />
+                </el-affix>
             </div>
         </div>
     </transition>

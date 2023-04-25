@@ -19,6 +19,10 @@ const props = defineProps({
         type: String,
         default: '',
     },
+    total: {
+        type: Number,
+        default: 0,
+    },
 });
 
 const hasChildren = (arr: ChildComment[]) => {
@@ -82,7 +86,7 @@ const themeStore = useThemeStore();
             class="flex flex-row justify-between items-center mt-2 bg-gray-100 dark:bg-neutral-900 p-2 rounded-md shadow-sm"
         >
             <div class="text-gray-500">
-                Total Comment : <span class="text-blue-500">{{ comments.data ? comments.data.length : 0 }}</span>
+                Total Comment : <span class="text-blue-500">{{ total }}</span>
             </div>
             <el-button plain bg color="#626aef" :dark="themeStore.isDark" @click="handleCommentToArticle()"
                 >Create Comment</el-button
@@ -118,17 +122,17 @@ const themeStore = useThemeStore();
                                 v-if="comment.isLiked"
                                 @click="handleClickLike(comment.id, 0)"
                             >
-                                <el-icon color="#3B82F6" :size="18">
+                                <el-icon color="#3B82F6" :size="18" class="mb-[3px]">
                                     <i-ant-design-like-filled />
                                 </el-icon>
                                 <span class="ml-1 text-blue-500"> {{ comment.likesCount }} </span>
                             </div>
                             <div
-                                class="flex flex-row justify-center"
+                                class="flex flex-row justify-center items-center"
                                 v-if="!comment.isLiked"
                                 @click="handleClickLike(comment.id, 1)"
                             >
-                                <el-icon :size="18">
+                                <el-icon :size="18" class="mb-[3px]">
                                     <i-ant-design-like-outlined />
                                 </el-icon>
                                 <span class="ml-1"> {{ comment.likesCount }} </span>
@@ -151,7 +155,7 @@ const themeStore = useThemeStore();
                 <div v-if="hasChildren(comment.childComments)">
                     <div
                         v-for="child in comment.childComments"
-                        class="flex flex-row mr-2 mt-2 p-2 rounded-md bg-gray-100 dark:bg-neutral-800"
+                        class="flex flex-row mt-2 p-2 rounded-md bg-gray-100 dark:bg-neutral-800"
                     >
                         <div class="mr-2 p-2">
                             <el-avatar :src="child.user.avatar" size="large" />
@@ -178,7 +182,7 @@ const themeStore = useThemeStore();
                                         <div
                                             class="flex flex-row items-center justify-center"
                                             v-if="child.isLiked"
-                                            @click="handleClickLike(comment.id, 0)"
+                                            @click="handleClickLike(child.id, 0)"
                                         >
                                             <el-icon color="#3B82F6" :size="17">
                                                 <i-ant-design-like-filled />
@@ -200,14 +204,14 @@ const themeStore = useThemeStore();
                                         @click="handleCreateChildChildComment(child.content, comment.id)"
                                         class="flex flex-row items-center mr-2 text-xs text-gray-500 hover:text-blue-500 cursor-pointer transition-all"
                                     >
-                                        <el-icon :size="16">
+                                        <el-icon :size="16" class="mt-[2px]">
                                             <i-ant-design-message-outlined />
                                         </el-icon>
                                         <span class="ml-1">Replay</span>
                                     </div>
                                 </div>
                                 <div>
-                                    <span class="mr-2 text-xs text-gray-500" v-text="formatTime(child.createTime)" />
+                                    <span class="mr-0.5 text-xs text-gray-500" v-text="formatTime(child.createTime)" />
                                 </div>
                             </div>
                         </div>

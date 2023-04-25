@@ -29,10 +29,9 @@
         <div class="user flex w-3/12 justify-start items-center" v-if="store.isLogin">
             <el-dropdown trigger="click">
                 <span class="el-dropdown-link flex flex-row items-center cursor-pointer">
-                    <el-avatar shape="circle" :src="loginUser.avatar" />
-                    <span class="ml-2 text-xl dark:text-gray-300">{{ loginUser.username }}</span
-                    >&nbsp;
-                    <el-icon color="gray" class="ml-2 text-xl">
+                    <el-avatar shape="circle" :src="loginUser.avatar" :size="35" />
+                    <span class="ml-2 text-base dark:text-gray-300"> {{ loginUser.username }} </span>&nbsp;
+                    <el-icon color="gray" class="ml-2">
                         <i-ep-arrow-down />
                     </el-icon>
                 </span>
@@ -85,23 +84,12 @@ import { ref, watch } from 'vue';
 import { UserEntity } from '../../axios/api/loginApi';
 import { useDialogControlStore, useThemeStore, useUserStore } from '../../pinia';
 import { ElMessage } from 'element-plus';
-// @ts-ignore
-import {
-    InfoFilled,
-    Remove,
-    Setting,
-    User,
-    ArrowDown,
-    Lock,
-    CircleCheck,
-    Fold,
-    Sunny,
-    Moon,
-} from '@element-plus/icons-vue';
+import { Remove, Setting, User, Sunny, Moon } from '@element-plus/icons-vue';
 import { storeToRefs } from 'pinia';
 import { useToggle, useStorage, useDark } from '@vueuse/core';
 import AskQuestionForm from '../dialog/AskQuestionForm.vue';
 import SendPostForm from '../dialog/SendPostForm.vue';
+import { useRouter } from 'vue-router';
 
 const dialogStore = useDialogControlStore();
 
@@ -226,6 +214,11 @@ const switchChange = () => {
     } else {
         theme.value = 'light';
     }
+};
+
+const routerChange = () => {
+    const router = useRouter();
+    router.replace('/u/p/' + loginUser.value.userId);
 };
 </script>
 

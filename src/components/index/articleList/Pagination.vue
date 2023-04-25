@@ -29,6 +29,7 @@ const currentChange = (pageNumber: number) => {
             @current-change="currentChange"
             layout="prev, pager, next"
             :total="total"
+            hide-on-single-page
         />
     </div>
 </template>

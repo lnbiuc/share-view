@@ -60,6 +60,7 @@ onMounted(() => {
             data.value = res.data.data;
             isLoading.value = false;
             disableSubscribeBtn.value = data.value.article.author.isSubscribed;
+            params.value.total = data.value.comments.total;
             nextTick(() => {
                 window.scroll({ top: 0, behavior: 'smooth' });
             });
@@ -100,7 +101,8 @@ watch(refStore.count, () => {
 });
 
 const reloadComment = (id: string) => {
-    getCommentsById(id, 1, 100).then((res) => {
+    getCommentsById(articleId.value, params.value.pageNumber, params.value.pageSize).then((res) => {
+        params.value.total = res.data.data.total;
         data.value.comments = res.data.data;
     });
 };
@@ -119,6 +121,16 @@ const state = reactive({
 });
 
 const scrollElement = document.documentElement;
+
+const params = ref<{ pageNumber: number; pageSize: number; total: number }>({ pageNumber: 1, pageSize: 10, total: 0 });
+
+const commentPageNumberChange = (pageNumber: number) => {
+    params.value.pageNumber = pageNumber;
+    getCommentsById(articleId.value, pageNumber, params.value.pageSize).then((res) => {
+        params.value.total = res.data.data.total;
+        data.value.comments = res.data.data;
+    });
+};
 </script>
 
 <template>
@@ -185,7 +197,19 @@ const scrollElement = document.documentElement;
                 <el-divider>END</el-divider>
             </div>
             <div class="flex flex-col my-2 p-4 dark:bg-dark rounded-md bg-light shadow-sm">
-                <Comment :comments="data.comments" :title="data.article.title" :article-id="data.article.articleId" />
+                <Comment
+                    :total="params.total"
+                    :comments="data.comments"
+                    :title="data.article.title"
+                    :article-id="data.article.articleId"
+                />
+                <Pagination
+                    :current-page="params.pageNumber"
+                    :page-size="params.pageSize"
+                    :total="params.total"
+                    @numberChange="commentPageNumberChange"
+                    :hide-on-single-page="true"
+                />
             </div>
         </template>
         <template #right>
@@ -196,6 +220,12 @@ const scrollElement = document.documentElement;
                     class="text-left text-md transition-all dark:bg-dark dark:text-dark bg-light rounded-md shadow-sm px-4 py-2 overflow-auto break-all"
                     v-show="!isLoading"
                 >
+                    <div class="flex flex-row justify-center items-center mb-1">
+                        <el-icon color="#409eff" :size="25">
+                            <i-ant-design-unordered-list-outlined />
+                        </el-icon>
+                        <span class="ml-2">TOC</span>
+                    </div>
                     <md-catalog :editor-id="state.id" :scroll-element="scrollElement" :theme="currentTheme" />
                 </div>
             </el-affix>

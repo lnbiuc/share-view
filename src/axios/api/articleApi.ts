@@ -89,13 +89,21 @@ export interface CommentListEntity {
 }
 
 export interface ViewHistoryEntity {
-    id: number;
     articleId: string;
     type: string;
     title: string;
     introduction: string;
-    author: UserLiteEntity;
+    author: HistoryUserVo;
     time: string;
+}
+
+export interface HistoryUserVo {
+    userId: string;
+    username: string;
+    signature: string;
+    avatar: string;
+    level: number;
+    ipAddr: string;
 }
 
 export const getArticleList = async (data: articleParams) => {

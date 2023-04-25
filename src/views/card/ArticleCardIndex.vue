@@ -42,7 +42,7 @@ watch(articleList, () => {
 // init request
 const data = ref({
     pageNumber: 1,
-    pageSize: 7,
+    pageSize: 10,
     filterBy: {
         authorId: '',
         categoryId: 0,
