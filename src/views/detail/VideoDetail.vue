@@ -120,25 +120,33 @@ const themeStore = useThemeStore();
                 <div class="dark:text-dark mt-2">
                     {{ data.article.introduction }}
                 </div>
-                <div class="flex flex-row mt-3">
-                    <div class="flex flex-col items-center justify-center">
-                        <el-avatar :src="data.article.author.avatar" :size="80" class="shadow-md" />
-                    </div>
-                    <div class="flex flex-col ml-2">
-                        <div class="flex flex-row items-center justify-between">
-                            <div class="flex flex-row items-center">
-                                <span class="title text-xl">{{ data.article.author.username }}</span>
-                                <span class="text-sm ml-2 text-gray-400">@{{ data.article.author.userId }}</span>
-                            </div>
-                            <div class="flex flex-row items-center">
-                                <el-button plain bg color="#626aef" :dark="themeStore.isDark"> Subscribe </el-button>
-                            </div>
-                        </div>
-                        <div>
-                            <span class="text-xs dark:text-dark">{{ data.article.author.signature }}</span>
-                        </div>
-                    </div>
-                </div>
+                <!--                <div class="flex flex-row mt-3">-->
+                <!--                    <div class="flex flex-col items-center justify-center">-->
+                <!--                        <el-avatar :src="data.article.author.avatar" :size="80" class="shadow-md" />-->
+                <!--                    </div>-->
+                <!--                    <div class="flex flex-col ml-4">-->
+                <!--                        <div class="flex flex-row items-center justify-between">-->
+                <!--                            <div class="flex flex-row items-center">-->
+                <!--                                <span class="title text-xl">{{ data.article.author.username }}</span>-->
+                <!--                                <span class="text-sm ml-2 text-gray-400">@{{ data.article.author.userId }}</span>-->
+                <!--                            </div>-->
+                <!--                        </div>-->
+                <!--                        <div>-->
+                <!--                            <span class="text-xs dark:text-dark">{{ data.article.author.signature }}</span>-->
+                <!--                        </div>-->
+                <!--                    </div>-->
+                <!--                    <div class="flex flex-row items-start">-->
+                <!--                        &lt;!&ndash;                                <el-button plain bg color="#626aef" :dark="themeStore.isDark"> Subscribe </el-button>&ndash;&gt;-->
+                <!--                        -->
+                <!--                    </div>-->
+                <!--                </div>-->
+                <user-profile :user="data.article.author">
+                    <subscribe-btn
+                        :is-subscribed="data.article.author.isSubscribed"
+                        :user-id="data.article.author.userId"
+                        type="user"
+                    />
+                </user-profile>
             </template>
             <template #comment>
                 <Comment :comments="data.comments" :title="data.article.title" :article-id="data.article.articleId" />

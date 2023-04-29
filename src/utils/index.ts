@@ -67,3 +67,7 @@ export const tagBgColor = (type: string) => {
             return '#fab6b6';
     }
 };
+
+export const toPercent = (num: number) => {
+    return Math.min(Math.max(num - 1, 0), 999) / 10;
+};

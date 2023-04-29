@@ -205,24 +205,35 @@ const state = reactive({
                     <div class="my-4">
                         <span class="my-2 text-xl leading-8 dark:text-dark">{{ ques.article.title }}</span>
                     </div>
-                    <div class="text-sm mb-2 text-gray-500">
-                        <span class="text-sm font-semibold">
-                            {{ ques.article.author.username }}
-                        </span>
-                        <span> @{{ ques.article.author.userId }} </span>
-                        &nbsp;·&nbsp;
-                        <span v-html="formatTime(ques.article.releaseTime)" />
-                        &nbsp;·&nbsp;
-                        <span> Publish On {{ ques.article.author.ipAddr }} </span>
-                    </div>
-                    <div class="my-2">
-                        <el-button @click="subscribeQuestion(ques.article.articleId)" :disabled="subscribeQuestionBtn"
-                            >Subscribe
-                        </el-button>
-                        <el-button @click="addQuestionCollection(ques.article.articleId)" :disabled="addCollectionBtn"
-                            >Collect
-                        </el-button>
-                    </div>
+                    <!--                    <div class="text-sm mb-2 text-gray-500">-->
+                    <!--                        <span class="text-sm font-semibold">-->
+                    <!--                            {{ ques.article.author.username }}-->
+                    <!--                        </span>-->
+                    <!--                        <span> @{{ ques.article.author.userId }} </span>-->
+                    <!--                        &nbsp;·&nbsp;-->
+                    <!--                        <span v-html="formatTime(ques.article.releaseTime)" />-->
+                    <!--                        &nbsp;·&nbsp;-->
+                    <!--                        <span> Publish On {{ ques.article.author.ipAddr }} </span>-->
+                    <!--                    </div>-->
+                    <!--                    <div class="my-2">-->
+                    <!--                                            <subscribe-btn-->
+                    <!--                                                :is-subscribed="ques.article.author.isSubscribed"-->
+                    <!--                                                :user-id="ques.article.author.userId"-->
+                    <!--                                                :question-id="ques.article.articleId"-->
+                    <!--                                                type="user"-->
+                    <!--                                            />-->
+                    <!--                        <el-button @click="addQuestionCollection(ques.article.articleId)" :disabled="addCollectionBtn"-->
+                    <!--                            >Collect-->
+                    <!--                        </el-button>-->
+                    <!--                    </div>-->
+                    <user-profile :user="ques.article.author">
+                        <subscribe-btn
+                            :is-subscribed="ques.article.author.isSubscribed"
+                            :user-id="ques.article.author.userId"
+                            :question-id="ques.article.articleId"
+                            type="question"
+                        />
+                    </user-profile>
                     <div class="mb-4">
                         <md-editor
                             :editor-id="state.id"

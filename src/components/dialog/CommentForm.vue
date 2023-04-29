@@ -56,6 +56,7 @@ const themeStore = useThemeStore();
         :modal="false"
         :draggable="true"
         :show-close="false"
+        :before-close="(params.commentForm.value.data.content = '')"
     >
         <template #header="{ close, titleId, titleClass }">
             <div class="flex flex-row justify-between">

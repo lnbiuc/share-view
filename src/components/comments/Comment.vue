@@ -85,7 +85,7 @@ const themeStore = useThemeStore();
         <div
             class="flex flex-row justify-between items-center mt-2 bg-gray-100 dark:bg-neutral-900 p-2 rounded-md shadow-sm"
         >
-            <div class="text-gray-500">
+            <div class="text-gray-500 pl-1">
                 Total Comment : <span class="text-blue-500">{{ total }}</span>
             </div>
             <el-button plain bg color="#626aef" :dark="themeStore.isDark" @click="handleCommentToArticle()"
@@ -148,8 +148,10 @@ const themeStore = useThemeStore();
                             <span class="ml-1">Replay</span>
                         </div>
                     </div>
-                    <div class="text-sm text-gray-500 justify-end">
-                        <span v-text="formatTime(comment.createTime)"></span>
+                    <div class="text-sm text-gray-500 justify-end cursor-default">
+                        <el-tooltip :content="comment.createTime">
+                            {{ formatTime(comment.createTime) }}
+                        </el-tooltip>
                     </div>
                 </div>
                 <div v-if="hasChildren(comment.childComments)">
@@ -210,8 +212,13 @@ const themeStore = useThemeStore();
                                         <span class="ml-1">Replay</span>
                                     </div>
                                 </div>
-                                <div>
-                                    <span class="mr-0.5 text-xs text-gray-500" v-text="formatTime(child.createTime)" />
+                                <div class="cursor-default">
+                                    <el-tooltip :content="child.createTime">
+                                        <span
+                                            class="mr-0.5 text-xs text-gray-500"
+                                            v-text="formatTime(child.createTime)"
+                                        />
+                                    </el-tooltip>
                                 </div>
                             </div>
                         </div>

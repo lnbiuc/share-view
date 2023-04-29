@@ -88,20 +88,16 @@ const reloadComment = (id: string) => {
                         class="rounded-full py-1 px-2 w-14 text-sm text-center dark:text-light"
                         style="background-color: #eebe77"
                     >
-                        Video
+                        Post
                     </span>
                 </div>
-                <div class="flex flex-row flex-wrap justify-between items-center">
-                    <div class="flex flex-row justify-center items-center">
-                        <el-avatar size="large" class="mr-4" :src="data.article.author.avatar" />
-                        <span class="text-2xl">{{ data.article.author.username }}</span>
-                        <span class="text-xs mx-1 text-gray-500">@{{ data.article.author.userId }}</span>
-                        <span class="text-sm text-gray-500" v-text="formatTime(data.article.releaseTime)"></span>
-                    </div>
-                    <div class="flex flex-row items-center">
-                        <el-button>Subscribe</el-button>
-                    </div>
-                </div>
+                <user-profile :user="data.article.author">
+                    <subscribe-btn
+                        :is-subscribed="data.article.author.isSubscribed"
+                        :user-id="data.article.author.userId"
+                        type="user"
+                    />
+                </user-profile>
                 <div class="my-4">
                     {{ data.article.introduction }}
                 </div>

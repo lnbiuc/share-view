@@ -4,7 +4,7 @@ import { getUserInfo } from '../../axios/api/userApi';
 import { useRouteParams } from '@vueuse/router';
 import { Ref, ref } from 'vue';
 import { UserLiteEntity } from '../../axios/api/articleApi';
-import { formatTime } from '../../utils';
+import { formatTime, toPercent } from '../../utils';
 
 const user: Ref<UserLiteEntity> = ref({
     userId: '',
@@ -29,10 +29,6 @@ const showImages = (img: string) => {
     proxy.$viewerApi({
         images: img,
     });
-};
-
-const toPercent = (num: number) => {
-    return Math.min(Math.max(num - 1, 0), 999) / 10;
 };
 </script>
 

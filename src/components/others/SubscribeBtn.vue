@@ -109,8 +109,8 @@ const handleCancelSubscribe = () => {
 </script>
 
 <template>
-    <el-button @click="handleSubscribe" type="primary" v-if="!isDisableSubscribeBtn" plain> Subscribe</el-button>
-    <el-button @click="handleCancelSubscribe" type="danger" v-if="isDisableSubscribeBtn" plain>
+    <el-button @click="handleSubscribe" type="primary" v-if="!props.isSubscribed" plain> Subscribe</el-button>
+    <el-button @click="handleCancelSubscribe" type="danger" v-if="props.isSubscribed" plain>
         Cancel Subscribed
     </el-button>
 </template>

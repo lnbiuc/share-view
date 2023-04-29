@@ -120,7 +120,7 @@ const router = createRouter({
     routes,
 });
 
-router.beforeEach(() => {
+router.afterEach(() => {
     const store = useFilterAndSortStore();
     store.setDefault();
     window.scrollTo(0, 0);
