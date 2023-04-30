@@ -3,6 +3,7 @@ import { uploadImage } from '../axios/api/fileApi';
 import { ElMessage } from 'element-plus';
 import { useDialogControlStore, useUserStore } from '../pinia';
 import { Router, useRouter } from 'vue-router';
+import { storeToRefs } from 'pinia';
 
 export const formatTime = (data: string) => {
     return format(data, 'zh_CN');
@@ -70,4 +71,47 @@ export const tagBgColor = (type: string) => {
 
 export const toPercent = (num: number) => {
     return Math.min(Math.max(num - 1, 0), 999) / 10;
+};
+
+export const handleToArticleDetail = (type: string, articleId: string, router: Router) => {
+    switch (type) {
+        case 'Article':
+            return router.push({ path: '/a/' + articleId });
+        case 'Question':
+            return router.push({ path: '/q/' + articleId });
+        case 'Post':
+            return router.push({ path: '/p/' + articleId });
+        case 'Video':
+            return router.push({ path: '/v/' + articleId });
+    }
+};
+
+const goArticleAndComment = (articleId: string, title: string, type: string, info: string, router: Router) => {
+    handleToArticleDetail(type, articleId, router);
+    const dialogStore = useDialogControlStore();
+    dialogStore.commentForm.status = true;
+    dialogStore.commentForm.data.level = 0;
+    dialogStore.commentForm.data.articleId = articleId;
+    if (type == 'Post') {
+        dialogStore.commentForm.displayInfo = info;
+    } else {
+        dialogStore.commentForm.displayInfo = title;
+    }
+};
+
+export const handleClickComment = (articleId: string, title: string, type: string, info: string, router: Router) => {
+    const userStore = useUserStore();
+    if (userStore.isLogin) {
+        goArticleAndComment(articleId, title, type, info, router);
+    } else {
+        const dialogStore = useDialogControlStore();
+        dialogStore.loginForm = true;
+        const refUserStore = storeToRefs(userStore);
+        const stop = watch(refUserStore.isLogin, () => {
+            if (refUserStore.isLogin) {
+                goArticleAndComment(articleId, title, type, info, router);
+            }
+            stop();
+        });
+    }
 };

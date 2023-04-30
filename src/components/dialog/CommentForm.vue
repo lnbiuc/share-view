@@ -22,7 +22,7 @@ const handlePublish = () => {
                 }
             });
         } else {
-            ElMessage.error('miss params to article');
+            ElMessage.warning('miss params to article');
         }
     } else {
         if (params.commentForm.value.data.toCommentId !== 0 && params.commentForm.value.data.content !== '') {
@@ -38,7 +38,7 @@ const handlePublish = () => {
                 }
             });
         } else {
-            ElMessage.error('miss params to comment');
+            ElMessage.warning('miss params to comment');
         }
     }
 };

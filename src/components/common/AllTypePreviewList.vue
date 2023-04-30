@@ -1,59 +1,12 @@
 <script setup lang="ts">
-import { formatTime, tagBgColor } from '../../utils';
+import { formatTime, handleClickComment, handleToArticleDetail, tagBgColor } from '../../utils';
 import { ArticleListEntity } from '../../axios/api/articleApi';
-import { useRouter } from 'vue-router';
-import { useDialogControlStore, useUserStore } from '../../pinia';
-import { storeToRefs } from 'pinia';
 import VideoCardLayout from '../../layout/VideoCardLayout.vue';
 import ImageGirdLayout from '../../layout/ImageGirdLayout.vue';
 
 const { articleList } = defineProps<{
     articleList: ArticleListEntity[];
 }>();
-
-const router = useRouter();
-const handleToArticleDetail = (type: string, articleId: string) => {
-    switch (type) {
-        case 'Article':
-            return router.push({ path: '/a/' + articleId });
-        case 'Question':
-            return router.push({ path: '/q/' + articleId });
-        case 'Post':
-            return router.push({ path: '/p/' + articleId });
-        case 'Video':
-            return router.push({ path: '/v/' + articleId });
-    }
-};
-
-const goArticleAndComment = (articleId: string, title: string, type: string, info: string) => {
-    handleToArticleDetail(type, articleId);
-    const dialogStore = useDialogControlStore();
-    dialogStore.commentForm.status = true;
-    dialogStore.commentForm.data.level = 0;
-    dialogStore.commentForm.data.articleId = articleId;
-    if (type == 'Post') {
-        dialogStore.commentForm.displayInfo = info;
-    } else {
-        dialogStore.commentForm.displayInfo = title;
-    }
-};
-
-const handleClickComment = (articleId: string, title: string, type: string, info: string) => {
-    const userStore = useUserStore();
-    if (userStore.isLogin) {
-        goArticleAndComment(articleId, title, type, info);
-    } else {
-        const dialogStore = useDialogControlStore();
-        dialogStore.loginForm = true;
-        const refUserStore = storeToRefs(userStore);
-        const stop = watch(refUserStore.isLogin, () => {
-            if (refUserStore.isLogin) {
-                goArticleAndComment(articleId, title, type, info);
-            }
-            stop();
-        });
-    }
-};
 </script>
 
 <template>
@@ -86,7 +39,7 @@ const handleClickComment = (articleId: string, title: string, type: string, info
             </div>
             <div
                 class="flex flex-grow text-base title leading-7 ml-3"
-                @click="handleToArticleDetail(a.type, a.articleId)"
+                @click="handleToArticleDetail(a.type, a.articleId, $router)"
             >
                 <span v-if="a.type === 'Article' || a.type === 'Question'">
                     {{ a.title }}
@@ -111,7 +64,7 @@ const handleClickComment = (articleId: string, title: string, type: string, info
         <div class="flex flex-row justify-start mt-2">
             <CommentsLink
                 :comments="a.comments"
-                @click="handleClickComment(a.articleId, a.title, a.type, a.introduction)"
+                @click="handleClickComment(a.articleId, a.title, a.type, a.introduction, $router)"
             />
             <CollectionLink :id="a.articleId" :type="0" :collect-count="a.collect" />
             <ShareLink />

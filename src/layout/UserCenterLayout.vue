@@ -6,7 +6,7 @@
             <div>
                 <slot name="avatar" />
             </div>
-            <div class="flex flex-col justify-end mx-4 mb-2">
+            <div class="flex flex-col flex-grow justify-end mx-4 mb-2">
                 <slot name="userInfo" />
             </div>
         </div>

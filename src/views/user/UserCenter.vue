@@ -57,7 +57,7 @@ const showImages = (img: string) => {
                     </span>
                 </div>
                 <div class="flex flex-col justify-end">
-                    <el-button>Subscribe</el-button>
+                    <subscribe-btn :is-subscribed="user.isSubscribed" :user-id="user.userId" type="user" />
                 </div>
             </div>
             <div class="user-info-signature dark:text-dark">

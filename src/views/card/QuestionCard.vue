@@ -2,8 +2,6 @@
 import { Ref, ref } from 'vue';
 import { ArticleListEntity, getArticleList } from '../../axios/api/articleApi';
 import { useArticleParamsStore } from '../../pinia';
-// @ts-ignore
-import { View } from '@element-plus/icons-vue';
 import { storeToRefs } from 'pinia';
 const articleList: Ref<ArticleListEntity[]> = ref([
     {
@@ -86,7 +84,9 @@ const currentChange = (pageNumber: number) => {
                     </div>
                     <div class="flex flex-row items-center">
                         <ShareLink />
-                        <el-icon color="rgb(156, 163, 175)" size="20" class="ml-5 mr-1"><View /></el-icon>
+                        <el-icon :size="20" color="rgb(156, 163, 175)" class="ml-5 mr-1">
+                            <i-ant-design-eye-outlined />
+                        </el-icon>
                         <span class="text-gray-500">{{ a.views }}</span>
                     </div>
                 </div>

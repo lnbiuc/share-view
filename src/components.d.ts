@@ -47,6 +47,7 @@ declare module '@vue/runtime-core' {
     Footer: typeof import('./components/nav/Footer.vue')['default']
     Header: typeof import('./components/nav/Header.vue')['default']
     IAntDesignAppstoreFilled: typeof import('~icons/ant-design/appstore-filled')['default']
+    IAntDesignEyeOutlined: typeof import('~icons/ant-design/eye-outlined')['default']
     IAntDesignHistoryOutlined: typeof import('~icons/ant-design/history-outlined')['default']
     IAntDesignLikeFilled: typeof import('~icons/ant-design/like-filled')['default']
     IAntDesignLikeOutlined: typeof import('~icons/ant-design/like-outlined')['default']

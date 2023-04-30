@@ -2,7 +2,7 @@
 import { useArticleParamsStore, useDialogControlStore } from '../../pinia';
 import { ArticleListEntity, getArticleList } from '../../axios/api/articleApi';
 import { Ref, ref } from 'vue';
-import { formatTime } from '../../utils';
+import { formatTime, handleClickComment } from '../../utils';
 import LikeBtn from '../../components/index/articleList/LikeBtn.vue';
 import { storeToRefs } from 'pinia';
 import router from '../../router';
@@ -68,15 +68,6 @@ const currentChange = (pageNumber: number) => {
         total.value = res.data.data.total;
     });
 };
-
-const handleClickComment = (title: string, articleId: string) => {
-    router.push({ path: '/a/' + articleId });
-    const dialogStore = useDialogControlStore();
-    dialogStore.commentForm.status = true;
-    dialogStore.commentForm.displayInfo = title;
-    dialogStore.commentForm.data.level = 0;
-    dialogStore.commentForm.data.articleId = articleId;
-};
 </script>
 
 <template>
@@ -90,7 +81,9 @@ const handleClickComment = (title: string, articleId: string) => {
             >
                 <div class="flex flex-row p-0 text-gray-400">
                     <div class="truncate">
-                        <span class="hover:text-blue-500 cursor-pointer transition-all"
+                        <span
+                            class="hover:text-blue-500 cursor-pointer transition-all"
+                            @click="$router.push('/u/p/' + a.author.userId)"
                             >{{ a.author.username }} ·
                         </span>
                         <span v-text="formatTime(a.releaseTime)"></span>
@@ -104,10 +97,7 @@ const handleClickComment = (title: string, articleId: string) => {
                     </div>
                 </div>
                 <div class="flex flex-col">
-                    <div
-                        class="text-lg text-left py-2 text-left title"
-                        @click="$router.push({ path: '/a/' + a.articleId })"
-                    >
+                    <div class="text-lg text-left py-2 title" @click="$router.push({ path: '/a/' + a.articleId })">
                         {{ a.title }}
                     </div>
                     <div class="flex mb-4 text-gray-500 text-left leading-6 text-sm">
@@ -116,7 +106,10 @@ const handleClickComment = (title: string, articleId: string) => {
                 </div>
                 <div class="flex flex-row">
                     <LikeBtn :type="0" :id="a.articleId" />
-                    <CommentsLink @click="handleClickComment(a.title, a.articleId)" :comments="a.comments" />
+                    <CommentsLink
+                        @click="handleClickComment(a.articleId, a.title, a.type, a.introduction, $router)"
+                        :comments="a.comments"
+                    />
                     <CollectionLink :type="0" :id="a.articleId" :collect-count="a.collect" />
                     <ShareLink />
                 </div>

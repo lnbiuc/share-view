@@ -51,10 +51,10 @@ const execAddCollection = () => {
 
 <template>
     <div class="px-2 flex flex-row items-center text-sm justify-center">
-        <div class="flex flex-row justify-center items-start">
+        <div class="flex flex-row justify-center items-center">
             <el-icon color="rgb(156, 163, 175)" :size="18">
-                <i-ant-design-star-twotone />
-            </el-icon>&nbsp;
+                <i-ant-design-star-twotone /> </el-icon
+            >&nbsp;
         </div>
         <span class="mr-1 text-gray-400">{{ collectCount }}</span>
         <span class="hover:text-blue-500 transition-all text-gray-400 cursor-pointer" @click="handlerCollect"

@@ -144,7 +144,7 @@ const commentPageNumberChange = (pageNumber: number) => {
                         >Article</span
                     >
                     <span class="ml-2 flex flex-row flex-wrap justify-start items-center">
-                        <el-tag class="mx-1" v-for="t in data.article.tags">
+                        <el-tag size="large" class="mx-1" v-for="t in data.article.tags">
                             {{ t.tagName ? t.tagName : '' }}
                         </el-tag>
                     </span>

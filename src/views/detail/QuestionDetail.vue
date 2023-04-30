@@ -191,42 +191,23 @@ const state = reactive({
             <template #left>
                 <div class="flex flex-col p-6 dark:bg-dark rounded-md bg-light shadow-sm">
                     <div class="flex flex-row items-center">
-                        <span
+                        <div
                             class="rounded-full py-1 px-2 w-16 text-sm text-center dark:text-light"
                             style="background-color: #95d475"
-                            >Question</span
                         >
-                        <span class="ml-2">
-                            <el-tag class="mx-1" v-for="t in ques.article.tags">
+                            Question
+                        </div>
+                        <div class="ml-2 flex flex-row items-center">
+                            <el-tag size="large" class="mx-1" v-for="t in ques.article.tags">
                                 {{ t.tagName }}
                             </el-tag>
-                        </span>
+                        </div>
                     </div>
-                    <div class="my-4">
-                        <span class="my-2 text-xl leading-8 dark:text-dark">{{ ques.article.title }}</span>
+                    <div class="my-4 mt-6">
+                        <span class="leading-8 dark:text-dark text-4xl">{{ ques.article.title }}</span>
                     </div>
-                    <!--                    <div class="text-sm mb-2 text-gray-500">-->
-                    <!--                        <span class="text-sm font-semibold">-->
-                    <!--                            {{ ques.article.author.username }}-->
-                    <!--                        </span>-->
-                    <!--                        <span> @{{ ques.article.author.userId }} </span>-->
-                    <!--                        &nbsp;·&nbsp;-->
-                    <!--                        <span v-html="formatTime(ques.article.releaseTime)" />-->
-                    <!--                        &nbsp;·&nbsp;-->
-                    <!--                        <span> Publish On {{ ques.article.author.ipAddr }} </span>-->
-                    <!--                    </div>-->
-                    <!--                    <div class="my-2">-->
-                    <!--                                            <subscribe-btn-->
-                    <!--                                                :is-subscribed="ques.article.author.isSubscribed"-->
-                    <!--                                                :user-id="ques.article.author.userId"-->
-                    <!--                                                :question-id="ques.article.articleId"-->
-                    <!--                                                type="user"-->
-                    <!--                                            />-->
-                    <!--                        <el-button @click="addQuestionCollection(ques.article.articleId)" :disabled="addCollectionBtn"-->
-                    <!--                            >Collect-->
-                    <!--                        </el-button>-->
-                    <!--                    </div>-->
-                    <user-profile :user="ques.article.author">
+                    <el-divider>AUTHOR</el-divider>
+                    <user-profile :user="ques.article.author" class="mb-2">
                         <subscribe-btn
                             :is-subscribed="ques.article.author.isSubscribed"
                             :user-id="ques.article.author.userId"
@@ -234,6 +215,7 @@ const state = reactive({
                             type="question"
                         />
                     </user-profile>
+                    <el-divider>QUESTION</el-divider>
                     <div class="mb-4">
                         <md-editor
                             :editor-id="state.id"
