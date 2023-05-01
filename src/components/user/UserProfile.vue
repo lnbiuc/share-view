@@ -39,7 +39,7 @@ const props = defineProps({
                         <slot />
                     </div>
                 </div>
-                <div>
+                <div class="text-left">
                     <span class="text-xs dark:text-dark">{{ props.user.signature }}</span>
                 </div>
             </div>

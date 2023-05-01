@@ -23,13 +23,6 @@ onMounted(() => {
         user.value = res.data.data;
     });
 });
-
-const { proxy }: any = getCurrentInstance();
-const showImages = (img: string) => {
-    proxy.$viewerApi({
-        images: img,
-    });
-};
 </script>
 
 <template>
@@ -37,7 +30,6 @@ const showImages = (img: string) => {
         <template #avatar>
             <div class="avatar">
                 <div
-                    @click="showImages(user.avatar)"
                     :style="{
                         backgroundImage: 'url(' + user.avatar + ')',
                         background: 'center center / no-repeat',

@@ -3,9 +3,15 @@ const { images } = defineProps<{
     images: string[];
 }>();
 const { proxy }: any = getCurrentInstance();
-const showImages = (img: string[]) => {
+const showImages = (img: string[], index: number) => {
+    if (!index) {
+        index = 0;
+    }
     proxy.$viewerApi({
         images: img,
+        options: {
+            initialViewIndex: index,
+        },
     });
 };
 </script>
@@ -25,8 +31,8 @@ const showImages = (img: string[]) => {
             </div>
             <div v-if="images.length === 2" class="grid grid-cols-2 grid-rows-1 gap-2">
                 <div
-                    v-for="image in images"
-                    @click="showImages(images)"
+                    v-for="(image, index) in images"
+                    @click="showImages(images, index)"
                     :style="{
                         backgroundImage: 'url(' + image + ')',
                         background: 'center center / no-repeat',
@@ -36,8 +42,8 @@ const showImages = (img: string[]) => {
             </div>
             <div v-if="images.length <= 4 && images.length >= 3" class="grid grid-cols-2 grid-rows-2 gap-2">
                 <div
-                    v-for="image in images"
-                    @click="showImages(images)"
+                    v-for="(image, index) in images"
+                    @click="showImages(images, index)"
                     :style="{
                         backgroundImage: 'url(' + image + ')',
                         background: 'center center / no-repeat',
@@ -47,8 +53,8 @@ const showImages = (img: string[]) => {
             </div>
             <div v-if="images.length >= 5 && images.length <= 6" class="grid grid-cols-3 grid-rows-2 gap-2">
                 <div
-                    v-for="image in images"
-                    @click="showImages(images)"
+                    v-for="(image, index) in images"
+                    @click="showImages(images, index)"
                     :style="{
                         backgroundImage: 'url(' + image + ')',
                         background: 'center center / no-repeat',
@@ -58,8 +64,8 @@ const showImages = (img: string[]) => {
             </div>
             <div v-if="images.length >= 6" class="grid grid-cols-3 grid-rows-3 gap-2">
                 <div
-                    v-for="image in images"
-                    @click="showImages(images)"
+                    v-for="(image, index) in images"
+                    @click="showImages(images, index)"
                     :style="{
                         backgroundImage: 'url(' + image + ')',
                         background: 'center center / no-repeat',

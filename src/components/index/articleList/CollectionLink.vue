@@ -41,12 +41,15 @@ const execAddCollection = () => {
         addCollection(props.id, props.type).then((res) => {
             if (res.data.code == 200) {
                 ElMessage.success('SUCCESS');
+                emit('on-collect-success');
             } else {
                 ElMessage.warning(res.data.message);
             }
         });
     }
 };
+
+const emit = defineEmits(['on-collect-success']);
 </script>
 
 <template>
