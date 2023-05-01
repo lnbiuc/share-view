@@ -40,6 +40,9 @@
     .img {
         @apply shadow-sm hover:shadow-md rounded-md transition-all;
     }
+    .no-select-bg {
+        @apply select-none bg-transparent;
+    }
 }
 
 .md-editor-dark {

@@ -22,12 +22,12 @@ const props = defineProps({
 </script>
 
 <template>
-    <div class="flex flex-row justify-between">
-        <div class="flex flex-row items-center">
+    <div class="flex flex-row flex-grow justify-between">
+        <div class="flex flex-row flex-grow items-center">
             <div class="flex flex-col items-center justify-center">
                 <el-avatar :src="props.user?.avatar" :size="80" class="shadow-md" />
             </div>
-            <div class="flex flex-col ml-4">
+            <div class="flex flex-col flex-grow ml-4">
                 <div class="flex flex-row mb-2 items-center justify-between">
                     <div>
                         <span class="title text-2xl" @click="$router.push('/u/p/' + props.user?.userId)">

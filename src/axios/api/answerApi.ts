@@ -11,7 +11,8 @@ export interface AnswerAndCommentEntity {
     lastUpdate: string;
     like: number;
     dislike: number;
-    comments: CommentsEntity[];
+    comments: CommentsEntity;
+    showComment: boolean;
 }
 
 export const getAnswersByArticleId = async (articleId: string, num: number, size: number, order: string) => {

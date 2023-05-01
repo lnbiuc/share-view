@@ -106,11 +106,15 @@ const handleCancelSubscribe = () => {
         }
     }
 };
+
+const userStore = useUserStore();
 </script>
 
 <template>
-    <el-button @click="handleSubscribe" type="primary" v-if="!isDisableSubscribeBtn" plain> Subscribe</el-button>
-    <el-button @click="handleCancelSubscribe" type="danger" v-if="isDisableSubscribeBtn" plain>
-        Cancel Subscribed
-    </el-button>
+    <div v-if="!(userStore.user.userId !== '' && userId == userStore.user.userId)">
+        <el-button @click="handleSubscribe" type="primary" v-if="!isDisableSubscribeBtn" plain> Subscribe</el-button>
+        <el-button @click="handleCancelSubscribe" type="danger" v-if="isDisableSubscribeBtn" plain>
+            Cancel Subscribed
+        </el-button>
+    </div>
 </template>

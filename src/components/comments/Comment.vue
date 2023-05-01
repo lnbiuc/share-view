@@ -9,7 +9,6 @@ import { ChildComment, CommentsEntity } from '../../axios/api/commentsApi';
 const props = defineProps({
     comments: {
         type: Object as PropType<CommentsEntity>,
-        default: [],
     },
     title: {
         type: String,
@@ -31,6 +30,7 @@ const hasChildren = (arr: ChildComment[]) => {
 
 const handleCommentToArticle = () => {
     if (checkLoginStatus()) {
+        emit('on-open-comment-form');
         const dialogControlStore = useDialogControlStore();
         dialogControlStore.commentForm.displayInfo = props.title;
         dialogControlStore.commentForm.status = true;
@@ -41,6 +41,7 @@ const handleCommentToArticle = () => {
 
 const handleCreateChildComment = (info: string, id: number) => {
     if (checkLoginStatus()) {
+        emit('on-open-comment-form');
         const dialogControlStore = useDialogControlStore();
         dialogControlStore.commentForm.displayInfo = info;
         dialogControlStore.commentForm.status = true;
@@ -52,6 +53,7 @@ const handleCreateChildComment = (info: string, id: number) => {
 
 const handleCreateChildChildComment = (info: string, id: number) => {
     if (checkLoginStatus()) {
+        emit('on-open-comment-form');
         const dialogControlStore = useDialogControlStore();
         dialogControlStore.commentForm.displayInfo = info;
         dialogControlStore.commentForm.status = true;
@@ -64,7 +66,6 @@ const handleClickLike = (commentId: number, isLike: number) => {
     if (checkLoginStatus()) {
         likeArticle(commentId.toString(), 1, isLike).then((res) => {
             if (res.data.code == 200) {
-                // TODO emit get comment
                 const commentStore = useReloadCommentStore();
                 commentStore.reload = props.articleId;
                 commentStore.increase();
@@ -75,6 +76,8 @@ const handleClickLike = (commentId: number, isLike: number) => {
         });
     }
 };
+
+const emit = defineEmits(['on-open-comment-form']);
 
 const themeStore = useThemeStore();
 </script>
