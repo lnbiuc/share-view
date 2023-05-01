@@ -101,7 +101,9 @@ const refresh = () => {
                 <div class="flex flex-row justify-start">
                     <div class="flex flex-row justify-center items-center">
                         <el-avatar class="mr-4" size="large" :src="a.author.avatar" />
-                        <span class="text-xl mr-2 title">{{ a.author.username }}</span>
+                        <span class="text-xl mr-2 title" @click="$router.push('/u/p/' + a.author.userId)">{{
+                            a.author.username
+                        }}</span>
                         <span class="text-xs text-gray-500 mt-1">@{{ a.author.userId }}&nbsp;·&nbsp;</span>
                         <span class="text-sm text-gray-500 mt-1" v-text="formatTime(a.releaseTime)"></span>
                     </div>
