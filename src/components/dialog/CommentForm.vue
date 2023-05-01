@@ -44,6 +44,10 @@ const handlePublish = () => {
 };
 
 const themeStore = useThemeStore();
+
+const handleBeforeClose = () => {
+    params.commentForm.value.data.content = '';
+};
 </script>
 
 <template>
@@ -56,7 +60,7 @@ const themeStore = useThemeStore();
         :modal="false"
         :draggable="true"
         :show-close="false"
-        :before-close="(params.commentForm.value.data.content = '')"
+        :before-close="handleBeforeClose"
     >
         <template #header="{ close, titleId, titleClass }">
             <div class="flex flex-row justify-between">

@@ -21,7 +21,7 @@ const showImages = (img: string[], index: number) => {
         <div v-if="images.length > 0" class="w-full">
             <div v-if="images.length === 1" class="grid grid-cols-1 grid-rows-1 gap-2">
                 <div
-                    @click="showImages(images)"
+                    @click="showImages(images, 0)"
                     :style="{
                         backgroundImage: 'url(' + images[0] + ')',
                         background: 'center center / no-repeat',
