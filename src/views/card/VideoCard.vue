@@ -86,16 +86,18 @@ watch(refParamsStore.params.value, () => {
                     <div class="mr-2">
                         <el-avatar :src="a.author.avatar" shape="square" />
                     </div>
-                    <span class="hover:text-blue-500 text-xl cursor-pointer transition-all"
+                    <span
+                        class="hover:text-blue-500 text-xl cursor-pointer transition-all"
+                        @click="$router.push('/u/p/' + a.author.userId)"
                         >{{ a.author.username }} ·&nbsp;</span
                     >
                     <span v-text="formatTime(a.releaseTime)"></span>
                     <span class="title" v-for="t in a.tags" :key="t.tagId"> &nbsp;· {{ t.tagName }}</span>
                 </div>
                 <div class="flex flex-row ml-2">
-                    <CommentsLink />
+                    <CommentsLink :comments="a.comments" />
                     <ShareLink />
-                    <CollectionLink />
+                    <CollectionLink :collect-count="a.collect" />
                 </div>
             </div>
             <Pagination

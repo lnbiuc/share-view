@@ -9,7 +9,6 @@ import { ChildComment, CommentsEntity } from '../../axios/api/commentsApi';
 const props = defineProps({
     comments: {
         type: Object as PropType<CommentsEntity>,
-        default: [],
     },
     title: {
         type: String,
@@ -31,6 +30,7 @@ const hasChildren = (arr: ChildComment[]) => {
 
 const handleCommentToArticle = () => {
     if (checkLoginStatus()) {
+        emit('on-open-comment-form');
         const dialogControlStore = useDialogControlStore();
         dialogControlStore.commentForm.displayInfo = props.title;
         dialogControlStore.commentForm.status = true;
@@ -41,6 +41,7 @@ const handleCommentToArticle = () => {
 
 const handleCreateChildComment = (info: string, id: number) => {
     if (checkLoginStatus()) {
+        emit('on-open-comment-form');
         const dialogControlStore = useDialogControlStore();
         dialogControlStore.commentForm.displayInfo = info;
         dialogControlStore.commentForm.status = true;
@@ -52,6 +53,7 @@ const handleCreateChildComment = (info: string, id: number) => {
 
 const handleCreateChildChildComment = (info: string, id: number) => {
     if (checkLoginStatus()) {
+        emit('on-open-comment-form');
         const dialogControlStore = useDialogControlStore();
         dialogControlStore.commentForm.displayInfo = info;
         dialogControlStore.commentForm.status = true;
@@ -64,7 +66,6 @@ const handleClickLike = (commentId: number, isLike: number) => {
     if (checkLoginStatus()) {
         likeArticle(commentId.toString(), 1, isLike).then((res) => {
             if (res.data.code == 200) {
-                // TODO emit get comment
                 const commentStore = useReloadCommentStore();
                 commentStore.reload = props.articleId;
                 commentStore.increase();
@@ -76,6 +77,8 @@ const handleClickLike = (commentId: number, isLike: number) => {
     }
 };
 
+const emit = defineEmits(['on-open-comment-form']);
+
 const themeStore = useThemeStore();
 </script>
 
@@ -85,7 +88,7 @@ const themeStore = useThemeStore();
         <div
             class="flex flex-row justify-between items-center mt-2 bg-gray-100 dark:bg-neutral-900 p-2 rounded-md shadow-sm"
         >
-            <div class="text-gray-500">
+            <div class="text-gray-500 pl-1">
                 Total Comment : <span class="text-blue-500">{{ total }}</span>
             </div>
             <el-button plain bg color="#626aef" :dark="themeStore.isDark" @click="handleCommentToArticle()"
@@ -148,8 +151,10 @@ const themeStore = useThemeStore();
                             <span class="ml-1">Replay</span>
                         </div>
                     </div>
-                    <div class="text-sm text-gray-500 justify-end">
-                        <span v-text="formatTime(comment.createTime)"></span>
+                    <div class="text-sm text-gray-500 justify-end cursor-default">
+                        <el-tooltip :content="comment.createTime">
+                            {{ formatTime(comment.createTime) }}
+                        </el-tooltip>
                     </div>
                 </div>
                 <div v-if="hasChildren(comment.childComments)">
@@ -210,8 +215,13 @@ const themeStore = useThemeStore();
                                         <span class="ml-1">Replay</span>
                                     </div>
                                 </div>
-                                <div>
-                                    <span class="mr-0.5 text-xs text-gray-500" v-text="formatTime(child.createTime)" />
+                                <div class="cursor-default">
+                                    <el-tooltip :content="child.createTime">
+                                        <span
+                                            class="mr-0.5 text-xs text-gray-500"
+                                            v-text="formatTime(child.createTime)"
+                                        />
+                                    </el-tooltip>
                                 </div>
                             </div>
                         </div>

@@ -4,7 +4,7 @@ import { getUserInfo } from '../../axios/api/userApi';
 import { useRouteParams } from '@vueuse/router';
 import { Ref, ref } from 'vue';
 import { UserLiteEntity } from '../../axios/api/articleApi';
-import { formatTime } from '../../utils';
+import { formatTime, toPercent } from '../../utils';
 
 const user: Ref<UserLiteEntity> = ref({
     userId: '',
@@ -23,17 +23,6 @@ onMounted(() => {
         user.value = res.data.data;
     });
 });
-
-const { proxy }: any = getCurrentInstance();
-const showImages = (img: string) => {
-    proxy.$viewerApi({
-        images: img,
-    });
-};
-
-const toPercent = (num: number) => {
-    return Math.min(Math.max(num - 1, 0), 999) / 10;
-};
 </script>
 
 <template>
@@ -41,7 +30,6 @@ const toPercent = (num: number) => {
         <template #avatar>
             <div class="avatar">
                 <div
-                    @click="showImages(user.avatar)"
                     :style="{
                         backgroundImage: 'url(' + user.avatar + ')',
                         background: 'center center / no-repeat',
@@ -61,7 +49,7 @@ const toPercent = (num: number) => {
                     </span>
                 </div>
                 <div class="flex flex-col justify-end">
-                    <el-button>Subscribe</el-button>
+                    <subscribe-btn :is-subscribed="user.isSubscribed" :user-id="user.userId" type="user" />
                 </div>
             </div>
             <div class="user-info-signature dark:text-dark">

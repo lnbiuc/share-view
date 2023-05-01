@@ -4,7 +4,7 @@
             <i-ant-design-message-twotone />
         </el-icon>
         <span class="mx-1 text-gray-400">{{ comments }}</span>
-        <span class="hover:text-blue-500 transition-all text-gray-400 cursor-pointer">Comments</span>
+        <span class="hover:text-blue-500 transition-all text-gray-400 cursor-pointer no-select-bg">Comments</span>
     </div>
 </template>
 

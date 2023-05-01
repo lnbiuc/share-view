@@ -77,9 +77,20 @@ const reloadComment = (id: string) => {
         data.value.comments = res.data.data;
     });
 };
+
+const refresh = () => {
+    getOneArticle(articleId.value).then((res) => {
+        if (res.data.code == 200) {
+            data.value = res.data.data;
+        } else {
+            ElMessage.error(res.data.message);
+        }
+    });
+};
 </script>
 
 <template>
+    <loading :is-loading="isLoad" />
     <DefaultDetailLayout>
         <template #left>
             <div class="flex flex-col p-6 dark:bg-dark rounded-md bg-light shadow-sm">
@@ -88,34 +99,43 @@ const reloadComment = (id: string) => {
                         class="rounded-full py-1 px-2 w-14 text-sm text-center dark:text-light"
                         style="background-color: #eebe77"
                     >
-                        Video
+                        Post
                     </span>
                 </div>
-                <div class="flex flex-row flex-wrap justify-between items-center">
-                    <div class="flex flex-row justify-center items-center">
-                        <el-avatar size="large" class="mr-4" :src="data.article.author.avatar" />
-                        <span class="text-2xl">{{ data.article.author.username }}</span>
-                        <span class="text-xs mx-1 text-gray-500">@{{ data.article.author.userId }}</span>
-                        <span class="text-sm text-gray-500" v-text="formatTime(data.article.releaseTime)"></span>
-                    </div>
-                    <div class="flex flex-row items-center">
-                        <el-button>Subscribe</el-button>
-                    </div>
-                </div>
-                <div class="my-4">
+                <el-divider>AUTHOR</el-divider>
+                <user-profile :user="data.article.author">
+                    <subscribe-btn
+                        :is-subscribed="data.article.author.isSubscribed"
+                        :user-id="data.article.author.userId"
+                        type="user"
+                    />
+                </user-profile>
+                <el-divider>CONTENT</el-divider>
+                <div class="my-4 text-light dark:text-dark">
                     {{ data.article.introduction }}
                 </div>
                 <div class="mb-4 w-full" v-viewer>
                     <img class="w-full shadow-md rounded-md my-1" v-for="i in data.article.images" :src="i" alt="" />
                 </div>
                 <div class="flex flex-row">
-                    <LikeBtn :type="0" :id="data.article.articleId" />
-                    <CommentsLink />
+                    <LikeBtn
+                        :type="0"
+                        :id="data.article.articleId"
+                        @on-like-success="refresh"
+                        :like="data.article.like"
+                    />
+                    <CommentsLink :comments="data.comments.total" />
                     <ShareLink />
-                    <CollectionLink :type="0" :id="data.article.articleId" />
+                    <CollectionLink
+                        :type="0"
+                        :id="data.article.articleId"
+                        :collect-count="data.article.collect"
+                        @on-collect-success="refresh"
+                    />
                 </div>
                 <div>
                     <Comment
+                        :total="data.comments.total"
                         :comments="data.comments"
                         :title="data.article.introduction"
                         :article-id="data.article.articleId"

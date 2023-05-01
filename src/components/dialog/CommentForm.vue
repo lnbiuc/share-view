@@ -22,7 +22,7 @@ const handlePublish = () => {
                 }
             });
         } else {
-            ElMessage.error('miss params to article');
+            ElMessage.warning('miss params to article');
         }
     } else {
         if (params.commentForm.value.data.toCommentId !== 0 && params.commentForm.value.data.content !== '') {
@@ -38,7 +38,7 @@ const handlePublish = () => {
                 }
             });
         } else {
-            ElMessage.error('miss params to comment');
+            ElMessage.warning('miss params to comment');
         }
     }
 };
@@ -56,6 +56,7 @@ const themeStore = useThemeStore();
         :modal="false"
         :draggable="true"
         :show-close="false"
+        :before-close="(params.commentForm.value.data.content = '')"
     >
         <template #header="{ close, titleId, titleClass }">
             <div class="flex flex-row justify-between">

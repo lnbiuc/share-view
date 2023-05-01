@@ -18,18 +18,19 @@ const props = defineProps({
     },
 });
 
-const answer = ref<{ content: string; toId: string }>({
+const answer = ref<{ content: string }>({
     content: '',
-    toId: props.questionId,
 });
 
 const dialogControlStore = useDialogControlStore();
 const handlePublish = () => {
-    if (answer.value.toId !== '' && answer.value.content !== '') {
-        publishAnswer(answer.value.toId, answer.value.content).then((res) => {
+    if (props.questionId !== '' && answer.value.content !== '') {
+        publishAnswer(props.questionId, answer.value.content).then((res) => {
             if (res.data.code == 200) {
                 dialogControlStore.answerQuestionForm.status = false;
+                answer.value.content = '';
                 ElMessage.success('SUCCESS');
+                emit('on-publish-success');
             } else {
                 ElMessage.error(res.data.message);
             }
@@ -38,6 +39,8 @@ const handlePublish = () => {
         ElMessage.warning('content required');
     }
 };
+
+const emit = defineEmits(['on-publish-success']);
 
 const themeStore = useThemeStore();
 const refThemeStore = storeToRefs(themeStore);
@@ -54,6 +57,7 @@ watch(refThemeStore.isDark, (val) => {
         :fullscreen="true"
         :show-close="false"
         :draggable="true"
+        :lock-scroll="true"
     >
         <template #header="{ close, titleId, titleClass }">
             <div class="flex flex-row justify-between">

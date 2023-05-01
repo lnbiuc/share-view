@@ -40,18 +40,14 @@ const articleList: Ref<ArticleListEntity[]> = ref([
 const paramsStore = useArticleParamsStore();
 paramsStore.filterTypeChange(3);
 const isLoad = ref<boolean>(true);
-getArticleList(paramsStore.params).then((res) => {
-    articleList.value = res.data.data.data;
-    total.value = res.data.data.total;
-    isLoad.value = false;
-});
-
-const { proxy }: any = getCurrentInstance();
-const showImages = (img: string[]) => {
-    proxy.$viewerApi({
-        images: img,
+onMounted(() => {
+    isLoad.value = true;
+    getArticleList(paramsStore.params).then((res) => {
+        articleList.value = res.data.data.data;
+        total.value = res.data.data.total;
+        isLoad.value = false;
     });
-};
+});
 
 // request when change
 const total = ref(0);
@@ -83,6 +79,14 @@ const handleClickComment = (articleId: string, info: string) => {
     store.commentForm.data.level = 0;
     store.commentForm.data.articleId = articleId;
 };
+
+const refresh = () => {
+    getArticleList(paramsStore.params).then((res) => {
+        articleList.value = res.data.data.data;
+        total.value = res.data.data.total;
+        isLoad.value = false;
+    });
+};
 </script>
 
 <template>
@@ -97,8 +101,10 @@ const handleClickComment = (articleId: string, info: string) => {
                 <div class="flex flex-row justify-start">
                     <div class="flex flex-row justify-center items-center">
                         <el-avatar class="mr-4" size="large" :src="a.author.avatar" />
-                        <span class="text-xl mr-2 title">{{ a.author.username }}</span>
-                        <span class="text-sm text-gray-500 mt-1">@{{ a.author.userId }}&nbsp;·&nbsp;</span>
+                        <span class="text-xl mr-2 title" @click="$router.push('/u/p/' + a.author.userId)">{{
+                            a.author.username
+                        }}</span>
+                        <span class="text-xs text-gray-500 mt-1">@{{ a.author.userId }}&nbsp;·&nbsp;</span>
                         <span class="text-sm text-gray-500 mt-1" v-text="formatTime(a.releaseTime)"></span>
                     </div>
                 </div>
@@ -109,7 +115,7 @@ const handleClickComment = (articleId: string, info: string) => {
                 </div>
                 <image-gird-layout :images="a.images" />
                 <div class="flex flex-row mt-4">
-                    <LikeBtn :type="0" :id="a.articleId" />
+                    <LikeBtn :type="0" :id="a.articleId" :like="a.like" @on-like-success="refresh" />
                     <CommentsLink @click="handleClickComment(a.articleId, a.introduction)" :comments="a.comments" />
                     <ShareLink />
                     <CollectionLink :collect-count="a.collect" :type="0" :id="a.articleId" />

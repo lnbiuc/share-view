@@ -137,51 +137,32 @@ const commentPageNumberChange = (pageNumber: number) => {
     <DefaultDetailLayout>
         <template #left>
             <div class="flex flex-col p-6 dark:bg-dark rounded-md bg-light shadow-sm">
-                <div class="flex flex-row flex-wrap justify-between items-center">
+                <div class="flex flex-row flex-wrap justify-start items-center">
                     <span
                         class="rounded-full py-1 px-2 w-16 text-sm text-center dark:text-light"
                         style="background-color: #79bbff"
                         >Article</span
                     >
-                    <span class="ml-2">
-                        <el-tag class="mx-1" v-for="t in data.article.tags">
+                    <span class="ml-2 flex flex-row flex-wrap justify-start items-center">
+                        <el-tag size="large" class="mx-1" v-for="t in data.article.tags">
                             {{ t.tagName ? t.tagName : '' }}
                         </el-tag>
                     </span>
                 </div>
-                <div class="flex flex-col">
+                <div class="flex flex-col mb-2">
                     <span class="text-4xl dark:text-dark pt-4 pb-2">{{ data.article.title }}</span>
-                    <span class="text-gray-500 dark:text-dark mt-2">{{ data.article.introduction }}</span>
+                    <span class="text-gray-500 dark:text-dark mt-2 text-indent" style="text-indent: 40px">{{
+                        data.article.introduction
+                    }}</span>
                 </div>
-                <div class="flex flex-row justify-between px-2">
-                    <div class="flex flex-row mt-4">
-                        <div>
-                            <el-avatar :size="60" :src="data.article.author.avatar" />
-                        </div>
-                        <div class="flex flex-col ml-4 justify-around">
-                            <div class="flex flex-row items-center">
-                                <div class="flex">
-                                    <span class="text-lg text-gray-800 dark:text-dark">{{
-                                        data.article.author.username
-                                    }}</span>
-                                    <span class="text-sm text-gray-400 flex items-center mt-1"
-                                        >&nbsp;@{{ data.article.author.userId }}</span
-                                    >
-                                </div>
-                            </div>
-                            <div>
-                                <span class="text-sm text-gray-400">{{ data.article.releaseTime }}</span>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="flex items-center mb-4">
-                        <subscribe-btn
-                            :is-subscribed="data.article.author.isSubscribed"
-                            :user-id="data.article.author.userId"
-                            type="user"
-                        />
-                    </div>
-                </div>
+                <el-divider>AUTHOR</el-divider>
+                <user-profile :user="data.article.author" class="mb-2">
+                    <subscribe-btn
+                        :is-subscribed="data.article.author.isSubscribed"
+                        :user-id="data.article.author.userId"
+                        type="user"
+                    />
+                </user-profile>
                 <el-divider>CONTENT</el-divider>
                 <Loading :is-loading="isLoading" />
                 <div v-show="!isLoading">
@@ -215,7 +196,7 @@ const commentPageNumberChange = (pageNumber: number) => {
         <template #right>
             <Loading :is-loading="isLoading" />
             <UserInfoLite v-show="!isLoading" :user="data.article.author" />
-            <el-affix :offset="8">
+            <el-affix :offset="10">
                 <div
                     class="text-left text-md transition-all dark:bg-dark dark:text-dark bg-light rounded-md shadow-sm px-4 py-2 overflow-auto break-all"
                     v-show="!isLoading"

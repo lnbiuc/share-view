@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { formatTime } from '../../utils';
+import { formatTime, toPercent } from '../../utils';
 import { PropType } from 'vue';
 import { UserLiteEntity } from '../../axios/api/articleApi';
 
@@ -17,21 +17,26 @@ const subStrTime = (time: string) => {
 <template>
     <div class="bg-light rounded-md shadow-sm mb-2 p-4 dark:bg-dark">
         <div class="flex flex-grow justify-center mb-4">
-            <el-avatar :size="130" :src="user.avatar" />
+            <el-avatar :size="150" :src="user.avatar" />
         </div>
         <div class="flex flex-col text-left">
             <span class="text-xl font-bold mt-1 dark:text-dark">{{ user.username }}</span>
-            <span class="text-sm text-gray-400">@{{ user.userId }}</span>
-            <span class="text-sm text-gray-400 my-2" style="text-indent: 24px">Signature:{{ user.signature }}</span>
-            <span class="text-sm text-gray-400"
-                >Register:
+            <span class="text-sm text-gray-400 mt-1">@{{ user.userId }}</span>
+            <span class="user-info-text"
+                >Register :
                 <span v-text="formatTime(user.registerTime)"></span>
             </span>
-            <span class="text-sm text-gray-400"
-                >Last Online:
+            <span class="user-info-text"
+                >Last Online :
                 <span v-text="subStrTime(user.lastLogin)"></span>
             </span>
-            <span class="text-sm text-gray-400">IP:{{ user.ipAddr }}</span>
+            <span class="user-info-text">IP : {{ user.ipAddr }}</span>
+            <span class="user-info-text"> Level : {{ Math.floor(toPercent(user.level)) }} </span>
         </div>
     </div>
 </template>
+<style scoped>
+.user-info-text {
+    @apply text-sm text-gray-400 my-0.5;
+}
+</style>
