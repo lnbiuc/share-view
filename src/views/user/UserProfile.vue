@@ -1,19 +1,13 @@
 <script setup lang="ts">
 import { ref, Ref } from 'vue';
-import {
-    ArticleListEntity,
-    articleParams,
-    getArticleList,
-    getViewHistory,
-    ViewHistoryEntity,
-} from '../../axios/api/articleApi';
+import { ArticleListEntity, articleParams, getViewHistory, ViewHistoryEntity } from '../../axios/api/articleApi';
 import { useArticleParamsStore, useUserStore } from '../../pinia';
 import { storeToRefs } from 'pinia';
 import axios from '../../axios';
 import { useRouteParams } from '@vueuse/router';
-import { ElMain, ElMessage } from 'element-plus';
-import videojs from 'video.js';
-import off = videojs.off;
+import UserProfileLayout from '../../layout/UserProfileLayout.vue';
+import { Pointer, StarFilled, ChatLineRound, Finished, Clock } from '@element-plus/icons-vue';
+import { ElMessage } from 'element-plus';
 
 const articleList: Ref<ArticleListEntity[]> = ref([
     {
@@ -113,9 +107,6 @@ onMounted(() => {
     if (userStore.isLogin && userStore.user.userId === userId.value) {
         isHost.value = true;
     }
-    if (isHost.value) {
-        getUserViewHistory(params.value.pageNumber, params.value.pageSize);
-    }
 });
 
 const params = ref<{ pageNumber: number; pageSize: number; total: number }>({ pageNumber: 1, pageSize: 10, total: 0 });
@@ -141,13 +132,86 @@ watch(userId, () => {
         isHost.value = false;
     }
 });
+
+const isCollapse = ref<boolean>(false);
+
+const currentDisplay = ref<number>(1);
+
+const handleItemClick = (index: number) => {
+    currentDisplay.value = index;
+    if (currentDisplay.value !== index) {
+        isLoad.value = true;
+        if (index === 1) {
+            paramsStore.params.filterBy.authorId = userId.value;
+        } else if (index === 2) {
+            // TODO get comment
+        } else if (index === 3) {
+            // TODO get like
+        } else if (index === 4) {
+            // TODO get collect
+        } else if (index === 5) {
+            getUserViewHistory(params.value.pageNumber, params.value.pageSize);
+        }
+        getArticleList(paramsStore.params).then((res) => {
+            articleList.value = res.data.data.data;
+            total.value = res.data.data.total;
+            isLoad.value = false;
+        });
+    }
+};
 </script>
 
 <template>
-    <transition appear>
-        <div class="flex flex-row">
-            <div class="flex flex-col w-8/12" id="scrollContent_1">
-                <filter-by />
+    <user-profile-layout>
+        <!--                <view-history v-if="isHost" :history-list="historyList ? historyList : []" />-->
+        <!--                <Pagination-->
+        <!--                    v-if="isHost"-->
+        <!--                    :current-page="params.pageNumber"-->
+        <!--                    :page-size="params.pageSize"-->
+        <!--                    :total="params.total"-->
+        <!--                    @numberChange="historyCurrentChange"-->
+        <!--                    :hide-on-single-page="true"-->
+        <!--                />-->
+        <template #left>
+            <el-affix :offset="10" target="#scrollContent_1">
+                <div class="dark:bg-dark border-light dark:border-dark px-2 py-4 rounded-md">
+                    <div class="flex flex-row items-center justify-center h-[20px] mb-4" v-if="!isCollapse">
+                        <div class="flex flex-row items-center">
+                            <span class="dark:text-dark mr-2"> MENU </span>
+                        </div>
+                        <div class="flex flex-row items-center">
+                            <el-icon :size="25" color="#c9d1d9">
+                                <i-ant-design-menu-unfold-outlined />
+                            </el-icon>
+                        </div>
+                    </div>
+                    <el-menu default-active="1" class="el-menu-vertical-demo" :collapse="isCollapse">
+                        <el-menu-item index="1" @click="handleItemClick(1)">
+                            <el-icon><Finished /></el-icon>
+                            <template #title>Publish</template>
+                        </el-menu-item>
+                        <el-menu-item index="2" @click="handleItemClick(2)">
+                            <el-icon><ChatLineRound /></el-icon>
+                            <template #title>Comment</template>
+                        </el-menu-item>
+                        <el-menu-item index="3" @click="handleItemClick(3)">
+                            <el-icon><Pointer /></el-icon>
+                            <template #title>Like</template>
+                        </el-menu-item>
+                        <el-menu-item index="4" @click="handleItemClick(4)">
+                            <el-icon><StarFilled /></el-icon>
+                            <template #title>Collection</template>
+                        </el-menu-item>
+                        <el-menu-item index="5" @click="handleItemClick(5)">
+                            <el-icon><Clock /></el-icon>
+                            <template #title>History</template>
+                        </el-menu-item>
+                    </el-menu>
+                </div>
+            </el-affix>
+        </template>
+        <template #right>
+            <div id="scrollContent_1">
                 <div>
                     <Loading :is-loading="isLoad" />
                     <all-type-preview-list :article-list="articleList" v-if="!isLoad" />
@@ -160,20 +224,21 @@ watch(userId, () => {
                     />
                 </div>
             </div>
-            <div class="flex flex-col w-4/12">
-                <el-affix :offset="0" target="#scrollContent_1">
-                    <option-menu class="mr-2" />
-                    <view-history v-if="isHost" class="mr-2" :history-list="historyList ? historyList : []" />
-                    <Pagination
-                        v-if="isHost"
-                        :current-page="params.pageNumber"
-                        :page-size="params.pageSize"
-                        :total="params.total"
-                        @numberChange="historyCurrentChange"
-                        :hide-on-single-page="true"
-                    />
-                </el-affix>
-            </div>
-        </div>
-    </transition>
+        </template>
+    </user-profile-layout>
 </template>
+
+<style>
+.el-menu-vertical-demo:not(.el-menu--collapse) {
+    width: 200px;
+    min-height: 400px;
+}
+
+.el-menu {
+    border-right: none;
+}
+
+.el-menu-vertical-demo:not(.el-menu--collapse) {
+    min-height: unset;
+}
+</style>
