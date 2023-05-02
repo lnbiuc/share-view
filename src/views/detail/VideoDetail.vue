@@ -6,7 +6,11 @@ import { ElMessage } from 'element-plus';
 import { useRouter } from 'vue-router';
 import VideoDetailLayout from '../../layout/VideoDetailLayout.vue';
 import { VideoPlayer } from '@videojs-player/vue';
-import { useThemeStore } from '../../pinia';
+import { useReloadCommentStore, useThemeStore } from '../../pinia';
+import { formatTime } from '../../utils';
+import { storeToRefs } from 'pinia';
+import { getCommentsById } from '../../axios/api/commentsApi';
+import { addCollection } from '../../axios/api/collectApi';
 
 const videoId = useRouteParams<string>('videoId');
 
@@ -47,12 +51,11 @@ const data: Ref<ArticleContentEntity> = ref({
         data: [],
     },
 });
-const disableSubscribeBtn = ref<boolean | undefined>(false);
 onMounted(() => {
     getOneArticle(videoId.value).then((res) => {
         if (res.data.code == 200) {
             data.value = res.data.data;
-            disableSubscribeBtn.value = !!data.value?.article?.author.isSubscribed;
+            params.value.total = data.value.comments.total;
             nextTick(() => {
                 window.scroll({ top: 0, behavior: 'smooth' });
             });
@@ -62,6 +65,48 @@ onMounted(() => {
         }
     });
 });
+
+const handleOnLikeSuccess = () => {
+    getOneArticle(data.value.article.articleId).then((res) => {
+        if (res.data.code == 200) {
+            data.value.article.like = res.data.data.article.like;
+        }
+    });
+};
+
+const params = ref<{ pageNumber: number; pageSize: number; total: number }>({ pageNumber: 1, pageSize: 10, total: 0 });
+
+const store = useReloadCommentStore();
+const refStore = storeToRefs(store);
+watch(refStore.count, () => {
+    if (refStore.reload.value == data.value.article.articleId) {
+        refreshComment();
+    }
+});
+
+const refreshComment = () => {
+    getCommentsById(data.value.article.articleId, params.value.pageNumber, params.value.pageSize).then((res) => {
+        if (res.data.code == 200) {
+            data.value.comments = res.data.data;
+            params.value.total = data.value.comments.total;
+        }
+    });
+};
+
+const commentPageNumberChange = (pageNumber: number) => {
+    params.value.pageNumber = pageNumber;
+    refreshComment();
+};
+
+const handleAddCollection = (articleId: string) => {
+    addCollection(articleId, 4).then((res) => {
+        if (res.data.code == 200) {
+            ElMessage.success('SUCCESS');
+        } else {
+            ElMessage.warning(res.data.message);
+        }
+    });
+};
 
 const themeStore = useThemeStore();
 </script>
@@ -103,27 +148,42 @@ const themeStore = useThemeStore();
                             {{ data.article.like }}
                             Likes
                         </span>
+                        <el-icon color="ml-2">
+                            <i-ant-design-clock-circle-filled />
+                        </el-icon>
+                        <span class="mx-2">
+                            {{ data.article.releaseTime }}
+                        </span>
                     </div>
                 </div>
             </template>
             <template #video>
                 <video-player
-                    class="w-full"
+                    class="w-full min-h-[500px]"
+                    controls
                     :src="data.article.content"
                     :poster="data.article.images[0]"
                     :controls="true"
                     :volume="0.5"
                     :prefer-full-window="true"
+                    :playback-rates="[0.7, 1.0, 1.5, 2.0]"
+                    playsinline
                 />
             </template>
             <template #author>
-                <div class="dark:text-dark mt-2">
+                <span class="dark:text-dark mt-2">
                     {{ data.article.introduction }}
-                </div>
+                </span>
                 <div class="flex flex-row mt-4">
-                    <CommentsLink :comments="data.article.comments" />
-                    <ShareLink />
-                    <CollectionLink :collect-count="data.article.collect" />
+                    <LikeBtn
+                        :like="data.article.like"
+                        :id="data.article.articleId"
+                        :type="0"
+                        @on-like-success="handleOnLikeSuccess(data.article.articleId)"
+                    />
+                    <el-button type="primary" @click="handleAddCollection(data.article.articleId)">
+                        Add Collection
+                    </el-button>
                 </div>
                 <el-divider>AUTHOR</el-divider>
                 <user-profile :user="data.article.author">
@@ -136,8 +196,28 @@ const themeStore = useThemeStore();
                 <el-divider>COMMENT</el-divider>
             </template>
             <template #comment>
-                <Comment :comments="data.comments" :title="data.article.title" :article-id="data.article.articleId" />
+                <Comment
+                    :comments="data.comments"
+                    :total="data.comments.total"
+                    :title="data.article.title"
+                    :article-id="data.article.articleId"
+                />
+                <Pagination
+                    :current-page="params.pageNumber"
+                    :page-size="params.pageSize"
+                    :total="params.total"
+                    @numberChange="commentPageNumberChange"
+                    :hide-on-single-page="true"
+                />
             </template>
         </VideoDetailLayout>
     </div>
 </template>
+<style>
+.video-js .vjs-big-play-button {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+}
+</style>

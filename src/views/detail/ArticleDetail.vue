@@ -3,7 +3,6 @@ import { getOneArticle, ArticleContentEntity } from '../../axios/api/articleApi'
 import { useRouteParams } from '@vueuse/router';
 import { ElMessage } from 'element-plus';
 import { useRouter } from 'vue-router';
-import { refreshSubscribe } from '../../axios/api/subscribeApi';
 import { likeArticle } from '../../axios/api/likesApi';
 import { addCollection } from '../../axios/api/collectApi';
 import UserInfoLite from '../../components/aside/UserInfoLite.vue';
@@ -96,11 +95,11 @@ const store = useReloadCommentStore();
 const refStore = storeToRefs(store);
 watch(refStore.count, () => {
     if (refStore.reload.value == data.value.article.articleId) {
-        reloadComment(data.value.article.articleId);
+        reloadComment();
     }
 });
 
-const reloadComment = (id: string) => {
+const reloadComment = () => {
     getCommentsById(articleId.value, params.value.pageNumber, params.value.pageSize).then((res) => {
         params.value.total = res.data.data.total;
         data.value.comments = res.data.data;
@@ -144,14 +143,14 @@ const commentPageNumberChange = (pageNumber: number) => {
                         >Article</span
                     >
                     <span class="ml-2 flex flex-row flex-wrap justify-start items-center">
-                        <el-tag size="large" class="mx-1" v-for="t in data.article.tags">
+                        <el-tag size="large" class="mx-1" v-for="t in data.article.tags" :key="t.tagId">
                             {{ t.tagName ? t.tagName : '' }}
                         </el-tag>
                     </span>
                 </div>
                 <div class="flex flex-col mb-2">
                     <span class="text-4xl dark:text-dark pt-4 pb-2">{{ data.article.title }}</span>
-                    <span class="text-gray-500 dark:text-dark mt-2 text-indent" style="text-indent: 40px">{{
+                    <span class="text-gray-500 dark:text-dark mt-2" style="text-indent: 40px">{{
                         data.article.introduction
                     }}</span>
                 </div>
