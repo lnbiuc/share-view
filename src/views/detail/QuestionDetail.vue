@@ -250,7 +250,7 @@ const handleOpenCommentForm = (answerId: string) => {
                         Question
                     </div>
                     <div class="ml-2 flex flex-row items-center">
-                        <el-tag size="large" class="mx-1" v-for="t in ques.article.tags">
+                        <el-tag size="large" class="mx-1" v-for="t in ques.article.tags" :key="t.tagId">
                             {{ t.tagName }}
                         </el-tag>
                     </div>
@@ -275,7 +275,7 @@ const handleOpenCommentForm = (answerId: string) => {
                         v-model="ques.article.content"
                         :theme="currentTheme"
                         :preview-only="true"
-                        preview-theme="cyanosis"
+                        preview-theme="smart-blue"
                     />
                 </div>
                 <el-divider>ANSWER</el-divider>
@@ -317,7 +317,7 @@ const handleOpenCommentForm = (answerId: string) => {
                         </template>
                     </el-dropdown>
                 </div>
-                <div class="mt-4 p-4 border-light dark:border-dark rounded-md" v-for="a in answer">
+                <div class="mt-4 p-4 border-light dark:border-dark rounded-md" v-for="a in answer" :key="a.id">
                     <user-profile :user="a.author" class="mb-2">
                         <subscribe-btn :is-subscribed="a.author.isSubscribed" :user-id="a.author.userId" type="user" />
                     </user-profile>

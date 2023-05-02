@@ -8,6 +8,10 @@ export interface CategoryEntity {
     introduction: string;
     avatar: string;
     createTime: string;
+    articleCount: number;
+    questionCount: number;
+    postCount: number;
+    videoCount: number;
 }
 
 export const getCategoryList = async (number: number, size: number) => {

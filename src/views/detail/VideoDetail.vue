@@ -7,7 +7,6 @@ import { useRouter } from 'vue-router';
 import VideoDetailLayout from '../../layout/VideoDetailLayout.vue';
 import { VideoPlayer } from '@videojs-player/vue';
 import { useReloadCommentStore, useThemeStore } from '../../pinia';
-import { formatTime } from '../../utils';
 import { storeToRefs } from 'pinia';
 import { getCommentsById } from '../../axios/api/commentsApi';
 import { addCollection } from '../../axios/api/collectApi';
@@ -125,7 +124,7 @@ const themeStore = useThemeStore();
                                 Video
                             </span>
                             <span class="ml-2">
-                                <el-tag class="mx-1" size="large" v-for="t in data.article.tags">
+                                <el-tag class="mx-1" size="large" v-for="t in data.article.tags" :key="t.tagId">
                                     {{ t.tagName ? t.tagName : '' }}
                                 </el-tag>
                             </span>

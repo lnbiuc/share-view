@@ -32,7 +32,7 @@ const handleToArticleDetail = (type: string, articleId: string) => {
             </el-icon>
             <span class="ml-2 dark:text-gray-300">View History</span>
         </div>
-        <div v-for="a in historyList" class="my-1 px-2 py-2 rounded-md transition-all">
+        <div v-for="a in historyList" :key="a.articleId" class="my-1 px-2 py-2 rounded-md transition-all">
             <div class="flex flex-row justify-start">
                 <div
                     class="dark:text-gray-400 hover:text-blue-500 dark:hover:text-blue-500 transition-all cursor-pointer truncate text-sm"

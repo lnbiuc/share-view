@@ -95,6 +95,7 @@ const taggerColor = (s: { name: string; value: string }) => {
             <span
                 class="m-2 cursor-pointer transition-all"
                 v-for="s in sortByList"
+                :key="s.name"
                 @click="clickSelectSort(s)"
                 :style="{ color: taggerColor(s) }"
                 >{{ s.name }}</span
@@ -114,6 +115,7 @@ const taggerColor = (s: { name: string; value: string }) => {
                             @click="clickSelectFilter(f)"
                             :disabled="f.value === currentSelectFilter"
                             v-for="f in filterByList"
+                            :key="f.name"
                             >{{ f.name }}
                         </el-dropdown-item>
                     </el-dropdown-menu>

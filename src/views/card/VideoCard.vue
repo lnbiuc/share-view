@@ -73,6 +73,7 @@ watch(refParamsStore.params.value, () => {
         <div class="m-2" v-if="!isLoading">
             <div
                 v-for="a in articleList"
+                :key="a.articleId"
                 class="flex flex-col mb-2 bg-light transition-all dark:bg-dark rounded-md shadow-sm hover:shadow-md p-4"
             >
                 <div
