@@ -4,14 +4,15 @@ import { ArticleListEntity } from '../../axios/api/articleApi';
 import VideoCardLayout from '../../layout/VideoCardLayout.vue';
 import ImageGirdLayout from '../../layout/ImageGirdLayout.vue';
 
-const { articleList } = defineProps<{
+const { articleList, viewTime } = defineProps<{
     articleList: ArticleListEntity[];
+    viewTime: string[];
 }>();
 </script>
 
 <template>
     <div
-        v-for="a in articleList"
+        v-for="(a, index) in articleList"
         :key="a.articleId"
         class="flex flex-col p-5 dark:bg-dark bg-light hover:shadow-md shadow-sm mt-2 mx-2 rounded-md transition-all"
     >
@@ -61,13 +62,18 @@ const { articleList } = defineProps<{
         <div v-if="a.type === 'Post'" class="mt-1">
             <image-gird-layout :images="a.images" />
         </div>
-        <div class="flex flex-row justify-start mt-2">
-            <CommentsLink
-                :comments="a.comments"
-                @click="handleClickComment(a.articleId, a.title, a.type, a.introduction, $router)"
-            />
-            <CollectionLink :id="a.articleId" :type="0" :collect-count="a.collect" />
-            <ShareLink />
+        <div class="flex flex-row justify-between mt-2">
+            <div class="flex flex-row justify-start">
+                <CommentsLink
+                    :comments="a.comments"
+                    @click="handleClickComment(a.articleId, a.title, a.type, a.introduction, $router)"
+                />
+                <CollectionLink :id="a.articleId" :type="0" :collect-count="a.collect" />
+                <ShareLink />
+            </div>
+            <div>
+                <span v-if="viewTime">{{ viewTime[index] }}</span>
+            </div>
         </div>
     </div>
 </template>

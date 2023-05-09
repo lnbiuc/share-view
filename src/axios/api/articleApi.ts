@@ -72,7 +72,7 @@ export interface ArticleEntity {
     like: number;
     collect: number;
     comments: number;
-    images: any;
+    images: string[];
 }
 
 export interface ArticleContentEntity {
@@ -90,11 +90,8 @@ export interface CommentListEntity {
 
 export interface ViewHistoryEntity {
     articleId: string;
-    type: string;
-    title: string;
-    introduction: string;
-    author: HistoryUserVo;
-    time: string;
+    viewTime: string;
+    articleVo: ArticleEntity;
 }
 
 export interface HistoryUserVo {
