@@ -1,12 +1,12 @@
 <script setup lang="ts">
 import { formatTime, handleClickComment, handleToArticleDetail, tagBgColor } from '../../utils';
-import { ArticleListEntity } from '../../axios/api/articleApi';
+import { ArticleListEntity, ViewHistoryEntity } from '../../axios/api/articleApi';
 import VideoCardLayout from '../../layout/VideoCardLayout.vue';
 import ImageGirdLayout from '../../layout/ImageGirdLayout.vue';
 
 const { articleList, viewTime } = defineProps<{
     articleList: ArticleListEntity[];
-    viewTime: string[];
+    viewTime: ViewHistoryEntity[];
 }>();
 </script>
 
@@ -16,7 +16,7 @@ const { articleList, viewTime } = defineProps<{
         :key="a.articleId"
         class="flex flex-col p-5 dark:bg-dark bg-light hover:shadow-md shadow-sm mt-2 mx-2 rounded-md transition-all"
     >
-        <div class="flex flex-row p-0 text-gray-400">
+        <div class="flex flex-row p-0 justify-between text-gray-400">
             <div class="truncate">
                 <span
                     class="hover:text-blue-500 cursor-pointer transition-all"
@@ -27,6 +27,22 @@ const { articleList, viewTime } = defineProps<{
                 <span class="hover:text-blue-500 cursor-pointer transition-all" v-for="t in a.tags" :key="t.tagId">
                     · {{ t.tagName }}</span
                 >
+            </div>
+            <div>
+                <el-dropdown trigger="click">
+                    <el-button class="el-dropdown-link" text bg type="info">
+                        <el-icon :size="20">
+                            <i-ep-more />
+                        </el-icon>
+                    </el-button>
+                    <template #dropdown>
+                        <el-dropdown-menu>
+                            <el-dropdown-item>Delete</el-dropdown-item>
+                            <el-dropdown-item>Hidden</el-dropdown-item>
+                            <el-dropdown-item>Modify</el-dropdown-item>
+                        </el-dropdown-menu>
+                    </template>
+                </el-dropdown>
             </div>
         </div>
         <div class="my-2 flex flex-row items-start">
@@ -62,7 +78,7 @@ const { articleList, viewTime } = defineProps<{
         <div v-if="a.type === 'Post'" class="mt-1">
             <image-gird-layout :images="a.images" />
         </div>
-        <div class="flex flex-row justify-between mt-2">
+        <div class="flex flex-col mt-2">
             <div class="flex flex-row justify-start">
                 <CommentsLink
                     :comments="a.comments"
@@ -71,8 +87,8 @@ const { articleList, viewTime } = defineProps<{
                 <CollectionLink :id="a.articleId" :type="0" :collect-count="a.collect" />
                 <ShareLink />
             </div>
-            <div>
-                <span v-if="viewTime">{{ viewTime[index] }}</span>
+            <div class="mt-4 flex dark:text-dark" v-if="viewTime">
+                <span>{{ formatTime(viewTime[index].viewTime) }} · {{ viewTime[index].viewTime }}</span>
             </div>
         </div>
     </div>

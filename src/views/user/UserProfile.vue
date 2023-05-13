@@ -74,18 +74,6 @@ const historyList: Ref<ViewHistoryEntity[]> = ref([
     },
 ]);
 
-const convertToArticleList = ({ articleId, articleVo }: ViewHistoryEntity): ArticleListEntity[] => {
-    const articleList: ArticleListEntity = { ...articleVo, articleId };
-    return [articleList];
-};
-
-// const getViewTimeList = (history: ViewHistoryEntity): string[] => {
-//     let timeList: string[] = [];
-//     timeList.push(history.viewTime);
-//     return timeList;
-// };
-const toViewTimeList = ({ viewTime }: ViewHistoryEntity): string[] => [viewTime];
-
 const isEmpty = ref<boolean>(false);
 watch(publishArticleList, () => {
     isEmpty.value = publishArticleList.value?.length == 0;
@@ -120,13 +108,9 @@ watch(refParamsStore.params.value, () => {
 });
 
 const currentChange = (pageNumber: number): void => {
-    const store = useArticleParamsStore();
-    store.params.pageNumber = pageNumber;
-    getArticleList(store.params).then((res) => {
-        publishArticleList.value = res.data.data.data;
-        isLoad.value = false;
-        total.value = res.data.data.total;
-    });
+    paramsStore.params.pageNumber = pageNumber;
+    params.value.pageNumber = pageNumber;
+    handleItemClick(currentDisplay.value);
 };
 
 const userStore = useUserStore();
@@ -139,6 +123,11 @@ const getUserViewHistory = (pageNumber: number, pageSize: number): void => {
             params.value.total = res.data.data.total;
             if (res.data.data.currentSize > 0) {
                 historyList.value = res.data.data.data;
+                const convertedHistoryList: ArticleListEntity[] = [];
+                historyList.value.forEach((item) => {
+                    convertedHistoryList.push(item.articleVo);
+                });
+                publishArticleList.value = convertedHistoryList;
                 isHost.value = true;
             } else {
                 isHost.value = false;
@@ -156,11 +145,6 @@ onMounted(() => {
 
 const params = ref<{ pageNumber: number; pageSize: number; total: number }>({ pageNumber: 1, pageSize: 10, total: 0 });
 
-const historyCurrentChange = (pageNumber: number): void => {
-    params.value.pageNumber = pageNumber;
-    getUserViewHistory(params.value.pageNumber, params.value.pageSize);
-};
-
 // router change
 watch(userId, () => {
     isLoad.value = true;
@@ -172,7 +156,7 @@ watch(userId, () => {
     });
     if (userId.value === userStore.user.userId) {
         isHost.value = true;
-        getUserViewHistory(params.value.pageNumber, params.value.pageSize);
+        getUserViewHistory(paramsStore.params.pageNumber, paramsStore.params.pageSize);
     } else {
         isHost.value = false;
     }
@@ -186,8 +170,14 @@ const handleItemClick = (index: number): void => {
     if (currentDisplay.value !== index) {
         currentDisplay.value = index;
         isLoad.value = true;
+        paramsStore.params.pageNumber = 1;
         if (index === 1) {
             paramsStore.params.filterBy.authorId = userId.value;
+            getArticleList(paramsStore.params).then((res) => {
+                publishArticleList.value = res.data.data.data;
+                total.value = res.data.data.total;
+                isLoad.value = false;
+            });
         } else if (index === 2) {
             // TODO get comment
         } else if (index === 3) {
@@ -195,15 +185,14 @@ const handleItemClick = (index: number): void => {
         } else if (index === 4) {
             // TODO get collect
         } else if (index === 5) {
-            getUserViewHistory(params.value.pageNumber, params.value.pageSize);
+            getUserViewHistory(paramsStore.params.pageNumber, paramsStore.params.pageSize);
+        } else {
+            throw new Error('index error');
         }
-        getArticleList(paramsStore.params).then((res) => {
-            publishArticleList.value = res.data.data.data;
-            total.value = res.data.data.total;
-            isLoad.value = false;
-        });
     }
 };
+
+const toViewTimeList = ({ viewTime }: ViewHistoryEntity): string[] => [viewTime];
 </script>
 
 <template>
@@ -265,30 +254,17 @@ const handleItemClick = (index: number): void => {
             <div id="scrollContent_1">
                 <div v-if="currentDisplay === 1">
                     <all-type-preview-list :article-list="publishArticleList" v-if="!isLoad" />
-                    <Pagination
-                        :current-page="paramsStore.params.pageNumber"
-                        :page-size="paramsStore.params.pageSize"
-                        :total="total"
-                        @numberChange="currentChange"
-                        :hide-on-single-page="true"
-                    />
-                    {{ publishArticleList }}
                 </div>
                 <div v-if="currentDisplay === 5">
-                    <!--                    <all-type-preview-list-->
-                    <!--                        :article-list="convertToArticleList(historyList)"-->
-                    <!--                        :view-time="toViewTimeList(historyList)"-->
-                    <!--                        v-if="!isLoad"-->
-                    <!--                    />-->
-                    <!--                    <Pagination-->
-                    <!--                        :current-page="paramsStore.params.pageNumber"-->
-                    <!--                        :page-size="paramsStore.params.pageSize"-->
-                    <!--                        :total="total"-->
-                    <!--                        @numberChange="currentChange"-->
-                    <!--                        :hide-on-single-page="true"-->
-                    <!--                    />-->
-                    {{ convertToArticleList(historyList) }}
+                    <all-type-preview-list :article-list="publishArticleList" v-if="!isLoad" :view-time="historyList" />
                 </div>
+                <Pagination
+                    :current-page="paramsStore.params.pageNumber"
+                    :page-size="paramsStore.params.pageSize"
+                    :total="total"
+                    @numberChange="currentChange"
+                    :hide-on-single-page="true"
+                />
             </div>
         </template>
     </user-profile-layout>
