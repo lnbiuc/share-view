@@ -99,15 +99,15 @@ onMounted(() => {
     });
 });
 
-// request when change
-const refParamsStore = storeToRefs(paramsStore);
-watch(refParamsStore.params.value, () => {
-    getArticleList(paramsStore.params).then((res) => {
-        publishArticleList.value = res.data.data.data;
-        total.value = res.data.data.total;
-        isLoad.value = false;
-    });
-});
+// // request when change
+// const refParamsStore = storeToRefs(paramsStore);
+// watch(refParamsStore.params.value, () => {
+//     getArticleList(paramsStore.params).then((res) => {
+//         publishArticleList.value = res.data.data.data;
+//         total.value = res.data.data.total;
+//         isLoad.value = false;
+//     });
+// });
 
 const currentChange = (pageNumber: number): void => {
     paramsStore.params.pageNumber = pageNumber;
@@ -117,7 +117,7 @@ const currentChange = (pageNumber: number): void => {
 
 const userStore = useUserStore();
 
-const getUserViewHistory = (pageNumber: number, pageSize: number): void => {
+const handleGetUserViewHistory = (pageNumber: number, pageSize: number): void => {
     isLoad.value = true;
     if (userStore.isLogin && userStore.user.userId === userId.value) {
         getViewHistory(userId.value, pageNumber, pageSize).then((res) => {
@@ -130,68 +130,68 @@ const getUserViewHistory = (pageNumber: number, pageSize: number): void => {
                     convertedHistoryList.push(item.articleVo);
                 });
                 publishArticleList.value = convertedHistoryList;
-                isHost.value = true;
+                // isHost.value = true;
             } else {
-                isHost.value = false;
+                // isHost.value = false;
             }
         });
     }
 };
-const isHost = ref<boolean>(false);
+// const isHost = ref<boolean>(false);
 
-onMounted(() => {
-    if (userStore.isLogin && userStore.user.userId === userId.value) {
-        isHost.value = true;
-    }
-});
+// onMounted(() => {
+//     if (userStore.isLogin && userStore.user.userId === userId.value) {
+//         isHost.value = true;
+//     }
+// });
 
 const params = ref<{ pageNumber: number; pageSize: number; total: number }>({ pageNumber: 1, pageSize: 10, total: 0 });
 
 // router change
-watch(userId, () => {
-    isLoad.value = true;
-    paramsStore.params.filterBy.authorId = userId.value;
-    getArticleList(paramsStore.params).then((res) => {
-        publishArticleList.value = res.data.data.data;
-        total.value = res.data.data.total;
-        isLoad.value = false;
-    });
-    if (userId.value === userStore.user.userId) {
-        isHost.value = true;
-        getUserViewHistory(paramsStore.params.pageNumber, paramsStore.params.pageSize);
-    } else {
-        isHost.value = false;
-    }
-});
+// watch(userId, () => {
+//     isLoad.value = true;
+//     paramsStore.params.filterBy.authorId = userId.value;
+//     getArticleList(paramsStore.params).then((res) => {
+//         publishArticleList.value = res.data.data.data;
+//         total.value = res.data.data.total;
+//         isLoad.value = false;
+//     });
+//     if (userId.value === userStore.user.userId) {
+//         isHost.value = true;
+//         getUserViewHistory(paramsStore.params.pageNumber, paramsStore.params.pageSize);
+//     } else {
+//         isHost.value = false;
+//     }
+// });
 
 const isCollapse = ref<boolean>(false);
 
 const currentDisplay = ref<number>(1);
 
 const handleItemClick = (index: number): void => {
-    if (currentDisplay.value !== index) {
-        currentDisplay.value = index;
-        // isLoad.value = true;
-        paramsStore.params.pageNumber = 1;
-        if (index === 1) {
-            paramsStore.params.filterBy.authorId = userId.value;
-            getArticleList(paramsStore.params).then((res) => {
-                publishArticleList.value = res.data.data.data;
-                total.value = res.data.data.total;
-                isLoad.value = false;
-            });
-        } else if (index === 2) {
-            getComment(paramsStore.params.pageNumber, paramsStore.params.pageSize);
-        } else if (index === 3) {
-            // TODO get like
-        } else if (index === 4) {
-            // TODO get collect
-        } else if (index === 5) {
-            getUserViewHistory(paramsStore.params.pageNumber, paramsStore.params.pageSize);
-        } else {
-            throw new Error('index error');
-        }
+    currentDisplay.value = index;
+    if (index === 1) {
+        handleGetArticleList();
+    } else if (index === 2) {
+        handleGetComment(paramsStore.params.pageNumber, paramsStore.params.pageSize);
+    } else if (index === 3) {
+        // TODO get like
+    } else if (index === 4) {
+        // TODO get collect
+    } else if (index === 5) {
+        handleGetUserViewHistory(paramsStore.params.pageNumber, paramsStore.params.pageSize);
+    } else {
+        throw new Error('index error');
     }
+};
+
+const handleGetArticleList = () => {
+    paramsStore.params.filterBy.authorId = userId.value;
+    getArticleList(paramsStore.params).then((res) => {
+        publishArticleList.value = res.data.data.data;
+        total.value = res.data.data.total;
+        isLoad.value = false;
+    });
 };
 
 const commentList: Ref<UserCommentEntity[]> = ref([
@@ -212,8 +212,7 @@ const commentList: Ref<UserCommentEntity[]> = ref([
     },
 ]);
 
-const getComment = (pageNumber: number, pageSize: number) => {
-    paramsStore.params.pageNumber = 1;
+const handleGetComment = (pageNumber: number, pageSize: number) => {
     getCommentByUserId(userId.value, pageNumber, pageSize).then((res) => {
         commentList.value = res.data.data.data;
         total.value = res.data.data.total;
@@ -234,7 +233,7 @@ const getComment = (pageNumber: number, pageSize: number) => {
         <!--                />-->
         <template #left>
             <el-affix :offset="10" target="#scrollContent_1">
-                <div class="dark:bg-dark border-light dark:border-dark px-2 py-4 rounded-md">
+                <div class="dark:bg-dark border-light dark:border-dark px-2 py-4 rounded-md overflow-hidden">
                     <div class="flex flex-row items-center justify-center h-[20px] mb-4" v-if="!isCollapse">
                         <div class="flex flex-row items-center">
                             <span class="dark:text-dark"> MENU </span>

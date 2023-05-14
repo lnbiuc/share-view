@@ -21,7 +21,7 @@ const { articleList, viewTime } = defineProps({
     <div
         v-for="(a, index) in articleList"
         :key="a.articleId"
-        class="flex flex-col p-5 dark:bg-dark bg-light hover:shadow-md shadow-sm mt-2 mx-2 rounded-md transition-all"
+        class="flex flex-col p-5 dark:bg-dark bg-light hover:shadow-md shadow-sm mt-2 mx-2 rounded-md transition-all flex-grow"
     >
         <div class="flex flex-row p-0 justify-between text-gray-400">
             <div class="truncate">
@@ -55,7 +55,7 @@ const { articleList, viewTime } = defineProps({
         <div class="my-2 flex flex-row items-start">
             <div
                 :style="{ backgroundColor: tagBgColor(a.type) }"
-                class="mt-0.5 w-[10px] px-[15px] py-[2px] text-sm font-medium rounded-sm transition-all type cursor-default dark:text-light"
+                class="mt-0.5 w-[10px] px-2 py-1 text-sm font-medium rounded-md transition-all type cursor-default dark:text-light"
             >
                 <span>
                     {{ a.type.substring(0, 1) }}

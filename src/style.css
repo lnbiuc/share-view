@@ -35,7 +35,7 @@
         background-color: #e6e6e6;
     }
     .title {
-        @apply cursor-pointer transition-all text-left text-neutral-900 hover:text-blue-500 dark:text-gray-300 dark:hover:text-blue-500 font-medium;
+        @apply cursor-pointer transition-all text-left text-neutral-900 hover:text-blue-500 dark:text-gray-300 dark:hover:text-blue-500 font-semibold;
     }
     .img {
         @apply shadow-sm hover:shadow-md rounded-md transition-all;
