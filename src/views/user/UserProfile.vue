@@ -7,6 +7,8 @@ import axios from '../../axios';
 import { useRouteParams } from '@vueuse/router';
 import UserProfileLayout from '../../layout/UserProfileLayout.vue';
 import { Pointer, StarFilled, ChatLineRound, Finished, Clock } from '@element-plus/icons-vue';
+import { CommentToUserEntity, getCommentByUserId, UserCommentEntity } from '../../axios/api/commentsApi';
+import UsersComment from '../../components/comments/UsersComment.vue';
 
 const publishArticleList: Ref<ArticleListEntity[]> = ref([
     {
@@ -169,7 +171,7 @@ const currentDisplay = ref<number>(1);
 const handleItemClick = (index: number): void => {
     if (currentDisplay.value !== index) {
         currentDisplay.value = index;
-        isLoad.value = true;
+        // isLoad.value = true;
         paramsStore.params.pageNumber = 1;
         if (index === 1) {
             paramsStore.params.filterBy.authorId = userId.value;
@@ -179,7 +181,7 @@ const handleItemClick = (index: number): void => {
                 isLoad.value = false;
             });
         } else if (index === 2) {
-            // TODO get comment
+            getComment(paramsStore.params.pageNumber, paramsStore.params.pageSize);
         } else if (index === 3) {
             // TODO get like
         } else if (index === 4) {
@@ -192,7 +194,31 @@ const handleItemClick = (index: number): void => {
     }
 };
 
-const toViewTimeList = ({ viewTime }: ViewHistoryEntity): string[] => [viewTime];
+const commentList: Ref<UserCommentEntity[]> = ref([
+    {
+        commentId: 0,
+        toArticleId: '',
+        toArticleTitle: '',
+        toUser: {
+            userId: '',
+            username: '',
+            avatar: 'https://cube.elemecdn.com/0/88/03b0d39583f48206768a7534e55bcpng.png',
+            ipAddr: '',
+        },
+        toCommentContent: '',
+        content: '',
+        level: true,
+        createTime: '',
+    },
+]);
+
+const getComment = (pageNumber: number, pageSize: number) => {
+    paramsStore.params.pageNumber = 1;
+    getCommentByUserId(userId.value, pageNumber, pageSize).then((res) => {
+        commentList.value = res.data.data.data;
+        total.value = res.data.data.total;
+    });
+};
 </script>
 
 <template>
@@ -254,6 +280,9 @@ const toViewTimeList = ({ viewTime }: ViewHistoryEntity): string[] => [viewTime]
             <div id="scrollContent_1">
                 <div v-if="currentDisplay === 1">
                     <all-type-preview-list :article-list="publishArticleList" v-if="!isLoad" />
+                </div>
+                <div v-if="currentDisplay === 2">
+                    <users-comment :comment="commentList" />
                 </div>
                 <div v-if="currentDisplay === 5">
                     <all-type-preview-list :article-list="publishArticleList" v-if="!isLoad" :view-time="historyList" />

@@ -50,6 +50,24 @@ export interface ChildComment {
     childComments: null;
 }
 
+export interface UserCommentEntity {
+    commentId: number;
+    toArticleId: string;
+    toArticleTitle?: string;
+    toUser?: CommentToUserEntity;
+    toCommentContent?: string;
+    content: string;
+    level: boolean;
+    createTime: string;
+}
+
+export interface CommentToUserEntity {
+    userId: string;
+    username: string;
+    avatar: string;
+    ipAddr: string;
+}
+
 export const getCommentsById = async (id: string, num: number, size: number) => {
     return axios({
         url: '/api/comment/' + id,
@@ -66,5 +84,16 @@ export const publishComments = async (data: PublishCommentsEntity) => {
         url: '/api/publish/comment',
         method: 'POST',
         data: data,
+    });
+};
+
+export const getCommentByUserId = async (userId: string, pageNumber: number, pageSize: number) => {
+    return axios({
+        url: '/api/comment/user/' + userId,
+        method: 'GET',
+        params: {
+            pageNumber: pageNumber,
+            pageSize: pageSize,
+        },
     });
 };
