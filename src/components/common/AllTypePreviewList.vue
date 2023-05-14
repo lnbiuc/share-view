@@ -3,11 +3,18 @@ import { formatTime, handleClickComment, handleToArticleDetail, tagBgColor } fro
 import { ArticleListEntity, ViewHistoryEntity } from '../../axios/api/articleApi';
 import VideoCardLayout from '../../layout/VideoCardLayout.vue';
 import ImageGirdLayout from '../../layout/ImageGirdLayout.vue';
+import { PropType } from 'vue';
 
-const { articleList, viewTime } = defineProps<{
-    articleList: ArticleListEntity[];
-    viewTime: ViewHistoryEntity[];
-}>();
+const { articleList, viewTime } = defineProps({
+    articleList: {
+        type: Array as PropType<ArticleListEntity[]>,
+        required: true,
+    },
+    viewTime: {
+        type: Array as PropType<ViewHistoryEntity[]>,
+        required: false,
+    },
+});
 </script>
 
 <template>
