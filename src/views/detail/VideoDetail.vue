@@ -159,7 +159,6 @@ const themeStore = useThemeStore();
             <template #video>
                 <video-player
                     class="w-full min-h-[500px]"
-                    controls
                     :src="data.article.content"
                     :poster="data.article.images[0]"
                     :controls="true"
@@ -178,7 +177,7 @@ const themeStore = useThemeStore();
                         :like="data.article.like"
                         :id="data.article.articleId"
                         :type="0"
-                        @on-like-success="handleOnLikeSuccess(data.article.articleId)"
+                        @on-like-success="handleOnLikeSuccess"
                     />
                     <el-button type="primary" @click="handleAddCollection(data.article.articleId)">
                         Add Collection
