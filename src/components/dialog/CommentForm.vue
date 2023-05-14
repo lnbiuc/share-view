@@ -16,6 +16,7 @@ const handlePublish = () => {
                     const reloadStore = useReloadCommentStore();
                     reloadStore.reload = params.commentForm.value.data.articleId;
                     reloadStore.increase();
+                    params.commentForm.value.data.content = '';
                     ElMessage.success('SUCCESS');
                 } else {
                     ElMessage.error(res.data.message);
@@ -32,6 +33,7 @@ const handlePublish = () => {
                     const reloadStore = useReloadCommentStore();
                     reloadStore.reload = params.commentForm.value.data.articleId;
                     reloadStore.increase();
+                    params.commentForm.value.data.content = '';
                     ElMessage.success('SUCCESS');
                 } else {
                     ElMessage.error(res.data.message);

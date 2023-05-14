@@ -8,7 +8,7 @@ const { articleId, images } = defineProps<{
 <template>
     <div class="py-2" @click="$router.push({ path: '/v/' + articleId })">
         <div
-            class="h-[300px] rounded-md shadow-md bg-cover flex justify-center items-center video-preview"
+            class="h-[300px] rounded-md shadow-md flex justify-center items-center video-preview"
             :style="{ background: 'url(' + images + ') center center no-repeat' }"
         >
             <el-icon
@@ -16,8 +16,13 @@ const { articleId, images } = defineProps<{
                 color="rgb(155,163,175)"
                 class="text-gray-300 play-btn cursor-pointer hover:text-gray-200 transition-all"
             >
-                <i-material-symbols-play-circle-outline />
+                <i-ant-design-play-circle-outlined />
             </el-icon>
         </div>
     </div>
 </template>
+<style scoped>
+.video-preview {
+    background-size: cover !important;
+}
+</style>

@@ -97,6 +97,7 @@ const themeStore = useThemeStore();
         </div>
         <div
             v-for="comment in comments!.data"
+            :key="comment.id"
             class="my-2 flex flex-row dark:border-neutral-800 transition-all rounded-md p-2 bg-gray-50 dark:bg-neutral-900"
         >
             <div class="flex justify-center items-start my-2 mx-1">
@@ -160,6 +161,7 @@ const themeStore = useThemeStore();
                 <div v-if="hasChildren(comment.childComments)">
                     <div
                         v-for="child in comment.childComments"
+                        :key="child.id"
                         class="flex flex-row mt-2 p-2 rounded-md bg-gray-100 dark:bg-neutral-800"
                     >
                         <div class="mr-2 p-2">

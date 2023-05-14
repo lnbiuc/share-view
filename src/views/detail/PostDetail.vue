@@ -115,7 +115,13 @@ const refresh = () => {
                     {{ data.article.introduction }}
                 </div>
                 <div class="mb-4 w-full" v-viewer>
-                    <img class="w-full shadow-md rounded-md my-1" v-for="i in data.article.images" :src="i" alt="" />
+                    <img
+                        class="w-full shadow-md rounded-md my-1"
+                        v-for="(i, index) in data.article.images"
+                        :key="index"
+                        :src="i"
+                        alt=""
+                    />
                 </div>
                 <div class="flex flex-row">
                     <LikeBtn

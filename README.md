@@ -25,8 +25,8 @@ tailwind.css
 -   [x] 2.用户信息中，点赞字段 count 数没有更新
 -   [x] 3.get article by id 中，"isSubscribed"字段值错误
 -   [x] 4.get question 中缺少 isSubscribe question 字段
--   [ ] 5.create answer error
--   [ ] 6.comment sort by
+-   [x] 5.create answer error
+-   [x] 6.comment sort by
 -   [x] 7.post image layout
--   [ ] 8.subscribe 按钮组件
--   [ ] 9.用户头像和基本信息组件
+-   [x] 8.subscribe 按钮组件
+-   [x] 9.用户头像和基本信息组件
