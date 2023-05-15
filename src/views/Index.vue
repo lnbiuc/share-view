@@ -2,9 +2,9 @@
     <div class="flex flex-col">
         <Header />
         <div class="mainContainer">
-            <transition name="fade">
-                <RouterView />
-            </transition>
+            <!--            <transition name="fade">-->
+            <RouterView />
+            <!--            </transition>-->
         </div>
         <Footer />
         <el-backtop :right="30" :bottom="30" />

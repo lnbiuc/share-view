@@ -1,270 +1,52 @@
 <script setup lang="ts">
-import { ref, Ref } from 'vue';
-import { ArticleListEntity, articleParams, getViewHistory, ViewHistoryEntity } from '../../axios/api/articleApi';
-import { useArticleParamsStore, useUserStore } from '../../pinia';
-import { storeToRefs } from 'pinia';
-import axios from '../../axios';
-import { useRouteParams } from '@vueuse/router';
-import UserProfileLayout from '../../layout/UserProfileLayout.vue';
 import { Pointer, StarFilled, ChatLineRound, Finished, Clock } from '@element-plus/icons-vue';
-import { CommentToUserEntity, getCommentByUserId, UserCommentEntity } from '../../axios/api/commentsApi';
-import UsersComment from '../../components/comments/UsersComment.vue';
+import UserProfileLayout from '../../layout/UserProfileLayout.vue';
+import { useRouteParams } from '@vueuse/router';
+import { useRouter } from 'vue-router';
 
-const publishArticleList: Ref<ArticleListEntity[]> = ref([
-    {
-        articleId: '',
-        author: {
-            userId: '',
-            username: '',
-            signature: '',
-            avatar: 'https://cube.elemecdn.com/0/88/03b0d39583f48206768a7534e55bcpng.png',
-            level: 0,
-            registerTime: '',
-            lastLogin: '',
-            ipAddr: '',
-            isSubscribed: false,
-        },
-        title: '',
-        introduction: '',
-        type: '',
-        tags: [],
-        category: '',
-        content: '',
-        releaseTime: '',
-        lastUpdate: '',
-        setTop: false,
-        views: 0,
-        like: 0,
-        collect: 0,
-        comments: 0,
-        images: [],
-    },
-]);
-
-const historyList: Ref<ViewHistoryEntity[]> = ref([
-    {
-        articleId: '',
-        viewTime: '',
-        articleVo: {
-            articleId: '',
-            author: {
-                userId: '',
-                username: '',
-                signature: '',
-                avatar: 'https://cube.elemecdn.com/0/88/03b0d39583f48206768a7534e55bcpng.png',
-                level: 0,
-                registerTime: '',
-                lastLogin: '',
-                ipAddr: '',
-                isSubscribed: false,
-            },
-            title: '',
-            introduction: '',
-            type: '',
-            tags: [],
-            category: '',
-            content: '',
-            releaseTime: '',
-            lastUpdate: '',
-            setTop: false,
-            views: 0,
-            like: 0,
-            collect: 0,
-            comments: 0,
-            images: [],
-        },
-    },
-]);
-
-const isEmpty = ref<boolean>(false);
-watch(publishArticleList, () => {
-    isEmpty.value = publishArticleList.value?.length == 0;
-});
-
-const getArticleList = async (data: articleParams) => {
-    return axios.post('/api/article/page', data);
-};
-
-const total = ref<number>(0);
-const isLoad = ref<boolean>(true);
-const paramsStore = useArticleParamsStore();
-paramsStore.filterTypeChange(0);
 const userId = useRouteParams<string>('userId');
-paramsStore.params.filterBy.authorId = userId.value;
 onMounted(() => {
-    getArticleList(paramsStore.params).then((res) => {
-        publishArticleList.value = res.data.data.data;
-        total.value = res.data.data.total;
-        isLoad.value = false;
-    });
+    const router = useRouter();
+    router.push('/u/p/publish/' + userId.value);
 });
-
-// // request when change
-// const refParamsStore = storeToRefs(paramsStore);
-// watch(refParamsStore.params.value, () => {
-//     getArticleList(paramsStore.params).then((res) => {
-//         publishArticleList.value = res.data.data.data;
-//         total.value = res.data.data.total;
-//         isLoad.value = false;
-//     });
-// });
-
-const currentChange = (pageNumber: number): void => {
-    paramsStore.params.pageNumber = pageNumber;
-    params.value.pageNumber = pageNumber;
-    handleItemClick(currentDisplay.value);
-};
-
-const userStore = useUserStore();
-
-const handleGetUserViewHistory = (pageNumber: number, pageSize: number): void => {
-    isLoad.value = true;
-    if (userStore.isLogin && userStore.user.userId === userId.value) {
-        getViewHistory(userId.value, pageNumber, pageSize).then((res) => {
-            isLoad.value = false;
-            params.value.total = res.data.data.total;
-            if (res.data.data.currentSize > 0) {
-                historyList.value = res.data.data.data;
-                const convertedHistoryList: ArticleListEntity[] = [];
-                historyList.value.forEach((item) => {
-                    convertedHistoryList.push(item.articleVo);
-                });
-                publishArticleList.value = convertedHistoryList;
-                // isHost.value = true;
-            } else {
-                // isHost.value = false;
-            }
-        });
-    }
-};
-// const isHost = ref<boolean>(false);
-
-// onMounted(() => {
-//     if (userStore.isLogin && userStore.user.userId === userId.value) {
-//         isHost.value = true;
-//     }
-// });
-
-const params = ref<{ pageNumber: number; pageSize: number; total: number }>({ pageNumber: 1, pageSize: 10, total: 0 });
-
-// router change
-// watch(userId, () => {
-//     isLoad.value = true;
-//     paramsStore.params.filterBy.authorId = userId.value;
-//     getArticleList(paramsStore.params).then((res) => {
-//         publishArticleList.value = res.data.data.data;
-//         total.value = res.data.data.total;
-//         isLoad.value = false;
-//     });
-//     if (userId.value === userStore.user.userId) {
-//         isHost.value = true;
-//         getUserViewHistory(paramsStore.params.pageNumber, paramsStore.params.pageSize);
-//     } else {
-//         isHost.value = false;
-//     }
-// });
-
-const isCollapse = ref<boolean>(false);
-
-const currentDisplay = ref<number>(1);
-
-const handleItemClick = (index: number): void => {
-    currentDisplay.value = index;
-    if (index === 1) {
-        handleGetArticleList();
-    } else if (index === 2) {
-        handleGetComment(paramsStore.params.pageNumber, paramsStore.params.pageSize);
-    } else if (index === 3) {
-        // TODO get like
-    } else if (index === 4) {
-        // TODO get collect
-    } else if (index === 5) {
-        handleGetUserViewHistory(paramsStore.params.pageNumber, paramsStore.params.pageSize);
-    } else {
-        throw new Error('index error');
-    }
-};
-
-const handleGetArticleList = () => {
-    paramsStore.params.filterBy.authorId = userId.value;
-    getArticleList(paramsStore.params).then((res) => {
-        publishArticleList.value = res.data.data.data;
-        total.value = res.data.data.total;
-        isLoad.value = false;
-    });
-};
-
-const commentList: Ref<UserCommentEntity[]> = ref([
-    {
-        commentId: 0,
-        toArticleId: '',
-        toArticleTitle: '',
-        toUser: {
-            userId: '',
-            username: '',
-            avatar: 'https://cube.elemecdn.com/0/88/03b0d39583f48206768a7534e55bcpng.png',
-            ipAddr: '',
-        },
-        toCommentContent: '',
-        content: '',
-        level: true,
-        createTime: '',
-    },
-]);
-
-const handleGetComment = (pageNumber: number, pageSize: number) => {
-    getCommentByUserId(userId.value, pageNumber, pageSize).then((res) => {
-        commentList.value = res.data.data.data;
-        total.value = res.data.data.total;
-    });
-};
 </script>
 
 <template>
     <user-profile-layout>
-        <!--                <view-history v-if="isHost" :history-list="historyList ? historyList : []" />-->
-        <!--                <Pagination-->
-        <!--                    v-if="isHost"-->
-        <!--                    :current-page="params.pageNumber"-->
-        <!--                    :page-size="params.pageSize"-->
-        <!--                    :total="params.total"-->
-        <!--                    @numberChange="historyCurrentChange"-->
-        <!--                    :hide-on-single-page="true"-->
-        <!--                />-->
         <template #left>
             <el-affix :offset="10" target="#scrollContent_1">
                 <div class="dark:bg-dark border-light dark:border-dark px-2 py-4 rounded-md overflow-hidden">
-                    <div class="flex flex-row items-center justify-center h-[20px] mb-4" v-if="!isCollapse">
+                    <div class="flex flex-row items-center justify-center h-[20px] mb-4">
                         <div class="flex flex-row items-center">
                             <span class="dark:text-dark"> MENU </span>
                         </div>
                     </div>
-                    <el-menu default-active="1" class="el-menu-vertical-demo" :collapse="isCollapse">
-                        <el-menu-item index="1" @click="handleItemClick(1)">
+                    <el-menu default-active="1" id="menu1" class="el-menu-vertical-demo">
+                        <el-menu-item index="1" @click="$router.push('/u/p/publish/' + userId)">
                             <el-icon>
                                 <Finished />
                             </el-icon>
                             <template #title>Publish</template>
                         </el-menu-item>
-                        <el-menu-item index="2" @click="handleItemClick(2)">
+                        <el-menu-item index="2" @click="$router.push('/u/p/comment/' + userId)">
                             <el-icon>
                                 <ChatLineRound />
                             </el-icon>
                             <template #title>Comment</template>
                         </el-menu-item>
-                        <el-menu-item index="3" @click="handleItemClick(3)">
+                        <el-menu-item index="3" @click="$router.push('/u/p/like/' + userId)">
                             <el-icon>
                                 <Pointer />
                             </el-icon>
                             <template #title>Like</template>
                         </el-menu-item>
-                        <el-menu-item index="4" @click="handleItemClick(4)">
+                        <el-menu-item index="4" @click="$router.push('/u/p/collect/' + userId)">
                             <el-icon>
                                 <StarFilled />
                             </el-icon>
                             <template #title>Collection</template>
                         </el-menu-item>
-                        <el-menu-item index="5" @click="handleItemClick(5)">
+                        <el-menu-item index="5" @click="$router.push('/u/p/history/' + userId)">
                             <el-icon>
                                 <Clock />
                             </el-icon>
@@ -275,24 +57,8 @@ const handleGetComment = (pageNumber: number, pageSize: number) => {
             </el-affix>
         </template>
         <template #right>
-            <Loading :is-loading="isLoad" />
             <div id="scrollContent_1">
-                <div v-if="currentDisplay === 1">
-                    <all-type-preview-list :article-list="publishArticleList" v-if="!isLoad" />
-                </div>
-                <div v-if="currentDisplay === 2">
-                    <users-comment :comment="commentList" />
-                </div>
-                <div v-if="currentDisplay === 5">
-                    <all-type-preview-list :article-list="publishArticleList" v-if="!isLoad" :view-time="historyList" />
-                </div>
-                <Pagination
-                    :current-page="paramsStore.params.pageNumber"
-                    :page-size="paramsStore.params.pageSize"
-                    :total="total"
-                    @numberChange="currentChange"
-                    :hide-on-single-page="true"
-                />
+                <router-view />
             </div>
         </template>
     </user-profile-layout>

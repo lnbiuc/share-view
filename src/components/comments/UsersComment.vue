@@ -8,6 +8,10 @@ defineProps({
         type: Object as PropType<UserCommentEntity[]>,
         required: true,
     },
+    executeTime: {
+        type: Object as PropType<string[] | null>,
+        required: false,
+    },
 });
 </script>
 
@@ -33,9 +37,9 @@ defineProps({
             </div>
             <div v-else class="">
                 <span class="font-semibold title">
-                    {{ c.toUser.username }}
+                    {{ c.toUser ? c.toUser.username : '' }}
                 </span>
-                <span class="text-xs text-gray-400"> @{{ c.toUser.userId }} </span>
+                <span class="text-xs text-gray-400"> @{{ c.toUser ? c.toUser.userId : '' }} </span>
             </div>
             <div></div>
         </div>
@@ -58,7 +62,12 @@ defineProps({
             </span>
         </div>
         <div class="flex flex-row justify-between mt-2 ml-1">
-            <span class="text-sm text-gray-400"> {{ formatTime(c.createTime) }} · {{ c.createTime }} </span>
+            <span class="text-sm text-gray-400" v-if="!executeTime">
+                {{ formatTime(c.createTime) }} · {{ c.createTime }}
+            </span>
+            <span class="text-sm text-gray-400" v-if="executeTime">
+                {{ formatTime(executeTime[index]) }} · {{ executeTime[index] }}
+            </span>
             <div
                 v-if="c.toCommentContent"
                 class="font-semibold text-blue-400 cursor-pointer hover:text-blue-500 transition-all"

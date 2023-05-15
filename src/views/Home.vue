@@ -12,9 +12,9 @@ const store = useUserStore();
     >
         <div class="flex flex-col w-8/12" id="scrollContent_0">
             <SortBy v-if="$route.path !== '/c'" />
-            <transition name="fade">
-                <router-view />
-            </transition>
+            <!--            <transition name="fade">-->
+            <router-view />
+            <!--            </transition>-->
         </div>
         <div class="flex flex-col w-4/12">
             <el-affix :offset="0" target="#scrollContent_0">

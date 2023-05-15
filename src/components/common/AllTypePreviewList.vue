@@ -11,7 +11,7 @@ const { articleList, viewTime } = defineProps({
         required: true,
     },
     viewTime: {
-        type: Array as PropType<ViewHistoryEntity[]>,
+        type: Array as PropType<string[]>,
         required: false,
     },
 });
@@ -95,7 +95,7 @@ const { articleList, viewTime } = defineProps({
                 <ShareLink />
             </div>
             <div class="mt-4 flex dark:text-dark" v-if="viewTime">
-                <span>{{ formatTime(viewTime[index].viewTime) }} · {{ viewTime[index].viewTime }}</span>
+                <span>{{ formatTime(viewTime[index]) }} · {{ viewTime[index] }}</span>
             </div>
         </div>
     </div>
