@@ -4,7 +4,7 @@ import { UserLikedAnswerEntity } from '../../axios/api/likesApi';
 import MdEditor from 'md-editor-v3';
 import { useThemeStore } from '../../pinia';
 import { storeToRefs } from 'pinia';
-import { formatDate, formatTime } from '../../utils';
+import { formatTime } from '../../utils';
 
 defineProps({
     answerList: {

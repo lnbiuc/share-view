@@ -1,4 +1,5 @@
 import axios from '../index';
+import { UserLiteEntity } from './articleApi';
 
 export interface UserLikeEntity {
     likeId: number;
@@ -80,24 +81,13 @@ export interface UserLikedAnswerEntity {
 export interface Answer {
     id: string;
     toId: string;
-    author: AnswerAuthorEntity;
+    author: UserLiteEntity;
     content: string;
     releaseTime: string;
     lastUpdate: string;
     like: number;
     dislike: number;
     comments: null;
-}
-
-export interface AnswerAuthorEntity {
-    userId: string;
-    username: string;
-    signature: string;
-    avatar: string;
-    level: number;
-    registerTime: string;
-    lastLogin: string;
-    ipAddr: string;
 }
 
 export const likeArticle = async (id: string, type: number, isLike: number) => {

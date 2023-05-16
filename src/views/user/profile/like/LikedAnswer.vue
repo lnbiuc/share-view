@@ -27,6 +27,7 @@ const answerList: Ref<UserLikedAnswerEntity[]> = ref([
                 registerTime: '',
                 lastLogin: '',
                 ipAddr: '',
+                isSubscribed: false,
             },
             content: '',
             releaseTime: '',
