@@ -94,7 +94,10 @@ const currentChange = (pageNumber: number) => {
     <div class="text-center">
         <Loading :is-loading="isLoad" />
         <NoResult :is-display="isEmpty" />
-        <all-type-preview-list :article-list="articleList" />
+        <all-type-preview-list
+            :article-list="articleList"
+            @articleListUpdate="currentChange(paramsStore.params.pageNumber)"
+        />
         <Pagination
             :current-page="paramsStore.params.pageNumber"
             :page-size="paramsStore.params.pageSize"

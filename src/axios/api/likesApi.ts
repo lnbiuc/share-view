@@ -68,6 +68,38 @@ export interface ToUser {
     ipAddr: string;
 }
 
+export interface UserLikedAnswerEntity {
+    likeId: number;
+    articleId: string;
+    answerId: string;
+    questionDescribe: string;
+    answer: Answer;
+    executeTime: string;
+}
+
+export interface Answer {
+    id: string;
+    toId: string;
+    author: AnswerAuthorEntity;
+    content: string;
+    releaseTime: string;
+    lastUpdate: string;
+    like: number;
+    dislike: number;
+    comments: null;
+}
+
+export interface AnswerAuthorEntity {
+    userId: string;
+    username: string;
+    signature: string;
+    avatar: string;
+    level: number;
+    registerTime: string;
+    lastLogin: string;
+    ipAddr: string;
+}
+
 export const likeArticle = async (id: string, type: number, isLike: number) => {
     return axios({
         url: '/api/publish/like/' + id,

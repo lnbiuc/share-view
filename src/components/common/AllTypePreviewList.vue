@@ -1,9 +1,12 @@
 <script setup lang="ts">
 import { formatTime, handleClickComment, handleToArticleDetail, tagBgColor } from '../../utils';
-import { ArticleListEntity, ViewHistoryEntity } from '../../axios/api/articleApi';
+import { ArticleListEntity } from '../../axios/api/articleApi';
 import VideoCardLayout from '../../layout/VideoCardLayout.vue';
 import ImageGirdLayout from '../../layout/ImageGirdLayout.vue';
 import { PropType } from 'vue';
+import { useUserStore } from '../../pinia';
+import { storeToRefs } from 'pinia';
+import { ElMessage } from 'element-plus';
 
 const { articleList, viewTime } = defineProps({
     articleList: {
@@ -15,6 +18,26 @@ const { articleList, viewTime } = defineProps({
         required: false,
     },
 });
+
+const emit = defineEmits(['articleListUpdate']);
+
+const userStore = useUserStore();
+const refUserStore = storeToRefs(userStore);
+
+const handleDelete = (articleId: string) => {
+    ElMessage.warning(articleId);
+    emit('articleListUpdate');
+};
+
+const handleHidden = (articleId: string) => {
+    ElMessage.warning(articleId);
+    emit('articleListUpdate');
+};
+
+const hiddenModify = (articleId: string) => {
+    ElMessage.warning(articleId);
+    emit('articleListUpdate');
+};
 </script>
 
 <template>
@@ -36,20 +59,17 @@ const { articleList, viewTime } = defineProps({
                 >
             </div>
             <div>
-                <el-dropdown trigger="click">
-                    <el-button class="el-dropdown-link" text bg type="info">
-                        <el-icon :size="20">
-                            <i-ep-more />
-                        </el-icon>
-                    </el-button>
-                    <template #dropdown>
-                        <el-dropdown-menu>
-                            <el-dropdown-item>Delete</el-dropdown-item>
-                            <el-dropdown-item>Hidden</el-dropdown-item>
-                            <el-dropdown-item>Modify</el-dropdown-item>
-                        </el-dropdown-menu>
-                    </template>
-                </el-dropdown>
+                <article-option-menu
+                    :delete-opt="
+                        (refUserStore.isLogin && refUserStore.user.value.userId == a.author.userId) ||
+                        refUserStore.user.value.permissionLevel >= 3
+                    "
+                    :hidden-opt="refUserStore.isLogin && refUserStore.user.value.userId == a.author.userId"
+                    :modify-opt="refUserStore.isLogin && refUserStore.user.value.userId == a.author.userId"
+                    @handleDelete="handleDelete(a.articleId)"
+                    @handleHidden="handleHidden(a.articleId)"
+                    @handleModify="hiddenModify(a.articleId)"
+                />
             </div>
         </div>
         <div class="my-2 flex flex-row items-start">

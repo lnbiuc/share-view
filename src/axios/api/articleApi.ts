@@ -138,3 +138,34 @@ export const publishArticle = async (data: {
         data: data,
     });
 };
+
+export interface articleUpdateParams {
+    articleId: string;
+    title: string;
+    introduction: string;
+    categoryId: number;
+    content: string;
+    tagIds: number[];
+}
+
+export const updateArticle = async (params: articleUpdateParams) => {
+    return axios({
+        url: '/api/update/article/common',
+        method: 'PUT',
+        data: params,
+    });
+};
+
+export const deleteArticle = async (articleId: string) => {
+    return axios({
+        url: '/api/update/article/delete/' + articleId,
+        method: 'PUT',
+    });
+};
+
+export const hiddenArticle = async (articleId: string) => {
+    return axios({
+        url: '/api/update/article/hidden/' + articleId,
+        method: 'PUT',
+    });
+};

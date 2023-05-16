@@ -9,3 +9,14 @@ export const addCollection = async (id: string, type: number) => {
         },
     });
 };
+
+export const getUserCollection = async (userId: string, pageNumber: number, pageSize: number) => {
+    return axios({
+        url: '/api/collect/' + userId,
+        method: 'GET',
+        params: {
+            pageNumber: pageNumber,
+            pageSize: pageSize,
+        },
+    });
+};

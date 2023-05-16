@@ -19,7 +19,7 @@ defineProps({
     <div
         v-for="(c, index) in comment"
         :key="c.commentId"
-        class="flex flex-col dark:bg-dark border-light dark:border-dark rounded-md ml-2 mr-4 mt-2 px-4 py-3"
+        class="flex flex-col dark:bg-dark border-light dark:border-dark rounded-md ml-2 mr-2 mt-2 px-4 py-3"
     >
         <div class="flex flex-row w-full flex-grow py-2 mb-2">
             <div class="mr-2">

@@ -11,6 +11,7 @@ declare module '@vue/runtime-core' {
   export interface GlobalComponents {
     AllTypePreviewList: typeof import('./components/common/AllTypePreviewList.vue')['default']
     AnswerQuestionForm: typeof import('./components/dialog/AnswerQuestionForm.vue')['default']
+    ArticleOptionMenu: typeof import('./components/menu/ArticleOptionMenu.vue')['default']
     AskQuestionForm: typeof import('./components/dialog/AskQuestionForm.vue')['default']
     CollectionLink: typeof import('./components/index/articleList/CollectionLink.vue')['default']
     Comment: typeof import('./components/comments/Comment.vue')['default']
@@ -55,6 +56,7 @@ declare module '@vue/runtime-core' {
     IAntDesignMessageOutlined: typeof import('~icons/ant-design/message-outlined')['default']
     IAntDesignMessageTwotone: typeof import('~icons/ant-design/message-twotone')['default']
     IAntDesignPlayCircleOutlined: typeof import('~icons/ant-design/play-circle-outlined')['default']
+    IAntDesignQuestionOutlined: typeof import('~icons/ant-design/question-outlined')['default']
     IAntDesignShareAltOutlined: typeof import('~icons/ant-design/share-alt-outlined')['default']
     IAntDesignStarTwotone: typeof import('~icons/ant-design/star-twotone')['default']
     IAntDesignUnorderedListOutlined: typeof import('~icons/ant-design/unordered-list-outlined')['default']
@@ -96,6 +98,7 @@ declare module '@vue/runtime-core' {
     UploadVideoForm: typeof import('./components/dialog/UploadVideoForm.vue')['default']
     UserInfo: typeof import('./components/aside/UserInfo.vue')['default']
     UserInfoLite: typeof import('./components/aside/UserInfoLite.vue')['default']
+    UserLikedAnswerList: typeof import('./components/user/UserLikedAnswerList.vue')['default']
     UserProfile: typeof import('./components/user/UserProfile.vue')['default']
     UsersComment: typeof import('./components/comments/UsersComment.vue')['default']
     WelcomeCard: typeof import('./components/index/welcome/WelcomeCard.vue')['default']
