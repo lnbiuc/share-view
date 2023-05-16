@@ -1,10 +1,10 @@
 <script setup lang="ts">
-import { useCategoryAndTagsStore, useDialogControlStore, useThemeStore } from '../../pinia';
+import { useCategoryAndTagsStore, useDialogControlStore, useThemeStore, useUpdateArticleStore } from '../../pinia';
 import { CategoryEntity } from '../../axios/api/categoryApi';
-import { publishArticle, TagEntity } from '../../axios/api/articleApi';
+import { ArticleUpdateParams, publishArticle, TagEntity, updateArticle } from '../../axios/api/articleApi';
 import { publishTag } from '../../axios/api/tagApi';
 import { ElMessage, FormInstance, FormRules } from 'element-plus';
-import { Ref, ref } from 'vue';
+import { PropType, Ref, ref } from 'vue';
 import { handleUploadImage } from '../../utils';
 import MdEditor from 'md-editor-v3';
 import { storeToRefs } from 'pinia';
@@ -62,14 +62,33 @@ const handlePublish = (formEl: FormInstance | undefined) => {
         if (!valid) {
             return false;
         } else {
-            publishArticle(articleForm.value).then((res) => {
-                if (res.data.code == 200) {
-                    dialogControlStore.publishArticleForm.status = false;
-                    ElMessage.success('SUCCESS');
-                } else {
-                    ElMessage.error(res.data.message);
-                }
-            });
+            if (updateArticleStore.enable) {
+                updateArticleStore.params.title = articleForm.value.title;
+                updateArticleStore.params.introduction = articleForm.value.introduction;
+                updateArticleStore.params.categoryId = articleForm.value.categoryId
+                    ? articleForm.value.categoryId
+                    : 1001;
+                updateArticleStore.params.content = articleForm.value.content;
+                updateArticleStore.params.tagIds = articleForm.value.tagIds;
+                updateArticle(updateArticleStore.params).then((res) => {
+                    if (res.data.code == 200) {
+                        dialogControlStore.publishArticleForm.status = false;
+                        updateArticleStore.count++;
+                        ElMessage.success('SUCCESS');
+                    } else {
+                        ElMessage.error(res.data.message);
+                    }
+                });
+            } else {
+                publishArticle(articleForm.value).then((res) => {
+                    if (res.data.code == 200) {
+                        dialogControlStore.publishArticleForm.status = false;
+                        ElMessage.success('SUCCESS');
+                    } else {
+                        ElMessage.error(res.data.message);
+                    }
+                });
+            }
         }
     });
 };
@@ -80,6 +99,38 @@ const currentTheme = ref<'dark' | 'light'>(themeStore.isDark ? 'dark' : 'light')
 watch(refThemeStore.isDark, (val) => {
     currentTheme.value = val ? 'dark' : 'light';
 });
+// update
+
+const menuInfo = ref<{ title: 'Publish Article' | 'Update Article'; confirm: 'Publish' | 'Update' }>({
+    title: 'Publish Article',
+    confirm: 'Publish',
+});
+const updateArticleStore = useUpdateArticleStore();
+const refUpdateArticleStore = storeToRefs(updateArticleStore);
+
+watch(refUpdateArticleStore.enable, (val) => {
+    if (val) {
+        menuInfo.value.title = 'Update Article';
+        menuInfo.value.confirm = 'Update';
+        articleForm.value = updateArticleStore.params;
+    } else {
+        menuInfo.value.title = 'Publish Article';
+        menuInfo.value.confirm = 'Publish';
+    }
+});
+
+const dialogClosed = () => {
+    updateArticleStore.enable = false;
+    articleForm.value = {
+        title: '',
+        introduction: '',
+        categoryId: undefined,
+        content: '',
+        tagIds: [],
+    };
+    menuInfo.value.title = 'Publish Article';
+    menuInfo.value.confirm = 'Publish';
+};
 </script>
 
 <template>
@@ -89,6 +140,7 @@ watch(refThemeStore.isDark, (val) => {
         :fullscreen="true"
         :show-close="false"
         :draggable="true"
+        @closed="dialogClosed"
     >
         <template #header="{ close, titleId, titleClass }">
             <div class="flex flex-row justify-between">
@@ -96,7 +148,7 @@ watch(refThemeStore.isDark, (val) => {
                     <el-icon class="el-icon--left">
                         <i-ep-edit-pen />
                     </el-icon>
-                    Publish Article
+                    {{ menuInfo.title }}
                 </h4>
                 <el-button type="danger" @click="close" plain>
                     <el-icon class="el-icon--left">
@@ -118,7 +170,7 @@ watch(refThemeStore.isDark, (val) => {
                     <el-icon class="el-icon--left">
                         <i-ep-circle-check />
                     </el-icon>
-                    Publish
+                    {{ menuInfo.confirm }}
                 </el-button>
             </div>
         </template>

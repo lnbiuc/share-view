@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { ArticleListEntity, getArticleList } from '../../axios/api/articleApi';
 import { Ref, ref } from 'vue';
-import { useArticleParamsStore } from '../../pinia';
+import { useArticleParamsStore, useUpdateArticleStore } from '../../pinia';
 import { storeToRefs } from 'pinia';
 import AllTypePreviewList from '../../components/common/AllTypePreviewList.vue';
 
@@ -23,7 +23,7 @@ const articleList: Ref<ArticleListEntity[]> = ref([
         introduction: '',
         type: '',
         tags: [],
-        category: '',
+        category: 0,
         content: '',
         releaseTime: '',
         lastUpdate: '',
@@ -81,6 +81,7 @@ watch(refParamsStore.params.value, () => {
 });
 
 const currentChange = (pageNumber: number) => {
+    isLoad.value = true;
     const store = useArticleParamsStore();
     store.params.pageNumber = pageNumber;
     getArticleList(store.params).then((res) => {
@@ -89,6 +90,17 @@ const currentChange = (pageNumber: number) => {
         total.value = res.data.data.total;
     });
 };
+
+const updateArticleStore = useUpdateArticleStore();
+const refUpdateArticleStore = storeToRefs(updateArticleStore);
+watch(refUpdateArticleStore.count, () => {
+    const store = useArticleParamsStore();
+    getArticleList(store.params).then((res) => {
+        articleList.value = res.data.data.data;
+        isLoad.value = false;
+        total.value = res.data.data.total;
+    });
+});
 </script>
 <template>
     <div class="text-center">

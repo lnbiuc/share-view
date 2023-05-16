@@ -4,6 +4,7 @@ import { formatDate } from '../utils';
 import { PublishCommentsEntity } from '../axios/api/commentsApi';
 import { CategoryEntity, getCategoryList } from '../axios/api/categoryApi';
 import { getAllTags, TagEntity } from '../axios/api/tagApi';
+import { ArticleUpdateParams } from '../axios/api/articleApi';
 
 export const useUserStore = defineStore('count', {
     state: () => ({
@@ -265,4 +266,12 @@ export const useCategoryAndTagsStore = defineStore('categoryAndTags', {
             });
         },
     },
+});
+
+export const useUpdateArticleStore = defineStore('updateArticle', {
+    state: () => ({
+        params: <ArticleUpdateParams>{},
+        count: <number>0,
+        enable: <boolean>false,
+    }),
 });

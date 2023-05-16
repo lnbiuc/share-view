@@ -1,10 +1,16 @@
 <script setup lang="ts">
 import { formatTime, handleClickComment, handleToArticleDetail, tagBgColor } from '../../utils';
-import { ArticleListEntity } from '../../axios/api/articleApi';
+import {
+    ArticleEntity,
+    ArticleListEntity,
+    deleteArticle,
+    getOneArticle,
+    hiddenArticle,
+} from '../../axios/api/articleApi';
 import VideoCardLayout from '../../layout/VideoCardLayout.vue';
 import ImageGirdLayout from '../../layout/ImageGirdLayout.vue';
-import { PropType } from 'vue';
-import { useUserStore } from '../../pinia';
+import { PropType, Ref } from 'vue';
+import { useDialogControlStore, useUpdateArticleStore, useUserStore } from '../../pinia';
 import { storeToRefs } from 'pinia';
 import { ElMessage } from 'element-plus';
 
@@ -25,18 +31,49 @@ const userStore = useUserStore();
 const refUserStore = storeToRefs(userStore);
 
 const handleDelete = (articleId: string) => {
-    ElMessage.warning(articleId);
-    emit('articleListUpdate');
+    deleteArticle(articleId).then((res) => {
+        if (res.data.code == 200) {
+            ElMessage.success('DELETE');
+            emit('articleListUpdate');
+        } else {
+            ElMessage.error(res.data);
+        }
+    });
 };
 
 const handleHidden = (articleId: string) => {
-    ElMessage.warning(articleId);
-    emit('articleListUpdate');
+    hiddenArticle(articleId).then((res) => {
+        if (res.data.code == 200) {
+            ElMessage.warning(articleId);
+            emit('articleListUpdate');
+        } else {
+            ElMessage.error(res.data);
+        }
+    });
 };
 
 const hiddenModify = (articleId: string) => {
-    ElMessage.warning(articleId);
-    emit('articleListUpdate');
+    const updateArticleStore = useUpdateArticleStore();
+    getOneArticle(articleId).then((res) => {
+        const dialogStore = useDialogControlStore();
+        if (res.data.code == 200) {
+            const article: Ref<ArticleEntity> = ref(res.data.data.article);
+            updateArticleStore.params.id = article.value.articleId;
+            updateArticleStore.params.categoryId = article.value.category;
+            let tagIds = [];
+            for (let tag of article.value.tags) {
+                tagIds.push(tag.tagId);
+            }
+            updateArticleStore.params.tagIds = tagIds;
+            updateArticleStore.params.content = article.value.content;
+            updateArticleStore.params.title = article.value.title;
+            updateArticleStore.params.introduction = article.value.introduction;
+            updateArticleStore.enable = true;
+            dialogStore.publishArticleForm.status = true;
+        } else {
+            ElMessage.error(res.data.message);
+        }
+    });
 };
 </script>
 

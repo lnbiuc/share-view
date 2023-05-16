@@ -28,7 +28,7 @@ export interface ArticleListEntity {
     introduction: string;
     type: string;
     tags: TagEntity[];
-    category: string;
+    category: number;
     releaseTime: string;
     lastUpdate: string;
     setTop: boolean;
@@ -63,7 +63,7 @@ export interface ArticleEntity {
     introduction: string;
     type: string;
     tags: TagEntity[];
-    category: string;
+    category: number;
     content: string;
     releaseTime: string;
     lastUpdate: string;
@@ -130,8 +130,8 @@ export const publishArticle = async (data: {
     });
 };
 
-export interface articleUpdateParams {
-    articleId: string;
+export interface ArticleUpdateParams {
+    id: string;
     title: string;
     introduction: string;
     categoryId: number;
@@ -139,7 +139,7 @@ export interface articleUpdateParams {
     tagIds: number[];
 }
 
-export const updateArticle = async (params: articleUpdateParams) => {
+export const updateArticle = async (params: ArticleUpdateParams) => {
     return axios({
         url: '/api/update/article/common',
         method: 'PUT',
