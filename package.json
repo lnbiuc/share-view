@@ -21,7 +21,7 @@
         "timeago.js": "^4.0.2",
         "v-viewer": "^3.0.11",
         "video.js": "^7.21.4",
-        "vue": "^3.2.47",
+        "vue": "^3.3.2",
         "vue-router": "^4.1.6"
     },
     "devDependencies": {
