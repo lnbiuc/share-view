@@ -47,6 +47,7 @@ const handleCurrentChange = (pageNumber: number) => {
 
 <template>
     <div>
+        <loading :is-loading="isLoad" />
         <users-comment :comment="commentList" :execute-time="null" />
         <Pagination
             :current-page="params.pageNumber"

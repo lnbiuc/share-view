@@ -3,8 +3,6 @@ import { Ref, ref } from 'vue';
 import { useRouteParams } from '@vueuse/router';
 import { getLikedAnswerByUserId, UserLikedAnswerEntity } from '../../../../axios/api/likesApi';
 
-const timeList = ref<string[]>([]);
-
 const userId = useRouteParams<string>('userId');
 
 const params = ref<{ pageNumber: number; pageSize: number; total: number }>({ pageNumber: 1, pageSize: 10, total: 0 });
@@ -40,10 +38,14 @@ const answerList: Ref<UserLikedAnswerEntity[]> = ref([
     },
 ]);
 
+const isLoad = ref<boolean>(false);
+
 const getLikedAnswer = () => {
+    isLoad.value = true;
     getLikedAnswerByUserId(userId.value, params.value.pageNumber, params.value.pageSize).then((res) => {
         answerList.value = res.data.data.data;
         params.value.total = res.data.data.total;
+        isLoad.value = false;
     });
 };
 
@@ -54,6 +56,7 @@ onMounted(() => {
 
 <template>
     <div class="ml-2 mt-2">
+        <loading :is-loading="isLoad" />
         <user-liked-answer-list :answerList="answerList" />
     </div>
 </template>

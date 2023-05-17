@@ -15,7 +15,7 @@ export interface Article {
     introduction: string;
     type: string;
     tags: Tag[];
-    category: string;
+    category: number;
     content: any;
     releaseTime: string;
     lastUpdate: string;

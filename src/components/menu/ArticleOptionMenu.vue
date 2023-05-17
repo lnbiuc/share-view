@@ -21,7 +21,7 @@ const emit = defineEmits(['handleDelete', 'handleHidden', 'handleModify']);
 </script>
 
 <template>
-    <div v-if="deleteOpt || hiddenOpt || modifyOpt">
+    <div v-if="(deleteOpt || hiddenOpt || modifyOpt) && $route.name === 'Profile | Publish'">
         <el-dropdown trigger="click">
             <el-button class="el-dropdown-link" text bg type="info">
                 <el-icon :size="20">

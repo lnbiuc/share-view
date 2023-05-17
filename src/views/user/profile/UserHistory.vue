@@ -24,7 +24,7 @@ const historyList: Ref<ViewHistoryEntity[]> = ref([
             introduction: '',
             type: '',
             tags: [],
-            category: '',
+            category: 0,
             content: '',
             releaseTime: '',
             lastUpdate: '',
@@ -56,7 +56,7 @@ const publishArticleList: Ref<ArticleListEntity[]> = ref([
         introduction: '',
         type: '',
         tags: [],
-        category: '',
+        category: 0,
         content: '',
         releaseTime: '',
         lastUpdate: '',
@@ -101,6 +101,7 @@ const handleCurrentChange = (pageNumber: number) => {
 
 <template>
     <div>
+        <loading :is-loading="isLoad" />
         <all-type-preview-list :article-list="publishArticleList" v-if="!isLoad" :view-time="timeList" />
         <Pagination
             :current-page="params.pageNumber"

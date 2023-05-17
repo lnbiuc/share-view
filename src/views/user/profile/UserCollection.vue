@@ -26,7 +26,7 @@ const articleList: Ref<ArticleListEntity[]> = ref([
         introduction: '',
         type: '',
         tags: [],
-        category: '',
+        category: 0,
         content: '',
         releaseTime: '',
         lastUpdate: '',
@@ -39,10 +39,14 @@ const articleList: Ref<ArticleListEntity[]> = ref([
     },
 ]);
 
+const isLoad = ref<boolean>(false);
+
 const getUserCollect = () => {
+    isLoad.value = true;
     getUserCollection(userId.value, params.value.pageNumber, params.value.pageSize).then((res) => {
         articleList.value = res.data.data.data;
         params.value.total = res.data.data.total;
+        isLoad.value = false;
     });
 };
 
@@ -58,6 +62,7 @@ const handleCurrentChange = (pageNumber: number) => {
 
 <template>
     <div>
+        <loading :is-loading="isLoad" />
         <all-type-preview-list :article-list="articleList" />
         <Pagination
             :current-page="params.pageNumber"

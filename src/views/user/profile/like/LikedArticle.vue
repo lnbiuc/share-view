@@ -2,7 +2,9 @@
 import { useRouteParams } from '@vueuse/router';
 import { getLikedArticleByUserId, UserLikeEntity } from '../../../../axios/api/likesApi';
 import { Ref, ref } from 'vue';
-import { ArticleListEntity } from '../../../../axios/api/articleApi';
+import { ArticleListEntity, getArticleList } from '../../../../axios/api/articleApi';
+import { useArticleParamsStore, useUpdateArticleStore } from '../../../../pinia';
+import { storeToRefs } from 'pinia';
 
 const likeList: Ref<UserLikeEntity[]> = ref([
     {
@@ -26,7 +28,7 @@ const likeList: Ref<UserLikeEntity[]> = ref([
             introduction: '',
             type: '',
             tags: [],
-            category: '',
+            category: 0,
             content: '',
             releaseTime: '',
             lastUpdate: '',
@@ -58,7 +60,7 @@ const articleList: Ref<ArticleListEntity[]> = ref([
         introduction: '',
         type: '',
         tags: [],
-        category: '',
+        category: 0,
         content: '',
         releaseTime: '',
         lastUpdate: '',
@@ -77,12 +79,16 @@ const userId = useRouteParams<string>('userId');
 
 const params = ref<{ pageNumber: number; pageSize: number; total: number }>({ pageNumber: 1, pageSize: 10, total: 0 });
 
+const isLoad = ref<boolean>(false);
+
 const getLikedArticle = () => {
+    isLoad.value = true;
     getLikedArticleByUserId(userId.value, params.value.pageNumber, params.value.pageSize).then((res) => {
         likeList.value = res.data.data.data;
         params.value.total = res.data.data.total;
         articleList.value = likeList.value.map((item) => item.article);
         timeList.value = likeList.value.map((item) => item.executeTime);
+        isLoad.value = false;
     });
 };
 
@@ -98,6 +104,7 @@ const handleCurrentChange = (pageNumber: number) => {
 
 <template>
     <div>
+        <loading :is-loading="isLoad" />
         <all-type-preview-list :article-list="articleList" :view-time="timeList" />
         <Pagination
             :current-page="params.pageNumber"

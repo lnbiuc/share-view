@@ -1,8 +1,9 @@
 <script setup lang="ts">
 import { ref, Ref } from 'vue';
 import { ArticleListEntity, getArticleList } from '../../../axios/api/articleApi';
-import { useArticleParamsStore } from '../../../pinia';
+import { useArticleParamsStore, useUpdateArticleStore } from '../../../pinia';
 import { useRouteParams } from '@vueuse/router';
+import { storeToRefs } from 'pinia';
 
 const publishArticleList: Ref<ArticleListEntity[]> = ref([
     {
@@ -22,7 +23,7 @@ const publishArticleList: Ref<ArticleListEntity[]> = ref([
         introduction: '',
         type: '',
         tags: [],
-        category: '',
+        category: 0,
         content: '',
         releaseTime: '',
         lastUpdate: '',
@@ -60,11 +61,26 @@ const handleCurrentChange = (pageNumber: number) => {
     paramsStore.params.pageNumber = pageNumber;
     getUserPublish();
 };
+
+const updateArticleStore = useUpdateArticleStore();
+const refUpdateArticleStore = storeToRefs(updateArticleStore);
+watch(refUpdateArticleStore.count, () => {
+    getUserPublish();
+});
+
+const updateArticleList = () => {
+    getUserPublish();
+};
 </script>
 
 <template>
     <div>
-        <all-type-preview-list :article-list="publishArticleList" v-if="!isLoad" />
+        <loading :is-loading="isLoad" />
+        <all-type-preview-list
+            :article-list="publishArticleList"
+            v-if="!isLoad"
+            @articleListUpdate="updateArticleList"
+        />
         <Pagination
             :current-page="paramsStore.params.pageNumber"
             :page-size="paramsStore.params.pageSize"

@@ -51,7 +51,10 @@ const userId = useRouteParams<string>('userId');
 
 const params = ref<{ pageNumber: number; pageSize: number; total: number }>({ pageNumber: 1, pageSize: 10, total: 0 });
 
+const isLoad = ref<boolean>(false);
+
 const getLikedComment = () => {
+    isLoad.value = true;
     getLikedCommentByUserId(userId.value, params.value.pageNumber, params.value.pageSize).then((res) => {
         likedCommentList.value = res.data.data.data;
         params.value.total = res.data.data.total;
@@ -61,6 +64,7 @@ const getLikedComment = () => {
             commentList.value.push(item.comment);
             timeList.value.push(item.executeTime);
         });
+        isLoad.value = false;
     });
 };
 
@@ -75,12 +79,15 @@ const handleCurrentChange = (pageNumber: number) => {
 </script>
 
 <template>
-    <users-comment :comment="commentList" :execute-time="timeList" />
-    <Pagination
-        :current-page="params.pageNumber"
-        :page-size="params.pageSize"
-        :total="params.total"
-        @numberChange="handleCurrentChange"
-        :hide-on-single-page="true"
-    />
+    <div>
+        <loading :is-loading="isLoad" />
+        <users-comment :comment="commentList" :execute-time="timeList" />
+        <Pagination
+            :current-page="params.pageNumber"
+            :page-size="params.pageSize"
+            :total="params.total"
+            @numberChange="handleCurrentChange"
+            :hide-on-single-page="true"
+        />
+    </div>
 </template>

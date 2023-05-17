@@ -97,6 +97,7 @@ const hiddenModify = (articleId: string) => {
             </div>
             <div>
                 <article-option-menu
+                    v-if="a.type === 'Article'"
                     :delete-opt="
                         (refUserStore.isLogin && refUserStore.user.value.userId == a.author.userId) ||
                         refUserStore.user.value.permissionLevel >= 3

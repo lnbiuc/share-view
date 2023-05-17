@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { PropType } from 'vue';
 import { UserCommentEntity } from '../../axios/api/commentsApi';
-import { formatTime } from '../../utils';
+import { formatTime, handleToArticleDetail } from '../../utils';
 
 defineProps({
     comment: {
@@ -23,10 +23,16 @@ defineProps({
     >
         <div class="flex flex-row w-full flex-grow py-2 mb-2">
             <div class="mr-2">
-                <span class="rounded-md px-2 py-1 whitespace-nowrap bg-blue-400 opacity-80" v-if="!c.toCommentContent">
+                <span
+                    class="rounded-md px-2 py-1 dark:text-neutral-800 whitespace-nowrap bg-blue-400 opacity-80"
+                    v-if="!c.toCommentContent"
+                >
                     To Article
                 </span>
-                <span class="rounded-md px-2 py-1 whitespace-nowrap bg-orange-300 opacity-80" v-if="c.toCommentContent">
+                <span
+                    class="rounded-md px-2 py-1 dark:text-neutral-800 whitespace-nowrap bg-orange-300 opacity-80"
+                    v-if="c.toCommentContent"
+                >
                     To User
                 </span>
             </div>
@@ -47,8 +53,8 @@ defineProps({
             <el-icon :size="20" color="violet" class="mr-1">
                 <i-ant-design-message-outlined />
             </el-icon>
-            <span class="text-sm">
-                <span class="text-gray-800 overflow-ellipsis"> Origin : </span>
+            <span class="text-sm dark:text-dark">
+                <span class="text-gray-800 overflow-ellipsis dark:text-dark dark:text-dark"> Origin : </span>
                 {{ c.toCommentContent }}
             </span>
         </div>
@@ -56,8 +62,8 @@ defineProps({
             <el-icon :size="20" color="green" class="mr-1">
                 <i-ant-design-message-outlined />
             </el-icon>
-            <span class="text-sm">
-                <span class="text-gray-800"> Replay : </span>
+            <span class="text-sm dark:text-dark">
+                <span class="text-gray-800 dark:text-dark"> Replay : </span>
                 {{ c.content }}
             </span>
         </div>
@@ -71,6 +77,7 @@ defineProps({
             <div
                 v-if="c.toCommentContent"
                 class="font-semibold text-blue-400 cursor-pointer hover:text-blue-500 transition-all"
+                @click="handleToArticleDetail('Article', c.toArticleId, $router)"
             >
                 Visit Source
             </div>

@@ -25,7 +25,7 @@ const articleList: Ref<ArticleListEntity[]> = ref([
         introduction: '',
         type: '',
         tags: [],
-        category: '',
+        category: 0,
         content: '',
         releaseTime: '',
         lastUpdate: '',
