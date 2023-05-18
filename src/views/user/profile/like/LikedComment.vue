@@ -23,6 +23,7 @@ const likedCommentList: Ref<LikedCommentEntity[]> = ref([
             content: '',
             level: false,
             createTime: '',
+            type: '',
         },
     },
 ]);
@@ -42,6 +43,7 @@ const commentList: Ref<UserCommentEntity[]> = ref([
         content: '',
         level: true,
         createTime: '',
+        type: '',
     },
 ]);
 

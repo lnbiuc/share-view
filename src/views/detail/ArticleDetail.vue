@@ -135,8 +135,8 @@ const commentPageNumberChange = (pageNumber: number) => {
 <template>
     <DefaultDetailLayout>
         <template #left>
-            <div class="flex flex-col p-6 dark:bg-dark rounded-md bg-light shadow-sm">
-                <div class="flex flex-row flex-wrap justify-start items-center">
+            <div class="flex flex-col dark:bg-dark rounded-md bg-light shadow-sm">
+                <div class="flex p-6 flex-row flex-wrap justify-start items-center">
                     <span
                         class="rounded-full py-1 px-2 w-16 text-sm text-center dark:text-light"
                         style="background-color: #79bbff"
@@ -148,14 +148,12 @@ const commentPageNumberChange = (pageNumber: number) => {
                         </el-tag>
                     </span>
                 </div>
-                <div class="flex flex-col mb-2">
+                <div class="flex flex-col mb-2 px-6 py-2">
                     <span class="text-4xl dark:text-dark pt-4 pb-2">{{ data.article.title }}</span>
-                    <span class="text-gray-500 dark:text-dark mt-2" style="text-indent: 40px">{{
-                        data.article.introduction
-                    }}</span>
+                    <span class="text-gray-500 dark:text-dark mt-2">{{ data.article.introduction }}</span>
                 </div>
                 <el-divider>AUTHOR</el-divider>
-                <user-profile :user="data.article.author" class="mb-2">
+                <user-profile :user="data.article.author" class="mb-2 px-6 py-2">
                     <subscribe-btn
                         :is-subscribed="data.article.author.isSubscribed"
                         :user-id="data.article.author.userId"

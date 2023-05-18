@@ -37,7 +37,7 @@
                 </span>
                 <template #dropdown>
                     <el-dropdown-menu>
-                        <el-dropdown-item @click="$router.push('/u/p/' + loginUser.userId)">
+                        <el-dropdown-item @click="$router.push('/u/p/publish/' + loginUser.userId)">
                             <el-icon>
                                 <User />
                             </el-icon>

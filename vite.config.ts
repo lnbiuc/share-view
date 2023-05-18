@@ -18,8 +18,8 @@ export default defineConfig({
     server: {
         proxy: {
             '/api': {
-                // target: 'https://share.vio.vin/api',
-                target: 'http://127.0.0.1:8888/api',
+                target: 'https://share.vio.vin/api',
+                // target: 'http://127.0.0.1:8888/api',
                 changeOrigin: true,
                 rewrite: (path) => path.replace(/^\/api/, ''),
             },

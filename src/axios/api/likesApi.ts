@@ -60,6 +60,7 @@ export interface Comment {
     content: string;
     level: boolean;
     createTime: string;
+    type: '';
 }
 
 export interface ToUser {

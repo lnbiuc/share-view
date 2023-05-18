@@ -102,6 +102,10 @@ const routes = [
                         name: 'Profile',
                         component: () => import('../views/user/UserProfile.vue'),
                         meta: { title: 'Profile' },
+                        redirect: (to: any) => {
+                            const { userId } = to.params; // 获取参数
+                            return `/u/p/publish/${userId}`; // 重定向到带有参数的目标路径
+                        },
                         children: [
                             {
                                 path: '/u/p/publish/:userId',
@@ -153,6 +157,12 @@ const routes = [
                                 name: 'Profile | History',
                                 component: () => import('../views/user/profile/UserHistory.vue'),
                             },
+                            {
+                                path: '/u/p/subscribe/:userId',
+                                meta: { title: 'Profile | Subscribe' },
+                                name: 'Profile | Subscribe',
+                                component: () => import('../views/user/profile/UserSubscribe.vue'),
+                            },
                         ],
                     },
                     {
@@ -162,6 +172,24 @@ const routes = [
                         meta: { title: 'Settings' },
                     },
                 ],
+            },
+            {
+                path: '404',
+                name: '404',
+                component: () => import('../views/error/NotFound.vue'),
+                meta: { title: '404 Not Found' },
+            },
+            {
+                path: '500',
+                name: '500',
+                component: () => import('../views/error/SystemError.vue'),
+                meta: { title: '500 System Error' },
+            },
+            {
+                path: 'timeout',
+                name: 'Timeout',
+                component: () => import('../views/error/TimeOut.vue'),
+                meta: { title: 'Timeout' },
             },
         ],
     },

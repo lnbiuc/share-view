@@ -99,6 +99,7 @@ const handleCancelSubscribe = () => {
                 if (res.data.code == 200) {
                     isDisableSubscribeBtn.value = false;
                     ElMessage.success('SUCCESS');
+                    emit('update');
                 } else {
                     ElMessage.warning(res.data.message);
                 }
@@ -108,6 +109,8 @@ const handleCancelSubscribe = () => {
 };
 
 const userStore = useUserStore();
+
+const emit = defineEmits(['update']);
 </script>
 
 <template>

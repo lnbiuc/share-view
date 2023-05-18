@@ -1,14 +1,12 @@
 <script setup lang="ts">
-import { Pointer, StarFilled, ChatLineRound, Finished, Clock } from '@element-plus/icons-vue';
+import { Pointer, StarFilled, ChatLineRound, Finished, Clock, Bell } from '@element-plus/icons-vue';
 import UserProfileLayout from '../../layout/UserProfileLayout.vue';
 import { useRouteParams } from '@vueuse/router';
 import { useRouter } from 'vue-router';
 
 const userId = useRouteParams<string>('userId');
-onMounted(() => {
-    const router = useRouter();
-    router.push('/u/p/publish/' + userId.value);
-});
+
+const router = useRouter();
 </script>
 
 <template>
@@ -51,6 +49,12 @@ onMounted(() => {
                                 <Clock />
                             </el-icon>
                             <template #title>History</template>
+                        </el-menu-item>
+                        <el-menu-item index="6" @click="$router.push('/u/p/subscribe/' + userId)">
+                            <el-icon>
+                                <Bell />
+                            </el-icon>
+                            <template #title>Subscribe</template>
                         </el-menu-item>
                     </el-menu>
                 </div>
