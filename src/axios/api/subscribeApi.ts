@@ -1,5 +1,17 @@
 import axios from '../index';
 
+export interface SubscribedUserEntity {
+    userId: string;
+    username: string;
+    signature: string;
+    avatar: string;
+    level: number;
+    registerTime: string;
+    lastLogin: string;
+    ipAddr: string;
+    isSubscribed: boolean;
+}
+
 export const subscribeAuthorByAuthorId = async (toAuthorId: string) => {
     return axios({
         url: '/api/publish/subscribe/' + toAuthorId,
@@ -34,6 +46,18 @@ export const cancelSubscribe = async (userId: string, articleId: string, type: n
             userId: userId,
             articleId: articleId,
             type: type,
+        },
+    });
+};
+
+export const getMySubscribedUser = async (pageNumber: number, pageSize: number, userId: string) => {
+    return axios({
+        url: '/api/subscribe/all',
+        method: 'GET',
+        params: {
+            pageNumber: pageNumber,
+            pageSize: pageSize,
+            userId: userId,
         },
     });
 };

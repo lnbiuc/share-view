@@ -73,16 +73,16 @@ const themeStore = useThemeStore();
                 <span class="text-xs text-center">{{ b.name }}</span>
             </div>
         </div>
-        <div class="flex flex-row rounded-md dark:bg-dark-black bg-gray-100 justify-around">
-            <div class="flex flex-col m-2 p-2">
-                <span class="text-gray-500 text-center">Today Views</span>
-                <span class="text-lg mt-2 dark:text-gray-300 text-center">42</span>
-            </div>
-            <div class="flex flex-col m-2 p-2">
-                <span class="text-gray-500 text-center">Today Likes</span>
-                <span class="text-lg mt-2 dark:text-gray-300 text-center">20</span>
-            </div>
-        </div>
+        <!--        <div class="flex flex-row rounded-md dark:bg-dark-black bg-gray-100 justify-around">-->
+        <!--            <div class="flex flex-col m-2 p-2">-->
+        <!--                <span class="text-gray-500 text-center">Today Views</span>-->
+        <!--                <span class="text-lg mt-2 dark:text-gray-300 text-center">42</span>-->
+        <!--            </div>-->
+        <!--            <div class="flex flex-col m-2 p-2">-->
+        <!--                <span class="text-gray-500 text-center">Today Likes</span>-->
+        <!--                <span class="text-lg mt-2 dark:text-gray-300 text-center">20</span>-->
+        <!--            </div>-->
+        <!--        </div>-->
     </div>
 </template>
 

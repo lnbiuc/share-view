@@ -28,7 +28,7 @@ export interface ArticleListEntity {
     introduction: string;
     type: string;
     tags: TagEntity[];
-    category: string;
+    category: number;
     releaseTime: string;
     lastUpdate: string;
     setTop: boolean;
@@ -63,7 +63,7 @@ export interface ArticleEntity {
     introduction: string;
     type: string;
     tags: TagEntity[];
-    category: string;
+    category: number;
     content: string;
     releaseTime: string;
     lastUpdate: string;
@@ -92,15 +92,6 @@ export interface ViewHistoryEntity {
     articleId: string;
     viewTime: string;
     articleVo: ArticleEntity;
-}
-
-export interface HistoryUserVo {
-    userId: string;
-    username: string;
-    signature: string;
-    avatar: string;
-    level: number;
-    ipAddr: string;
 }
 
 export const getArticleList = async (data: articleParams) => {
@@ -136,5 +127,36 @@ export const publishArticle = async (data: {
         url: '/api/publish/article',
         method: 'POST',
         data: data,
+    });
+};
+
+export interface ArticleUpdateParams {
+    id: string;
+    title: string;
+    introduction: string;
+    categoryId: number;
+    content: string;
+    tagIds: number[];
+}
+
+export const updateArticle = async (params: ArticleUpdateParams) => {
+    return axios({
+        url: '/api/update/article/common',
+        method: 'PUT',
+        data: params,
+    });
+};
+
+export const deleteArticle = async (articleId: string) => {
+    return axios({
+        url: '/api/update/article/delete/' + articleId,
+        method: 'PUT',
+    });
+};
+
+export const hiddenArticle = async (articleId: string) => {
+    return axios({
+        url: '/api/update/article/hidden/' + articleId,
+        method: 'PUT',
     });
 };

@@ -102,6 +102,68 @@ const routes = [
                         name: 'Profile',
                         component: () => import('../views/user/UserProfile.vue'),
                         meta: { title: 'Profile' },
+                        redirect: (to: any) => {
+                            const { userId } = to.params; // 获取参数
+                            return `/u/p/publish/${userId}`; // 重定向到带有参数的目标路径
+                        },
+                        children: [
+                            {
+                                path: '/u/p/publish/:userId',
+                                meta: { title: 'Profile | Publish' },
+                                name: 'Profile | Publish',
+                                component: () => import('../views/user/profile/UserPublish.vue'),
+                            },
+                            {
+                                path: '/u/p/comment/:userId',
+                                meta: { title: 'Profile | Comment' },
+                                name: 'Profile | Comment',
+                                component: () => import('../views/user/profile/UserComment.vue'),
+                            },
+                            {
+                                path: '/u/p/like/:userId',
+                                meta: { title: 'Profile | Like' },
+                                name: 'Profile | Like',
+                                component: () => import('../views/user/profile/UserLike.vue'),
+                                children: [
+                                    {
+                                        path: '/u/p/like/article/:userId',
+                                        meta: { title: 'Like | Article' },
+                                        name: 'Like | Article',
+                                        component: () => import('../views/user/profile/like/LikedArticle.vue'),
+                                    },
+                                    {
+                                        path: '/u/p/like/comment/:userId',
+                                        meta: { title: 'Like | Comment' },
+                                        name: 'Like | Comment',
+                                        component: () => import('../views/user/profile/like/LikedComment.vue'),
+                                    },
+                                    {
+                                        path: '/u/p/like/answer/:userId',
+                                        meta: { title: 'Like | Answer' },
+                                        name: 'Like | Answer',
+                                        component: () => import('../views/user/profile/like/LikedAnswer.vue'),
+                                    },
+                                ],
+                            },
+                            {
+                                path: '/u/p/collect/:userId',
+                                meta: { title: 'Profile | Collect' },
+                                name: 'Profile | Collect',
+                                component: () => import('../views/user/profile/UserCollection.vue'),
+                            },
+                            {
+                                path: '/u/p/history/:userId',
+                                meta: { title: 'Profile | History' },
+                                name: 'Profile | History',
+                                component: () => import('../views/user/profile/UserHistory.vue'),
+                            },
+                            {
+                                path: '/u/p/subscribe/:userId',
+                                meta: { title: 'Profile | Subscribe' },
+                                name: 'Profile | Subscribe',
+                                component: () => import('../views/user/profile/UserSubscribe.vue'),
+                            },
+                        ],
                     },
                     {
                         path: '/u/s/:userId',
@@ -110,6 +172,24 @@ const routes = [
                         meta: { title: 'Settings' },
                     },
                 ],
+            },
+            {
+                path: '404',
+                name: '404',
+                component: () => import('../views/error/NotFound.vue'),
+                meta: { title: '404 Not Found' },
+            },
+            {
+                path: '500',
+                name: '500',
+                component: () => import('../views/error/SystemError.vue'),
+                meta: { title: '500 System Error' },
+            },
+            {
+                path: 'timeout',
+                name: 'Timeout',
+                component: () => import('../views/error/TimeOut.vue'),
+                meta: { title: 'Timeout' },
             },
         ],
     },

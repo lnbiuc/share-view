@@ -3,6 +3,7 @@ import { ElMessage } from 'element-plus';
 // @ts-ignore
 import NProgress from 'nprogress';
 import 'nprogress/nprogress.css';
+import { useRouter } from 'vue-router';
 
 const isProduction = process.env.NODE_ENV === 'production';
 
@@ -11,6 +12,7 @@ const baseURL = isProduction ? 'https://share.vio.vin' : process.env.BASE_URL;
 const apiAxios = axios.create({
     baseURL,
     withCredentials: true,
+    timeout: 10000,
 });
 
 apiAxios.defaults.baseURL = baseURL;
@@ -23,6 +25,8 @@ NProgress.configure({
     trickleRate: 0.2,
 });
 
+const router = useRouter();
+
 //前置拦截
 apiAxios.interceptors.request.use((config) => {
     NProgress.start();
@@ -30,16 +34,22 @@ apiAxios.interceptors.request.use((config) => {
 });
 
 //后置拦截
-apiAxios.interceptors.response.use((response) => {
-    if (response.data.code == 200) {
+apiAxios.interceptors.response.use(
+    (response) => {
+        if (response.data.code == 200) {
+            NProgress.done();
+            return response;
+        } else {
+            // show when dev
+            // ElMessage.error(JSON.stringify(response.data));
+            router.push({ path: '500' });
+        }
         NProgress.done();
         return response;
-    } else {
-        // show when dev
-        ElMessage.error(JSON.stringify(response.data));
+    },
+    (error) => {
+        router.push({ path: '500' });
     }
-    NProgress.done();
-    return response;
-});
+);
 
 export default apiAxios;

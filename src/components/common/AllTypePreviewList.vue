@@ -1,27 +1,116 @@
 <script setup lang="ts">
 import { formatTime, handleClickComment, handleToArticleDetail, tagBgColor } from '../../utils';
-import { ArticleListEntity, ViewHistoryEntity } from '../../axios/api/articleApi';
+import {
+    ArticleEntity,
+    ArticleListEntity,
+    deleteArticle,
+    getOneArticle,
+    hiddenArticle,
+} from '../../axios/api/articleApi';
 import VideoCardLayout from '../../layout/VideoCardLayout.vue';
 import ImageGirdLayout from '../../layout/ImageGirdLayout.vue';
-import { PropType } from 'vue';
+import { PropType, Ref } from 'vue';
+import { useDialogControlStore, useUpdateArticleStore, useUserStore } from '../../pinia';
+import { storeToRefs } from 'pinia';
+import { ElMessage } from 'element-plus';
+import { deleteCollectByCollectId } from '../../axios/api/collectApi';
+import { deleteHistoryByArticleId } from '../../axios/api/historyApi';
 
-const { articleList, viewTime } = defineProps({
+const { articleList, viewTime, optionType } = defineProps({
     articleList: {
         type: Array as PropType<ArticleListEntity[]>,
         required: true,
     },
     viewTime: {
-        type: Array as PropType<ViewHistoryEntity[]>,
+        type: Array as PropType<string[]>,
         required: false,
     },
+    optionType: {
+        type: String,
+        default: 'Article',
+        require: false,
+    },
 });
+
+const emit = defineEmits(['articleListUpdate']);
+
+const userStore = useUserStore();
+const refUserStore = storeToRefs(userStore);
+
+const handleDelete = (articleId: string) => {
+    if (optionType === 'Article') {
+        deleteArticle(articleId).then((res) => {
+            if (res.data.code == 200) {
+                ElMessage.success('DELETE');
+                emit('articleListUpdate');
+            } else {
+                ElMessage.error(res.data);
+            }
+        });
+    }
+    if (optionType === 'Collect') {
+        deleteCollectByCollectId(articleId).then((res) => {
+            if (res.data.code === 200) {
+                ElMessage.success('DELETE');
+                emit('articleListUpdate');
+            } else {
+                ElMessage.error(res.data);
+            }
+        });
+    }
+    if (optionType === 'History') {
+        deleteHistoryByArticleId(articleId).then((res) => {
+            if (res.data.code === 200) {
+                ElMessage.success('DELETE');
+                emit('articleListUpdate');
+            } else {
+                ElMessage.error(res.data);
+            }
+        });
+    }
+};
+
+const handleHidden = (articleId: string) => {
+    hiddenArticle(articleId).then((res) => {
+        if (res.data.code == 200) {
+            ElMessage.warning(articleId);
+            emit('articleListUpdate');
+        } else {
+            ElMessage.error(res.data);
+        }
+    });
+};
+
+const hiddenModify = (articleId: string) => {
+    const updateArticleStore = useUpdateArticleStore();
+    getOneArticle(articleId).then((res) => {
+        const dialogStore = useDialogControlStore();
+        if (res.data.code == 200) {
+            const article: Ref<ArticleEntity> = ref(res.data.data.article);
+            updateArticleStore.params.id = article.value.articleId;
+            updateArticleStore.params.categoryId = article.value.category;
+            let tagIds = [];
+            for (let tag of article.value.tags) {
+                tagIds.push(tag.tagId);
+            }
+            updateArticleStore.params.tagIds = tagIds;
+            updateArticleStore.params.content = article.value.content;
+            updateArticleStore.params.title = article.value.title;
+            updateArticleStore.params.introduction = article.value.introduction;
+            updateArticleStore.enable = true;
+            dialogStore.publishArticleForm.status = true;
+        } else {
+            ElMessage.error(res.data.message);
+        }
+    });
+};
 </script>
 
 <template>
     <div
         v-for="(a, index) in articleList"
         :key="a.articleId"
-        class="flex flex-col p-5 dark:bg-dark bg-light hover:shadow-md shadow-sm mt-2 mx-2 rounded-md transition-all"
+        class="flex flex-col p-5 dark:bg-dark bg-light hover:shadow-md shadow-sm mt-2 mx-2 rounded-md transition-all flex-grow"
     >
         <div class="flex flex-row p-0 justify-between text-gray-400">
             <div class="truncate">
@@ -36,26 +125,34 @@ const { articleList, viewTime } = defineProps({
                 >
             </div>
             <div>
-                <el-dropdown trigger="click">
-                    <el-button class="el-dropdown-link" text bg type="info">
-                        <el-icon :size="20">
-                            <i-ep-more />
-                        </el-icon>
-                    </el-button>
-                    <template #dropdown>
-                        <el-dropdown-menu>
-                            <el-dropdown-item>Delete</el-dropdown-item>
-                            <el-dropdown-item>Hidden</el-dropdown-item>
-                            <el-dropdown-item>Modify</el-dropdown-item>
-                        </el-dropdown-menu>
-                    </template>
-                </el-dropdown>
+                <article-option-menu
+                    :delete-opt="
+                        (refUserStore.isLogin && refUserStore.user.value.userId == a.author.userId) ||
+                        refUserStore.user.value.permissionLevel >= 3 ||
+                        optionType === 'Collect' ||
+                        optionType === 'History'
+                    "
+                    :hidden-opt="
+                        refUserStore.isLogin &&
+                        refUserStore.user.value.userId == a.author.userId &&
+                        optionType === 'Article'
+                    "
+                    :modify-opt="
+                        refUserStore.isLogin &&
+                        refUserStore.user.value.userId == a.author.userId &&
+                        a.type === 'Article' &&
+                        optionType === 'Article'
+                    "
+                    @handleDelete="handleDelete(a.articleId)"
+                    @handleHidden="handleHidden(a.articleId)"
+                    @handleModify="hiddenModify(a.articleId)"
+                />
             </div>
         </div>
         <div class="my-2 flex flex-row items-start">
             <div
                 :style="{ backgroundColor: tagBgColor(a.type) }"
-                class="mt-0.5 w-[10px] px-[15px] py-[2px] text-sm font-medium rounded-sm transition-all type cursor-default dark:text-light"
+                class="mt-0.5 w-[10px] px-2 py-1 text-sm font-medium rounded-md transition-all type cursor-default dark:text-light"
             >
                 <span>
                     {{ a.type.substring(0, 1) }}
@@ -85,7 +182,7 @@ const { articleList, viewTime } = defineProps({
         <div v-if="a.type === 'Post'" class="mt-1">
             <image-gird-layout :images="a.images" />
         </div>
-        <div class="flex flex-col mt-2">
+        <div class="flex flex-col mt-4">
             <div class="flex flex-row justify-start">
                 <CommentsLink
                     :comments="a.comments"
@@ -95,7 +192,7 @@ const { articleList, viewTime } = defineProps({
                 <ShareLink />
             </div>
             <div class="mt-4 flex dark:text-dark" v-if="viewTime">
-                <span>{{ formatTime(viewTime[index].viewTime) }} · {{ viewTime[index].viewTime }}</span>
+                <span>{{ formatTime(viewTime[index]) }} · {{ viewTime[index] }}</span>
             </div>
         </div>
     </div>
