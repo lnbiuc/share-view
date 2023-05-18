@@ -14,13 +14,13 @@ export const useUserStore = defineStore('count', {
         count: <CountEntity>{},
     }),
     getters: {
-        getUser(state) {
+        getUser(state): UserEntity {
             return state.user;
         },
-        getToken(state) {
+        getToken(state): string {
             return state.token;
         },
-        getUserId(state) {
+        getUserId(state): string {
             return state.user.userId;
         },
     },
@@ -41,7 +41,6 @@ export const useUserStore = defineStore('count', {
                 isPhoneNotice: false,
                 theme: '',
                 lastLogin: '',
-                loginIp: '',
                 ipAddr: '',
             };
             this.isLogin = false;

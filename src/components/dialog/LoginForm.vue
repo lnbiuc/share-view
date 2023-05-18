@@ -202,7 +202,6 @@ const loginUser = ref<UserEntity>({
     isPhoneNotice: false,
     theme: '',
     lastLogin: '',
-    loginIp: '',
     ipAddr: '',
 });
 const loginSuccess = (userData: UserEntity, token: string, count: CountEntity) => {

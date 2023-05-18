@@ -4,7 +4,7 @@ import { useFilterAndSortStore } from '../pinia';
 const routes = [
     {
         path: '/:catchAll(.*)',
-        redirect: '/',
+        redirect: '/404',
     },
     {
         path: '/',
@@ -170,23 +170,47 @@ const routes = [
                         name: 'Settings',
                         component: () => import('../views/user/UserSettings.vue'),
                         meta: { title: 'Settings' },
+                        redirect: (to: any) => {
+                            const { userId } = to.params; // 获取参数
+                            return `/u/s/account/${userId}`; // 重定向到带有参数的目标路径
+                        },
+                        children: [
+                            {
+                                path: '/u/s/account/:userId',
+                                name: 'Settings | Account',
+                                meta: { title: 'Settings | Account' },
+                                component: () => import('../views/user/settings/Account.vue'),
+                            },
+                            {
+                                path: '/u/s/security/:userId',
+                                name: 'Settings | Security',
+                                meta: { title: 'Settings | Security' },
+                                component: () => import('../views/user/settings/Security.vue'),
+                            },
+                            {
+                                path: '/u/s/other/:userId',
+                                name: 'Settings | Other',
+                                meta: { title: 'Settings | Other' },
+                                component: () => import('../views/user/settings/Other.vue'),
+                            },
+                        ],
                     },
                 ],
             },
             {
-                path: '404',
+                path: '/404',
                 name: '404',
                 component: () => import('../views/error/NotFound.vue'),
                 meta: { title: '404 Not Found' },
             },
             {
-                path: '500',
+                path: '/500',
                 name: '500',
                 component: () => import('../views/error/SystemError.vue'),
                 meta: { title: '500 System Error' },
             },
             {
-                path: 'timeout',
+                path: '/timeout',
                 name: 'Timeout',
                 component: () => import('../views/error/TimeOut.vue'),
                 meta: { title: 'Timeout' },

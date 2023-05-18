@@ -143,7 +143,6 @@ const loginUser = ref<UserEntity>({
     isPhoneNotice: false,
     theme: '',
     lastLogin: '',
-    loginIp: '',
     ipAddr: '',
 });
 // check login status
