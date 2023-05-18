@@ -49,7 +49,11 @@ const handleCurrentChange = (pageNumber: number) => {
 <template>
     <div>
         <loading :is-loading="isLoad" />
-        <users-comment :comment="commentList" :execute-time="null" />
+        <users-comment
+            :comment="commentList"
+            :execute-time="null"
+            @update-data="handleCurrentChange(params.pageNumber)"
+        />
         <Pagination
             :current-page="params.pageNumber"
             :page-size="params.pageSize"

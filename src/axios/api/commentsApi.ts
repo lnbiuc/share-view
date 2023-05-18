@@ -98,3 +98,10 @@ export const getCommentByUserId = async (userId: string, pageNumber: number, pag
         },
     });
 };
+
+export const deleteCommentByCommentId = async (commentId: number) => {
+    return axios({
+        url: '/api/update/comment/delete/' + commentId,
+        method: 'DELETE',
+    });
+};

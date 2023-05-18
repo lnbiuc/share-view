@@ -20,3 +20,10 @@ export const getUserCollection = async (userId: string, pageNumber: number, page
         },
     });
 };
+
+export const deleteCollectByCollectId = async (articleId: string) => {
+    return axios({
+        url: '/api/update/collect/delete/' + articleId,
+        method: 'DELETE',
+    });
+};

@@ -13,8 +13,9 @@ import { PropType, Ref } from 'vue';
 import { useDialogControlStore, useUpdateArticleStore, useUserStore } from '../../pinia';
 import { storeToRefs } from 'pinia';
 import { ElMessage } from 'element-plus';
+import { deleteCollectByCollectId } from '../../axios/api/collectApi';
 
-const { articleList, viewTime } = defineProps({
+const { articleList, viewTime, optionType } = defineProps({
     articleList: {
         type: Array as PropType<ArticleListEntity[]>,
         required: true,
@@ -22,6 +23,11 @@ const { articleList, viewTime } = defineProps({
     viewTime: {
         type: Array as PropType<string[]>,
         required: false,
+    },
+    optionType: {
+        type: String,
+        default: 'Article',
+        require: false,
     },
 });
 
@@ -31,14 +37,26 @@ const userStore = useUserStore();
 const refUserStore = storeToRefs(userStore);
 
 const handleDelete = (articleId: string) => {
-    deleteArticle(articleId).then((res) => {
-        if (res.data.code == 200) {
-            ElMessage.success('DELETE');
-            emit('articleListUpdate');
-        } else {
-            ElMessage.error(res.data);
-        }
-    });
+    if (optionType === 'Article') {
+        deleteArticle(articleId).then((res) => {
+            if (res.data.code == 200) {
+                ElMessage.success('DELETE');
+                emit('articleListUpdate');
+            } else {
+                ElMessage.error(res.data);
+            }
+        });
+    }
+    if (optionType === 'Collect') {
+        deleteCollectByCollectId(articleId).then((res) => {
+            if (res.data.code === 200) {
+                ElMessage.success('DELETE');
+                emit('articleListUpdate');
+            } else {
+                ElMessage.error(res.data);
+            }
+        });
+    }
 };
 
 const handleHidden = (articleId: string) => {
@@ -99,13 +117,19 @@ const hiddenModify = (articleId: string) => {
                 <article-option-menu
                     :delete-opt="
                         (refUserStore.isLogin && refUserStore.user.value.userId == a.author.userId) ||
-                        refUserStore.user.value.permissionLevel >= 3
+                        refUserStore.user.value.permissionLevel >= 3 ||
+                        optionType === 'Collect'
                     "
-                    :hidden-opt="refUserStore.isLogin && refUserStore.user.value.userId == a.author.userId"
+                    :hidden-opt="
+                        refUserStore.isLogin &&
+                        refUserStore.user.value.userId == a.author.userId &&
+                        optionType === 'Article'
+                    "
                     :modify-opt="
                         refUserStore.isLogin &&
                         refUserStore.user.value.userId == a.author.userId &&
-                        a.type === 'Article'
+                        a.type === 'Article' &&
+                        optionType === 'Article'
                     "
                     @handleDelete="handleDelete(a.articleId)"
                     @handleHidden="handleHidden(a.articleId)"

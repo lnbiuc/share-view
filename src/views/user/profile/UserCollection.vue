@@ -63,7 +63,11 @@ const handleCurrentChange = (pageNumber: number) => {
 <template>
     <div>
         <loading :is-loading="isLoad" />
-        <all-type-preview-list :article-list="articleList" />
+        <all-type-preview-list
+            :article-list="articleList"
+            :option-type="'Collect'"
+            @article-list-update="handleCurrentChange(params.pageNumber)"
+        />
         <Pagination
             :current-page="params.pageNumber"
             :page-size="params.pageSize"
