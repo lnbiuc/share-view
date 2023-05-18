@@ -59,6 +59,7 @@ export interface UserCommentEntity {
     content: string;
     level: boolean;
     createTime: string;
+    type: string;
 }
 
 export interface CommentToUserEntity {

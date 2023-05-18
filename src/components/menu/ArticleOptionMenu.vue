@@ -30,9 +30,18 @@ const emit = defineEmits(['handleDelete', 'handleHidden', 'handleModify']);
             </el-button>
             <template #dropdown>
                 <el-dropdown-menu>
-                    <el-dropdown-item v-if="deleteOpt" @click="emit('handleDelete')">Delete</el-dropdown-item>
-                    <el-dropdown-item v-if="hiddenOpt" @click="emit('handleHidden')">Hidden</el-dropdown-item>
-                    <el-dropdown-item v-if="modifyOpt" @click="emit('handleModify')">Modify</el-dropdown-item>
+                    <el-dropdown-item v-if="deleteOpt" @click="emit('handleDelete')">
+                        <el-icon><i-ep-delete /></el-icon>
+                        Delete
+                    </el-dropdown-item>
+                    <el-dropdown-item v-if="hiddenOpt" @click="emit('handleHidden')">
+                        <el-icon><i-ep-remove /></el-icon>
+                        Hidden
+                    </el-dropdown-item>
+                    <el-dropdown-item divided v-if="modifyOpt" @click="emit('handleModify')">
+                        <el-icon><i-ep-edit /></el-icon>
+                        Modify
+                    </el-dropdown-item>
                 </el-dropdown-menu>
             </template>
         </el-dropdown>

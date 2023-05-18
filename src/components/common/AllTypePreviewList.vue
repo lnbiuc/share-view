@@ -97,13 +97,16 @@ const hiddenModify = (articleId: string) => {
             </div>
             <div>
                 <article-option-menu
-                    v-if="a.type === 'Article'"
                     :delete-opt="
                         (refUserStore.isLogin && refUserStore.user.value.userId == a.author.userId) ||
                         refUserStore.user.value.permissionLevel >= 3
                     "
                     :hidden-opt="refUserStore.isLogin && refUserStore.user.value.userId == a.author.userId"
-                    :modify-opt="refUserStore.isLogin && refUserStore.user.value.userId == a.author.userId"
+                    :modify-opt="
+                        refUserStore.isLogin &&
+                        refUserStore.user.value.userId == a.author.userId &&
+                        a.type === 'Article'
+                    "
                     @handleDelete="handleDelete(a.articleId)"
                     @handleHidden="handleHidden(a.articleId)"
                     @handleModify="hiddenModify(a.articleId)"
@@ -143,7 +146,7 @@ const hiddenModify = (articleId: string) => {
         <div v-if="a.type === 'Post'" class="mt-1">
             <image-gird-layout :images="a.images" />
         </div>
-        <div class="flex flex-col mt-2">
+        <div class="flex flex-col mt-4">
             <div class="flex flex-row justify-start">
                 <CommentsLink
                     :comments="a.comments"

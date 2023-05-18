@@ -4,7 +4,7 @@ import { UserLikedAnswerEntity } from '../../axios/api/likesApi';
 import MdEditor from 'md-editor-v3';
 import { useThemeStore } from '../../pinia';
 import { storeToRefs } from 'pinia';
-import { formatTime } from '../../utils';
+import { formatTime, handleToArticleDetail } from '../../utils';
 
 defineProps({
     answerList: {
@@ -33,7 +33,7 @@ watch(refThemeStore.isDark, (val) => {
                     <i-ant-design-question-outlined />
                 </el-icon>
             </div>
-            <span class="title">
+            <span class="title" @click="handleToArticleDetail('Question', a.articleId, $router)">
                 {{ a.questionDescribe }}
             </span>
         </div>

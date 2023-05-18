@@ -37,7 +37,10 @@ defineProps({
                 </span>
             </div>
             <div v-if="!c.toCommentContent" class="overflow-hidden">
-                <span class="font-semibold title whitespace-nowrap">
+                <span
+                    class="font-semibold title whitespace-nowrap"
+                    @click="handleToArticleDetail(c.type, c.toArticleId, $router)"
+                >
                     {{ c.toArticleTitle }}
                 </span>
             </div>
@@ -75,9 +78,8 @@ defineProps({
                 {{ formatTime(executeTime[index]) }} · {{ executeTime[index] }}
             </span>
             <div
-                v-if="c.toCommentContent"
                 class="font-semibold text-blue-400 cursor-pointer hover:text-blue-500 transition-all"
-                @click="handleToArticleDetail('Article', c.toArticleId, $router)"
+                @click="handleToArticleDetail(c.type, c.toArticleId, $router)"
             >
                 Visit Source
             </div>

@@ -18,6 +18,7 @@ const commentList: Ref<UserCommentEntity[]> = ref([
         content: '',
         level: true,
         createTime: '',
+        type: '',
     },
 ]);
 
