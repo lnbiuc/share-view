@@ -86,6 +86,7 @@ const getUserHistory = () => {
         });
         publishArticleList.value = convertedHistoryList;
         isLoad.value = false;
+        params.value.total = res.data.data.total;
     });
 };
 
@@ -102,7 +103,13 @@ const handleCurrentChange = (pageNumber: number) => {
 <template>
     <div>
         <loading :is-loading="isLoad" />
-        <all-type-preview-list :article-list="publishArticleList" v-if="!isLoad" :view-time="timeList" />
+        <all-type-preview-list
+            :article-list="publishArticleList"
+            v-if="!isLoad"
+            :view-time="timeList"
+            :option-type="'History'"
+            @article-list-update="handleCurrentChange(params.pageNumber)"
+        />
         <Pagination
             :current-page="params.pageNumber"
             :page-size="params.pageSize"

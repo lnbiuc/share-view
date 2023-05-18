@@ -14,6 +14,7 @@ import { useDialogControlStore, useUpdateArticleStore, useUserStore } from '../.
 import { storeToRefs } from 'pinia';
 import { ElMessage } from 'element-plus';
 import { deleteCollectByCollectId } from '../../axios/api/collectApi';
+import { deleteHistoryByArticleId } from '../../axios/api/historyApi';
 
 const { articleList, viewTime, optionType } = defineProps({
     articleList: {
@@ -49,6 +50,16 @@ const handleDelete = (articleId: string) => {
     }
     if (optionType === 'Collect') {
         deleteCollectByCollectId(articleId).then((res) => {
+            if (res.data.code === 200) {
+                ElMessage.success('DELETE');
+                emit('articleListUpdate');
+            } else {
+                ElMessage.error(res.data);
+            }
+        });
+    }
+    if (optionType === 'History') {
+        deleteHistoryByArticleId(articleId).then((res) => {
             if (res.data.code === 200) {
                 ElMessage.success('DELETE');
                 emit('articleListUpdate');
@@ -118,7 +129,8 @@ const hiddenModify = (articleId: string) => {
                     :delete-opt="
                         (refUserStore.isLogin && refUserStore.user.value.userId == a.author.userId) ||
                         refUserStore.user.value.permissionLevel >= 3 ||
-                        optionType === 'Collect'
+                        optionType === 'Collect' ||
+                        optionType === 'History'
                     "
                     :hidden-opt="
                         refUserStore.isLogin &&
