@@ -4,7 +4,7 @@ import { ElMessage } from 'element-plus';
 import { useDialogControlStore, useUserStore } from '../../pinia';
 import { storeToRefs } from 'pinia';
 
-const props = defineProps({
+const { isSubscribed, userId, questionId, type } = defineProps({
     isSubscribed: {
         type: Boolean,
         default: false,
@@ -30,9 +30,7 @@ const props = defineProps({
     },
 });
 
-const isDisableSubscribeBtn = ref<boolean>(props.isSubscribed);
-
-isDisableSubscribeBtn.value = props.isSubscribed;
+const isDisableSubscribeBtn = ref<boolean>(isSubscribed);
 
 const handleSubscribe = () => {
     if (isDisableSubscribeBtn.value) {
@@ -55,11 +53,11 @@ const handleSubscribe = () => {
 };
 
 const doSubscribe = () => {
-    if (props.type === 'user') {
-        if (props.userId === '') {
+    if (type === 'user') {
+        if (userId === '') {
             return;
         } else {
-            subscribeAuthorByAuthorId(props.userId).then((res) => {
+            subscribeAuthorByAuthorId(userId).then((res) => {
                 if (res.data.code == 200) {
                     isDisableSubscribeBtn.value = true;
                     ElMessage.success('SUCCESS');
@@ -71,10 +69,10 @@ const doSubscribe = () => {
             return;
         }
     } else {
-        if (props.questionId === '') {
+        if (questionId === '') {
             return;
         } else {
-            subscribeQuestionById(props.questionId).then((res) => {
+            subscribeQuestionById(questionId).then((res) => {
                 if (res.data.code == 200) {
                     isDisableSubscribeBtn.value = true;
                     ElMessage.success('SUCCESS');
@@ -91,11 +89,11 @@ const handleCancelSubscribe = () => {
     if (!isDisableSubscribeBtn.value) {
         return;
     }
-    if (props.type === 'user') {
-        if (props.userId === '') {
+    if (type === 'user') {
+        if (userId === '') {
             return;
         } else {
-            cancelSubscribe(props.userId, props.questionId, props.type === 'user' ? 1 : 2).then((res) => {
+            cancelSubscribe(userId, questionId, type === 'user' ? 1 : 2).then((res) => {
                 if (res.data.code == 200) {
                     isDisableSubscribeBtn.value = false;
                     ElMessage.success('SUCCESS');

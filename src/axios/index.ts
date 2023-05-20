@@ -36,19 +36,19 @@ apiAxios.interceptors.request.use((config) => {
 //后置拦截
 apiAxios.interceptors.response.use(
     (response) => {
+        NProgress.done();
         if (response.data.code == 200) {
-            NProgress.done();
             return response;
         } else {
             // show when dev
-            // ElMessage.error(JSON.stringify(response.data));
-            router.push({ path: '500' });
+            ElMessage.error(response.data.message);
+            router.push({ path: '/500' });
         }
-        NProgress.done();
         return response;
     },
     (error) => {
-        router.push({ path: '500' });
+        NProgress.done();
+        router.push({ path: '/500' });
     }
 );
 

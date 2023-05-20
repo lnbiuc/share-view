@@ -5,22 +5,32 @@ import { useRouteParams } from '@vueuse/router';
 import { Ref, ref } from 'vue';
 import { UserLiteEntity } from '../../axios/api/articleApi';
 import { formatTime, toPercent } from '../../utils';
+import { useUserInfoLiteStore } from '../../pinia';
+import { storeToRefs } from 'pinia';
 
 const user: Ref<UserLiteEntity> = ref({
     userId: '',
     username: '',
     signature: '',
-    avatar: 'https://cube.elemecdn.com/0/88/03b0d39583f48206768a7534e55bcpng.png',
+    avatar: '',
     level: 0,
     registerTime: '',
     lastLogin: '',
     ipAddr: '',
     isSubscribed: false,
 });
+
 const userId = useRouteParams<string>('userId');
+const userInfoLiteStore = useUserInfoLiteStore();
+getUserInfo(userId.value).then((res) => {
+    user.value = res.data.data;
+    userInfoLiteStore.params = user.value;
+});
+
 onMounted(() => {
-    getUserInfo(userId.value).then((res) => {
-        user.value = res.data.data;
+    const refStore = storeToRefs(userInfoLiteStore);
+    watch(refStore.params, () => {
+        user.value = refStore.params.value;
     });
 });
 </script>
@@ -34,7 +44,7 @@ onMounted(() => {
                         backgroundImage: 'url(' + user.avatar + ')',
                         background: 'center center / no-repeat',
                     }"
-                    class="bg-cover bg-center h-[200px] w-[200px] rounded shadow-md"
+                    class="bg-cover bg-center h-[200px] w-[200px] rounded"
                 ></div>
             </div>
         </template>

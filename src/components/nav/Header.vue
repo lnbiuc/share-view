@@ -68,8 +68,8 @@
                 round
                 @click="dialogStore.loginForm = true"
                 v-if="!store.isLogin"
-                >Login / Register</el-button
-            >
+                >Login / Register
+            </el-button>
         </div>
     </div>
     <LoginForm />
@@ -90,6 +90,7 @@ import { useToggle, useStorage, useDark } from '@vueuse/core';
 import AskQuestionForm from '../dialog/AskQuestionForm.vue';
 import SendPostForm from '../dialog/SendPostForm.vue';
 import { useRouter } from 'vue-router';
+import { switchTheme, watchSwitchTheme } from '../../utils';
 
 const dialogStore = useDialogControlStore();
 
@@ -143,7 +144,6 @@ const loginUser = ref<UserEntity>({
     isPhoneNotice: false,
     theme: '',
     lastLogin: '',
-    loginIp: '',
     ipAddr: '',
 });
 // check login status
@@ -182,43 +182,34 @@ const refStore = storeToRefs(store);
 watch(refStore.isLogin, async () => {
     if (refStore.isLogin.value) {
         loginUser.value = refStore.user.value;
+        if (loginUser.value.theme === 'auto') {
+            watchSwitchTheme();
+        }
     }
 });
+
 const isSwitchOpen = ref<boolean>(false);
+const themeStore = useThemeStore();
+// 获取已经保存的主题
 if (localStorage.getItem('vueuse-color-scheme')) {
     const saveTheme = localStorage.getItem('vueuse-color-scheme');
-    isSwitchOpen.value = saveTheme == 'dark';
+    // 根据已经保存的主题设置按钮开关状态
+    themeStore.isDark = saveTheme == 'dark';
+    isSwitchOpen.value = themeStore.isDark;
+    // store中的数据与当前数据同步
+    const refThemeStore = storeToRefs(themeStore);
+    watch(refThemeStore.isDark, () => {
+        isSwitchOpen.value = themeStore.isDark;
+    });
 }
-const themeStore = useThemeStore();
-themeStore.isDark = isSwitchOpen.value;
-watch(isSwitchOpen, () => {
-    themeStore.isDark = isSwitchOpen.value;
-});
-const theme = useStorage('vueuse-color-scheme', 'light');
-
-const isDark = useDark({
-    storageKey: 'vueuse-color-scheme',
-});
-
 onMounted(() => {
-    if (isSwitchOpen.value) {
-        theme.value = 'dark';
-    } else {
-        theme.value = 'light';
-    }
+    const isDark = useDark({
+        storageKey: 'vueuse-color-scheme',
+    });
+    useToggle(isDark);
 });
-useToggle(isDark);
 const switchChange = () => {
-    if (isSwitchOpen.value) {
-        theme.value = 'dark';
-    } else {
-        theme.value = 'light';
-    }
-};
-
-const routerChange = () => {
-    const router = useRouter();
-    router.replace('/u/p/' + loginUser.value.userId);
+    switchTheme(isSwitchOpen.value);
 };
 </script>
 

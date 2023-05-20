@@ -35,7 +35,6 @@ export interface UserEntity {
     isPhoneNotice: boolean;
     theme: string;
     lastLogin: string;
-    loginIp: string;
     ipAddr: string;
 }
 

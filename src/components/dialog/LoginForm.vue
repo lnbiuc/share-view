@@ -6,6 +6,7 @@ import { CountEntity, login, loginParams, register, sendCode, UserEntity } from 
 import { ElMessage, FormInstance, FormRules } from 'element-plus';
 import { useDialogControlStore, useThemeStore, useUserStore } from '../../pinia';
 import { useLocalStorage, useSessionStorage } from '@vueuse/core';
+import { switchTheme } from '../../utils';
 
 const dialogStore = useDialogControlStore();
 const handlerType = ref(0);
@@ -202,7 +203,6 @@ const loginUser = ref<UserEntity>({
     isPhoneNotice: false,
     theme: '',
     lastLogin: '',
-    loginIp: '',
     ipAddr: '',
 });
 const loginSuccess = (userData: UserEntity, token: string, count: CountEntity) => {
@@ -222,6 +222,17 @@ const loginSuccess = (userData: UserEntity, token: string, count: CountEntity) =
         useSessionStorage<string>('token', token);
         useSessionStorage<UserEntity>('user', userData);
         useSessionStorage<CountEntity>('count', count);
+    }
+    if (userData.theme === 'light') {
+        switchTheme(false);
+    } else if (userData.theme === 'light') {
+        switchTheme(true);
+    } else {
+        if (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) {
+            switchTheme(true);
+        } else {
+            switchTheme(false);
+        }
     }
 };
 
