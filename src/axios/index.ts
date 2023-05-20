@@ -41,7 +41,7 @@ apiAxios.interceptors.response.use(
             return response;
         } else {
             // show when dev
-            // ElMessage.error(JSON.stringify(response.data));
+            ElMessage.error(response.data.message);
             router.push({ path: '/500' });
         }
         return response;
