@@ -1,8 +1,15 @@
 <script setup lang="ts">
 import { ref, Ref } from 'vue';
-import { UserProfileEntity } from '../../../axios/api/userApi';
-import { useUserSettingStore } from '../../../pinia';
+import {
+    getUserProfile,
+    updateUserProfile,
+    UpdateUserProfileEntity,
+    UserProfileEntity,
+} from '../../../axios/api/userApi';
+import { useThemeStore, useUserSettingStore } from '../../../pinia';
 import { storeToRefs } from 'pinia';
+import { ElMessage } from 'element-plus';
+import { switchTheme, updateUserInfo } from '../../../utils';
 
 const params: Ref<UserProfileEntity> = ref({
     userId: 'new',
@@ -10,14 +17,14 @@ const params: Ref<UserProfileEntity> = ref({
     phone: '',
     mail: '',
     signature: '',
-    avatar: 'https://cube.elemecdn.com/0/88/03b0d39583f48206768a7534e55bcpng.png',
+    avatar: '',
     level: 0,
     isBlock: false,
     permissionLevel: 0,
     registerTime: '',
     isMailNotice: false,
     isPhoneNotice: false,
-    theme: 'auto',
+    theme: 'light',
     lastLogin: '',
     ipAddr: '',
 });
@@ -30,9 +37,58 @@ watchEffect(
         params.value = refUserSettingStore.params.value;
     },
     {
-        flush: 'sync', // 模拟 watch 的 immediate: true，立即执行回调函数
+        flush: 'sync',
     }
 );
+
+const themeStore = useThemeStore();
+
+const updateParams: Ref<UpdateUserProfileEntity> = ref({
+    userId: '',
+    username: '',
+    signature: '',
+    avatar: '',
+    isMailNotice: false,
+    isPhoneNotice: false,
+    theme: '',
+});
+
+const handleSave = () => {
+    updateParams.value.userId = params.value.userId;
+    updateParams.value.username = params.value.username;
+    updateParams.value.signature = params.value.signature;
+    updateParams.value.avatar = params.value.avatar;
+    updateParams.value.isMailNotice = params.value.isMailNotice;
+    updateParams.value.isPhoneNotice = params.value.isPhoneNotice;
+    updateParams.value.theme = params.value.theme;
+
+    updateUserProfile(updateParams.value).then((res) => {
+        if (res.data.code == 200) {
+            ElMessage.success(res.data.message);
+            const userSettingStore = useUserSettingStore();
+            getUserProfile(params.value.userId).then((res) => {
+                userSettingStore.params = res.data.data;
+                updateUserInfo(userSettingStore.params);
+            });
+        } else {
+            ElMessage.error(res.data.message);
+        }
+    });
+};
+
+watchEffect(() => {
+    if (params.value.theme === 'light') {
+        switchTheme(false);
+    } else if (params.value.theme === 'light') {
+        switchTheme(true);
+    } else {
+        if (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) {
+            switchTheme(true);
+        } else {
+            switchTheme(false);
+        }
+    }
+});
 </script>
 
 <template>
@@ -53,7 +109,7 @@ watchEffect(
             </el-form-item>
         </el-form>
         <div class="flex flex-row justify-center items-center">
-            <el-button type="primary">
+            <el-button type="primary" @click="handleSave">
                 <el-icon class="mr-2" :size="15">
                     <i-ep-circle-check />
                 </el-icon>

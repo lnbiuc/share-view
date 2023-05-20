@@ -10,8 +10,9 @@ import {
     UpdateUserProfileEntity,
     UserProfileEntity,
 } from '../../../axios/api/userApi';
-import { useUserInfoLiteStore, useUserSettingStore } from '../../../pinia';
+import { useUserSettingStore } from '../../../pinia';
 import { storeToRefs } from 'pinia';
+import { updateUserInfo } from '../../../utils';
 
 const params: Ref<UserProfileEntity> = ref({
     userId: 'new',
@@ -87,17 +88,6 @@ const handleSave = () => {
             ElMessage.error(res.data.message);
         }
     });
-};
-
-const updateUserInfo = (params: UserProfileEntity) => {
-    const store = useUserInfoLiteStore();
-    store.params.userId = params.userId;
-    store.params.username = params.username;
-    store.params.signature = params.signature;
-    store.params.avatar = params.avatar;
-    store.params.level = params.level;
-    store.params.registerTime = params.registerTime;
-    store.params.ipAddr = params.ipAddr;
 };
 
 const validateUsername = (rule: any, value: any, callback: any) => {

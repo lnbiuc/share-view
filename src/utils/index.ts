@@ -1,9 +1,12 @@
 import { format } from 'timeago.js';
 import { uploadImage } from '../axios/api/fileApi';
 import { ElMessage } from 'element-plus';
-import { useDialogControlStore, useUserStore } from '../pinia';
-import { Router, useRouter } from 'vue-router';
+import { useDialogControlStore, useThemeStore, useUserInfoLiteStore, useUserStore } from '../pinia';
+import { Router } from 'vue-router';
 import { storeToRefs } from 'pinia';
+import { UserProfileEntity } from '../axios/api/userApi';
+import { watch } from 'vue';
+import { useDark, useStorage, useToggle } from '@vueuse/core';
 
 export const formatTime = (data: string) => {
     return format(data, 'zh_CN');
@@ -114,4 +117,47 @@ export const handleClickComment = (articleId: string, title: string, type: strin
             stop();
         });
     }
+};
+
+export const updateUserInfo = (params: UserProfileEntity) => {
+    const store = useUserInfoLiteStore();
+    store.params.userId = params.userId;
+    store.params.username = params.username;
+    store.params.signature = params.signature;
+    store.params.avatar = params.avatar;
+    store.params.level = params.level;
+    store.params.registerTime = params.registerTime;
+    store.params.ipAddr = params.ipAddr;
+};
+
+export const switchTheme = (isEnableDark: boolean) => {
+    const theme = useStorage('vueuse-color-scheme', 'light');
+    if (isEnableDark) {
+        theme.value = 'dark';
+    } else {
+        theme.value = 'light';
+    }
+    const themeStore = useThemeStore();
+    themeStore.isDark = isEnableDark;
+};
+
+export const watchSwitchTheme = () => {
+    // Check if the browser supports dark/light mode detection
+    if (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) {
+        switchTheme(true);
+    } else {
+        switchTheme(false);
+    }
+
+    // Listen for changes in dark/light mode preference
+    const darkModeMediaQuery = window.matchMedia('(prefers-color-scheme: dark)');
+    const handleModeChange = (e: any) => {
+        if (e.matches) {
+            switchTheme(true);
+        } else {
+            switchTheme(false);
+        }
+    };
+
+    darkModeMediaQuery.addEventListener('change', handleModeChange);
 };
