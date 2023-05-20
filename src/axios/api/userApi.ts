@@ -18,6 +18,16 @@ export interface UserProfileEntity {
     ipAddr: string;
 }
 
+export interface UpdateUserProfileEntity {
+    userId: string;
+    username: string;
+    signature: string;
+    avatar: string;
+    isMailNotice: boolean;
+    isPhoneNotice: boolean;
+    theme: string;
+}
+
 export const getUserInfo = async (userId: string) => {
     return axios({
         url: '/api/user/' + userId,
@@ -29,5 +39,13 @@ export const getUserProfile = async (userId: string) => {
     return axios({
         url: '/api/user/profile/' + userId,
         method: 'POST',
+    });
+};
+
+export const updateUserProfile = (params: UpdateUserProfileEntity) => {
+    return axios({
+        url: '/api/update/user/profile',
+        method: 'PUT',
+        data: params,
     });
 };

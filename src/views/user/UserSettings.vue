@@ -3,6 +3,7 @@ import UserProfileLayout from '../../layout/UserProfileLayout.vue';
 import { useRouteParams } from '@vueuse/router';
 import { ref, Ref } from 'vue';
 import { getUserProfile, UserProfileEntity } from '../../axios/api/userApi';
+import { useUserSettingStore } from '../../pinia';
 
 const userId = useRouteParams<string>('userId');
 
@@ -23,12 +24,11 @@ const user: Ref<UserProfileEntity> = ref({
     lastLogin: '',
     ipAddr: '',
 });
-onMounted(() => {
-    getUserProfile(userId.value).then((res) => {
-        user.value = res.data.data;
-    });
+const userSettingStore = useUserSettingStore();
+getUserProfile(userId.value).then((res) => {
+    user.value = res.data.data;
+    userSettingStore.params = user.value;
 });
-provide('userInfo', user);
 </script>
 
 <template>

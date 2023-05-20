@@ -4,7 +4,8 @@ import { formatDate } from '../utils';
 import { PublishCommentsEntity } from '../axios/api/commentsApi';
 import { CategoryEntity, getCategoryList } from '../axios/api/categoryApi';
 import { getAllTags, TagEntity } from '../axios/api/tagApi';
-import { ArticleUpdateParams } from '../axios/api/articleApi';
+import { ArticleUpdateParams, UserLiteEntity } from '../axios/api/articleApi';
+import { UserProfileEntity } from '../axios/api/userApi';
 
 export const useUserStore = defineStore('count', {
     state: () => ({
@@ -272,5 +273,17 @@ export const useUpdateArticleStore = defineStore('updateArticle', {
         params: <ArticleUpdateParams>{},
         count: <number>0,
         enable: <boolean>false,
+    }),
+});
+
+export const useUserSettingStore = defineStore('userSetting', {
+    state: () => ({
+        params: <UserProfileEntity>{},
+    }),
+});
+
+export const useUserInfoLiteStore = defineStore('userInfoLite', {
+    state: () => ({
+        params: <UserLiteEntity>{},
     }),
 });

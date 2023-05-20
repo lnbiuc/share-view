@@ -1,11 +1,17 @@
 <script setup lang="ts">
-import { UserEntity } from '../../../axios/api/loginApi';
 import { ref, Ref } from 'vue';
 import { uploadSuccess } from '../../../common/message';
-import { ElMessage, FormInstance, UploadRequestOptions } from 'element-plus';
+import { ElMessage, FormInstance, FormRules, UploadRequestOptions } from 'element-plus';
 import { uploadImage } from '../../../axios/api/fileApi';
 import { Message, Phone, Picture, User } from '@element-plus/icons-vue';
-import { UserProfileEntity } from '../../../axios/api/userApi';
+import {
+    getUserProfile,
+    updateUserProfile,
+    UpdateUserProfileEntity,
+    UserProfileEntity,
+} from '../../../axios/api/userApi';
+import { useUserInfoLiteStore, useUserSettingStore } from '../../../pinia';
+import { storeToRefs } from 'pinia';
 
 const params: Ref<UserProfileEntity> = ref({
     userId: 'new',
@@ -25,16 +31,22 @@ const params: Ref<UserProfileEntity> = ref({
     ipAddr: '',
 });
 
-const injectInfo = inject<Ref<UserProfileEntity>>('userInfo', params);
-
-watch(injectInfo, () => {
-    params.value = injectInfo!.value;
-});
+const userSettingStore = useUserSettingStore();
+const refUserSettingStore = storeToRefs(userSettingStore);
+params.value = userSettingStore.params;
+watchEffect(
+    () => {
+        params.value = refUserSettingStore.params.value;
+    },
+    {
+        flush: 'sync',
+    }
+);
 
 const uploadImg = (param: UploadRequestOptions) => {
     return uploadImage(param.file).then((res) => {
         if (res.data.code == 200) {
-            params.value.avatar = res.data.data.fileId;
+            params.value.avatar = res.data.data.fileUrl;
             uploadSuccess(res.data.message);
         } else {
             ElMessage.error(res.data.message);
@@ -44,8 +56,77 @@ const uploadImg = (param: UploadRequestOptions) => {
 
 const enableEdit = ref<boolean>(true);
 
+const updateParams: Ref<UpdateUserProfileEntity> = ref({
+    userId: '',
+    username: '',
+    signature: '',
+    avatar: '',
+    isMailNotice: false,
+    isPhoneNotice: false,
+    theme: '',
+});
+
 const handleSave = () => {
-    enableEdit.value = !enableEdit.value;
+    updateParams.value.userId = params.value.userId;
+    updateParams.value.username = params.value.username;
+    updateParams.value.signature = params.value.signature;
+    updateParams.value.avatar = params.value.avatar;
+    updateParams.value.isMailNotice = params.value.isMailNotice;
+    updateParams.value.isPhoneNotice = params.value.isPhoneNotice;
+    updateParams.value.theme = params.value.theme;
+    updateUserProfile(updateParams.value).then((res) => {
+        if (res.data.code == 200) {
+            ElMessage.success(res.data.message);
+            const userSettingStore = useUserSettingStore();
+            getUserProfile(params.value.userId).then((res) => {
+                userSettingStore.params = res.data.data;
+                enableEdit.value = !enableEdit.value;
+                updateUserInfo(userSettingStore.params);
+            });
+        } else {
+            ElMessage.error(res.data.message);
+        }
+    });
+};
+
+const updateUserInfo = (params: UserProfileEntity) => {
+    const store = useUserInfoLiteStore();
+    store.params.userId = params.userId;
+    store.params.username = params.username;
+    store.params.signature = params.signature;
+    store.params.avatar = params.avatar;
+    store.params.level = params.level;
+    store.params.registerTime = params.registerTime;
+    store.params.ipAddr = params.ipAddr;
+};
+
+const validateUsername = (rule: any, value: any, callback: any) => {
+    if (value === '') {
+        callback(new Error('username is required'));
+    } else {
+        if (value.match(/^(?!.*\s)[\w\u4E00-\u9FFF\u3040-\u30FF]{2,20}$/)) {
+            callback();
+        } else {
+            callback(new Error('2-20 characters, including letters, numbers, underscores, and Chinese'));
+        }
+    }
+};
+
+const formRule: FormRules = reactive({
+    username: [{ required: true, validator: validateUsername, trigger: 'blur' }],
+});
+
+const ruleFormRef = ref<FormInstance>();
+
+const handleSubmitForm = (formEl: FormInstance | undefined) => {
+    if (!formEl) return;
+    formEl.validate((valid) => {
+        if (!valid) {
+            return false;
+        } else {
+            handleSave();
+        }
+    });
 };
 </script>
 
@@ -59,8 +140,8 @@ const handleSave = () => {
             </div>
         </div>
         <div class="mt-8">
-            <el-form :model="params" label-width="120px">
-                <el-form-item label="User Name" size="large">
+            <el-form :model="params" label-width="120px" ref="ruleFormRef" :rules="formRule">
+                <el-form-item label="User Name" size="large" prop="username">
                     <el-input
                         :prefix-icon="User"
                         v-model="params.username"
@@ -105,6 +186,7 @@ const handleSave = () => {
                             :with-credentials="true"
                             :limit="1"
                             :multiple="false"
+                            :disabled="enableEdit"
                         >
                             <template #trigger>
                                 <el-button :disabled="enableEdit" class="ml-2" type="primary">
@@ -126,7 +208,7 @@ const handleSave = () => {
                 </el-icon>
                 Edit Profile
             </el-button>
-            <el-button v-if="!enableEdit" @click="handleSave" type="primary">
+            <el-button v-if="!enableEdit" @click="handleSubmitForm(ruleFormRef)" type="primary">
                 <el-icon class="mr-2" :size="20">
                     <i-ep-circle-check />
                 </el-icon>
