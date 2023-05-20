@@ -65,6 +65,7 @@ declare module '@vue/runtime-core' {
     IEpEdit: typeof import('~icons/ep/edit')['default']
     IEpEditPen: typeof import('~icons/ep/edit-pen')['default']
     IEpKey: typeof import('~icons/ep/key')['default']
+    IEpLock: typeof import('~icons/ep/lock')['default']
     IEpMore: typeof import('~icons/ep/more')['default']
     IEpPlus: typeof import('~icons/ep/plus')['default']
     IEpRemove: typeof import('~icons/ep/remove')['default']

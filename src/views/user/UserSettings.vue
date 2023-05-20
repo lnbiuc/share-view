@@ -50,7 +50,11 @@ getUserProfile(userId.value).then((res) => {
                             <el-icon><i-ep-key /></el-icon>
                             <template #title>Security</template>
                         </el-menu-item>
-                        <el-menu-item index="3" @click="$router.push('/u/s/other/' + userId)">
+                        <el-menu-item index="3" @click="$router.push('/u/s/password/' + userId)">
+                            <el-icon><i-ep-lock /></el-icon>
+                            <template #title>Password</template>
+                        </el-menu-item>
+                        <el-menu-item index="4" @click="$router.push('/u/s/other/' + userId)">
                             <el-icon><i-ep-set-up /></el-icon>
                             <template #title>Other</template>
                         </el-menu-item>

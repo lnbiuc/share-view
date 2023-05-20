@@ -188,6 +188,12 @@ const routes = [
                                 component: () => import('../views/user/settings/Security.vue'),
                             },
                             {
+                                path: '/u/s/password/:userId',
+                                name: 'Settings | Password',
+                                meta: { title: 'Settings | Password' },
+                                component: () => import('../views/user/settings/Password.vue'),
+                            },
+                            {
                                 path: '/u/s/other/:userId',
                                 name: 'Settings | Other',
                                 meta: { title: 'Settings | Other' },
