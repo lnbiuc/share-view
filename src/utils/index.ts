@@ -45,7 +45,7 @@ export const handleUploadImage = async (files: any, callback: any) => {
             });
         })
     );
-    callback(res.map((item) => item.data.data.imgUrl));
+    callback(res.map((item) => item.data.data.fileUrl));
 };
 
 export const checkLoginStatus = () => {

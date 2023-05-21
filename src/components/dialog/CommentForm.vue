@@ -80,7 +80,7 @@ const handleBeforeClose = () => {
                         </span>
                     </div>
                 </div>
-                <el-button type="danger" @click="close" plain>
+                <el-button type="danger" @click="dialogStore.commentForm.status = false" plain>
                     <el-icon class="el-icon--left">
                         <i-ep-circle-close-filled />
                     </el-icon>
