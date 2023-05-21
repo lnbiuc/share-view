@@ -42,13 +42,11 @@ apiAxios.interceptors.response.use(
         } else {
             // show when dev
             ElMessage.error(response.data.message);
-            router.push({ path: '/500' });
         }
         return response;
     },
     (error) => {
         NProgress.done();
-        router.push({ path: '/500' });
     }
 );
 

@@ -185,6 +185,7 @@ const hiddenModify = (articleId: string) => {
         <div class="flex flex-col mt-4">
             <div class="flex flex-row justify-start">
                 <CommentsLink
+                    v-if="a.type !== 'Question'"
                     :comments="a.comments"
                     @click="handleClickComment(a.articleId, a.title, a.type, a.introduction, $router)"
                 />

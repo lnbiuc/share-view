@@ -33,6 +33,7 @@ const createTag = () => {
         publishTag(tag.value).then((res) => {
             if (res.data.code == 200) {
                 categoryAndTagsStore.refreshTags();
+                dialogControlStore.askQuestionForm.status = false;
                 ElMessage.success('SUCCESS');
             } else {
                 ElMessage.error(res.data.message);

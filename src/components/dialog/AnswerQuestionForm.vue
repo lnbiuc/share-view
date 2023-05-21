@@ -23,6 +23,7 @@ const answer = ref<{ content: string }>({
 });
 
 const dialogControlStore = useDialogControlStore();
+const refDialogControlStore = storeToRefs(dialogControlStore);
 const handlePublish = () => {
     if (props.questionId !== '' && answer.value.content !== '') {
         publishAnswer(props.questionId, answer.value.content).then((res) => {

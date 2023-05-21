@@ -55,9 +55,9 @@ const data: Ref<ArticleContentEntity> = ref({
 const isLoading = ref<boolean>(true);
 onMounted(() => {
     getOneArticle(articleId.value).then((res) => {
+        isLoading.value = false;
         if (res.data.code == 200) {
             data.value = res.data.data;
-            isLoading.value = false;
             disableSubscribeBtn.value = data.value.article.author.isSubscribed;
             params.value.total = data.value.comments.total;
             nextTick(() => {
@@ -195,7 +195,7 @@ const commentPageNumberChange = (pageNumber: number) => {
             <UserInfoLite v-show="!isLoading" :user="data.article.author" />
             <el-affix :offset="10">
                 <div
-                    class="text-left text-md transition-all dark:bg-dark dark:text-dark bg-light rounded-md shadow-sm px-4 py-2 overflow-auto break-all"
+                    class="text-left text-md max-h-[90vh] transition-all dark:bg-dark dark:text-dark bg-light rounded-md shadow-sm px-4 py-2 overflow-auto break-all"
                     v-show="!isLoading"
                 >
                     <div class="flex flex-row justify-center items-center mb-1">

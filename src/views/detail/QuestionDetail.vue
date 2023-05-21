@@ -85,6 +85,7 @@ const answer: Ref<AnswerAndCommentEntity[]> = ref([
 const isLoading = ref<boolean>(true);
 
 onMounted(() => {
+    isLoading.value = true;
     getOneArticle(articleId.value).then((res) => {
         if (res.data.code == 200) {
             ques.value = res.data.data;
@@ -94,9 +95,11 @@ onMounted(() => {
     });
 });
 const getAnswer = () => {
+    isLoading.value = true;
     getAnswersByArticleId(articleId.value, params.value.pageNumber, params.value.pageSize, params.value.order).then(
         (res) => {
             if (res.data.code == 200) {
+                isLoading.value = false;
                 answer.value = res.data.data.data;
                 params.value.total = res.data.data.total;
             }
@@ -133,9 +136,11 @@ const refreshAnswers = () => {
     if (params.value.order === 'new') {
         params.value.pageNumber = 1;
     }
+    isLoading.value = true;
     getAnswersByArticleId(articleId.value, params.value.pageNumber, params.value.pageSize, params.value.order).then(
         (res) => {
             if (res.data.code == 200) {
+                isLoading.value = false;
                 answer.value = res.data.data.data;
                 params.value.total = res.data.data.total;
             }
@@ -241,6 +246,7 @@ const handleOpenCommentForm = (answerId: string) => {
 <template>
     <DefaultDetailLayout>
         <template #left>
+            <loading :is-loading="isLoading" />
             <div class="flex flex-col p-6 dark:bg-dark rounded-md bg-light shadow-sm">
                 <div class="flex flex-row items-center">
                     <div
@@ -278,7 +284,6 @@ const handleOpenCommentForm = (answerId: string) => {
                         preview-theme="smart-blue"
                     />
                 </div>
-                <el-divider>ANSWER</el-divider>
                 <div class="flex justify-between items-center dark:bg-neutral-900 p-3 rounded-md">
                     <div class="flex flex-row items-center">
                         <span
@@ -317,58 +322,62 @@ const handleOpenCommentForm = (answerId: string) => {
                         </template>
                     </el-dropdown>
                 </div>
-                <div class="mt-4 p-4 border-light dark:border-dark rounded-md" v-for="a in answer" :key="a.id">
+            </div>
+            <div class="mt-2 py-4 rounded-md dark:bg-dark" v-for="a in answer" :key="a.id">
+                <el-divider>ANSWER</el-divider>
+                <div class="px-6">
                     <user-profile :user="a.author" class="mb-2">
                         <subscribe-btn :is-subscribed="a.author.isSubscribed" :user-id="a.author.userId" type="user" />
                     </user-profile>
-                    <el-divider />
-                    <md-editor
-                        :editor-id="state.id"
-                        preview-theme="cyanosis"
-                        :show-code-row-number="true"
-                        v-model="a.content"
-                        :theme="currentTheme"
-                        :preview-only="true"
+                </div>
+
+                <el-divider />
+                <md-editor
+                    :editor-id="state.id"
+                    preview-theme="cyanosis"
+                    :show-code-row-number="true"
+                    v-model="a.content"
+                    :theme="currentTheme"
+                    :preview-only="true"
+                />
+                <div class="text-xs mt-3 mx-2 flex flex-row justify-between">
+                    <span class="text-gray-500">Publish On: {{ a.releaseTime }} </span>
+                    <div v-if="a.releaseTime !== a.lastUpdate">
+                        <span class="text-gray-500">
+                            Last Modify:
+                            <span v-text="formatTime(a.lastUpdate)" />
+                        </span>
+                    </div>
+                </div>
+                <div class="mt-3 px-6 flex flex-row">
+                    <LikeBtn
+                        :id="a.id"
+                        :type="2"
+                        :like="a.like"
+                        :dislike="a.dislike"
+                        @on-like-success="handleOnLikeSuccess"
+                        @on-dislike-success="handleOnDisLikeSuccess"
                     />
-                    <div class="text-xs mt-3 mx-2 flex flex-row justify-between">
-                        <span class="text-gray-500">Publish On: {{ a.releaseTime }} </span>
-                        <div v-if="a.releaseTime !== a.lastUpdate">
-                            <span class="text-gray-500">
-                                Last Modify:
-                                <span v-text="formatTime(a.lastUpdate)" />
-                            </span>
-                        </div>
-                    </div>
-                    <div class="mt-3 flex flex-row">
-                        <LikeBtn
-                            :id="a.id"
-                            :type="2"
-                            :like="a.like"
-                            :dislike="a.dislike"
-                            @on-like-success="handleOnLikeSuccess"
-                            @on-dislike-success="handleOnDisLikeSuccess"
-                        />
-                        <CommentsLink :comments="a.comments.total" @click="showComments(a.id)" />
-                        <ShareLink />
-                    </div>
-                    <div v-if="a.showComment">
-                        <Comment
-                            :comments="a.comments"
-                            :article-id="a.id"
-                            :total="a.comments.total"
-                            :title="a.author.username + '\'s Answer'"
-                            @on-open-comment-form="handleOpenCommentForm(a.id)"
-                        />
-                        <Pagination
-                            :current-page="commentParams.pageNumber"
-                            :page-size="commentParams.pageSize"
-                            :total="a.comments.total"
-                            @numberChange="(pageNumber: number) => {
+                    <CommentsLink :comments="a.comments.total" @click="showComments(a.id)" />
+                    <ShareLink />
+                </div>
+                <div v-if="a.showComment" class="px-6">
+                    <Comment
+                        :comments="a.comments"
+                        :article-id="a.id"
+                        :total="a.comments.total"
+                        :title="a.author.username + '\'s Answer'"
+                        @on-open-comment-form="handleOpenCommentForm(a.id)"
+                    />
+                    <Pagination
+                        :current-page="commentParams.pageNumber"
+                        :page-size="commentParams.pageSize"
+                        :total="a.comments.total"
+                        @numberChange="(pageNumber: number) => {
                                 commentCurrentChange(pageNumber, a.id);
                             }"
-                            :hide-on-single-page="true"
-                        />
-                    </div>
+                        :hide-on-single-page="true"
+                    />
                 </div>
             </div>
             <Pagination
