@@ -39,5 +39,21 @@ jobs:
           rm -rf ./share ./share.html     
         scp: |
           ./dist/* => /data/nginx/html
-        last_ssh: |
-          ls
+    - name: Tencent COS
+      uses: sylingd/tencent-cos-and-cdn-action@v1.0.2
+      with:
+        secret_id: ${{ secrets.SECRET_ID}}
+        secret_key: ${{ secrets.SECRET_KEY }}
+        cos_bucket: ${{ secrets.BUCKET_NAME }}
+        cos_region: ap-shanghai
+        cos_accelerate: false
+        local_path: ./dist
+        remote_path: /share
+        clean: true
+    - name: Tencent CDN
+      uses: keithnull/tencent-cloud-cdn-purge-cache@v1.0
+      env:
+        SECRET_ID: ${{ secrets.SECRET_ID}}
+        SECRET_KEY: ${{ secrets.SECRET_KEY }}
+        PATHS: "https://share.vio.vin/"
+        FLUSH_TYPE: "flush"
