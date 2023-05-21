@@ -69,6 +69,7 @@ export default defineConfig({
             autoInstall: true,
         }),
     ],
+    base: 'https://static.vio.vin/share/',
     build: {
         rollupOptions: {
             input: {
@@ -80,9 +81,14 @@ export default defineConfig({
                         return id.toString().split('node_modules/')[1].split('/')[0].toString();
                     }
                 },
-                entryFileNames: 'share/js/[name].[hash].js',
-                chunkFileNames: 'share/js/[name].[hash].js',
-                assetFileNames: 'share/assets/[ext]/[name].[hash].[ext]',
+                entryFileNames: 'js/[name].[hash].js',
+                chunkFileNames: 'js/[name].[hash].js',
+                assetFileNames: 'assets/[ext]/[name].[hash].[ext]',
+                // @ts-ignore
+                assetUrl: (assetInfo) => {
+                    const { name, ext } = assetInfo;
+                    return `https://static.vio.vin/share/${ext}/${name}.${ext}`;
+                },
             },
         },
         minify: 'terser',
