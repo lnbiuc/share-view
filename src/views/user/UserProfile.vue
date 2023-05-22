@@ -3,10 +3,13 @@ import { Pointer, StarFilled, ChatLineRound, Finished, Clock, Bell } from '@elem
 import UserProfileLayout from '../../layout/UserProfileLayout.vue';
 import { useRouteParams } from '@vueuse/router';
 import { useRouter } from 'vue-router';
+import { useScreenSizeStore } from '../../pinia';
 
 const userId = useRouteParams<string>('userId');
 
 const router = useRouter();
+
+const sizeStore = useScreenSizeStore();
 </script>
 
 <template>
@@ -19,7 +22,7 @@ const router = useRouter();
                             <span class="dark:text-dark"> MENU </span>
                         </div>
                     </div>
-                    <el-menu default-active="1" id="menu1" class="el-menu-vertical-demo">
+                    <el-menu default-active="1" id="menu1" class="el-menu-vertical-demo" :collapse="sizeStore.isMobile">
                         <el-menu-item index="1" @click="$router.push('/u/p/publish/' + userId)">
                             <el-icon>
                                 <Finished />

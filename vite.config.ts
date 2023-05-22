@@ -69,7 +69,6 @@ export default defineConfig({
             autoInstall: true,
         }),
     ],
-    base: 'https://static.vio.vin/share/',
     build: {
         rollupOptions: {
             input: {

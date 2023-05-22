@@ -3,7 +3,7 @@ import UserProfileLayout from '../../layout/UserProfileLayout.vue';
 import { useRouteParams } from '@vueuse/router';
 import { ref, Ref } from 'vue';
 import { getUserProfile, UserProfileEntity } from '../../axios/api/userApi';
-import { useUserSettingStore } from '../../pinia';
+import { useScreenSizeStore, useUserSettingStore } from '../../pinia';
 
 const userId = useRouteParams<string>('userId');
 
@@ -29,6 +29,8 @@ getUserProfile(userId.value).then((res) => {
     user.value = res.data.data;
     userSettingStore.params = user.value;
 });
+
+const sizeStore = useScreenSizeStore();
 </script>
 
 <template>
@@ -41,7 +43,7 @@ getUserProfile(userId.value).then((res) => {
                             <span class="dark:text-dark"> MENU </span>
                         </div>
                     </div>
-                    <el-menu default-active="1" id="menu1" class="el-menu-vertical-demo">
+                    <el-menu default-active="1" id="menu1" class="el-menu-vertical-demo" :collapse="sizeStore.isMobile">
                         <el-menu-item index="1" @click="$router.push('/u/s/account/' + userId)">
                             <el-icon><i-ep-user /></el-icon>
                             <template #title>Account</template>

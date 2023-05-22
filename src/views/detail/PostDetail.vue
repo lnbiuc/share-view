@@ -131,7 +131,7 @@ const refresh = () => {
                         :like="data.article.like"
                     />
                     <CommentsLink :comments="data.comments.total" />
-                    <ShareLink />
+                    <ShareLink :article-type="'Post'" :article-id="data.article.articleId" />
                     <CollectionLink
                         :type="0"
                         :id="data.article.articleId"

@@ -4,9 +4,9 @@ module.exports = {
     content: ['./index.html', './src/**/*.{vue,js,ts,jsx,tsx}'],
     theme: {
         screens: {
-            sm: '500px',
-            md: '800px',
-            lg: '1000px',
+            sm: '576px',
+            md: '992px',
+            lg: '1200px',
             xl: '1440px',
         },
         fontFamily: {

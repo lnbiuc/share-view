@@ -359,7 +359,7 @@ const handleOpenCommentForm = (answerId: string) => {
                         @on-dislike-success="handleOnDisLikeSuccess"
                     />
                     <CommentsLink :comments="a.comments.total" @click="showComments(a.id)" />
-                    <ShareLink />
+                    <ShareLink :article-id="articleId" :article-type="'Question'" />
                 </div>
                 <div v-if="a.showComment" class="px-6">
                     <Comment

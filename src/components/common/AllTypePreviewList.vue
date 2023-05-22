@@ -190,7 +190,7 @@ const hiddenModify = (articleId: string) => {
                     @click="handleClickComment(a.articleId, a.title, a.type, a.introduction, $router)"
                 />
                 <CollectionLink :id="a.articleId" :type="0" :collect-count="a.collect" />
-                <ShareLink />
+                <ShareLink :article-type="a.type" :article-id="a.articleId" />
             </div>
             <div class="mt-4 flex dark:text-dark" v-if="viewTime">
                 <span>{{ formatTime(viewTime[index]) }} · {{ viewTime[index] }}</span>
