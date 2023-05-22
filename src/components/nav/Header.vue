@@ -135,21 +135,26 @@ const { width, height } = useWindowSize();
 
 const sizeStore = useScreenSizeStore();
 
-watch(width, () => {
-    if (width.value <= 576) {
-        sizeStore.isMobile = true;
-        sizeStore.isPad = false;
-        sizeStore.isPC = false;
-    } else if (width.value > 576 && width.value <= 992) {
-        sizeStore.isMobile = false;
-        sizeStore.isPad = true;
-        sizeStore.isPC = false;
-    } else {
-        sizeStore.isMobile = false;
-        sizeStore.isPad = false;
-        sizeStore.isPC = true;
+watchEffect(
+    () => {
+        if (width.value <= 576) {
+            sizeStore.isMobile = true;
+            sizeStore.isPad = false;
+            sizeStore.isPC = false;
+        } else if (width.value > 576 && width.value <= 992) {
+            sizeStore.isMobile = false;
+            sizeStore.isPad = true;
+            sizeStore.isPC = false;
+        } else {
+            sizeStore.isMobile = false;
+            sizeStore.isPad = false;
+            sizeStore.isPC = true;
+        }
+    },
+    {
+        flush: 'sync',
     }
-});
+);
 
 const navOpen = ref(false);
 </script>
