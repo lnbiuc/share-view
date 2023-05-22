@@ -287,3 +287,11 @@ export const useUserInfoLiteStore = defineStore('userInfoLite', {
         params: <UserLiteEntity>{},
     }),
 });
+
+export const useScreenSizeStore = defineStore('screenSize', {
+    state: () => ({
+        isMobile: <boolean>false,
+        isPad: <boolean>false,
+        isPC: <boolean>true,
+    }),
+});

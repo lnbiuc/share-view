@@ -97,7 +97,7 @@ watch(refParamsStore.params.value, () => {
                 </div>
                 <div class="flex flex-row ml-2">
                     <CommentsLink :comments="a.comments" />
-                    <ShareLink />
+                    <ShareLink :article-id="a.articleId" :article-type="a.type" />
                     <CollectionLink :collect-count="a.collect" />
                 </div>
             </div>

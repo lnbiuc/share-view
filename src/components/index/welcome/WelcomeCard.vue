@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { storeToRefs } from 'pinia';
-import { useThemeStore } from '../../../pinia';
+import { useScreenSizeStore, useThemeStore } from '../../../pinia';
 
 const toGithub = (url: string) => {
     window.open(url, '_blank');
@@ -21,10 +21,12 @@ const getStart = () => {
     const el = document.getElementById('articleList');
     window.scroll({ behavior: 'smooth', top: el?.offsetTop });
 };
+
+const sizeStore = useScreenSizeStore();
 </script>
 
 <template>
-    <div class="flex flex-row justify-between sm:w-full md:w-10/12 lg:w-8/12 xl:w-6/12 m-auto h-[600px] mt-[150px]">
+    <div class="flex-row justify-center m-[50px] flex px-0 sm:p-2 md:mt-[200px] md:h-[600px]">
         <div class="flex flex-col">
             <span class="text-[60px] font-semibold text-blue-500 my-5"> Share </span>
             <span class="text-[30px] font-semibold text-blue-400"> A web-based knowledge sharing platform </span>
@@ -68,7 +70,7 @@ const getStart = () => {
                     class="flex flex-row items-center ml-4 cursor-pointer"
                     @click="toGithub('https://github.com/lnbiuc/share-view')"
                 >
-                    <span class="text-base text-gray-500 hover:text-blue-500 transition-all">
+                    <span class="text-base text-gray-500 hover:text-blue-500 transition-all mr-2">
                         View this project in Github
                     </span>
                     <el-tooltip content="https://github.com/lnbiuc/share-view">
@@ -79,7 +81,7 @@ const getStart = () => {
                 </div>
             </div>
         </div>
-        <div>
+        <div v-if="sizeStore.isPC">
             <img v-show="isDark" src="../../../assets/main-card-dark.svg" alt="card" class="welcome-svg" />
             <img v-show="!isDark" src="../../../assets/main-card-light.svg" alt="card" class="welcome-svg" />
         </div>

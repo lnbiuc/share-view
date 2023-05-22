@@ -117,7 +117,7 @@ const refresh = () => {
                 <div class="flex flex-row mt-4">
                     <LikeBtn :type="0" :id="a.articleId" :like="a.like" @on-like-success="refresh" />
                     <CommentsLink @click="handleClickComment(a.articleId, a.introduction)" :comments="a.comments" />
-                    <ShareLink />
+                    <ShareLink :article-type="a.type" :article-id="a.articleId" />
                     <CollectionLink :collect-count="a.collect" :type="0" :id="a.articleId" />
                 </div>
             </div>

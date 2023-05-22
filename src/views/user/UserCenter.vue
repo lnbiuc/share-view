@@ -44,7 +44,7 @@ onMounted(() => {
                         backgroundImage: 'url(' + user.avatar + ')',
                         background: 'center center / no-repeat',
                     }"
-                    class="bg-cover bg-center h-[200px] w-[200px] rounded"
+                    class="bg-cover bg-center h-[100px] w-[100px] md:h-[200px] md:w-[200px] xl:h-[200px] xl:w-[200px] lg:h-[200px] lg:w-[200px] rounded"
                 ></div>
             </div>
         </template>

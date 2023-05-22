@@ -9,7 +9,7 @@ categoryAndTagsStore.refreshTags();
 </script>
 
 <template>
-    <router-view class="bg-light-white dark:bg-dark-black" />
+    <router-view class="bg-light-white dark:bg-dark-black w-100vw" />
 </template>
 
 <style>

@@ -83,7 +83,7 @@ const currentChange = (pageNumber: number) => {
                         {{ a.title }}
                     </div>
                     <div class="flex flex-row items-center">
-                        <ShareLink />
+                        <ShareLink :article-id="a.articleId" :article-type="a.type" />
                         <el-icon :size="20" color="rgb(156, 163, 175)" class="ml-5 mr-1">
                             <i-ant-design-eye-outlined />
                         </el-icon>

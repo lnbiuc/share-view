@@ -104,14 +104,14 @@ const currentChange = (pageNumber: number) => {
                         {{ a.introduction }}
                     </div>
                 </div>
-                <div class="flex flex-row">
-                    <LikeBtn :type="0" :id="a.articleId" />
+                <div class="flex flex-row flex-wrap justify-start items-center">
+                    <LikeBtn :type="0" :id="a.articleId" class="mr-4" />
                     <CommentsLink
                         @click="handleClickComment(a.articleId, a.title, a.type, a.introduction, $router)"
                         :comments="a.comments"
                     />
                     <CollectionLink :type="0" :id="a.articleId" :collect-count="a.collect" />
-                    <ShareLink />
+                    <ShareLink :article-id="a.articleId" :article-type="a.type" />
                 </div>
             </div>
             <Pagination

@@ -61,7 +61,7 @@ const themeStore = useThemeStore();
             <el-icon color="#409eff" :size="20"> <i-ant-design-appstore-filled /> </el-icon>&nbsp;
             <span class="mx-1 dark:text-gray-300">Creation Center</span>
         </div>
-        <div class="flex flex-row my-6">
+        <div class="flex flex-row my-4 flex-wrap justify-center">
             <div v-for="b in btn" :key="b.index" class="flex flex-col w-20 items-center dark:text-gray-300">
                 <div
                     :style="styObject(b.index)"
@@ -73,16 +73,6 @@ const themeStore = useThemeStore();
                 <span class="text-xs text-center">{{ b.name }}</span>
             </div>
         </div>
-        <!--        <div class="flex flex-row rounded-md dark:bg-dark-black bg-gray-100 justify-around">-->
-        <!--            <div class="flex flex-col m-2 p-2">-->
-        <!--                <span class="text-gray-500 text-center">Today Views</span>-->
-        <!--                <span class="text-lg mt-2 dark:text-gray-300 text-center">42</span>-->
-        <!--            </div>-->
-        <!--            <div class="flex flex-col m-2 p-2">-->
-        <!--                <span class="text-gray-500 text-center">Today Likes</span>-->
-        <!--                <span class="text-lg mt-2 dark:text-gray-300 text-center">20</span>-->
-        <!--            </div>-->
-        <!--        </div>-->
     </div>
 </template>
 
