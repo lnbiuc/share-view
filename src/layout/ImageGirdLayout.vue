@@ -26,7 +26,8 @@ const showImages = (img: string[], index: number) => {
                         backgroundImage: 'url(' + images[0] + ')',
                         background: 'center center / no-repeat',
                     }"
-                    class="bg-cover bg-center h-[350px] w-full rounded shadow-sm"
+                    class="bg-cover bg-center h-auto w-full rounded shadow-sm"
+                    style="aspect-ratio: 16/9"
                 ></div>
             </div>
             <div v-if="images.length === 2" class="grid grid-cols-2 grid-rows-1 gap-2">
@@ -38,7 +39,8 @@ const showImages = (img: string[], index: number) => {
                         backgroundImage: 'url(' + image + ')',
                         background: 'center center / no-repeat',
                     }"
-                    class="bg-cover bg-center h-[250px] w-full rounded shadow-sm"
+                    style="aspect-ratio: 16/9"
+                    class="bg-cover bg-center h-auto w-full rounded shadow-sm"
                 ></div>
             </div>
             <div v-if="images.length <= 4 && images.length >= 3" class="grid grid-cols-2 grid-rows-2 gap-2">
@@ -50,7 +52,8 @@ const showImages = (img: string[], index: number) => {
                         backgroundImage: 'url(' + image + ')',
                         background: 'center center / no-repeat',
                     }"
-                    class="bg-cover bg-center h-[200px] w-full rounded shadow-sm"
+                    style="aspect-ratio: 16/9"
+                    class="bg-cover bg-center h-auto w-full rounded shadow-sm"
                 ></div>
             </div>
             <div v-if="images.length >= 5 && images.length <= 6" class="grid grid-cols-3 grid-rows-2 gap-2">
@@ -62,7 +65,8 @@ const showImages = (img: string[], index: number) => {
                         backgroundImage: 'url(' + image + ')',
                         background: 'center center / no-repeat',
                     }"
-                    class="bg-cover bg-center h-[200px] w-full rounded shadow-sm"
+                    style="aspect-ratio: 16/9"
+                    class="bg-cover bg-center h-auto w-full rounded shadow-sm"
                 ></div>
             </div>
             <div v-if="images.length >= 6" class="grid grid-cols-3 grid-rows-3 gap-2">
@@ -74,7 +78,8 @@ const showImages = (img: string[], index: number) => {
                         backgroundImage: 'url(' + image + ')',
                         background: 'center center / no-repeat',
                     }"
-                    class="bg-cover bg-center h-[200px] w-full rounded shadow-sm"
+                    style="aspect-ratio: 16/9"
+                    class="bg-cover bg-center h-auto w-full rounded shadow-sm"
                 ></div>
             </div>
         </div>
