@@ -26,7 +26,7 @@ const sizeStore = useScreenSizeStore();
 </script>
 
 <template>
-    <div class="flex-row justify-center m-[50px] flex px-0 sm:p-2 md:mt-[200px] md:h-[600px]">
+    <div class="flex-row justify-center m-[20px] flex px-0 sm:p-2 md:mt-[100px] md:h-[500px]">
         <div class="flex flex-col">
             <span class="text-[60px] font-semibold text-blue-500 my-5"> Share </span>
             <span class="text-[30px] font-semibold text-blue-400"> A web-based knowledge sharing platform </span>

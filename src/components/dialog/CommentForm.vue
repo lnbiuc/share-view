@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { useDialogControlStore, useReloadCommentStore, useThemeStore } from '../../pinia';
+import { useDialogControlStore, useReloadCommentStore, useScreenSizeStore, useThemeStore } from '../../pinia';
 import { publishComments } from '../../axios/api/commentsApi';
 import { ElMessage } from 'element-plus';
 import { storeToRefs } from 'pinia';
@@ -56,7 +56,7 @@ const handleBeforeClose = () => {
     <el-dialog
         class="p-6"
         v-model="dialogStore.commentForm.status"
-        width="30%"
+        width="500px"
         title="Create Comment"
         :lock-scroll="false"
         :modal="false"
