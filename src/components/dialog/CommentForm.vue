@@ -50,13 +50,15 @@ const themeStore = useThemeStore();
 const handleBeforeClose = () => {
     params.commentForm.value.data.content = '';
 };
+
+const sizeStore = useScreenSizeStore();
 </script>
 
 <template>
     <el-dialog
-        class="p-6"
+        class="p-4"
         v-model="dialogStore.commentForm.status"
-        width="500px"
+        :width="sizeStore.isMobile ? '100%' : '500px'"
         title="Create Comment"
         :lock-scroll="false"
         :modal="false"

@@ -158,7 +158,8 @@ const themeStore = useThemeStore();
             </template>
             <template #video>
                 <video-player
-                    class="w-full min-h-[500px]"
+                    style="aspect-ratio: 16/9"
+                    class="w-full h-auto"
                     :src="data.article.content"
                     :poster="data.article.images[0]"
                     :controls="true"
@@ -169,9 +170,9 @@ const themeStore = useThemeStore();
                 />
             </template>
             <template #author>
-                <span class="dark:text-dark mt-2">
+                <div class="dark:text-dark mt-3">
                     {{ data.article.introduction }}
-                </span>
+                </div>
                 <div class="flex flex-row mt-4">
                     <LikeBtn
                         :like="data.article.like"

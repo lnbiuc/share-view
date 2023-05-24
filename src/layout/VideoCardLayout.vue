@@ -8,11 +8,12 @@ const { articleId, images } = defineProps<{
 <template>
     <div class="py-2" @click="$router.push({ path: '/v/' + articleId })">
         <div
-            class="h-[400px] rounded-md shadow-md flex justify-center items-center video-preview"
+            class="h-auto rounded-md shadow-md flex justify-center items-center video-preview"
             :style="{ background: 'url(' + images + ') center center no-repeat' }"
+            style="aspect-ratio: 16/9"
         >
             <el-icon
-                size="100"
+                :size="100"
                 color="rgb(155,163,175)"
                 class="text-gray-300 play-btn cursor-pointer hover:text-gray-200 transition-all"
             >
