@@ -1,13 +1,13 @@
 {
     "name": "share-view",
-    "private": true,
     "version": "0.1.0",
+    "private": true,
     "type": "module",
     "scripts": {
-        "dev": "vite",
         "build": "vue-tsc && vite build",
-        "preview": "vite preview",
-        "format": "npx prettier --write ."
+        "dev": "vite",
+        "format": "npx prettier --write .",
+        "preview": "vite preview"
     },
     "dependencies": {
         "@videojs-player/vue": "^1.0.0",

@@ -15,6 +15,7 @@ import path from 'path';
 const pathSrc = path.resolve(__dirname, 'src');
 
 export default defineConfig({
+    base: 'https://static.vio.vin/share/',
     server: {
         proxy: {
             '/api': {
@@ -69,7 +70,6 @@ export default defineConfig({
             autoInstall: true,
         }),
     ],
-    base: 'https://static.vio.vin/share/',
     build: {
         rollupOptions: {
             input: {
